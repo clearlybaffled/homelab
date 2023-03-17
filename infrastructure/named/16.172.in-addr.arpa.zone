@@ -1,0 +1,18 @@
+$ORIGIN .
+$TTL 86400	; 1 day
+16.172.in-addr.arpa	IN SOA	ns.hermleigh.home. zone-admin.hermleigh.home. (
+				2020110701 ; serial
+				3600       ; refresh (1 hour)
+				600        ; retry (10 minutes)
+				604800     ; expire (1 week)
+				1800       ; minimum (30 minutes)
+				)
+			NS	ns.hermleigh.home.
+$ORIGIN 16.172.in-addr.arpa.
+1.0			PTR	br-1-off.hermleigh.home.
+1.1			PTR	pf-1-off.hermleigh.home.
+10.1			PTR	parche.hermleigh.home.
+20.1			PTR	tang.hermleigh.home.
+21.1			PTR	sculpin.hermleigh.home.
+22.1			PTR	tirante.hermleigh.home.
+23.1			PTR	harder.hermleigh.home.

@@ -1,0 +1,50 @@
+---
+- name: Update apt repo and cache on all Debian/Ubuntu machines
+  become: true
+  when:
+    - ansible_os_family == 'Debian'
+  ansible.builtin.apt:
+    update_cache: yes
+    force_apt_get: yes
+    cache_valid_time: 3600
+  changed_when: false
+
+- name: Upgrade all packages on Debian/Ubuntu machines
+  become: true
+  when:
+    - ansible_os_family == 'Debian'
+  ansible.builtin.apt:
+    upgrade: yes
+    force_apt_get: yes
+- name: Install required system packages
+  ansible.builtin.apt:
+    pkg:
+      - curl
+      - ca-certificates
+      - vim
+      - git
+      - wget
+      - python
+      - policycoreutils-python-utils
+      - v4l-utils
+      - v4l-conf
+      - dtv-scan-tables
+      - w-scan
+      - fuse
+      - ntfs-3g
+      - jmtpfs
+      - libmtp
+      - nmap
+      - minicom
+      - i2c-tools
+      - xmltv
+      - tree
+      - jq
+      - dos2unix
+      - firewall-config
+      - lshw
+      - exfat-fuse
+      - exfat-utils
+      - exuberant-ctags
+  state: latest
+  update_cache: true
