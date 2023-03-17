@@ -1,0 +1,24 @@
+[submodule "references/home-ops"]
+	path = references/home-ops
+	url = https://github.com/bjw-s/home-ops.git
+[submodule "references/blackjid"]
+	path = references/blackjid
+	url = https://github.com/blackjid/k8s-gitops.git
+[submodule "references/bjw-s"]
+	path = references/bjw-s
+	url = https://github.com/bjw-s/home-ops.git
+[submodule "references/onedr0p"]
+	path = references/onedr0p
+	url = https://github.com/onedr0p/home-ops.git
+[submodule "references/carpenike"]
+	path = references/carpenike
+	url = https://github.com/carpenike/k8s-gitops.git
+[submodule "references/RickCoxDev"]
+	path = references/RickCoxDev
+	url = https://github.com/RickCoxDev/home-cluster.git
+[submodule "references/billimek"]
+	path = references/billimek
+	url = https://github.com/billimek/k8s-gitops.git
+[submodule "references/onedr0p-template"]
+	path = references/onedr0p-template
+	url = https://github.com/onedr0p/flux-cluster-template.git
