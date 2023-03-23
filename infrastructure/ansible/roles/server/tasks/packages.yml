@@ -24,27 +24,26 @@
       - vim
       - git
       - wget
-      - python
       - policycoreutils-python-utils
-      - v4l-utils
-      - v4l-conf
-      - dtv-scan-tables
-      - w-scan
-      - fuse
-      - ntfs-3g
-      - jmtpfs
-      - libmtp
-      - nmap
-      - minicom
-      - i2c-tools
-      - xmltv
       - tree
       - jq
       - dos2unix
-      - firewall-config
+        #- firewall-config
       - lshw
+      - fuse
+      - ntfs-3g
+      - nmap
+      - minicom
       - exfat-fuse
       - exfat-utils
       - exuberant-ctags
-  state: latest
+      - hdparm
+      - htop
+      - ipvsadm
+      - lm-sensors
+      - nfs-common
+      - nvme-cli
+      - socat
+      - python3-yaml
+   state: latest
   update_cache: true
