@@ -1,0 +1,14 @@
+---
+- name: Install DVB utilities
+  ansible.builtin.apt:
+    pkg:
+      - v4l-utils
+      - v4l-conf
+      - dtv-scan-tables
+      - w-scan
+      - jmtpfs
+      - libmtp
+      - i2c-tools
+      - xmltv
+  state: latest
+  update_cache: true
