@@ -22,3 +22,6 @@
 [submodule "references/onedr0p-template"]
 	path = references/onedr0p-template
 	url = https://github.com/onedr0p/flux-cluster-template.git
+[submodule "references/kubespray"]
+	path = references/kubespray
+	url = https://github.com/kubernetes-sigs/kubespray.git
