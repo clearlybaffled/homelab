@@ -4,9 +4,6 @@
   vars:
     download: "{{ download_defaults | combine(downloads.crio) }}"
 
-- name: cri-o | clean up reglacy repos
-  import_tasks: "cleanup.yaml"
-
 - name: cri-o | make sure needed folders exist in the system
   with_items:
     - /etc/crio
