@@ -1,49 +1,46 @@
 ---
-- hosts: all
-  become: true
-  becom_method: sudo
-  vars:
-    created_username: jared
-  tasks:
-    - name: Install aptitutde
-      apt:
-      name: aptitude
-      state: latest
-      update_cache: true
-    - name: Setup passwordless sudo
-      lineinfile:
-        path: /etc/sudoers
-        state: present
-        regexp: '^%sudo'
-        line: '%sudo ALL=(ALL) NOPASSWD: ALL'
-        validate: '/usr/sbin/visudo -cf %s'
+- name: Install aptitutde
+  apt:
+    name: aptitude
+    state: latest
+    update_cache: true
 
-    - name: Create a new regular user with sudo privileges
-      user:
-        name: "{{ created_username }}"
-        state: present
-        groups: sudo
-        append: true
-        create_home: true
-    - name: Disable password authentication for root
-      lineinfile:
-        path: /etc/ssh/sshd_config
-        state: present
-        regexp: '^#?PermitRootLogin'
-        line: 'PermitRootLogin prohibit-password'
-    - name: Update apt and install required system packages
-      apt:
-        pkg:
-          - curl
-          - vim
-          - git
-        state: latest
-        update_cache: true
+- name: Setup passwordless sudo
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^%sudo'
+    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+    validate: '/usr/sbin/visudo -cf %s'
 
-    - name: Ensure bash_completion.d folder exists
-      file:
-        name: /etc/bash_completion.d/
-        state: directory
-        owner: root
-        group: root
-        mode: 0755
+- name: Create a new regular user with sudo privileges
+  user:
+    name: "{{ created_username }}"
+    state: present
+    groups: sudo
+    append: true
+    create_home: true
+- name: Disable password authentication for root
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^#?PermitRootLogin'
+    line: 'PermitRootLogin prohibit-password'
+
+- name: Ensure bash_completion.d folder exists
+  file:
+    name: /etc/bash_completion.d/
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Set console for High DPI monitor
+  ansible.builtin.template:
+    src: console-setup.j2
+    dest: /etc/default/console-setup
+    vars:
+      - codeset: Uni3
+      - fontface: Terminus
+      - fontsize: 32x132x166
+

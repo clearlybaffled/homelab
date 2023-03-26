@@ -1,0 +1,78 @@
+---
+# DNS configuration.
+# Kubernetes cluster name, also will be used as DNS domain
+cluster_name: cluster.local
+# Subdomains of DNS domain to be resolved via /etc/resolv.conf for hostnet pods
+ndots: 2
+# dns_timeout: 2
+# dns_attempts: 2
+# Custom search domains to be added in addition to the default cluster search domains
+# searchdomains:
+#   - svc.{{ cluster_name }}
+#   - default.svc.{{ cluster_name  }}
+# Remove default cluster search domains (``default.svc.{{ dns_domain }}, svc.{{ dns_domain }}``).
+# remove_default_searchdomains: false
+# Can be coredns, coredns_dual, manual or none
+dns_mode: coredns
+# Set manual server if using a custom cluster DNS server
+# manual_dns_server: 10.x.x.x
+# Enable nodelocal dns cache
+enable_nodelocaldns: true
+enable_nodelocaldns_secondary: false
+nodelocaldns_ip: 169.254.25.10
+nodelocaldns_health_port: 9254
+nodelocaldns_second_health_port: 9256
+nodelocaldns_bind_metrics_host_ip: false
+nodelocaldns_secondary_skew_seconds: 5
+# nodelocaldns_external_zones:
+# - zones:
+#   - example.com
+#   - example.io:1053
+#   nameservers:
+#   - 1.1.1.1
+#   - 2.2.2.2
+#   cache: 5
+# - zones:
+#   - https://mycompany.local:4453
+#   nameservers:
+#   - 192.168.0.53
+#   cache: 0
+# - zones:
+#   - mydomain.tld
+#   nameservers:
+#   - 10.233.0.3
+#   cache: 5
+#   rewrite:
+#   - name website.tld website.namespace.svc.cluster.local
+# Enable k8s_external plugin for CoreDNS
+enable_coredns_k8s_external: false
+coredns_k8s_external_zone: k8s_external.local
+# Enable endpoint_pod_names option for kubernetes plugin
+enable_coredns_k8s_endpoint_pod_names: false
+# Set forward options for upstream DNS servers in coredns (and nodelocaldns) config
+# dns_upstream_forward_extra_opts:
+#   policy: sequential
+# Apply extra options to coredns kubernetes plugin
+# coredns_kubernetes_extra_opts:
+#   - 'fallthrough example.local'
+# Forward extra domains to the coredns kubernetes plugin
+# coredns_kubernetes_extra_domains: ''
+
+# Should be set to a cluster IP if using a custom cluster DNS
+manual_dns_server: ""
+
+# Can be docker_dns, host_resolvconf or none
+resolvconf_mode: host_resolvconf
+# Deploy netchecker app to verify DNS resolve as an HTTP service
+deploy_netchecker: false
+# Ip address of the kubernetes skydns service
+skydns_server: "{{ kube_service_addresses|ipaddr('net')|ipaddr(3)|ipaddr('address') }}"
+skydns_server_secondary: "{{ kube_service_addresses|ipaddr('net')|ipaddr(4)|ipaddr('address') }}"
+dns_domain: "{{ cluster_name }}"
+
+kube_dns_servers:
+  coredns: ["{{skydns_server}}"]
+  coredns_dual: "{{[skydns_server] + [ skydns_server_secondary ]}}"
+  manual: ["{{manual_dns_server}}"]
+
+dns_servers: "{{kube_dns_servers[dns_mode]}}"

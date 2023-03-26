@@ -1,4 +1,8 @@
 ---
+# Use proxycommand if bastion host is in group all
+# This change obseletes editing ansible.cfg file depending on bastion existence
+ansible_ssh_common_args: "{% if 'bastion' in groups['all'] %} -o ProxyCommand='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -W %h:%p -p {{ hostvars['bastion']['ansible_port'] | default(22) }} {{ hostvars['bastion']['ansible_user'] }}@{{ hostvars['bastion']['ansible_host'] }} {% if ansible_ssh_private_key_file is defined %}-i {{ ansible_ssh_private_key_file }}{% endif %} ' {% endif %}"
+
 # Kubernetes configuration dirs and system namespace.
 # Those are where all the additional config stuff goes
 # the kubernetes normally puts in /srv/kubernetes.
@@ -8,16 +12,87 @@ kube_config_dir: /etc/kubernetes
 kube_script_dir: "{{ bin_dir }}/kubernetes-scripts"
 kube_manifest_dir: "{{ kube_config_dir }}/manifests"
 
+# Kubectl command
+# This is for consistency when using kubectl command in roles, and ensure
+kubectl: "{{ bin_dir }}/kubectl --kubeconfig {{ kube_config_dir }}/admin.conf"
+
 # This is where all the cert scripts and certs will be located
 kube_cert_dir: "{{ kube_config_dir }}/ssl"
+
+# compatibility directory for kubeadm
+kube_cert_compat_dir: "/etc/kubernetes/pki"
 
 # This is where all of the bearer tokens will be stored
 kube_token_dir: "{{ kube_config_dir }}/tokens"
 
+# selinux state
+# try enforcing at some point
+preinstall_selinux_state: permissive 
+
 kube_api_anonymous_auth: true
+
+# Default value, but will be set to true automatically if detected
+is_fedora_coreos: false
+
+# optional disable the swap
+disable_swap: true
 
 ## Change this to use another Kubernetes version, e.g. a current beta release
 kube_version: v1.26.3
+
+## The minimum version working
+kube_version_min_required: v1.24.0
+
+## Kube Proxy mode One of ['iptables','ipvs']
+kube_proxy_mode: ipvs
+
+## The timeout for init first control-plane
+kubeadm_init_timeout: 300s
+
+## List of kubeadm init phases that should be skipped during control plane setup
+## By default 'addon/coredns' is skipped
+## 'addon/kube-proxy' gets skipped for some network plugins
+kubeadm_init_phases_skip_default: [ "addon/coredns" ]
+kubeadm_init_phases_skip: >-
+  {%- if kube_network_plugin == 'kube-router' and (kube_router_run_service_proxy is defined and kube_router_run_service_proxy) -%}
+  {{ kubeadm_init_phases_skip_default }} + [ "addon/kube-proxy" ]
+  {%- elif kube_network_plugin == 'cilium' and (cilium_kube_proxy_replacement is defined and cilium_kube_proxy_replacement == 'strict') -%}
+  {{ kubeadm_init_phases_skip_default }} + [ "addon/kube-proxy" ]
+  {%- elif kube_network_plugin == 'calico' and (calico_bpf_enabled is defined and calico_bpf_enabled) -%}
+  {{ kubeadm_init_phases_skip_default }} + [ "addon/kube-proxy" ]
+  {%- elif kube_proxy_remove is defined and kube_proxy_remove -%}
+  {{ kubeadm_init_phases_skip_default }} + [ "addon/kube-proxy" ]
+  {%- else -%}
+  {{ kubeadm_init_phases_skip_default }}
+  {%- endif -%}
+
+# List of kubeadm phases that should be skipped when joining a new node
+# You may need to set this to ['preflight'] for air-gaped deployments to avoid failing connectivity tests.
+kubeadm_join_phases_skip_default: []
+kubeadm_join_phases_skip: >-
+ {{ kubeadm_join_phases_skip_default }}
+
+# A string slice of values which specify the addresses to use for NodePorts.
+# Values may be valid IP blocks (e.g. 1.2.3.0/24, 1.2.3.4/32).
+# The default empty string slice ([]) means to use all local addresses.
+# kube_proxy_nodeport_addresses_cidr is retained for legacy config
+kube_proxy_nodeport_addresses: >-
+  {%- if kube_proxy_nodeport_addresses_cidr is defined -%}
+  [{{ kube_proxy_nodeport_addresses_cidr }}]
+  {%- else -%}
+  []
+  {%- endif -%}
+
+# Set to true to allow pre-checks to fail and continue deployment
+ignore_assert_errors: false
+
+kube_vip_enabled: false
+
+# nginx-proxy configure
+nginx_config_dir: "/etc/nginx"
+
+# haproxy configure
+haproxy_config_dir: "/etc/haproxy"
 
 # Where the binaries will be downloaded.
 # Note: ensure that you've enough disk space (about 1G)
@@ -32,38 +107,17 @@ kube_owner: kube
 # cert files to. Not really changeable...
 kube_cert_group: kube-cert
 
+# Set to true when the CAs are managed externally.
+# When true, disables all tasks manipulating certificates. Ensure before the kubespray run that:
+# - Certificates and CAs are present in kube_cert_dir
+# - Kubeconfig files are present in kube_config_dir
+kube_external_ca_mode: false
+
 # Cluster Loglevel configuration
 kube_log_level: 2
 
 # Directory where credentials will be stored
 credentials_dir: "{{ inventory_dir }}/credentials"
-
-## It is possible to activate / deactivate selected authentication methods (oidc, static token auth)
-# kube_oidc_auth: false
-# kube_token_auth: false
-
-
-## Variables for OpenID Connect Configuration https://kubernetes.io/docs/admin/authentication/
-## To use OpenID you have to deploy additional an OpenID Provider (e.g Dex, Keycloak, ...)
-
-# kube_oidc_url: https:// ...
-# kube_oidc_client_id: kubernetes
-## Optional settings for OIDC
-# kube_oidc_ca_file: "{{ kube_cert_dir }}/ca.pem"
-# kube_oidc_username_claim: sub
-# kube_oidc_username_prefix: 'oidc:'
-# kube_oidc_groups_claim: groups
-# kube_oidc_groups_prefix: 'oidc:'
-
-## Variables to control webhook authn/authz
-# kube_webhook_token_auth: false
-# kube_webhook_token_auth_url: https://...
-# kube_webhook_token_auth_url_skip_tls_verify: false
-
-## For webhook authorization, authorization_modes must include Webhook
-# kube_webhook_authorization: false
-# kube_webhook_authorization_url: https://...
-# kube_webhook_authorization_url_skip_tls_verify: false
 
 # Choose network plugin (cilium, calico, kube-ovn, weave or flannel. Use cni for generic cni plugin)
 # Can also be set to 'cloud', which lets the cloud provider setup appropriate routing
@@ -71,6 +125,12 @@ kube_network_plugin: calico
 
 # Setting multi_networking to true will install Multus: https://github.com/k8snetworkplumbingwg/multus-cni
 kube_network_plugin_multus: false
+
+# Determines if calico_rr group exists
+peer_with_calico_rr: "{{ 'calico_rr' in groups and groups['calico_rr']|length > 0 }}"
+
+# Choose data store type for calico: "etcd" or "kdd" (kubernetes datastore)
+calico_datastore: "kdd"
 
 # Kubernetes internal network for services, unused block of space.
 kube_service_addresses: 10.233.0.0/18
@@ -116,125 +176,59 @@ kube_pods_subnet_ipv6: fd85:ee78:d8a6:8607::1:0000/112
 # This provides room for 254 pods per node.
 kube_network_node_prefix_ipv6: 120
 
-# The port the API Server will be listening on.
+# The virtual cluster IP, real host IPs and ports the API Server will be
+# listening on.
+# NOTE: loadbalancer_apiserver_localhost somewhat alters the final API enpdoint
+# access IP value (automatically evaluated below)
 kube_apiserver_ip: "{{ kube_service_addresses|ipaddr('net')|ipaddr(1)|ipaddr('address') }}"
 kube_apiserver_port: 6443  # (https)
 
-# Kube-proxy proxyMode configuration.
-# Can be ipvs, iptables
-kube_proxy_mode: ipvs
+# NOTE: If you specific address/interface and use loadbalancer_apiserver_localhost
+# loadbalancer_apiserver_localhost (nginx/haproxy) will deploy on masters on 127.0.0.1:{{ loadbalancer_apiserver_port|default(kube_apiserver_port) }} too.
+kube_apiserver_bind_address: 0.0.0.0
 
 # configure arp_ignore and arp_announce to avoid answering ARP queries from kube-ipvs0 interface
 # must be set to true for MetalLB, kube-vip(ARP enabled) to work
 kube_proxy_strict_arp: false
 
-# A string slice of values which specify the addresses to use for NodePorts.
-# Values may be valid IP blocks (e.g. 1.2.3.0/24, 1.2.3.4/32).
-# The default empty string slice ([]) means to use all local addresses.
-# kube_proxy_nodeport_addresses_cidr is retained for legacy config
-kube_proxy_nodeport_addresses: >-
-  {%- if kube_proxy_nodeport_addresses_cidr is defined -%}
-  [{{ kube_proxy_nodeport_addresses_cidr }}]
-  {%- else -%}
-  []
-  {%- endif -%}
-
 # If non-empty, will use this string as identification instead of the actual hostname
-# kube_override_hostname: >-
-#   {%- if cloud_provider is defined and cloud_provider in [ 'aws' ] -%}
-#   {%- else -%}
-#   {{ inventory_hostname }}
-#   {%- endif -%}
+kube_override_hostname: >-
+   {%- if cloud_provider is defined and cloud_provider in [ 'aws' ] -%}
+   {%- else -%}
+   {{ inventory_hostname }}
+   {%- endif -%}
 
 ## Encrypting Secret Data at Rest
 kube_encrypt_secret_data: false
 
+# Aggregator
+kube_api_aggregator_routing: false
+
+# Profiling
+kube_profiling: false
+
 # Graceful Node Shutdown (Kubernetes >= 1.21.0), see https://kubernetes.io/blog/2021/04/21/graceful-node-shutdown-beta/
 # kubelet_shutdown_grace_period had to be greater than kubelet_shutdown_grace_period_critical_pods to allow
 # non-critical podsa to also terminate gracefully
-# kubelet_shutdown_grace_period: 60s
-# kubelet_shutdown_grace_period_critical_pods: 20s
-
-# DNS configuration.
-# Kubernetes cluster name, also will be used as DNS domain
-cluster_name: cluster.local
-# Subdomains of DNS domain to be resolved via /etc/resolv.conf for hostnet pods
-ndots: 2
-# dns_timeout: 2
-# dns_attempts: 2
-# Custom search domains to be added in addition to the default cluster search domains
-# searchdomains:
-#   - svc.{{ cluster_name }}
-#   - default.svc.{{ cluster_name  }}
-# Remove default cluster search domains (``default.svc.{{ dns_domain }}, svc.{{ dns_domain }}``).
-# remove_default_searchdomains: false
-# Can be coredns, coredns_dual, manual or none
-dns_mode: coredns
-# Set manual server if using a custom cluster DNS server
-# manual_dns_server: 10.x.x.x
-# Enable nodelocal dns cache
-enable_nodelocaldns: true
-enable_nodelocaldns_secondary: false
-nodelocaldns_ip: 169.254.25.10
-nodelocaldns_health_port: 9254
-nodelocaldns_second_health_port: 9256
-nodelocaldns_bind_metrics_host_ip: false
-nodelocaldns_secondary_skew_seconds: 5
-# nodelocaldns_external_zones:
-# - zones:
-#   - example.com
-#   - example.io:1053
-#   nameservers:
-#   - 1.1.1.1
-#   - 2.2.2.2
-#   cache: 5
-# - zones:
-#   - https://mycompany.local:4453
-#   nameservers:
-#   - 192.168.0.53
-#   cache: 0
-# - zones:
-#   - mydomain.tld
-#   nameservers:
-#   - 10.233.0.3
-#   cache: 5
-#   rewrite:
-#   - name website.tld website.namespace.svc.cluster.local
-# Enable k8s_external plugin for CoreDNS
-enable_coredns_k8s_external: false
-coredns_k8s_external_zone: k8s_external.local
-# Enable endpoint_pod_names option for kubernetes plugin
-enable_coredns_k8s_endpoint_pod_names: false
-# Set forward options for upstream DNS servers in coredns (and nodelocaldns) config
-# dns_upstream_forward_extra_opts:
-#   policy: sequential
-# Apply extra options to coredns kubernetes plugin
-# coredns_kubernetes_extra_opts:
-#   - 'fallthrough example.local'
-# Forward extra domains to the coredns kubernetes plugin
-# coredns_kubernetes_extra_domains: ''
-
-# Can be docker_dns, host_resolvconf or none
-resolvconf_mode: host_resolvconf
-# Deploy netchecker app to verify DNS resolve as an HTTP service
-deploy_netchecker: false
-# Ip address of the kubernetes skydns service
-skydns_server: "{{ kube_service_addresses|ipaddr('net')|ipaddr(3)|ipaddr('address') }}"
-skydns_server_secondary: "{{ kube_service_addresses|ipaddr('net')|ipaddr(4)|ipaddr('address') }}"
-dns_domain: "{{ cluster_name }}"
-
-## Container runtime
-## docker for docker, crio for cri-o and containerd for containerd.
-## Default: containerd
-container_manager: containerd
-
-# Additional container runtimes
-kata_containers_enabled: false
+kubelet_shutdown_grace_period: 60s
+kubelet_shutdown_grace_period_critical_pods: 20s
 
 kubeadm_certificate_key: "{{ lookup('password', credentials_dir + '/kubeadm_certificate_key.creds length=64 chars=hexdigits') | lower }}"
 
+
+cert_management: script
+
+# Make a copy of kubeconfig on the host that runs Ansible in {{ inventory_dir }}/artifacts
+kubeconfig_localhost: false
+# Download kubectl onto the host that runs Ansible in {{ bin_dir }}
+kubectl_localhost: false
+
 # K8s image pull policy (imagePullPolicy)
 k8s_image_pull_policy: IfNotPresent
+
+# Kubernetes dashboard
+# RBAC required. see docs/getting-started.md for access details.
+dashboard_enabled: false
 
 # audit log for kubernetes
 kubernetes_audit: false
@@ -370,13 +364,140 @@ persistent_volumes_enabled: false
 ## Amount of time to retain events. (default 1h0m0s)
 event_ttl_duration: "1h0m0s"
 
+## List of authorization modes that must be configured for
+## the k8s cluster. Only 'AlwaysAllow', 'AlwaysDeny', 'Node' and
+## 'RBAC' modes are tested. Order is important.
+authorization_modes: ['Node', 'RBAC']
+rbac_enabled: "{{ 'RBAC' in authorization_modes }}"
+
+# When enabled, API bearer tokens (including service account tokens) can be used to authenticate to the kubelet's HTTPS endpoint
+kubelet_authentication_token_webhook: true
+
+# When enabled, access to the kubelet API requires authorization by delegation to the API server
+kubelet_authorization_mode_webhook: true
+
+# kubelet uses certificates for authenticating to the Kubernetes API
+# Automatically generate a new key and request a new certificate from the Kubernetes API as the current certificate approaches expiration
+kubelet_rotate_certificates: true
+# kubelet can also request a new server certificate from the Kubernetes API
+kubelet_rotate_server_certificates: false
+
+# If set to true, kubelet errors if any of kernel tunables is different than kubelet defaults
+kubelet_protect_kernel_defaults: true
+
 ## Automatically renew K8S control plane certificates on first Monday of each month
 auto_renew_certificates: false
 # First Monday of each month
 # auto_renew_certificates_systemd_calendar: "Mon *-*-1,2,3,4,5,6,7 03:{{ groups['kube_control_plane'].index(inventory_hostname) }}0:00"
+
+
+ssl_ca_dirs: |-
+  [
+  {% if ansible_os_family in ['Flatcar', 'Flatcar Container Linux by Kinvolk'] -%}
+  '/usr/share/ca-certificates',
+  {% elif ansible_os_family == 'RedHat' -%}
+  '/etc/pki/tls',
+  '/etc/pki/ca-trust',
+  {% elif ansible_os_family == 'Debian' -%}
+  '/usr/share/ca-certificates',
+  {% endif -%}
+  ]
+  
+certificates_key_size: 2048
+certificates_duration: 36500
+
+# Vars for pointing to kubernetes api endpoints
+is_kube_master: "{{ inventory_hostname in groups['kube_control_plane'] }}"
+kube_apiserver_count: "{{ groups['kube_control_plane'] | length }}"
+kube_apiserver_address: "{{ ip | default(fallback_ips[inventory_hostname]) }}"
+kube_apiserver_access_address: "{{ access_ip | default(kube_apiserver_address) }}"
+first_kube_control_plane_address: "{{ hostvars[groups['kube_control_plane'][0]]['access_ip'] | default(hostvars[groups['kube_control_plane'][0]]['ip'] | default(fallback_ips[groups['kube_control_plane'][0]])) }}"
+loadbalancer_apiserver_localhost: "{{ loadbalancer_apiserver is not defined }}"
+loadbalancer_apiserver_type: "nginx"
+# applied if only external loadbalancer_apiserver is defined, otherwise ignored
+apiserver_loadbalancer_domain_name: "lb-apiserver.kubernetes.local"
+kube_apiserver_global_endpoint: |-
+  {% if loadbalancer_apiserver is defined -%}
+      https://{{ apiserver_loadbalancer_domain_name }}:{{ loadbalancer_apiserver.port|default(kube_apiserver_port) }}
+  {%- elif loadbalancer_apiserver_localhost and (loadbalancer_apiserver_port is not defined or loadbalancer_apiserver_port == kube_apiserver_port) -%}
+      https://localhost:{{ kube_apiserver_port }}
+  {%- else -%}
+      https://{{ first_kube_control_plane_address }}:{{ kube_apiserver_port }}
+  {%- endif %}
+kube_apiserver_endpoint: |-
+  {% if loadbalancer_apiserver is defined -%}
+      https://{{ apiserver_loadbalancer_domain_name }}:{{ loadbalancer_apiserver.port|default(kube_apiserver_port) }}
+  {%- elif not is_kube_master and loadbalancer_apiserver_localhost -%}
+      https://localhost:{{ loadbalancer_apiserver_port|default(kube_apiserver_port) }}
+  {%- elif is_kube_master -%}
+      https://{{ kube_apiserver_bind_address | regex_replace('0\.0\.0\.0','127.0.0.1') }}:{{ kube_apiserver_port }}
+  {%- else -%}
+      https://{{ first_kube_control_plane_address }}:{{ kube_apiserver_port }}
+  {%- endif %}
+kube_apiserver_client_cert: "{{ kube_cert_dir }}/ca.crt"
+kube_apiserver_client_key: "{{ kube_cert_dir }}/ca.key"
+
+# Set additional sysctl variables to modify Linux kernel variables, for example:
+# additional_sysctl:
+#  - { name: kernel.pid_max, value: 131072 }
+#
+additional_sysctl: []
+# sysctl_file_path to add sysctl conf to
+sysctl_file_path: "/etc/sysctl.d/99-sysctl.conf"
+
+
+## List of key=value pairs that describe feature gates for
+## the k8s cluster.
+kube_feature_gates: []
+kube_apiserver_feature_gates: []
+kube_controller_feature_gates: []
+kube_scheduler_feature_gates: []
+kube_proxy_feature_gates: []
+kubelet_feature_gates: []
+kubeadm_feature_gates: []
+
+
 
 # kubeadm patches path
 kubeadm_patches:
   enabled: false
   source_dir: "{{ inventory_dir }}/patches"
   dest_dir: "{{ kube_config_dir }}/patches"
+
+
+calico_apiserver_enabled: false
+
+# Sets the eventRecordQPS parameter in kubelet-config.yaml. The default value is 5 (see types.go)
+# Setting it to 0 allows unlimited requests per second.
+kubelet_event_record_qps: 5
+
+proxy_env:
+  http_proxy: "{{ http_proxy | default ('') }}"
+  HTTP_PROXY: "{{ http_proxy | default ('') }}"
+  https_proxy: "{{ https_proxy | default ('') }}"
+  HTTPS_PROXY: "{{ https_proxy | default ('') }}"
+  no_proxy: "{{ no_proxy | default ('') }}"
+  NO_PROXY: "{{ no_proxy | default ('') }}"
+
+proxy_disable_env:
+  ALL_PROXY: ''
+  FTP_PROXY: ''
+  HTTPS_PROXY: ''
+  HTTP_PROXY: ''
+  NO_PROXY: ''
+  all_proxy: ''
+  ftp_proxy: ''
+  http_proxy: ''
+  https_proxy: ''
+  no_proxy: ''
+
+
+# Kubespray constants
+
+kube_proxy_deployed: "{{ 'addon/kube-proxy' not in kubeadm_init_phases_skip }}"
+
+# The lowest version allowed to upgrade from (same as calico_version in the previous branch)
+calico_min_version_required: "v3.19.4"
+
+containerd_min_version_required: "1.3.7"
+

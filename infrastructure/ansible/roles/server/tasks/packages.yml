@@ -45,5 +45,6 @@
       - nvme-cli
       - socat
       - python3-yaml
-   state: latest
-  update_cache: true
+      - smartmontools
+    state: latest
+    update_cache: true

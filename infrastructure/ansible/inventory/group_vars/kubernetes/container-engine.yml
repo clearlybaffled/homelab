@@ -1,0 +1,28 @@
+---
+# Whether to deploy the container engine
+deploy_container_engine: "{{ inventory_hostname in groups['k8s_cluster'] or etcd_deployment_type == 'docker' }}"
+
+## Container runtime
+## docker for docker, crio for cri-o and containerd for containerd.
+container_manager: crio
+
+# Enable crun as additional container runtime
+# When enabled, it requires container_manager=crio
+crun_enabled: true
+
+# Enable youki as additional container runtime
+# When enabled, it requires container_manager=crio
+youki_enabled: false
+
+# Container on localhost (download images when download_localhost is true)
+container_manager_on_localhost: "{{ container_manager }}"
+
+# CRI socket path
+cri_socket: unix:///var/run/crio/crio.sock
+
+# crio_insecure_registries:
+#   - 10.0.0.2:5000
+# crio_registry_auth:
+#   - registry: 10.0.0.2:5000
+#     username: user
+#     password: pass
