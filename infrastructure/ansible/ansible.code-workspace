@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../references"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.yaml": "ansible",
+			"*.yml": "ansible",
+			"*.j2": "ansible-jinja"
+		},
+		"files.autoSave": "onFocusChange",
+		"ansible.python.activationScript": ".venv/bin/source",
+		"gitlens.currentLine.enabled": false,
+		"python.envFile": "${workspaceFolder}/.env"
+	}
+}

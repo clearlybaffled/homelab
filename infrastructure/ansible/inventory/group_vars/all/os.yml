@@ -1,0 +1,49 @@
+---
+# (string) Timezone for the servers
+# timezone: "America/New_York"
+
+# (list) Additional ssh public keys to add to the nodes
+# ssh_authorized_keys:
+
+ubuntu:
+  packages:
+    - hdparm
+    - htop
+    - ipvsadm
+    - lm-sensors
+    - nano
+    - nfs-common
+    - nvme-cli
+    - socat
+    - python3-kubernetes
+    - python3-yaml
+
+debian:
+  packages:
+    - dbus
+    - apt-transport-https
+    - gnupg-agent
+    - software-properties-common
+
+
+_host_architecture_groups:
+  x86_64: amd64
+  aarch64: arm64
+  armv7l: arm
+host_architecture: >-
+  {%- if ansible_architecture in _host_architecture_groups -%}
+  {{ _host_architecture_groups[ansible_architecture] }}
+  {%- else -%}
+  {{ ansible_architecture }}
+  {%- endif -%}
+
+_host_os_groups:
+  Linux: linux
+  Darwin: darwin
+  Win32NT: windows
+host_os: >-
+  {%- if ansible_system in _host_os_groups -%}
+  {{ _host_os_groups[ansible_system] }}
+  {%- else -%}
+  {{ ansible_system }}
+  {%- endif -%}

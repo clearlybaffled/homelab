@@ -1,0 +1,10 @@
+---
+- name: Install CRI-O as container engine
+  hosts: kube_control_plane
+  gather_facts: true
+  any_errors_fatal: true
+  roles:
+   # - server
+   # - kubernetes/node
+   # - { role: common, tags: download }
+    - container_engine

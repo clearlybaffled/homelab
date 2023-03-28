@@ -1,23 +1,19 @@
 ---
 - name: Update apt repo and cache on all Debian/Ubuntu machines
   become: true
-  when:
-    - ansible_os_family == 'Debian'
-  ansible.builtin.apt:
-    update_cache: yes
-    force_apt_get: yes
+  ansible.builtin.package:
+    update_cache: true
+    force_apt_get: true
     cache_valid_time: 3600
   changed_when: false
 
 - name: Upgrade all packages on Debian/Ubuntu machines
   become: true
-  when:
-    - ansible_os_family == 'Debian'
-  ansible.builtin.apt:
-    upgrade: yes
-    force_apt_get: yes
+  ansible.builtin.package:
+    upgrade: true
+    force_apt_get: true
 - name: Install required system packages
-  ansible.builtin.apt:
+  ansible.builtin.package:
     pkg:
       - curl
       - ca-certificates
@@ -28,23 +24,14 @@
       - tree
       - jq
       - dos2unix
-        #- firewall-config
+        # - firewall-config
       - lshw
-      - fuse
-      - ntfs-3g
-      - nmap
       - minicom
-      - exfat-fuse
-      - exfat-utils
-      - exuberant-ctags
-      - hdparm
       - htop
       - ipvsadm
-      - lm-sensors
-      - nfs-common
-      - nvme-cli
       - socat
       - python3-yaml
       - smartmontools
-    state: latest
+      # - "{{ packages }}"
+    state: present
     update_cache: true

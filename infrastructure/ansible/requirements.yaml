@@ -10,7 +10,6 @@ collections:
     version: 2.9.0
   - name: kubernetes.core
     version: 2.4.0
--
 roles:
   - name: geerlingguy.nfs
     src: https://github.com/geerlingguy/ansible-role-nfs

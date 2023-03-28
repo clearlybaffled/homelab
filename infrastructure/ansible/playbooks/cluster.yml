@@ -1,24 +1,10 @@
 ---
-- name: Check ansible version
-  import_playbook: ansible_version.yml
-
-- name: Ensure compatibility with old groups
-  import_playbook: legacy_groups.yml
-
-- hosts: bastion[0]
-  gather_facts: False
-  environment: "{{ proxy_disable_env }}"
-  roles:
-    - { role: kubespray-defaults }
-    - { role: bastion-ssh-config, tags: ["localhost", "bastion"] }
-
 - hosts: k8s_cluster:etcd
   strategy: linear
   any_errors_fatal: "{{ any_errors_fatal | default(true) }}"
   gather_facts: false
   environment: "{{ proxy_disable_env }}"
   roles:
-    - { role: kubespray-defaults }
     - { role: bootstrap-os, tags: bootstrap-os}
 
 - name: Gather facts
