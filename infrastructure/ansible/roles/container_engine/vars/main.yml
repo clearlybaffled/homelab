@@ -1,0 +1,20 @@
+---
+crio_version: v1.26.2
+crio_archive_checksums:
+  arm64: 8bd9c912de7f8805c162e089a34ca29e607c48a149940193466ccf7bdf74f606
+  amd64: 7e030b2e89d4eb2701d9164e67c804fcb872c29accd76f29bcc148a86a920531
+
+crictl_version: v1.26.1
+crictl_checksums:
+  arm64: cfa28be524b5da1a6dded455bb497dfead27b1fd089e1161eb008909509be585
+  amd64: 0c1a0f9900c15ee7a55e757bcdc220faca5dd2e1cfc120459ad1f04f08598127
+
+crun_version: 1.8.3
+crun_checksums:
+  arm64: 5394336630618c724274bf3e5e0c8a64c2e67e4723f671029c4f57f459359f73
+  amd64: f82ccdc575a72fe2d91ea8d68161746a0e28898bc86a2a6f55eed00aa1d79afa
+
+skopeo_version: v1.11.1
+skopeo_binary_checksums:
+  arm64: 693f7d2791e0549b173b2c16f1c3326328aa5e95bc2b4d71f5ecd35b6524b09d
+  amd64: 9aad99e41533800ce08526a602de2f87b8ce123ea9547358e2cccfa2f9c3a9e0

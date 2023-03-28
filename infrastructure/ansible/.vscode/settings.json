@@ -1,0 +1,4 @@
+{
+    "ansible.python.activationScript": ".venv/bin/activate",
+    "ansible.validation.lint.arguments": "-c .ansible-lint"
+}

@@ -1,0 +1,31 @@
+---
+- name: CRI-O | Remove crictl
+  ansible.builtin.file:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/crictl.yaml
+    - "{{ bin_dir }}/crictl"
+  tags:
+    - reset_crio
+
+- name: CRI-O | Stop crio service
+  ansible.builtin.service:
+    name: crio
+    daemon_reload: true
+    enabled: false
+    # masked: true
+    state: stopped
+  tags:
+    - reset_crio
+
+- name: CRI-O | Remove CRI-O configuration files
+  ansible.builtin.file:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/crio
+    - /etc/containers
+    - /etc/systemd/system/crio.service.d
+  tags:
+    - reset_crio

@@ -1,0 +1,8 @@
+---
+- ansible.posix.sysctl:
+  - name: net.bridge.bridge-nf-call-ip6tables
+  - value: 1
+
+- ansible.posix.sysctl:
+  - name: net.bridge.bridge-nf-call-iptables 
+  - value: 1

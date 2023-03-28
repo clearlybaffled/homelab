@@ -1,0 +1,16 @@
+---
+packages:
+  - dbus
+  - apt-transport-https
+  - gnupg-agent
+  - software-properties-common
+  - fuse
+  - ntfs-3g
+  - nmap
+  - exfat-fuse
+  - exfat-utils
+  - exuberant-ctags
+  - hdparm
+  - lm-sensors
+  - nfs-common
+  - nvme-cli

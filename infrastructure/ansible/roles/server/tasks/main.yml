@@ -1,12 +1,12 @@
 ---
-- name: Install aptitutde
-  apt:
+- name: Install aptitutde # noqa package-latest
+  ansible.builtin.apt:
     name: aptitude
     state: latest
     update_cache: true
 
 - name: Setup passwordless sudo
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/sudoers
     state: present
     regexp: '^%sudo'
@@ -14,14 +14,14 @@
     validate: '/usr/sbin/visudo -cf %s'
 
 - name: Create a new regular user with sudo privileges
-  user:
+  ansible.builtin.user:
     name: "{{ created_username }}"
     state: present
     groups: sudo
     append: true
     create_home: true
 - name: Disable password authentication for root
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     state: present
     regexp: '^#?PermitRootLogin'
@@ -33,14 +33,19 @@
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: '0755'
 
 - name: Set console for High DPI monitor
   ansible.builtin.template:
     src: console-setup.j2
     dest: /etc/default/console-setup
-    vars:
-      - codeset: Uni3
-      - fontface: Terminus
-      - fontsize: 32x132x166
+    owner: root
+    group: root
+    mode: '0644'
+  vars:
+    codeset: Uni3
+    fontface: Terminus
+    fontsize: 32x132x166
 
+- name: Run package install
+  ansible.builtin.include_tasks: packages.yml
