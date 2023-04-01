@@ -1,6 +1,6 @@
 ---
 - name: download_file | Setup role
-  ansible.builtin.include_vars: ../defaults/download.yml
+  ansible.builtin.include_vars: ../vars/download.yml
 
 - name: download_file | Download File
   tags:
