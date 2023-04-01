@@ -1,0 +1,17 @@
+system_packages:
+  - dbus
+  - gnupg-agent
+  - software-properties-common
+  - lm-sensors
+
+k8s_required_packages:
+  - python3-yaml
+  - python3-kubernetes
+  - python3-apt
+  - gnupg
+  - apt-transport-https
+  - software-properties-common
+  - conntrack
+  - iptables
+  - apparmor
+  - libseccomp2

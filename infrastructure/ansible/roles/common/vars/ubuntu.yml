@@ -1,0 +1,9 @@
+system_packages:
+  - ipvsadm
+  - lm-sensors
+  - nfs-common
+  - nvme-cli
+
+k8s_required_packages:
+  - python3-kubernetes
+  - python3-yaml
