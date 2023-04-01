@@ -1,30 +1,33 @@
 ---
 mounts:
-  share:
-    name: Mount Share
+  - name: Share
     path: /share
     src: UUID="8053d283-a24c-4a94-afad-6ed90133ddbe"
     fstype: ext4
     opts: defaults,x-systemd.device-timeout=0
     state: mounted
-  videos:
-    name: Mount Videos
+  - name: Videos
     src: UUID="6c096541-f4e0-471a-8f54-c0fcb961ec94"
     path: /videos
     fstype: ext4
     opts: noatime,nodiratime,data=writeback,barrier=0,nobh,errors=remount-ro
     state: mounted
-  backup_plus:
-    name: Define Seagate Backup+ 4G
+  - name: Seagate Backup+ 4G
     src: UUID="8276857776856D2B"
     path: /ext
     fstype: ntfs
     opts: defaults,noauto,nofail,context="system_u:object_r:public_content_rw_t:s0"
     state: present
-  seagate:
-    name: Define Seagate 1G
+  - name: Seagate 1G
     src: UUID="8E1CDFD81CDFBA03"
     path: /ext2
     fstype: ntfs
     opts: defaults,noauto,nofail,context="system_u:object_r:public_content_rw_t:s0"
     state: present
+  - name: Seagate One Touch 5TB Portable
+    src: ""
+    path: null
+    fstype: ntfs
+    state: present
+    opts: null
+    use: false
