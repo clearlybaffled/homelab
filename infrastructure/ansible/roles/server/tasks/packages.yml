@@ -1,37 +1,39 @@
 ---
-- name: Update apt repo and cache on all Debian/Ubuntu machines
+- name: packages | Debian/Ubuntu
   become: true
-  ansible.builtin.package:
-    update_cache: true
-    force_apt_get: true
-    cache_valid_time: 3600
-  changed_when: false
+  when:
+    - ansible_os_family == "Debian"
+  block:
+    - name: packages | Install aptitutde # noqa package-latest
+      ansible.builtin.apt:
+        name: aptitude
+        state: latest
+        update_cache: true
 
-- name: Upgrade all packages on Debian/Ubuntu machines
-  become: true
+    - name: packages | Update apt repo and cache on all Debian/Ubuntu machines
+      ansible.builtin.package:
+        update_cache: true
+        force_apt_get: true
+        cache_valid_time: 3600
+      changed_when: false
+
+    - name: packages | Upgrade all packages on Debian/Ubuntu machines
+      ansible.builtin.package:
+        upgrade: true
+        force_apt_get: true
+
+    - name: Packages | RasPi packages
+      ansible.builtin.apt:
+        name: ["linux-modules-extra-raspi"]
+        install_recommends: false
+      notify: Reboot
+      when: "'raspi' in ansible_kernel"
+
+    - name: Packages | Remove leaf packages
+      ansible.builtin.apt:
+        autoremove: true
+
+- name: packages | Install required system packages
   ansible.builtin.package:
-    upgrade: true
-    force_apt_get: true
-- name: Install required system packages
-  ansible.builtin.package:
-    pkg:
-      - curl
-      - ca-certificates
-      - vim
-      - git
-      - wget
-      - policycoreutils-python-utils
-      - tree
-      - jq
-      - dos2unix
-        # - firewall-config
-      - lshw
-      - minicom
-      - htop
-      - ipvsadm
-      - socat
-      - python3-yaml
-      - smartmontools
-      # - "{{ packages }}"
+    name: "{{ common_packages | union(system_packages|default([])) | union(host_packages|default([])) }}"
     state: present
-    update_cache: true
