@@ -1,9 +1,5 @@
 ---
-packages:
-  - dbus
-  - apt-transport-https
-  - gnupg-agent
-  - software-properties-common
+host_packages:
   - fuse
   - ntfs-3g
   - nmap

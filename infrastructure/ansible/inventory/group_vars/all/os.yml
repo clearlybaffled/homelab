@@ -1,30 +1,38 @@
 ---
+## Directory where the binaries will be installed
+bin_dir: /usr/local/bin
+
+## Ansible User setup
+created_ansible_user: ansible
+ansible_user: ansible
+ansible_group: sys
+
+public_ssh_keys:
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDBzdxxsMCjpMxOip8d2v1jCww0Ax+8md+3oFtHb0eb jared@barb"
+
 # (string) Timezone for the servers
-# timezone: "America/New_York"
+timezone: "America/New_York"
 
 # (list) Additional ssh public keys to add to the nodes
 # ssh_authorized_keys:
 
-ubuntu:
-  packages:
-    - hdparm
-    - htop
-    - ipvsadm
-    - lm-sensors
-    - nano
-    - nfs-common
-    - nvme-cli
-    - socat
-    - python3-kubernetes
-    - python3-yaml
-
-debian:
-  packages:
-    - dbus
-    - apt-transport-https
-    - gnupg-agent
-    - software-properties-common
-
+common_packages:
+  - curl
+  - git
+  - ca-certificates
+  - vim
+  - git
+  - wget
+  - policycoreutils-python-utils
+  - tree
+  - jq
+  - lshw
+  - htop
+  - hdparm
+  - gnupg-agent
+  - socat
+  - dos2unix
+  - smartmontools
 
 _host_architecture_groups:
   x86_64: amd64
@@ -47,3 +55,10 @@ host_os: >-
   {%- else -%}
   {{ ansible_system }}
   {%- endif -%}
+
+## NTP Settings
+# Start the ntpd or chrony service and enable it at system boot.
+ntp_enabled: false
+ntp_manage_config: false
+ntp_servers:
+  - "172.16.1.1 parche"

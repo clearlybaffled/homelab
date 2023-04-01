@@ -1,0 +1,10 @@
+---
+k8s_common_pkgs: []
+   
+# Set additional sysctl variables to modify Linux kernel variables, for example:
+# additional_sysctl:
+#  - { name: kernel.pid_max, value: 131072 }
+#
+additional_sysctl: []
+# sysctl_file_path to add sysctl conf to
+sysctl_file_path: "/etc/sysctl.d/99-sysctl.conf"
