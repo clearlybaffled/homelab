@@ -1,25 +1,79 @@
 ---
-- name: Install aptitutde # noqa package-latest
-  ansible.builtin.apt:
-    name: aptitude
-    state: latest
-    update_cache: true
+# Some Debian based distros ship without Python installed
+- name: Check if bootstrap is needed
+  raw: which python3
+  register: need_bootstrap
+  failed_when: false
+  changed_when: false
+  # This command should always run, even in check mode
+  check_mode: false
+  tags:
+    - facts
 
-- name: Setup passwordless sudo
-  ansible.builtin.lineinfile:
-    path: /etc/sudoers
-    state: present
-    regexp: '^%sudo'
-    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
-    validate: '/usr/sbin/visudo -cf %s'
+- name: Locale
+  block:
+    - name: Locale | Set timezone
+      community.general.timezone:
+        name: "{{ timezone | default('Etc/UTC') }}"
 
-- name: Create a new regular user with sudo privileges
-  ansible.builtin.user:
-    name: "{{ created_username }}"
-    state: present
-    groups: sudo
-    append: true
-    create_home: true
+- name: Networking
+  block:
+    - name: Networking | Set hostname to inventory hostname
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname }}"
+    - name: Networking | Update /etc/hosts to include inventory hostname
+      ansible.builtin.blockinfile:
+        path: /etc/hosts
+        block: |
+          127.0.1.1   {{ inventory_hostname }}
+
+- name: Mount configuration
+  ansible.posix.mount:
+    path: "{{ item.path }}"
+    src: "{{ item.src }}"
+    state: "{{ item.state }}"
+    fstype: "{{ item.fstype }}"
+    opts: "{{ item.opts }}"
+  loop: "{{ mounts | default({}) }}"
+  when: item.use | default(true)
+
+- name: User Configuration
+  become: true
+  block:
+    - name: User Configuration | Create a new regular user
+      ansible.builtin.user:
+        name: "{{ created_ansible_user }}"
+        state: present
+        groups: "{{ ansible_group }}"
+        append: true
+        create_home: true
+        home: /var/local/ansible
+        shell: /bin/bash
+    - name: User Configuration | Add additional SSH public keys
+      ansible.posix.authorized_key:
+        user: "{{ created_ansible_user }}"
+        key: "{{ item }}"
+      loop: "{{ public_ssh_keys | default([]) }}"
+    - name: User Configuration | Setup passwordless sudo
+      ansible.builtin.blockinfile:
+        dest: /etc/sudoers.d/ansible
+        owner: root
+        group: root
+        mode: '0440'
+        create: true
+        validate: '/usr/sbin/visudo -cf %s'
+        block: |
+          %{{ ansible_group }}      ALL=(ALL) NOPASSWD: ALL
+          Defaults:%{{ ansible_group }}    !requiretty
+    - name: User Configuration | Silence the login prompt
+      ansible.builtin.file:
+        dest: "/var/local/{{ created_ansible_user }}/.hushlogin"
+        state: touch
+        owner: "{{ created_ansible_user }}"
+        mode: "0775"
+        modification_time: preserve
+        access_time: preserve
+
 - name: Disable password authentication for root
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
@@ -36,16 +90,13 @@
     mode: '0755'
 
 - name: Set console for High DPI monitor
-  ansible.builtin.template:
-    src: console-setup.j2
-    dest: /etc/default/console-setup
-    owner: root
-    group: root
-    mode: '0644'
-  vars:
-    codeset: Uni3
-    fontface: Terminus
-    fontsize: 32x132x166
+  ansible.builtin.blockinfile:
+    path: /etc/default/console-setup
+    state: present
+    block: |
+      CODESET="Uni3"
+      FONTFACE="Terminus"
+      FONTSIZE="32x132x166"
 
 - name: Run package install
   ansible.builtin.include_tasks: packages.yml
