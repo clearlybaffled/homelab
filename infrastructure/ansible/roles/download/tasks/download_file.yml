@@ -1,11 +1,12 @@
 ---
-- name: download_file | Setup role
-  ansible.builtin.include_vars: ../vars/download.yml
-
-- name: download_file | Download File
+- name: Download File
   tags:
     - download
   block:
+    - name: prep_download | Set a few facts
+      set_fact:
+        download_force_cache: "{{ true if download_run_once else download_force_cache }}"
+
     - name: download_file | Starting download of file
       debug:
         msg: "{{ download.url }}"
@@ -137,5 +138,5 @@
       when:
         - download_force_cache
 
-    - name: download_file | Extract file archives
-      include_tasks: extract_file.yml
+    - name: "download_file | Extract file archives"
+      include_tasks: "extract_file.yml"
