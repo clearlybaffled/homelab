@@ -22,6 +22,7 @@ skip_downloads: false
 # Optionally skip kubeadm images download
 skip_kubeadm_images: false
 kubeadm_images: {}
+
 # if this is set to true will only download files once. Doesn't work
 # on Flatcar Container Linux by Kinvolk unless the download_localhost is true and localhost
 # is running another OS type. Default compress level is 1 (fastest).
@@ -118,8 +119,7 @@ cni_download_url: https://github.com/containernetworking/plugins/releases/downlo
 calicoctl_download_url: https://github.com/projectcalico/calico/releases/download/{{ calico_ctl_version }}/calicoctl-linux-{{ image_arch }}
 calico_crds_download_url: https://github.com/projectcalico/calico/archive/{{ calico_version }}.tar.gz
 ciliumcli_download_url: https://github.com/cilium/cilium-cli/releases/download/{{ cilium_cli_version }}/cilium-linux-{{ image_arch }}.tar.gz
-crictl_download_url: https://github.com/kubernetes-sigs/cri-tools/releases/download/{{ crictl_version }}/crictl-{{ crictl_version }}-{{ ansible_system | lower }}-{{
-  image_arch }}.tar.gz
+crictl_download_url: https://github.com/kubernetes-sigs/cri-tools/releases/download/{{ crictl_version }}/crictl-{{ crictl_version }}-{{ ansible_system | lower }}-{{ image_arch }}.tar.gz
 crio_download_url: https://storage.googleapis.com/cri-o/artifacts/cri-o.{{ image_arch }}.{{ crio_version }}.tar.gz
 helm_download_url: https://get.helm.sh/helm-{{ helm_version }}-linux-{{ image_arch }}.tar.gz
 crun_download_url: https://github.com/containers/crun/releases/download/{{ crun_version }}/crun-{{ crun_version }}-linux-{{ image_arch }}
