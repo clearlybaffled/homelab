@@ -1,8 +1,10 @@
 ---
 - name: Container Engine setup
-  loop:
+  with_items:
     - crun
     - cri-o
     - crictl
     - skopeo
-  ansible.builtin.include_tasks: "{{ item }}.yml"
+  ansible.builtin.include_tasks: check_version.yml
+  vars:
+    command: "{{ item }}"

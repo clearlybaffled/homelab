@@ -1,21 +1,7 @@
 ---
-- name: "skopeo | Get verion"
-  ansible.builtin.command: "{{ bin_dir }}/skopeo -v"
-  register: version_cmd
-  changed_when: true
-  check_mode: false
-  become: false
-
-- name: "skopeo | Install"
-  when: version_cmd.stdout_lines[0] | regex_search(('version ([0-9.]+)'|regex_escape()), '\\1') != downloads.skopeo.version
-  block:
-    - name: skopeo | Download
-      ansible.builtin.include_tasks: ../../common/tasks/download_file.yml
-      vars:
-        download: "{{ download_defaults | combine(downloads.skopeo) }}"
-    - name: Copy skopeo binary from download dir
-      copy:
-        src: "{{ downloads.skopeo.dest }}"
-        dest: "{{ bin_dir }}/skopeo"
-        mode: '0755'
-        remote_src: true
+- name: Copy skopeo binary from download dir
+  copy:
+    src: "{{ downloads.skopeo.dest }}"
+    dest: "{{ bin_dir }}/skopeo"
+    mode: '0755'
+    remote_src: true
