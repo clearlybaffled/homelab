@@ -1,0 +1,17 @@
+---
+- name: Check version
+  ansible.builtin.command: "{{ bin_dir }}/{{ command|replace('-','') }} -v"
+  register: version_cmd
+  changed_when: true
+  check_mode: false
+  become: false
+
+- name: "Install {{ command }}"
+  when: version_cmd.stdout_lines[0] | regex_search(('version ([0-9.]+)'|regex_escape()), '\\1') != downloads[command|replace('-','')].version
+  block:
+    - name: "Download {{ command }}"
+      ansible.builtin.include_tasks: ../../download/tasks/download_file.yml
+      vars:
+        download: "{{ download_defaults | combine(downloads[command|replace('-','')]) }}"
+    - name: "Call install tasks for {{ command }}"
+      ansible.builtin.include_tasks: "{{ command }}.yml"
