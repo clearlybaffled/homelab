@@ -110,6 +110,27 @@ etcd_version: v3.5.6
 
 yq_version: v4.30.6
 
+crio_version: v1.26.2
+crio_archive_checksums:
+  arm64: 8bd9c912de7f8805c162e089a34ca29e607c48a149940193466ccf7bdf74f606
+  amd64: 7e030b2e89d4eb2701d9164e67c804fcb872c29accd76f29bcc148a86a920531
+
+crictl_version: v1.26.1
+crictl_checksums:
+  arm64: cfa28be524b5da1a6dded455bb497dfead27b1fd089e1161eb008909509be585
+  amd64: 0c1a0f9900c15ee7a55e757bcdc220faca5dd2e1cfc120459ad1f04f08598127
+
+crun_version: 1.8.3
+crun_checksums:
+  arm64: 5394336630618c724274bf3e5e0c8a64c2e67e4723f671029c4f57f459359f73
+  amd64: f82ccdc575a72fe2d91ea8d68161746a0e28898bc86a2a6f55eed00aa1d79afa
+
+skopeo_version: v1.11.1
+skopeo_binary_checksums:
+  arm64: 693f7d2791e0549b173b2c16f1c3326328aa5e95bc2b4d71f5ecd35b6524b09d
+  amd64: 9aad99e41533800ce08526a602de2f87b8ce123ea9547358e2cccfa2f9c3a9e0
+
+
 # Download URLs
 kubelet_download_url: https://storage.googleapis.com/kubernetes-release/release/{{ kube_version }}/bin/linux/{{ image_arch }}/kubelet
 kubectl_download_url: https://storage.googleapis.com/kubernetes-release/release/{{ kube_version }}/bin/linux/{{ image_arch }}/kubectl
@@ -146,8 +167,8 @@ etcd_binary_checksums:
   amd64: 4db32e3bc06dd0999e2171f76a87c1cffed8369475ec7aa7abee9023635670fb
 
 cni_binary_checksums:
-  arm64: 16484966a46b4692028ba32d16afd994e079dc2cc63fbc2191d7bfaf5e11f3dd
-  amd64: b275772da4026d2161bf8a8b41ed4786754c8a93ebfb6564006d5da7f23831e5
+  arm64: fde5bf2da73995196d248177ee8deeafa8005f33cbe1ab33bd2d75c17ca5a99a
+  amd64: f3a841324845ca6bf0d4091b4fc7f97e18a623172158b72fc3fdcdb9d42d2d37
 
 calicoctl_binary_checksums:
   amd64: 5a464075ccbaa8715882de6b32fe82b41488e904fa66b19c48ee6388cf48b1b8
@@ -376,7 +397,7 @@ downloads:
     dest: "{{ local_release_dir }}/cni-plugins-linux-{{ image_arch }}-{{ cni_version }}.tgz"
     sha256: "{{ cni_binary_checksum }}"
     url: "{{ cni_download_url }}"
-    unarchive: false
+    unarchive: true
     owner: root
     mode: "0755"
     groups:

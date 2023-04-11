@@ -1,0 +1,160 @@
+---
+k8s_common_packages: []
+
+# Set additional sysctl variables to modify Linux kernel variables, for example:
+# additional_sysctl:
+#  - { name: kernel.pid_max, value: 131072 }
+#
+additional_sysctl: []
+# sysctl_file_path to add sysctl conf to
+sysctl_file_path: "/etc/sysctl.d/99-sysctl.conf"
+
+kernel_modules:
+  - br_netfilter
+  - overlay
+  - rbd
+  - ip_vs
+  - ip_vs_rr
+  - ip_vs_wrr
+  - ip_vs_sh
+
+# advertised host IP for kubelet. This affects network plugin config. Take caution
+kubelet_address: "{{ ip | default('127.0.0.1')}}"
+
+# bind address for kubelet. Set to 0.0.0.0 to listen on all interfaces
+kubelet_bind_address: "{{ ip | default('0.0.0.0') }}"
+
+# resolv.conf to base dns config
+kube_resolv_conf: "/etc/resolv.conf"
+
+# Set to empty to avoid cgroup creation
+kubelet_enforce_node_allocatable: "\"\""
+
+# Set runtime and kubelet cgroups when using systemd as cgroup driver (default)
+kube_service_cgroups: "{% if kube_reserved %}{{ kube_reserved_cgroups_for_service_slice }}{% else %}system.slice{% endif %}"
+kubelet_runtime_cgroups: "/{{ kube_service_cgroups }}/{{ container_manager }}.service"
+kubelet_kubelet_cgroups: "/{{ kube_service_cgroups }}/kubelet.service"
+
+# Set runtime and kubelet cgroups when using cgroupfs as cgroup driver
+kubelet_runtime_cgroups_cgroupfs: "/system.slice/{{ container_manager }}.service"
+kubelet_kubelet_cgroups_cgroupfs: "/system.slice/kubelet.service"
+
+### fail with swap on (default true)
+kubelet_fail_swap_on: true
+
+# Set systemd service hardening features
+kubelet_systemd_hardening: false
+
+# List of secure IPs for kubelet
+kubelet_secure_addresses: >-
+  {%- for host in groups['kube_control_plane'] -%}
+    {{ hostvars[host]['ip'] | default(fallback_ips[host]) }}{{ ' ' if not loop.last else '' }}
+  {%- endfor -%}
+
+# Reserve this space for kube resources
+# Set to true to reserve resources for kube daemons
+kube_reserved: false
+kube_reserved_cgroups_for_service_slice: kube.slice
+kube_reserved_cgroups: "/{{ kube_reserved_cgroups_for_service_slice }}"
+kube_memory_reserved: 256Mi
+kube_cpu_reserved: 100m
+# kube_ephemeral_storage_reserved: 2Gi
+# kube_pid_reserved: "1000"
+# Reservation for master hosts
+kube_master_memory_reserved: 512Mi
+kube_master_cpu_reserved: 200m
+# kube_master_ephemeral_storage_reserved: 2Gi
+# kube_master_pid_reserved: "1000"
+
+# Set to true to reserve resources for system daemons
+system_reserved: false
+system_reserved_cgroups_for_service_slice: system.slice
+system_reserved_cgroups: "/{{ system_reserved_cgroups_for_service_slice }}"
+system_memory_reserved: 512Mi
+system_cpu_reserved: 500m
+# system_ephemeral_storage_reserved: 2Gi
+# system_pid_reserved: "1000"
+# Reservation for master hosts
+system_master_memory_reserved: 256Mi
+system_master_cpu_reserved: 250m
+# system_master_ephemeral_storage_reserved: 2Gi
+# system_master_pid_reserved: "1000"
+
+## Eviction Thresholds to avoid system OOMs
+# https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/#eviction-thresholds
+eviction_hard: {}
+eviction_hard_control_plane: {}
+
+kubelet_status_update_frequency: 10s
+
+# kube-vip
+kube_vip_version: v0.5.11
+
+kube_vip_arp_enabled: false
+kube_vip_interface:
+kube_vip_services_interface:
+kube_vip_cidr: 32
+kube_vip_controlplane_enabled: false
+kube_vip_ddns_enabled: false
+kube_vip_services_enabled: false
+kube_vip_leader_election_enabled: "{{ kube_vip_arp_enabled }}"
+kube_vip_bgp_enabled: false
+kube_vip_bgp_routerid:
+kube_vip_local_as: 65000
+kube_vip_bgp_peeraddress:
+kube_vip_bgp_peerpass:
+kube_vip_bgp_peeras: 65000
+kube_vip_bgppeers:
+kube_vip_address:
+kube_vip_enableServicesElection: false
+kube_vip_lb_enable: false
+
+# Requests for load balancer app
+loadbalancer_apiserver_memory_requests: 32M
+loadbalancer_apiserver_cpu_requests: 25m
+
+loadbalancer_apiserver_keepalive_timeout: 5m
+
+# A port range to reserve for services with NodePort visibility.
+# Inclusive at both ends of the range.
+kube_apiserver_node_port_range: "30000-32767"
+
+# Configure the amount of pods able to run on single node
+# default is equal to application default
+kubelet_max_pods: 110
+
+# Sets the maximum number of processes running per Pod
+# Default value -1 = unlimited
+kubelet_pod_pids_limit: -1
+
+## Support parameters to be passed to kubelet via kubelet-config.yaml
+kubelet_config_extra_args: {}
+
+## Parameters to be passed to kubelet via kubelet-config.yaml when cgroupfs is used as cgroup driver
+kubelet_config_extra_args_cgroupfs:
+  systemCgroups: /system.slice
+  cgroupRoot: /
+
+## Support parameters to be passed to kubelet via kubelet-config.yaml only on nodes, not masters
+kubelet_node_config_extra_args: {}
+
+# Maximum number of container log files that can be present for a container.
+kubelet_logfiles_max_nr: 5
+
+# Maximum size of the container log file before it is rotated
+kubelet_logfiles_max_size: 10Mi
+
+## Support custom flags to be passed to kubelet
+kubelet_custom_flags: []
+
+## Support custom flags to be passed to kubelet only on nodes, not masters
+kubelet_node_custom_flags: []
+
+# The read-only port for the Kubelet to serve on with no authentication/authorization.
+kube_read_only_port: 0
+
+# Port for healthz for Kubelet
+kubelet_healthz_port: 10248
+
+# Bind address for healthz for Kubelet
+kubelet_healthz_bind_address: 127.0.0.1

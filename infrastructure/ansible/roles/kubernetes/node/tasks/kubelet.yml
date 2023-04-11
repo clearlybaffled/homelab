@@ -1,0 +1,64 @@
+---
+- name: Set cgroup facts
+  when: container_manager == 'crio'
+  block:
+    - name: look up crio cgroup driver
+      shell: |
+        set -o pipefail
+        "{{ bin_dir }}"/crio-status info | grep 'cgroup driver' | awk -F': ' '{ print $2; }'
+      register: crio_cgroup_driver_result
+      changed_when: false
+
+    - name: set kubelet_cgroup_driver_detected fact for crio
+      set_fact:
+        kubelet_cgroup_driver_detected: "{{ crio_cgroup_driver_result.stdout }}"
+
+- name: Set kubelet api version to v1beta1
+  set_fact:
+    kubeletConfig_api_version: v1beta1
+
+# TODO: Fix kubelet configuration #############################
+- name: create kubelet.service.d
+  file:
+    path: /etc/systemd/system/kubelet.service.d
+    state: directory
+    mode: "0644"
+    owner: root
+
+- name: Write kubelet environment config file (kubeadm)
+  # template:
+  #   src: "kubelet.env.{{ kubeletConfig_api_version }}.j2"
+  #   dest: "{{ kube_config_dir }}/kubelet.env"
+  copy:
+    src: 10-kubeadm.conf
+    dest: "/etc/systemd/system/kubelet.service.d/"
+    setype: "{{ (preinstall_selinux_state != 'disabled') | ternary('etc_t', omit) }}"
+    mode: "0640"
+  notify: Node | restart kubelet
+
+# - name: Write kubelet config file
+#   template:
+#     src: "kubelet-config.{{ kubeletConfig_api_version }}.yaml.j2"
+#     dest: "{{ kube_config_dir }}/kubelet-config.yaml"
+#     mode: "0640"
+#   notify: Kubelet | restart kubelet
+
+- name: Write kubelet systemd init file
+  # template:
+  #   src: "kubelet.service.j2"
+  copy:
+    src: kubelet.service
+    dest: "/etc/systemd/system/kubelet.service"
+    mode: "0644"
+  notify: Node | restart kubelet
+########################
+
+- name: flush_handlers and reload-systemd
+  meta: flush_handlers
+
+- name: Enable kubelet
+  service:
+    name: kubelet
+    enabled: true
+    state: started
+  notify: Kubelet | restart kubelet

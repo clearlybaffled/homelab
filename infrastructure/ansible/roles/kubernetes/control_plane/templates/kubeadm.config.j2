@@ -1,0 +1,37 @@
+apiVersion: kubeadm.k8s.io/v1beta3
+kind: InitConfiguration
+{# bootstrapTokens:
+- groups:
+  - system:bootstrappers:kubeadm:default-node-token
+  token: abcdef.0123456789abcdef
+  ttl: 24h0m0s
+  usages:
+  - signing
+  - authentication #}
+localAPIEndpoint:
+  advertiseAddress: {{ kube_apiserver_ip }}
+  bindPort: {{ kube_apiserver_port }}
+nodeRegistration:
+  criSocket: {{ cri_socket }}
+  imagePullPolicy: {{ k8s_image_pull_policy }}
+  name: {{ kube_override_hostname }}
+  taints: []
+---
+apiVersion: kubeadm.k8s.io/v1beta3
+kind: ClusterConfiguration
+clusterName: {{ cluster_name }}
+apiServer:
+  timeoutForControlPlane: 4m0s
+certificatesDir: {{ kube_cert_dir }}
+controllerManager: {}
+dns: {}
+etcd:
+  local:
+    dataDir: {{ etcd_data_dir }}
+imageRepository: registry.k8s.io
+kubernetesVersion: {{ kube_version }}
+networking:
+  dnsDomain: {{ dns_domain }}
+  serviceSubnet: {{ kube_service_addresses }}
+  podSubnet: {{ kube_pods_subnet }}
+scheduler: {}
