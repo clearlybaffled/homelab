@@ -12,6 +12,3 @@
       paths:
         - ../vars
       skip: true
-
-- name: load download vars
-  include_vars: ../vars/download.yml

@@ -17,7 +17,7 @@ kube_manifest_dir: "{{ kube_config_dir }}/manifests"
 kubectl: "{{ bin_dir }}/kubectl --kubeconfig {{ kube_config_dir }}/admin.conf"
 
 # This is where all the cert scripts and certs will be located
-kube_cert_dir: "{{ kube_config_dir }}/ssl"
+kube_cert_dir: "{{ kube_config_dir }}/pki"
 
 # compatibility directory for kubeadm
 kube_cert_compat_dir: "/etc/kubernetes/pki"
@@ -112,7 +112,7 @@ kube_cert_group: kube-cert
 # When true, disables all tasks manipulating certificates. Ensure before the kubespray run that:
 # - Certificates and CAs are present in kube_cert_dir
 # - Kubeconfig files are present in kube_config_dir
-kube_external_ca_mode: false
+kube_external_ca_mode: true
 
 # Cluster Loglevel configuration
 kube_log_level: 2
@@ -122,7 +122,7 @@ credentials_dir: "{{ inventory_dir }}/credentials"
 
 # Choose network plugin (cilium, calico, kube-ovn, weave or flannel. Use cni for generic cni plugin)
 # Can also be set to 'cloud', which lets the cloud provider setup appropriate routing
-kube_network_plugin: calico
+kube_network_plugin: flannel
 
 # Setting multi_networking to true will install Multus: https://github.com/k8snetworkplumbingwg/multus-cni
 kube_network_plugin_multus: false
@@ -139,7 +139,7 @@ kube_service_addresses: 10.233.0.0/18
 # internal network. When used, it will assign IP
 # addresses from this range to individual pods.
 # This network must be unused in your network infrastructure!
-kube_pods_subnet: 10.233.64.0/18
+kube_pods_subnet: 172.17.0.0/18
 
 # internal network node size allocation (optional). This is the size allocated
 # to each node for pod IP address allocation. Note that the number of pods per node is
@@ -181,7 +181,8 @@ kube_network_node_prefix_ipv6: 120
 # listening on.
 # NOTE: loadbalancer_apiserver_localhost somewhat alters the final API enpdoint
 # access IP value (automatically evaluated below)
-kube_apiserver_ip: "{{ kube_service_addresses|ipaddr('net')|ipaddr(1)|ipaddr('address') }}"
+# kube_apiserver_ip: "{{ kube_service_addresses|ipaddr('net')|ipaddr(1)|ipaddr('address') }}"
+kube_apiserver_ip: 172.16.1.10
 kube_apiserver_port: 6443  # (https)
 
 # NOTE: If you specific address/interface and use loadbalancer_apiserver_localhost
@@ -193,11 +194,7 @@ kube_apiserver_bind_address: 0.0.0.0
 kube_proxy_strict_arp: false
 
 # If non-empty, will use this string as identification instead of the actual hostname
-kube_override_hostname: >-
-   {%- if cloud_provider is defined and cloud_provider in [ 'aws' ] -%}
-   {%- else -%}
-   {{ inventory_hostname }}
-   {%- endif -%}
+kube_override_hostname: "{{ inventory_hostname }}"
 
 ## Encrypting Secret Data at Rest
 kube_encrypt_secret_data: false

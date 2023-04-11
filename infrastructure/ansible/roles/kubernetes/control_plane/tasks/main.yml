@@ -1,0 +1,34 @@
+---
+- name: Ensure kube_config_dir exists
+  ansible.builtin.file:
+    path: "{{ kube_config_dir }}"
+    state: directory
+    owner: "{{ kube_owner }}"
+    group: "{{ kube_cert_group }}"
+    mode: "0755"
+
+- name: Install kubeadm.config file
+  ansible.builtin.template:
+    src: kubeadm.config.j2
+    dest: "{{ kube_config_dir }}/kubeadm.config"
+    owner: "{{ kube_owner }}"
+    mode: "0644"
+
+- name: Create control plane with kubeadm
+  ansible.builtin.command: "{{ bin_dir }}/kubeadm init --config {{ kube_config_dir }}/kubeadm.config"
+  changed_when: false
+
+- name: Install kubectl bash completion
+  shell: "{{ bin_dir }}/kubectl completion bash >/etc/bash_completion.d/kubectl.sh"
+  when: ansible_os_family in ["Debian","RedHat"]
+  ignore_errors: true  # noqa ignore-errors
+  changed_when: false
+
+- name: Set kubectl bash completion file permissions
+  file:
+    path: /etc/bash_completion.d/kubectl.sh
+    owner: root
+    group: root
+    mode: "0755"
+  when: ansible_os_family in ["Debian","RedHat"]
+  ignore_errors: true  # noqa ignore-errors

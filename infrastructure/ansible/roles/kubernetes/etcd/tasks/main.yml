@@ -1,0 +1,11 @@
+---
+- name: Manage etcd user
+  block:
+    - name: Create User
+      user:
+        name: etcd
+        comment: "Etcd user"
+        create_home: true
+        home: "{{ etcd_data_dir }}"
+        system: true
+        shell: "/sbin/nologin"

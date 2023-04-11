@@ -1,13 +1,5 @@
 ---
-- name: debian | Node Configuration
-  block:
-    - name: Debian | Disable ufw
-      ansible.builtin.systemd:
-        service: ufw.service
-        enabled: false
-        masked: true
-        state: stopped
-    - name: Debian | Enable fstrim
-      ansible.builtin.systemd:
-        service: fstrim.timer
-        enabled: true
+- name: debian | Enable fstrim
+  ansible.builtin.systemd:
+    service: fstrim.timer
+    enabled: true

@@ -4,6 +4,65 @@
     name: "{{ k8s_common_packages | union(k8s_required_packages|default([])) }}"
     state: present
 
+# - import_tasks: install.yml # noqa name
+
+- name: Enable kernel modules now
+  community.general.modprobe:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ kernel_modules }}"
+
+- name: Enable kernel modules on boot
+  ansible.builtin.copy:
+    mode: '0644'
+    content: "{{ item }}"
+    dest: "/etc/modules-load.d/{{ item }}.conf"
+  with_items:
+    - "{{ kernel_modules }}"
+
+- name: Set sysctls
+  ansible.posix.sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    sysctl_file: /etc/sysctl.d/99-kubernetes.conf
+    reload: true
+  with_dict: "{{ sysctl_config }}"
+  vars:
+    sysctl_config:
+      net.ipv4.ip_forward: 1
+      net.ipv4.conf.all.forwarding: 1
+      net.ipv4.conf.all.rp_filter: 0
+      net.ipv4.conf.default.rp_filter: 0
+      net.ipv6.conf.all.forwarding: 1
+      net.bridge.bridge-nf-call-iptables: 1
+      net.bridge.bridge-nf-call-ip6tables: 1
+      fs.inotify.max_user_watches: 524288
+      fs.inotify.max_user_instances: 512
+
+- name: Permissive SELinux
+  ansible.posix.selinux:
+    state: permissive
+    policy: targeted
+  when: false # preinstall_selinux_state == 'enforcing'
+
 - name: Load os specific tasks
-  ansible.builtin.import_tasks:
-    file: "{{ ansible_os_family | lower }}"
+  include_tasks: "{{ ansible_os_family | lower }}.yml"
+
+- name: Manage kubernetes system user
+  block:
+    - name: Create group
+      ansible.builtin.group:
+        name: "{{ kube_cert_group }}"
+        system: true
+    - name: Create user
+      ansible.builtin.user:
+        name: "{{ kube_owner }}"
+        group: "{{ kube_cert_group }}"
+        shell: "/sbin/nologin"
+        create_home: false
+        system: true
+        comment: "Kubernetes User"
+
+- name: Setup Kubelet
+  include_tasks: kubelet.yml
