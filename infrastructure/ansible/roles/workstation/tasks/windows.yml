@@ -1,0 +1,71 @@
+---
+# ansible.windows.win_get_url:
+- name: windows | Enable Remote Desktop Feature
+  ansible.windows.win_feature:
+    name: Remote-Desktop-Services
+    state: present
+
+
+- name: windows | Install Powershell 7
+  ansible.windows.win_powershell: |
+    winget install -e --id Microsoft.PowerShell --source winget --version {{ powershell_version | default('7.3.3.0') }}
+
+- name: windows | Ensure all networks are private
+  ansible.windows.win_powershell: Set-NetConnectionProfile -NetworkCategory Private
+
+
+- name: windows | Install packages with winget
+  ansible.windows.win_powershell:
+    executable: 'C:\Program Files\Powershell\7\pwsh.exe'
+    script: "winget install -e"
+    parameters:
+      -Name: item.name
+      -Id: item.Id
+      -source: item.source
+    with_list: winget_packages
+
+- name: windows | Update all winget packages to latest
+  ansible.windows.win_powershell: winget upgrade --all --silent
+
+- name: windows | Install argocd
+  ansible.windows.win_powershell:
+    executable: 'C:\Program Files\Powershell\7\pwsh.exe'
+    script: |
+      $version = (Invoke-RestMethod https://api.github.com/repos/argoproj/argo-cd/releases/latest).tag_name
+      $url = "https://github.com/argoproj/argo-cd/releases/download/" + $version + "/argocd-windows-amd64.exe"
+      $output = "argocd.exe"
+      Invoke-WebRequest -Uri $url -OutFile $output
+
+- name: windows | Setup opensshd
+  become: true
+  block:
+    - name: windows | sshd | Install OpenSSH server
+      ansible.windows.win_powershell: |
+        Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+
+    - name: windows | sshd | Configure and start service
+      ansible.windows.win_powershell: |
+        Start-Service sshd
+        Set-Service -Name sshd -StartupType 'Automatic'
+
+    - name: windows | sshd | Configure Firewall
+      ansible.windows.win_powershell: |
+        if (!(Get-NetFirewallRule -Name "OpenSSH-Server-In-TCP" -ErrorAction SilentlyContinue | Select-Object Name, Enabled)) {
+            Write-Output "Firewall Rule 'OpenSSH-Server-In-TCP' does not exist, creating it..."
+            New-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
+        } else {
+            Write-Output "Firewall rule 'OpenSSH-Server-In-TCP' has been created and exists."
+        }
+
+    - name: windows | sshd | add my key to admin authorized keys
+      ansible.windows.win_copy:
+        dest: 'C:\ProgramData\ssh\administrator_authorized_keys'
+        content: "{{ jared_public_ssh_key }}"
+
+    - name: windows | sshd | fix permissions on administrator_authorized_keys
+      ansible.windows.win_powershell: |
+        icacls.exe "C:\ProgramData\ssh\administrators_authorized_keys" /inheritance:r /grant "Administrators:F" /grant "SYSTEM:F"
+
+    - name: windows | sshd | Make powershell 7 the default shell for sshd
+      ansible.windows.win_powershell: |
+        New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -PropertyType String -Force

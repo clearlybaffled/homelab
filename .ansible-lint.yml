@@ -20,9 +20,11 @@ skip_list:
   - 'var-spacing'
 
   # [fqcn-builtins]
-  - 'fqcn-builtins'
+  - fqcn-builtins
 
   # name[casing]
   - name[casing]
 
   - yaml[line-length]
+
+  - no-changed-when

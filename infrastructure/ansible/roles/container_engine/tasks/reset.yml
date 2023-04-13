@@ -1,6 +1,6 @@
 ---
 - name: CRI-O | Remove crictl
-  ansible.builtin.file:
+  file:
     name: "{{ item }}"
     state: absent
   loop:
@@ -10,7 +10,7 @@
     - reset_crio
 
 - name: CRI-O | Stop crio service
-  ansible.builtin.service:
+  service:
     name: crio
     daemon_reload: true
     enabled: false
@@ -20,7 +20,7 @@
     - reset_crio
 
 - name: CRI-O | Remove CRI-O configuration files
-  ansible.builtin.file:
+  file:
     name: "{{ item }}"
     state: absent
   loop:

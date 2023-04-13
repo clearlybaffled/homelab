@@ -1,6 +1,6 @@
 ---
 - name: Install DVB utilities
-  ansible.builtin.apt:
+  apt:
     pkg:
       - v4l-utils
       - v4l-conf

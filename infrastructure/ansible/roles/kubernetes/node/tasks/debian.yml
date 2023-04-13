@@ -1,5 +1,5 @@
 ---
 - name: debian | Enable fstrim
-  ansible.builtin.systemd:
+  systemd:
     service: fstrim.timer
     enabled: true

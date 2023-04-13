@@ -5,35 +5,35 @@
     - ansible_os_family == "Debian"
   block:
     - name: packages | Install aptitutde # noqa package-latest
-      ansible.builtin.apt:
+      apt:
         name: aptitude
         state: latest
         update_cache: true
 
     - name: packages | Update apt repo and cache on all Debian/Ubuntu machines
-      ansible.builtin.package:
+      package:
         update_cache: true
         force_apt_get: true
         cache_valid_time: 3600
       changed_when: false
 
     - name: packages | Upgrade all packages on Debian/Ubuntu machines
-      ansible.builtin.package:
+      package:
         upgrade: true
         force_apt_get: true
 
     - name: Packages | RasPi packages
-      ansible.builtin.apt:
+      apt:
         name: ["linux-modules-extra-raspi"]
         install_recommends: false
       notify: Reboot
       when: "'raspi' in ansible_kernel"
 
     - name: Packages | Remove leaf packages
-      ansible.builtin.apt:
+      apt:
         autoremove: true
 
 - name: packages | Install required system packages
-  ansible.builtin.package:
+  package:
     name: "{{ common_packages | union(system_packages|default([])) | union(host_packages|default([])) }}"
     state: present

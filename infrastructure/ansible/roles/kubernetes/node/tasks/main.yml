@@ -1,6 +1,6 @@
 ---
 - name: Install k8s system packages
-  ansible.builtin.package:
+  package:
     name: "{{ k8s_common_packages | union(k8s_required_packages|default([])) }}"
     state: present
 
@@ -14,7 +14,7 @@
     - "{{ kernel_modules }}"
 
 - name: Enable kernel modules on boot
-  ansible.builtin.copy:
+  copy:
     mode: '0644'
     content: "{{ item }}"
     dest: "/etc/modules-load.d/{{ item }}.conf"
@@ -52,17 +52,39 @@
 - name: Manage kubernetes system user
   block:
     - name: Create group
-      ansible.builtin.group:
+      group:
         name: "{{ kube_cert_group }}"
         system: true
     - name: Create user
-      ansible.builtin.user:
+      user:
         name: "{{ kube_owner }}"
         group: "{{ kube_cert_group }}"
         shell: "/sbin/nologin"
         create_home: false
         system: true
         comment: "Kubernetes User"
+
+- name: Ensure kube_config_dir exists
+  file:
+    path: "{{ kube_config_dir }}"
+    state: directory
+    owner: "{{ kube_owner }}"
+    group: "{{ kube_cert_group }}"
+    mode: "0755"
+
+- name: Create cni directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ kube_owner }}"
+    mode: "0755"
+  with_items:
+    - /etc/cni/net.d
+    - /opt/cni/bin
+    - /var/lib/calico
+  when:
+    - kube_network_plugin in ["calico", "weave", "canal", "flannel", "cilium", "kube-ovn", "kube-router", "macvlan"]
+    - inventory_hostname in groups['k8s_cluster']
 
 - name: Setup Kubelet
   include_tasks: kubelet.yml
