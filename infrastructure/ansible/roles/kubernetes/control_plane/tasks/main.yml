@@ -24,3 +24,19 @@
     mode: "0755"
   when: ansible_os_family in ["Debian","RedHat"]
   ignore_errors: true  # noqa ignore-errors
+
+- name: Ensure ansible_user has a ~/.kube directory
+  file:
+    path: "{{ ansible_home }}/.kube"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_group }}"
+    state: directory
+    mode: "0755"
+
+- name: Copy kubeconfig to ansible_home
+  copy:
+    src: "{{ kube_config_dir }}/admin.conf"
+    dest: "{{ ansible_home }}/.kube/config"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_group }}"
+    mode: "0600"
