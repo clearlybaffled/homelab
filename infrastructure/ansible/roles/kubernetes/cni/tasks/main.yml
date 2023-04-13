@@ -1,29 +1,4 @@
 ---
-- name: Download CNI plugins
-  ansible.builtin.include_tasks: ../../../download/tasks/download_file.yml
-  vars:
-    download: "{{ download_defaults | combine(downloads.cni) }}"
-
-- name: Create cni directories
-  file:
-    path: "{{ item }}"
-    state: directory
-    owner: "{{ kube_owner }}"
-    mode: "0755"
-  with_items:
-    - "/etc/cni/net.d"
-    - "/opt/cni/bin"
-    - "/var/lib/calico"
-  when:
-    - kube_network_plugin in ["calico", "weave", "canal", "flannel", "cilium", "kube-ovn", "kube-router", "macvlan"]
-    - inventory_hostname in groups['k8s_cluster']
-
-- name: Install cni-plugins
-  ansible.builtin.unarchive:
-    src: "{{ downloads.cni.dest }}"
-    dest: /opt/cni/bin
-    remote_src: true
-
 - name: Flannel | Create Flannel manifests
   template:
     src: "cni-flannel.yml.j2"
@@ -33,7 +8,7 @@
     - inventory_hostname == groups['kube_control_plane'][0]
 
 - name: Flannel | Start Resources
-  ansible.builtin.command: "{{ bin_dir }}/kubectl --kubeconfig={{ kube_config_dir }}/admin.conf apply -f {{ kube_config_dir }}/cni-flannel.yml"
+  command: "{{ kubectl }} apply -f {{ kube_config_dir }}/cni-flannel.yml"
   when: inventory_hostname == groups['kube_control_plane'][0]
   changed_when: false
 

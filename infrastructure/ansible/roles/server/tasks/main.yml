@@ -19,10 +19,10 @@
 - name: Networking
   block:
     - name: Networking | Set hostname to inventory hostname
-      ansible.builtin.hostname:
+      hostname:
         name: "{{ inventory_hostname }}"
     - name: Networking | Update /etc/hosts to include inventory hostname
-      ansible.builtin.blockinfile:
+      blockinfile:
         path: /etc/hosts
         block: |
           127.0.1.1   {{ inventory_hostname }}
@@ -41,7 +41,7 @@
   become: true
   block:
     - name: User Configuration | Create a new regular user
-      ansible.builtin.user:
+      user:
         name: "{{ created_ansible_user }}"
         state: present
         groups: "{{ ansible_group }}"
@@ -55,7 +55,7 @@
         key: "{{ item }}"
       loop: "{{ public_ssh_keys | default([]) }}"
     - name: User Configuration | Setup passwordless sudo
-      ansible.builtin.blockinfile:
+      blockinfile:
         dest: /etc/sudoers.d/ansible
         owner: root
         group: root
@@ -66,7 +66,7 @@
           %{{ ansible_group }}      ALL=(ALL) NOPASSWD: ALL
           Defaults:%{{ ansible_group }}    !requiretty
     - name: User Configuration | Silence the login prompt
-      ansible.builtin.file:
+      file:
         dest: "/var/local/{{ created_ansible_user }}/.hushlogin"
         state: touch
         owner: "{{ created_ansible_user }}"
@@ -75,7 +75,7 @@
         access_time: preserve
 
 - name: Disable password authentication for root
-  ansible.builtin.lineinfile:
+  lineinfile:
     path: /etc/ssh/sshd_config
     state: present
     regexp: '^#?PermitRootLogin'
@@ -90,7 +90,7 @@
     mode: '0755'
 
 - name: Set console for High DPI monitor
-  ansible.builtin.blockinfile:
+  blockinfile:
     path: /etc/default/console-setup
     state: present
     block: |
@@ -99,4 +99,4 @@
       FONTSIZE="32x132x166"
 
 - name: Run package install
-  ansible.builtin.include_tasks: packages.yml
+  include_tasks: packages.yml

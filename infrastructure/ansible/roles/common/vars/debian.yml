@@ -3,6 +3,7 @@ system_packages:
   - gnupg-agent
   - software-properties-common
   - lm-sensors
+  - nvme-cli
 
 k8s_required_packages:
   - python3-yaml

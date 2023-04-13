@@ -14,15 +14,56 @@ crun_enabled: true
 # When enabled, it requires container_manager=crio
 youki_enabled: false
 
-# Container on localhost (download images when download_localhost is true)
-container_manager_on_localhost: "{{ container_manager }}"
+# Project versions
+crio_version: v1.26.2
+crictl_version: v1.26.1
+crun_version: 1.8.3
+skopeo_version: v1.11.1
 
 # CRI socket path
 cri_socket: unix:///var/run/crio/crio.sock
 
-# crio_insecure_registries:
-#   - 10.0.0.2:5000
+image_info_command: "{{ bin_dir }}/crictl images --verbose | awk -F ': ' '/RepoTags|RepoDigests/ {print $2}' | tr '\n' ','"
+image_pull_command: "{{ bin_dir }}/crictl pull"
+
+# Arch of Docker images and needed packages
+image_arch: "{{host_architecture | default('amd64')}}"
+
+
+# gcr and kubernetes image repo define
+gcr_image_repo: gcr.io
+kube_image_repo: registry.k8s.io
+
+# docker image repo define
+docker_image_repo: docker.io
+
+# quay image repo define
+quay_image_repo: quay.io
+
+# github image repo define (ex multus only use that)
+github_image_repo: ghcr.io
+
+crio_insecure_registries:
+  - "{{ kube_image_repo }}"
+  - "{{ quay_image_repo }}"
+  - "{{ docker_image_repo }}"
 # crio_registry_auth:
 #   - registry: 10.0.0.2:5000
 #     username: user
 #     password: pass
+
+crio_registries:
+  - prefix: docker.io
+    insecure: false
+    blocked: false
+    location: registry-1.docker.io ## REQUIRED
+    unqualified: true
+    mirrors:
+      - location: 172.20.100.52:5000
+        insecure: true
+      - location: mirror.gcr.io
+        insecure: false
+  # - prefix: quay.io
+  #   unqualified: true
+  # - prefix: registry.k8s.io
+  #   unqualified: true

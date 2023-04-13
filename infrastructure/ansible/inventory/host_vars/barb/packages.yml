@@ -1,0 +1,90 @@
+---
+powershell_version: 7.3.3.0
+
+winget_packages:
+  7z:
+    Name: 7-Zip
+    Id: 7zip.7zip
+    Version: 22.01
+    source: winget
+  draw_io:
+    Name: draw.io
+    Id: JGraph.Draw
+    Version: 21.1.2
+    source: winget
+  adobe_cc:
+    Name: Adobe Creative Cloud
+    Id: Adobe Creative Cloud
+    Veresion: 5.10.0.573
+  bcompare:
+    Name: Beyond Compare
+    Id: ScooterSoftware.BeyondCompare4
+    Version: 4.4.5
+    source: winget
+  keepass:
+    Name: KeePass Password Safe
+    Id: DominikReichl.KeePass
+    Version: 2.53.1
+    source: winget
+  chrome:
+    Name: Google Chrome
+    Id: Google.Chrome
+    source: winget
+  terminal:
+    Name: Windows Terminal
+    Id: Microsoft.WindowsTerminal
+  phone_link:
+    Name: Phone Link
+    Id: Microsoft.YourPhone_8wekyb3d8bbwe
+  obs:
+    Name: OBS Studio
+    Id: OBSProject.OBSStudio
+    source: winget
+  npp:
+    Name: Notepad ++
+    Id: Notepad++.Notepad++
+    source: winget
+  office365:
+    Name: Microsoft 365 - en-us
+    Id: O365HomePremRetail - en-us
+  gdrive:
+    Name: Google Drive
+    Id: Google.Drive
+    source: winget
+  quicken:
+    Name: Quicken
+    Id: Quicken.Quicken
+  vscode:
+    Name: Microsoft Visual Studio Code (User)
+    Id: XP9KHM4BK9FZ7Q
+    source: msstore
+  logitech:
+    Name: Logi Options+
+    Id: Logitech.OptionsPlus
+    source: winget
+  installroot:
+    Name: InstallRoot
+    Id: DoDPKE.InstallRoot
+    source: winget
+  wacom:
+    Name: Wacom Tablet
+    Id: Wacom.WacomTabletDriver
+    source: winget
+  zoom:
+    Name: Zoom
+    Id: Zoom.Zoom
+    source: winget
+  musicbee:
+    Name: MusicBee
+    Id: MusicBee
+  git:
+    Name: git
+    Id: Git.Git
+    source: winget
+  hp:
+    Name: HP Smart
+    Id: AD2F1837.HPPrinterControl_v10z8vjag6ke6
+  python:
+    Name: "Python 3.11"
+    Id: 9NRWMJP3717K
+    source: msstore

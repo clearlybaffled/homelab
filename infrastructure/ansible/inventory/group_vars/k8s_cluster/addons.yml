@@ -1,10 +1,11 @@
 ---
 # Kubernetes dashboard
 # RBAC required. see docs/getting-started.md for access details.
-# dashboard_enabled: false
+dashboard_enabled: true
 
 # Helm deployment
-helm_enabled: false
+helm_enabled: true
+helm_version: v3.11.1
 
 # Registry deployment
 registry_enabled: false
@@ -230,9 +231,9 @@ metallb_speaker_enabled: "{{ metallb_enabled }}"
 #     peer_asn: 64513
 #     my_asn: 4200000000
 
-argocd_enabled: false
-# argocd_version: v2.6.3
-# argocd_namespace: argocd
+argocd_enabled: true
+argocd_version: v2.6.7
+argocd_namespace: argocd
 # Default password:
 #   - https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli
 #   ---
@@ -241,12 +242,14 @@ argocd_enabled: false
 #   ---
 # Use the following var to set admin password
 # argocd_admin_password: "password"
+# Utility for parsing argocd responses
+yq_version: v4.30.6
 
 # The plugin manager for kubectl
 krew_enabled: false
+krew_version: v0.4.3
 krew_root_dir: "/usr/local/krew"
 
 enable_network_policy: true
-persistent_volumes_enabled: false
 cinder_csi_enabled: false
 csi_snapshot_controller_enabled: false

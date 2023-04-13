@@ -1,5 +1,6 @@
 ---
-local_release_dir: /tmp/releases
+# Where the binaries will be downloaded.
+# Note: ensure that you've enough disk space (about 1G)
 download_cache_dir: /tmp/cluster_cache
 
 # If this is true, debug information will be displayed but
@@ -48,114 +49,35 @@ download_always_pull: false
 download_validate_certs: true
 
 # Use the first kube_control_plane if download_localhost is not set
-download_delegate: "{% if download_localhost %}localhost{% else %}{{ groups['kube_control_plane'][0] }}{% endif %}"
+download_delegate: "{{ groups['kube_control_plane'][0] }}"
 
 # Allow control the times of download retries for files and containers
 download_retries: 4
 
-image_info_command: "{{ bin_dir }}/crictl images --verbose | awk -F ': ' '/RepoTags|RepoDigests/ {print $2}' | tr '\n' ','"
-image_pull_command: "{{ bin_dir }}/crictl pull"
-image_pull_command_on_localhost: "{{ image_pull_command }}"
-image_info_command_on_localhost: "{{ image_info_command }}"
-
-# Arch of Docker images and needed packages
-image_arch: "{{host_architecture | default('amd64')}}"
-
-# Versions
-kubeadm_version: "{{ kube_version }}"
-
-# gcr and kubernetes image repo define
-gcr_image_repo: gcr.io
-kube_image_repo: registry.k8s.io
-
-# docker image repo define
-docker_image_repo: docker.io
-
-# quay image repo define
-quay_image_repo: quay.io
-
-# github image repo define (ex multus only use that)
-github_image_repo: ghcr.io
-
-# TODO(mattymo): Move calico versions to roles/network_plugins/calico/defaults
-# after migration to container download
-calico_version: v3.25.0
-calico_ctl_version: "{{ calico_version }}"
-calico_cni_version: "{{ calico_version }}"
-calico_flexvol_version: "{{ calico_version }}"
-calico_policy_version: "{{ calico_version }}"
-calico_typha_version: "{{ calico_version }}"
-calico_apiserver_version: "{{ calico_version }}"
-typha_enabled: false
-calico_apiserver_enabled: false
-
-flannel_version: v0.20.2
-flannel_cni_version: v1.2.0
-cni_version: v1.2.0
-weave_version: 2.8.1
-pod_infra_version: "3.8"
-
-cilium_version: v1.12.1
-cilium_cli_version: v0.12.5
-cilium_enable_hubble: false
-
-helm_version: v3.11.1
-krew_version: v0.4.3
-
-
-# Get kubernetes major version (i.e. 1.17.4 => 1.17)
-kube_major_version: "{{ kube_version | regex_replace('^v([0-9])+\\.([0-9]+)\\.[0-9]+', 'v\\1.\\2') }}"
-
-etcd_version: v3.5.6
-
-yq_version: v4.30.6
-
-crio_version: v1.26.2
+# Checksums
 crio_archive_checksums:
   arm64: 8bd9c912de7f8805c162e089a34ca29e607c48a149940193466ccf7bdf74f606
   amd64: 7e030b2e89d4eb2701d9164e67c804fcb872c29accd76f29bcc148a86a920531
 
-crictl_version: v1.26.1
 crictl_checksums:
   arm64: cfa28be524b5da1a6dded455bb497dfead27b1fd089e1161eb008909509be585
   amd64: 0c1a0f9900c15ee7a55e757bcdc220faca5dd2e1cfc120459ad1f04f08598127
 
-crun_version: 1.8.3
 crun_checksums:
   arm64: 5394336630618c724274bf3e5e0c8a64c2e67e4723f671029c4f57f459359f73
   amd64: f82ccdc575a72fe2d91ea8d68161746a0e28898bc86a2a6f55eed00aa1d79afa
 
-skopeo_version: v1.11.1
 skopeo_binary_checksums:
   arm64: 693f7d2791e0549b173b2c16f1c3326328aa5e95bc2b4d71f5ecd35b6524b09d
   amd64: 9aad99e41533800ce08526a602de2f87b8ce123ea9547358e2cccfa2f9c3a9e0
 
-
-# Download URLs
-kubelet_download_url: https://storage.googleapis.com/kubernetes-release/release/{{ kube_version }}/bin/linux/{{ image_arch }}/kubelet
-kubectl_download_url: https://storage.googleapis.com/kubernetes-release/release/{{ kube_version }}/bin/linux/{{ image_arch }}/kubectl
-kubeadm_download_url: https://storage.googleapis.com/kubernetes-release/release/{{ kubeadm_version }}/bin/linux/{{ image_arch }}/kubeadm
-etcd_download_url: https://github.com/etcd-io/etcd/releases/download/{{ etcd_version }}/etcd-{{ etcd_version }}-linux-{{ image_arch }}.tar.gz
-cni_download_url: https://github.com/containernetworking/plugins/releases/download/{{ cni_version }}/cni-plugins-linux-{{ image_arch }}-{{ cni_version }}.tgz
-calicoctl_download_url: https://github.com/projectcalico/calico/releases/download/{{ calico_ctl_version }}/calicoctl-linux-{{ image_arch }}
-calico_crds_download_url: https://github.com/projectcalico/calico/archive/{{ calico_version }}.tar.gz
-ciliumcli_download_url: https://github.com/cilium/cilium-cli/releases/download/{{ cilium_cli_version }}/cilium-linux-{{ image_arch }}.tar.gz
-crictl_download_url: https://github.com/kubernetes-sigs/cri-tools/releases/download/{{ crictl_version }}/crictl-{{ crictl_version }}-{{ ansible_system | lower }}-{{ image_arch }}.tar.gz
-crio_download_url: https://storage.googleapis.com/cri-o/artifacts/cri-o.{{ image_arch }}.{{ crio_version }}.tar.gz
-helm_download_url: https://get.helm.sh/helm-{{ helm_version }}-linux-{{ image_arch }}.tar.gz
-crun_download_url: https://github.com/containers/crun/releases/download/{{ crun_version }}/crun-{{ crun_version }}-linux-{{ image_arch }}
-krew_download_url: https://github.com/kubernetes-sigs/krew/releases/download/{{ krew_version }}/krew-{{ host_os }}_{{ image_arch }}.tar.gz
-skopeo_download_url: https://github.com/lework/skopeo-binary/releases/download/{{ skopeo_version }}/skopeo-linux-{{ image_arch }}
-yq_download_url: https://github.com/mikefarah/yq/releases/download/{{ yq_version }}/yq_linux_{{ image_arch }}
-
-# Checksum
 # Kubernetes versions above Kubespray's current target version are untested and should be used with caution.
 kubelet_checksums:
   arm64: d360f919c279a05441b27178030c3d17134c1f257c95f4b22bdb28c2290993e7
   amd64: 992d6298bd494b65f54c838419773c4976aca72dfb36271c613537efae7ab7d2
 kubectl_checksums:
-  arm64: "0f62cbb6fafa109f235a08348d74499a57bb294c2a2e6ee34be1fa83432fec1d"
-  amd64: "026c8412d373064ab0359ed0d1a25c975e9ce803a093d76c8b30c5996ad73e75"
+  arm64: 0f62cbb6fafa109f235a08348d74499a57bb294c2a2e6ee34be1fa83432fec1d
+  amd64: 026c8412d373064ab0359ed0d1a25c975e9ce803a093d76c8b30c5996ad73e75
 kubeadm_checksums:
   arm64: e9a7dbca77f9576a98af1db8747e9dc13e930e40295eaa259dd99fd6e17a173f
   amd64: 87a1bf6603e252a8fa46be44382ea218cb8e4f066874d149dc589d0f3a405fed
@@ -182,12 +104,12 @@ calico_crds_archive_checksums: 117b4493ad933f24ea6fb82eabfad300da2dd926995bb8c55
 
 krew_archive_checksums:
   linux:
-    arm64: "0994923848882ad0d4825d5af1dc227687a10a02688f785709b03549dd34d71d"
+    arm64: 0994923848882ad0d4825d5af1dc227687a10a02688f785709b03549dd34d71d
     amd64: 5df32eaa0e888a2566439c4ccb2ef3a3e6e89522f2f2126030171e2585585e4f
 
 helm_archive_checksums:
   arm64: 919173e8fb7a3b54d76af9feb92e49e86d5a80c5185020bae8c393fa0f0de1e8
-  amd64: "0b1be96b66fab4770526f136f5f1a385a47c41923d33aab0dcb500e0f6c1bf7c"
+  amd64: 0b1be96b66fab4770526f136f5f1a385a47c41923d33aab0dcb500e0f6c1bf7c
 
 cri_dockerd_archive_checksums:
   arm64: 2a7e5bb156b80f737ef07ae2e8050394ea3e47fb0b7055afac47a365eaa321fb
@@ -196,6 +118,10 @@ cri_dockerd_archive_checksums:
 yq_checksums:
   arm64: 40ee3000d5b65703caffb0263a7d5e75164f10afd2c9a3c879b6016f0300ac25
   amd64: 2aabdd748d301fc2286ea9f73eb20477b4ce173fbf072e0102fff1fcbed05985
+
+argocd_checksums:
+  amd64: 81f7551b72f7ab9f834d8871e186bb6ae70000fa7a53f59296378c921779fd2d
+  arm64: 03e649483a8e121e4fac87127ee32485c7f26499fbed940738522cdba00bd20f
 
 etcd_binary_checksum: "{{ etcd_binary_checksums[image_arch] }}"
 cni_binary_checksum: "{{ cni_binary_checksums[image_arch] }}"
@@ -213,6 +139,26 @@ crun_binary_checksum: "{{ crun_checksums[image_arch] }}"
 krew_archive_checksum: "{{ krew_archive_checksums[host_os][image_arch] }}"
 containerd_archive_checksum: "{{ containerd_archive_checksums[image_arch] }}"
 skopeo_binary_checksum: "{{ skopeo_binary_checksums[image_arch] }}"
+argocd_binary_checksum: "{{ argocd_binary_checksums[image_arch] }}"
+
+# Download URLs
+kubelet_download_url: https://storage.googleapis.com/kubernetes-release/release/{{ kube_version }}/bin/linux/{{ image_arch }}/kubelet
+kubectl_download_url: https://storage.googleapis.com/kubernetes-release/release/{{ kube_version }}/bin/linux/{{ image_arch }}/kubectl
+kubeadm_download_url: https://storage.googleapis.com/kubernetes-release/release/{{ kubeadm_version }}/bin/linux/{{ image_arch }}/kubeadm
+etcd_download_url: https://github.com/etcd-io/etcd/releases/download/{{ etcd_version }}/etcd-{{ etcd_version }}-linux-{{ image_arch }}.tar.gz
+cni_download_url: https://github.com/containernetworking/plugins/releases/download/{{ cni_version }}/cni-plugins-linux-{{ image_arch }}-{{ cni_version }}.tgz
+calicoctl_download_url: https://github.com/projectcalico/calico/releases/download/{{ calico_ctl_version }}/calicoctl-linux-{{ image_arch }}
+calico_crds_download_url: https://github.com/projectcalico/calico/archive/{{ calico_version }}.tar.gz
+ciliumcli_download_url: https://github.com/cilium/cilium-cli/releases/download/{{ cilium_cli_version }}/cilium-linux-{{ image_arch }}.tar.gz
+crictl_download_url: https://github.com/kubernetes-sigs/cri-tools/releases/download/{{ crictl_version }}/crictl-{{ crictl_version }}-{{ ansible_system | lower }}-{{ image_arch }}.tar.gz
+crio_download_url: https://storage.googleapis.com/cri-o/artifacts/cri-o.{{ image_arch }}.{{ crio_version }}.tar.gz
+helm_download_url: https://get.helm.sh/helm-{{ helm_version }}-linux-{{ image_arch }}.tar.gz
+crun_download_url: https://github.com/containers/crun/releases/download/{{ crun_version }}/crun-{{ crun_version }}-linux-{{ image_arch }}
+krew_download_url: https://github.com/kubernetes-sigs/krew/releases/download/{{ krew_version }}/krew-{{ host_os }}_{{ image_arch }}.tar.gz
+skopeo_download_url: https://github.com/lework/skopeo-binary/releases/download/{{ skopeo_version }}/skopeo-linux-{{ image_arch }}
+argocd_download_url: https://github.com/argoproj/argo-cd/releases/download/{{ argocd_version }}/argocd-linux-{{ image_arch }}
+yq_download_url: https://github.com/mikefarah/yq/releases/download/{{ yq_version }}/yq_linux_{{ image_arch }}
+
 
 # Containers
 # In some cases, we need a way to set --registry-mirror or --insecure-registry for docker,
@@ -377,7 +323,7 @@ downloads:
     file: "{{ etcd_deployment_type == 'host' }}"
     enabled: true
     version: "{{ etcd_version }}"
-    dest: "{{ local_release_dir }}/etcd-{{ etcd_version }}-linux-{{ image_arch }}.tar.gz"
+    dest: "{{ download_cache_dir }}/etcd-{{ etcd_version }}-linux-{{ image_arch }}.tar.gz"
     repo: "{{ etcd_image_repo }}"
     tag: "{{ etcd_image_tag }}"
     sha256: >-
@@ -394,7 +340,8 @@ downloads:
     enabled: true
     file: true
     version: "{{ cni_version }}"
-    dest: "{{ local_release_dir }}/cni-plugins-linux-{{ image_arch }}-{{ cni_version }}.tgz"
+    dest: "{{ download_cache_dir }}/cni-plugins-linux-{{ image_arch }}-{{ cni_version }}.tar.gz"
+    install: /opt/cni/bin/
     sha256: "{{ cni_binary_checksum }}"
     url: "{{ cni_download_url }}"
     unarchive: true
@@ -407,7 +354,8 @@ downloads:
     enabled: true
     file: true
     version: "{{ kubeadm_version }}"
-    dest: "{{ local_release_dir }}/kubeadm-{{ kubeadm_version }}-{{ image_arch }}"
+    dest: "{{ download_cache_dir }}/kubeadm-{{ kubeadm_version }}-{{ image_arch }}"
+    install: "{{ bin_dir }}/kubeadm"
     sha256: "{{ kubeadm_binary_checksum }}"
     url: "{{ kubeadm_download_url }}"
     unarchive: false
@@ -420,7 +368,8 @@ downloads:
     enabled: true
     file: true
     version: "{{ kube_version }}"
-    dest: "{{ local_release_dir }}/kubelet-{{ kube_version }}-{{ image_arch }}"
+    dest: "{{ download_cache_dir }}/kubelet-{{ kube_version }}-{{ image_arch }}"
+    install: "{{ bin_dir }}/kubelet"
     sha256: "{{ kubelet_binary_checksum }}"
     url: "{{ kubelet_download_url }}"
     unarchive: false
@@ -433,7 +382,8 @@ downloads:
     enabled: true
     file: true
     version: "{{ kube_version }}"
-    dest: "{{ local_release_dir }}/kubectl-{{ kube_version }}-{{ image_arch }}"
+    dest: "{{ download_cache_dir }}/kubectl-{{ kube_version }}-{{ image_arch }}"
+    install: "{{ bin_dir }}/kubectl"
     sha256: "{{ kubectl_binary_checksum }}"
     url: "{{ kubectl_download_url }}"
     unarchive: false
@@ -446,7 +396,8 @@ downloads:
     file: true
     enabled: true
     version: "{{ crictl_version }}"
-    dest: "{{ local_release_dir }}/crictl-{{ crictl_version }}-linux-{{ image_arch }}.tar.gz"
+    dest: "{{ download_cache_dir }}/crictl-{{ crictl_version }}-linux-{{ image_arch }}.tar.gz"
+    install: "{{ bin_dir }}/crictl"
     sha256: "{{ crictl_binary_checksum }}"
     url: "{{ crictl_download_url }}"
     unarchive: true
@@ -459,7 +410,7 @@ downloads:
     file: true
     enabled: "{{ container_manager == 'crio' }}"
     version: "{{ crio_version }}"
-    dest: "{{ local_release_dir }}/cri-o.{{ image_arch }}.{{ crio_version }}.tar.gz"
+    dest: "{{ download_cache_dir }}/cri-o.{{ image_arch }}.{{ crio_version }}.tar.gz"
     sha256: "{{ crio_archive_checksum }}"
     url: "{{ crio_download_url }}"
     unarchive: true
@@ -472,7 +423,8 @@ downloads:
     file: true
     enabled: "{{ crun_enabled }}"
     version: "{{ crun_version }}"
-    dest: "{{ local_release_dir }}/crun"
+    dest: "{{ download_cache_dir }}/crun"
+    install: "{{ bin_dir }}/crun"
     sha256: "{{ crun_binary_checksum }}"
     url: "{{ crun_download_url }}"
     unarchive: false
@@ -485,7 +437,8 @@ downloads:
     file: true
     enabled: "{{ container_manager == 'crio' }}"
     version: "{{ skopeo_version }}"
-    dest: "{{ local_release_dir }}/skopeo"
+    dest: "{{ download_cache_dir }}/skopeo"
+    install: "{{ bin_dir }}/skopeo"
     sha256: "{{ skopeo_binary_checksum }}"
     url: "{{ skopeo_download_url }}"
     unarchive: false
@@ -561,7 +514,7 @@ downloads:
     enabled: "{{ kube_network_plugin == 'cilium' or cilium_deploy_additionally | default(false) | bool }}"
     file: true
     version: "{{ cilium_cli_version }}"
-    dest: "{{ local_release_dir }}/cilium"
+    dest: "{{ download_cache_dir }}/cilium"
     sha256: "{{ ciliumcli_binary_checksum }}"
     url: "{{ ciliumcli_download_url }}"
     unarchive: true
@@ -592,11 +545,10 @@ downloads:
     enabled: "{{ kube_network_plugin == 'calico' or kube_network_plugin == 'canal' }}"
     file: true
     version: "{{ calico_ctl_version }}"
-    dest: "{{ local_release_dir }}/calicoctl"
+    dest: "{{ download_cache_dir }}/calicoctl"
+    install: "{{ bin_dir }}/calicoctl"
     sha256: "{{ calicoctl_binary_checksum }}"
     url: "{{ calicoctl_download_url }}"
-    mirrors:
-      - "{{ calicoctl_download_url }}"
     unarchive: false
     owner: root
     mode: "0755"
@@ -661,7 +613,7 @@ downloads:
     file: true
     enabled: "{{ kube_network_plugin == 'calico' and calico_datastore == 'kdd' }}"
     version: "{{ calico_version }}"
-    dest: "{{ local_release_dir }}/calico-{{ calico_version }}-kdd-crds/{{ calico_version }}.tar.gz"
+    dest: "{{ download_cache_dir }}/calico-{{ calico_version }}-kdd-crds/{{ calico_version }}.tar.gz"
     sha256: "{{ calico_crds_archive_checksum }}"
     url: "{{ calico_crds_download_url }}"
     unarchive: true
@@ -759,10 +711,15 @@ downloads:
     enabled: "{{ helm_enabled }}"
     file: true
     version: "{{ helm_version }}"
-    dest: "{{ local_release_dir }}/helm-{{ helm_version }}/helm-{{ helm_version }}-linux-{{ image_arch }}.tar.gz"
+    dest: "{{ download_cache_dir }}/helm-{{ helm_version }}-linux-{{ image_arch }}.tar.gz"
+    install: "{{ bin_dir }}/helm"
     sha256: "{{ helm_archive_checksum }}"
     url: "{{ helm_download_url }}"
     unarchive: true
+    unarchive_extra_opts:
+      - "--strip=1"
+    include:
+      - "linux-{{ image_arch }}/helm"
     owner: root
     mode: "0755"
     groups:
@@ -772,7 +729,7 @@ downloads:
     enabled: "{{ krew_enabled }}"
     file: true
     version: "{{ krew_version }}"
-    dest: "{{ local_release_dir }}/krew-{{ host_os }}_{{ image_arch }}.tar.gz"
+    dest: "{{ download_cache_dir }}/krew-{{ host_os }}_{{ image_arch }}.tar.gz"
     sha256: "{{ krew_archive_checksum }}"
     url: "{{ krew_download_url }}"
     unarchive: true
@@ -970,11 +927,26 @@ downloads:
     groups:
       - kube_control_plane
 
+  argocd:
+    enabled: "{{ argocd_enabled }}"
+    file: true
+    version: "{{ argocd_version }}"
+    dest: "{{ download_cache_dir }}/argocd-linux-{{ image_arch }}"
+    install: "{{ bin_dir }}/argocd"
+    sha256: "{{ argocd_binary_checksum|default(None) }}"
+    url: "{{ argocd_download_url }}"
+    unarchive: false
+    owner: root
+    mode: "0755"
+    groups:
+      - kube_control_plane
+
   yq:
     enabled: "{{ argocd_enabled }}"
     file: true
     version: "{{ yq_version }}"
-    dest: "{{ local_release_dir }}/yq"
+    dest: "{{ download_cache_dir }}/yq"
+    install: "{{ bin_dir }}/yq"
     sha256: "{{ yq_binary_checksum|default(None) }}"
     url: "{{ yq_download_url }}"
     unarchive: false

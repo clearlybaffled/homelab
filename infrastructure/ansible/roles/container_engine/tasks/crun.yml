@@ -1,7 +1,0 @@
----
-- name: crun | Copy binary from download dir
-  ansible.builtin.copy:
-    src: "{{ local_release_dir }}/crun"
-    dest: "{{ bin_dir }}/crun"
-    mode: "0755"
-    remote_src: true

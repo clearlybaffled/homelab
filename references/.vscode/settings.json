@@ -1,5 +1,5 @@
 {
-    "ansible.python.activationScript": "../infrastructure/ansible/.venv/bin/activate",
+    "ansible.python.activationScript": "../.venv/bin/activate",
     "ansible.validation.lint.path": "",
     "ansible.validation.lint.enabled": false
 }

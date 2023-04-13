@@ -69,9 +69,11 @@ crio_bin_files:
 
 # cri-o manual files
 crio_man_files:
-  5:
-    - crio.conf
-    - crio.conf.d
-  8:
-    - crio
-    - crio-status
+  - section: 5
+    files:
+      - crio.conf
+      - crio.conf.d
+  - section: 8
+    files:
+      - crio
+      - crio-status

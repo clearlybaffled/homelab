@@ -1,16 +1,3 @@
 ---
-# ansible.windows.win_get_url:
-
-- name: define packages
-  vars:
-    packages:
-      - obs
-      - vscode
-      - google-drive
-      - acrobat
-      - npp
-      - office
-      - bcompare
-      - adobe-creative-cloud
-      - quicken
-      - keepass
+- name: execute os specific tasks
+  include_tasks: "{{ ansible_os_family|lower }}.yml"

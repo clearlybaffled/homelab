@@ -15,15 +15,3 @@
     name: crio
     state: restarted
     enabled: true
-
-- name: Get crictl completion
-  ansible.builtin.command: "{{ bin_dir }}/crictl completion"
-  changed_when: false
-  register: cri_completion
-  check_mode: false
-
-- name: Install crictl completion
-  ansible.builtin.copy:
-    dest: /etc/bash_completion.d/crictl
-    content: "{{ cri_completion.stdout }}"
-    mode: "0644"

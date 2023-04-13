@@ -3,7 +3,7 @@
   notify: Reboot
   block:
     - name: RedHat| Disable firewalld
-      ansible.builtin.systemd:
+      systemd:
         service: firewalld.service
         enabled: false
         masked: true

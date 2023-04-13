@@ -1,21 +1,13 @@
 ---
-- name: Ensure kube_config_dir exists
-  ansible.builtin.file:
-    path: "{{ kube_config_dir }}"
-    state: directory
-    owner: "{{ kube_owner }}"
-    group: "{{ kube_cert_group }}"
-    mode: "0755"
-
 - name: Install kubeadm.config file
-  ansible.builtin.template:
-    src: kubeadm.config.j2
-    dest: "{{ kube_config_dir }}/kubeadm.config"
+  template:
+    src: kubeadm-config.yml.j2
+    dest: "{{ kube_config_dir }}/kubeadm-config.yml"
     owner: "{{ kube_owner }}"
-    mode: "0644"
+    mode: "0640"
 
 - name: Create control plane with kubeadm
-  ansible.builtin.command: "{{ bin_dir }}/kubeadm init --config {{ kube_config_dir }}/kubeadm.config"
+  command: "{{ bin_dir }}/kubeadm init --config {{ kube_config_dir }}/kubeadm.config"
   changed_when: false
 
 - name: Install kubectl bash completion
