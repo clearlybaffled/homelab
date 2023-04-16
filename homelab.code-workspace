@@ -15,9 +15,6 @@
 		"files.autoSave": "onFocusChange",
 		"gitlens.currentLine.enabled": false,
 		"explorer.excludeGitIgnore": true,
-		"explorer.autoRevealExclude": {
-			"**/.venv": true
-		},
 		"python.terminal.activateEnvironment": false
 	}
 }
