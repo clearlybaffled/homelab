@@ -1,0 +1,8 @@
+---
+- name: Install Dashboard
+  include_tasks: dashboard.yml
+  when: dashboard_enabled
+
+- name: Install ArgoCD
+  include_tasks: argocd.yml
+  when: argocd_enabled

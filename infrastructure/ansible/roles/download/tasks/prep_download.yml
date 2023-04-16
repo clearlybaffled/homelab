@@ -19,7 +19,6 @@
     path: "{{ download_cache_dir }}/images"
     state: directory
     recurse: true
-    mode: "0755"
+    mode: "0777"
     owner: "{{ ansible_ssh_user | default(ansible_user_id) }}"
-  when:
-    - ansible_os_family not in ["Flatcar", "Flatcar Container Linux by Kinvolk"]
+    group: "{{ kube_group }}"

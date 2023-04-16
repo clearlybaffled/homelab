@@ -49,28 +49,13 @@
 - name: Load os specific tasks
   include_tasks: "{{ ansible_os_family | lower }}.yml"
 
-- name: Manage kubernetes system user
-  block:
-    - name: Create group
-      group:
-        name: "{{ kube_cert_group }}"
-        system: true
-    - name: Create user
-      user:
-        name: "{{ kube_owner }}"
-        group: "{{ kube_cert_group }}"
-        shell: "/sbin/nologin"
-        create_home: false
-        system: true
-        comment: "Kubernetes User"
-
 - name: Ensure kube_config_dir exists
   file:
     path: "{{ kube_config_dir }}"
     state: directory
     owner: "{{ kube_owner }}"
-    group: "{{ kube_cert_group }}"
-    mode: "0755"
+    group: "{{ kube_group }}"
+    mode: "0775"
 
 - name: Create cni directories
   file:

@@ -21,6 +21,7 @@
         url: "{{ download.url }}"
         dest: "{{ download.dest }}"
         owner: "{{ download.owner | default(omit) }}"
+        group: "{{ download.group | default(omit) }}"
         mode: "{{ download.mode | default(omit) }}"
         checksum: "{{ 'sha256:' + download.sha256 if download.sha256 else omit }}"
         validate_certs: "{{ download_validate_certs }}"
@@ -30,18 +31,11 @@
       delegate_to: "{{ download_delegate if download_force_cache else inventory_hostname }}"
       run_once: "{{ download_force_cache }}"
       register: get_url_result
-      become: true
-      until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
+      until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg or 'Not Modified' in get_url_result.msg"
       retries: "{{ download_retries }}"
       delay: "{{ retry_stagger | default(5) }}"
       environment: "{{ proxy_env }}"
       no_log: "{{ not (unsafe_show_logs|bool) }}"
-
-    - name: download_file | Set mode and owner
-      file:
-        path: "{{ download.dest }}"
-        mode: "{{ download.mode | default(omit) }}"
-        owner: "{{ download.owner | default(omit) }}"
 
     - name: download_file | Unpacking archive
       ansible.builtin.unarchive:

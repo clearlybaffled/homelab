@@ -12,6 +12,10 @@ kube_config_dir: /etc/kubernetes
 kube_script_dir: "{{ bin_dir }}/kubernetes-scripts"
 kube_manifest_dir: "{{ kube_config_dir }}/manifests"
 
+# Where the binaries will be downloaded.
+# Note: ensure that you've enough disk space (about 1G)
+download_cache_dir: /tmp/cluster_cache
+
 # Kubectl command
 # This is for consistency when using kubectl command in roles, and ensure
 kubectl: "{{ bin_dir }}/kubectl --kubeconfig {{ kube_config_dir }}/admin.conf"
@@ -106,6 +110,7 @@ retry_stagger: 5
 # TODO: Make sure this user gets created
 # This is the user that owns tha cluster installation.
 kube_owner: kube
+kube_group: kube
 
 # This is the group that the cert creation scripts chgrp the
 # cert files to. Not really changeable...
@@ -229,7 +234,9 @@ k8s_image_pull_policy: IfNotPresent
 
 # Kubernetes dashboard
 # RBAC required. see docs/getting-started.md for access details.
-dashboard_enabled: false
+dashboard_enabled: true
+dashboard_image_tag: v2.7.0
+dashboard_metrics_scraper_tag: v1.0.8
 
 # audit log for kubernetes
 kubernetes_audit: false

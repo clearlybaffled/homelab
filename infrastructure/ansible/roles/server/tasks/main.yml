@@ -47,7 +47,7 @@
         groups: "{{ ansible_group }}"
         append: true
         create_home: true
-        home: /var/local/ansible
+        home: "{{ ansible_home }}"
         shell: /bin/bash
     - name: User Configuration | Add additional SSH public keys
       ansible.posix.authorized_key:
@@ -74,7 +74,15 @@
         modification_time: preserve
         access_time: preserve
 
-- name: Disable password authentication for root
+- name: Perms on /usr/local/bin
+  file:
+    dest: /usr/local/bin
+    state: directory
+    owner: root
+    group: sys
+    mode: "0775"
+
+- name: Disable sshd password authentication for root
   lineinfile:
     path: /etc/ssh/sshd_config
     state: present
