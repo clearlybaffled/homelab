@@ -25,3 +25,9 @@
 [submodule "references/kubespray"]
 	path = references/kubespray
 	url = https://github.com/kubernetes-sigs/kubespray.git
+[submodule "references/khuedoan"]
+	path = references/khuedoan
+	url = https://github.com/khuedoan/homelab.git
+[submodule "references/gruberdev"]
+	path = references/gruberdev
+	url = https://github.com/gruberdev/homelab
