@@ -1,0 +1,24 @@
+---
+- name: Create kube_cert_group
+  group:
+    name: "{{ kube_cert_group }}"
+    system: true
+- name: Create kube group
+  group:
+    name: "{{ kube_group }}"
+    system: true
+- name: Create user
+  user:
+    name: "{{ kube_owner }}"
+    groups:
+      - "{{ kube_cert_group }}"
+      - sys
+    shell: "/sbin/nologin"
+    create_home: false
+    system: true
+    comment: "Kubernetes User"
+- name: Add ansible_user to kube_group
+  user:
+    name: "{{ ansible_user }}"
+    group: "{{ kube_group }}"
+    append: true

@@ -6,6 +6,7 @@ bin_dir: /usr/local/bin
 created_ansible_user: ansible
 ansible_user: ansible
 ansible_group: sys
+ansible_home: /var/local/ansible
 
 public_ssh_keys:
   - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDBzdxxsMCjpMxOip8d2v1jCww0Ax+8md+3oFtHb0eb jared@barb"

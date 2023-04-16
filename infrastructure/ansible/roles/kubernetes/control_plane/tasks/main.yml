@@ -6,13 +6,22 @@
     owner: "{{ kube_owner }}"
     mode: "0640"
 
+- name: kubeadm | Check if kubeadm has already run
+  stat:
+    path: "/var/lib/kubelet/config.yaml"
+    get_attributes: false
+    get_checksum: false
+    get_mime: false
+  register: kubeadm_already_run
+
 - name: Create control plane with kubeadm
   command: "{{ bin_dir }}/kubeadm init --config {{ kube_config_dir }}/kubeadm.config"
   changed_when: false
+  when: not kubeadm_already_run.stat.exists
 
 - name: Install kubectl bash completion
   shell: "{{ bin_dir }}/kubectl completion bash >/etc/bash_completion.d/kubectl.sh"
-  when: ansible_os_family in ["Debian","RedHat"]
+  when: ansible_os_family in ["Debian","RedHat"] and not kubeadm_already_run.stat.exists
   ignore_errors: true  # noqa ignore-errors
   changed_when: false
 
@@ -22,7 +31,7 @@
     owner: root
     group: root
     mode: "0755"
-  when: ansible_os_family in ["Debian","RedHat"]
+  when: ansible_os_family in ["Debian","RedHat"] and not kubeadm_already_run.stat.exists
   ignore_errors: true  # noqa ignore-errors
 
 - name: Ensure ansible_user has a ~/.kube directory
@@ -40,3 +49,5 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_group }}"
     mode: "0600"
+    force: true
+    remote_src: true

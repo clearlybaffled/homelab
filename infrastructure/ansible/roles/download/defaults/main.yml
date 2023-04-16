@@ -1,8 +1,4 @@
 ---
-# Where the binaries will be downloaded.
-# Note: ensure that you've enough disk space (about 1G)
-download_cache_dir: /tmp/cluster_cache
-
 # If this is true, debug information will be displayed but
 # may contain some private data, so it is recommended to set it to false
 # in the production environment.
@@ -225,44 +221,32 @@ haproxy_image_tag: 2.6.6-alpine
 # Coredns version should be supported by corefile-migration (or at least work with)
 # bundle with kubeadm; if not 'basic' upgrade can sometimes fail
 
-coredns_version: "{{ 'v1.9.3' if (kube_version is version('v1.25.0','>=')) else 'v1.8.6' }}"
 coredns_image_is_namespaced: "{{ (coredns_version is version('v1.7.1','>=')) }}"
-
 coredns_image_repo: "{{ kube_image_repo }}{{'/coredns/coredns' if (coredns_image_is_namespaced | bool) else '/coredns' }}"
 coredns_image_tag: "{{ coredns_version if (coredns_image_is_namespaced | bool) else (coredns_version | regex_replace('^v', '')) }}"
 
-nodelocaldns_version: 1.22.18
 nodelocaldns_image_repo: "{{ kube_image_repo }}/dns/k8s-dns-node-cache"
 nodelocaldns_image_tag: "{{ nodelocaldns_version }}"
 
-dnsautoscaler_version: 1.8.5
 dnsautoscaler_image_repo: "{{ kube_image_repo }}/cpa/cluster-proportional-autoscaler-{{ image_arch }}"
 dnsautoscaler_image_tag: "{{ dnsautoscaler_version }}"
 
-registry_version: 2.8.1
 registry_image_repo: "{{ docker_image_repo }}/library/registry"
 registry_image_tag: "{{ registry_version }}"
-metrics_server_version: v0.6.2
 metrics_server_image_repo: "{{ kube_image_repo }}/metrics-server/metrics-server"
 metrics_server_image_tag: "{{ metrics_server_version }}"
-local_volume_provisioner_version: v2.5.0
 local_volume_provisioner_image_repo: "{{ kube_image_repo }}/sig-storage/local-volume-provisioner"
 local_volume_provisioner_image_tag: "{{ local_volume_provisioner_version }}"
-cephfs_provisioner_version: v2.1.0-k8s1.11
 cephfs_provisioner_image_repo: "{{ quay_image_repo }}/external_storage/cephfs-provisioner"
 cephfs_provisioner_image_tag: "{{ cephfs_provisioner_version }}"
-rbd_provisioner_version: v2.1.1-k8s1.11
 rbd_provisioner_image_repo: "{{ quay_image_repo }}/external_storage/rbd-provisioner"
 rbd_provisioner_image_tag: "{{ rbd_provisioner_version }}"
-local_path_provisioner_version: v0.0.23
 local_path_provisioner_image_repo: "{{ docker_image_repo }}/rancher/local-path-provisioner"
 local_path_provisioner_image_tag: "{{ local_path_provisioner_version }}"
-ingress_nginx_version: v1.6.4
 ingress_nginx_controller_image_repo: "{{ kube_image_repo }}/ingress-nginx/controller"
 ingress_nginx_controller_image_tag: "{{ ingress_nginx_version }}"
 ingress_nginx_kube_webhook_certgen_image_repo: "{{ kube_image_repo }}/ingress-nginx/kube-webhook-certgen"
 ingress_nginx_kube_webhook_certgen_image_tag: v20220916-gd32f8c343
-cert_manager_version: v1.11.0
 cert_manager_controller_image_repo: "{{ quay_image_repo }}/jetstack/cert-manager-controller"
 cert_manager_controller_image_tag: "{{ cert_manager_version }}"
 cert_manager_cainjector_image_repo: "{{ quay_image_repo }}/jetstack/cert-manager-cainjector"
@@ -292,13 +276,10 @@ cinder_csi_plugin_image_repo: "{{ docker_image_repo }}/k8scloudprovider/cinder-c
 cinder_csi_plugin_image_tag: "{{ cinder_csi_plugin_version }}"
 
 dashboard_image_repo: "{{ docker_image_repo }}/kubernetesui/dashboard"
-dashboard_image_tag: v2.7.0
 dashboard_metrics_scraper_repo: "{{ docker_image_repo }}/kubernetesui/metrics-scraper"
-dashboard_metrics_scraper_tag: v1.0.8
 
 metallb_speaker_image_repo: "{{ quay_image_repo }}/metallb/speaker"
 metallb_controller_image_repo: "{{ quay_image_repo }}/metallb/controller"
-metallb_version: v0.12.1
 
 downloads:
   netcheck_server:
@@ -332,7 +313,6 @@ downloads:
       else etcd_digest_checksum|d(None) }}
     url: "{{ etcd_download_url }}"
     unarchive: "{{ etcd_deployment_type == 'host' }}"
-    owner: root
     mode: "0755"
     groups:
       - etcd
@@ -360,7 +340,6 @@ downloads:
     sha256: "{{ kubeadm_binary_checksum }}"
     url: "{{ kubeadm_download_url }}"
     unarchive: false
-    owner: root
     mode: "0755"
     groups:
       - k8s_cluster
@@ -374,7 +353,6 @@ downloads:
     sha256: "{{ kubelet_binary_checksum }}"
     url: "{{ kubelet_download_url }}"
     unarchive: false
-    owner: root
     mode: "0755"
     groups:
       - k8s_cluster
@@ -388,7 +366,6 @@ downloads:
     sha256: "{{ kubectl_binary_checksum }}"
     url: "{{ kubectl_download_url }}"
     unarchive: false
-    owner: root
     mode: "0755"
     groups:
       - kube_control_plane
@@ -402,7 +379,6 @@ downloads:
     sha256: "{{ crictl_binary_checksum }}"
     url: "{{ crictl_download_url }}"
     unarchive: true
-    owner: root
     mode: "0755"
     groups:
       - k8s_cluster
@@ -415,7 +391,6 @@ downloads:
     sha256: "{{ crio_archive_checksum }}"
     url: "{{ crio_download_url }}"
     unarchive: true
-    owner: root
     mode: "0755"
     groups:
       - k8s_cluster
@@ -429,7 +404,6 @@ downloads:
     sha256: "{{ crun_binary_checksum }}"
     url: "{{ crun_download_url }}"
     unarchive: false
-    owner: root
     mode: "0755"
     groups:
       - k8s_cluster
@@ -443,7 +417,6 @@ downloads:
     sha256: "{{ skopeo_binary_checksum }}"
     url: "{{ skopeo_download_url }}"
     unarchive: false
-    owner: root
     mode: "0755"
     groups:
       - kube_control_plane
@@ -519,7 +492,6 @@ downloads:
     sha256: "{{ ciliumcli_binary_checksum }}"
     url: "{{ ciliumcli_download_url }}"
     unarchive: true
-    owner: root
     mode: "0755"
     groups:
       - k8s_cluster
@@ -551,7 +523,6 @@ downloads:
     sha256: "{{ calicoctl_binary_checksum }}"
     url: "{{ calicoctl_download_url }}"
     unarchive: false
-    owner: root
     mode: "0755"
     groups:
       - k8s_cluster
@@ -622,7 +593,6 @@ downloads:
       - "{{ '--strip=6' if (calico_version is version('v3.22.3','<')) else '--strip=3' }}"
       - --wildcards
       - "{{ '*/_includes/charts/calico/crds/kdd/' if (calico_version is version('v3.22.3','<')) else '*/libcalico-go/config/crd/' }}"
-    owner: root
     mode: "0755"
     groups:
       - kube_control_plane
@@ -721,7 +691,6 @@ downloads:
       - "--strip=1"
     include:
       - "linux-{{ image_arch }}/helm"
-    owner: root
     mode: "0755"
     groups:
       - kube_control_plane
@@ -734,7 +703,6 @@ downloads:
     sha256: "{{ krew_archive_checksum }}"
     url: "{{ krew_download_url }}"
     unarchive: true
-    owner: root
     mode: "0755"
     groups:
       - kube_control_plane
@@ -937,7 +905,6 @@ downloads:
     sha256: "{{ argocd_binary_checksum|default(None) }}"
     url: "{{ argocd_download_url }}"
     unarchive: false
-    owner: root
     mode: "0755"
     groups:
       - kube_control_plane
@@ -945,10 +912,11 @@ downloads:
   argocd_manifest:
     enabled: "{{ argocd_enabled }}"
     file: true
-    dest: "{{ download_cache_dir }}"
-    install: "{{ kube_config_dir }}"
+    dest: "{{ download_cache_dir }}/{{ argocd_manifest }}"
+    install: "{{ kube_config_dir }}/{{ argocd_manifest }}"
+    sha256: false
     url: "{{ argocd_manifest_download_url }}"
-    mode: "0644"
+    mode: "0664"
     groups:
       - kube_control_plane
 
@@ -961,7 +929,6 @@ downloads:
     sha256: "{{ yq_binary_checksum|default(None) }}"
     url: "{{ yq_download_url }}"
     unarchive: false
-    owner: root
     mode: "0755"
     groups:
       - kube_control_plane
@@ -977,4 +944,5 @@ download_defaults:
   url: None
   unarchive: false
   owner: "{{ kube_owner }}"
+  grouop: "{{ kube_group }}"
   mode: None

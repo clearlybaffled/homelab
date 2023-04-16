@@ -1,14 +1,17 @@
 ---
 - name: Gather Cluster Facts
   hosts: k8s_cluster
+  become: true
   gather_facts: true
 
 - name: Kubernetes Node setup
   hosts: kube_node
   gather_facts: true
   any_errors_fatal: true
+  become: true
+  tags: never
   roles:
-    - common
+    - kubernetes/users
     - role: download
       tags: download
       vars:
@@ -16,27 +19,36 @@
       when: not skip_downloads
     - kubernetes/node
 
-- name: Install Container Engine
+- name: Install Container Engine and download containers
   hosts: kube_node
   gather_facts: false
   any_errors_fatal: true
+  become: true
+  tags: never
   roles:
     - container_engine
     - { role: download, tags: download, when: not skip_downloads }
 
-- name: Set up control plane
+- name: Install control plane
   hosts: kube_control_plane
   gather_facts: false
   any_errors_fatal: true
+  become: true
   roles:
-    - common
     - kubernetes/control_plane
+
+- name: Perform control plane setup
+  hosts: kube_control_plane[0]
+  gather_facts: false
+  any_errors_fatal: true
+  tags: never
+  roles:
     - kubernetes/cni
 
 - name: Install Apps
-  hosts: kube_control_plane
+  hosts: kube_control_plane[0]
   gather_facts: false
   roles:
-    - argocd
+    - kubernetes/apps
   tags:
     - apps
