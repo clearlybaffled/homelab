@@ -14,8 +14,8 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - name: Setup virtual env
+        run: python -m virtualenv .venv && source .venv/bin/activate && pip install -U -r ./requirements.txt
           
       - name: Ansible Lint
-        uses: ansible/ansible-lint-action@main
-        with:
-          path: infrastructure
+        run: source .venv/bin/activate && ansible-lint infrastructure
