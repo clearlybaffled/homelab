@@ -49,7 +49,7 @@ Running the cluster install playbook
 |<img width="32" src="https://github.com/jetstack/cert-manager/raw/master/logo/logo.png">|[cert-manager](https://cert-manager.io)|Cloud native certificate management|Planned|
 |<img width="32" src="https://avatars.githubusercontent.com/u/314135?s=200&v=4">|[Cloudflare](https://www.cloudflare.com)|DNS and Tunnel|Investigating|
 |<img width="32" src="https://avatars.githubusercontent.com/u/29074118?s=200&v=4">|[CRI-O](https://www.cri-o.io)|OCI - Container Runtime|In Use|
-|<img width="32" src="https://www.debian.org/logos/openlogo-nd.svg">|[Debian](https://debian.org)|Base OS for Kubernetes Control plan|In Use|
+|<img width="32" src="https://www.debian.org/logos/openlogo-nd.svg">|[Debian](https://debian.org)|Base OS for Kubernetes Control plane|In Use|
 |<img width="32" src="https://github.com/kubernetes-sigs/external-dns/raw/master/docs/img/external-dns.png">|[ExternalDNS](https://github.com/kubernetes-sigs/external-dns)|Synchronizes exposed Kubernetes Services and Ingresses with DNS providers|Planned|
 |<img width="32" src="https://raw.githubusercontent.com/flannel-io/flannel/master/logos/flannel-glyph-color.svg">|[Flannel](https://www.github.com/flannel-io/flannel)|Kubernetes Network Plugin|In Use|
 |<img width="32" src="https://grafana.com/static/img/menu/grafana2.svg">|[Grafana](https://grafana.com)|Operational dashboards|Planned|
@@ -69,7 +69,7 @@ Running the cluster install playbook
 | **Icon**|**Application**|**Category**|**Description**|**Deployment Status**|**Version**|
 |--------|----------------|------------|---------------|---------------------|-----------|
 | <img width="32" src="https://raw.githubusercontent.com/grocy/grocy/master/public/img/grocy_logo.svg">|   [Grocy][grocy-uri]                   |   `Services`   |       ERP Beyond your fridge      |        Planned  |  ![][grocy-badge] |
-| <img width="32" src="https://github.com/hay-kot/mealie/blob/mealie-next/docs/docs/assets/img/favicon.png">| [Mealie][mealie-url] | `Services` | Recipe Manager | | | 
+| <img width="32" src="https://github.com/hay-kot/mealie/raw/mealie-next/docs/docs/assets/img/favicon.png">| [Mealie][mealie-url] | `Services` | Recipe Manager | | | 
 |<img width="32" src="https://github.com/MythTV/mythtv/raw/master/mythtv/html/images/icons/upnp_small_icon.png">|[MythTV][mythtv-url]| `Media` | Open Source Digital Video Recorder |Needs migrating| ![][mythtv-badge] |
 |<img width="32" src="https://photonix.org/static/images/logo.svg">|[Photonix][photonix-url]| `Media` | Photo Management | | |
 |<img width="32" src="https://nextcloud.com/wp-content/uploads/2022/10/nextcloud-logo-blue-transparent.svg">| [NextCloud][nextcloud-url] | `File Hosting` | File Hosting | | |
