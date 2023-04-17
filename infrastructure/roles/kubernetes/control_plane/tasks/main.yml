@@ -20,18 +20,20 @@
   when: not kubeadm_already_run.stat.exists
 
 - name: Install kubectl bash completion
-  shell: "{{ bin_dir }}/kubectl completion bash >/etc/bash_completion.d/kubectl.sh"
-  when: ansible_os_family in ["Debian","RedHat"] and not kubeadm_already_run.stat.exists
+  command: "{{ bin_dir }}/kubectl completion bash"
+  when: not kubeadm_already_run.stat.exists
   ignore_errors: true  # noqa ignore-errors
   changed_when: false
+  register: kubectl_completion
 
 - name: Set kubectl bash completion file permissions
-  file:
-    path: /etc/bash_completion.d/kubectl.sh
+  copy:
+    dest: /etc/bash_completion.d/kubectl.sh
     owner: root
     group: root
     mode: "0755"
-  when: ansible_os_family in ["Debian","RedHat"] and not kubeadm_already_run.stat.exists
+    content: "{{ kubectl_completion.stdout }}"
+  when: not kubeadm_already_run.stat.exists
   ignore_errors: true  # noqa ignore-errors
 
 - name: Ensure ansible_user has a ~/.kube directory
@@ -40,7 +42,7 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_group }}"
     state: directory
-    mode: "0755"
+    mode: "0750"
 
 - name: Copy kubeconfig to ansible_home
   copy:
@@ -51,3 +53,12 @@
     mode: "0600"
     force: true
     remote_src: true
+
+- name: Apply crun Runtime class
+  kubernetes.core.k8s:
+    kind: RuntimeClass
+    api_version: node.k8s.io/v1
+    resource_definition: |-
+      metadata:
+        name: crun
+      handler: crun
