@@ -68,9 +68,12 @@ Running the cluster install playbook
 
 | **Icon**|**Application**|**Category**|**Description**|**Deployment Status**|**Version**|
 |--------|----------------|------------|---------------|---------------------|-----------|
-| <img width="32" src="https://raw.githubusercontent.com/grocy/grocy/master/public/img/grocy_logo.svg">|   [Grocy][grocy-uri]                   |   `Services`   |       ERP Beyond your fridge      |        Pending  |  ![][grocy-badge] |
-|<img width="32" src="https://github.com/MythTV/mythtv/raw/master/mythtv/html/images/icons/upnp_small_icon.png">|[MythTV](https://www.mythtv.org)| `Media` | Open Source Digital Video Recorder |Needs migrating| ![][mythtv-badge] |
-
+| <img width="32" src="https://raw.githubusercontent.com/grocy/grocy/master/public/img/grocy_logo.svg">|   [Grocy][grocy-uri]                   |   `Services`   |       ERP Beyond your fridge      |        Planned  |  ![][grocy-badge] |
+| <img width="32" src="https://github.com/hay-kot/mealie/blob/mealie-next/docs/docs/assets/img/favicon.png">| [Mealie][mealie-url] | `Services` | Recipe Manager | | | 
+|<img width="32" src="https://github.com/MythTV/mythtv/raw/master/mythtv/html/images/icons/upnp_small_icon.png">|[MythTV][mythtv-url]| `Media` | Open Source Digital Video Recorder |Needs migrating| ![][mythtv-badge] |
+|<img width="32" src="https://photonix.org/static/images/logo.svg">|[Photonix][photonix-url]| `Media` | Photo Management | | |
+|<img width="32" src="https://nextcloud.com/wp-content/uploads/2022/10/nextcloud-logo-blue-transparent.svg">| [NextCloud][nextcloud-url] | `File Hosting` | File Hosting | | |
+|<img width="32" src="https://hajimari.io/assets/logo.png">|[Hajimari][hajimari-url] | `Dashboard` | Startpage with K8S application discovery | | |
 
 
 ## Thank you!
@@ -86,5 +89,11 @@ Running the cluster install playbook
 
 
 [grocy-uri]: https://github.com/grocy/grocy
+[photonix-url]: https://photonix.org/
+[mythtv-url]: https://www.mythtv.org
+[nextcloud-url]: https://www.nextcloud.com
+[hajimari-url]:https://hajimari.io/
+[mealie-url]:https://mealie.io/
+
 [grocy-badge]: https://img.shields.io/badge/linuxserver/grocy-v3.1.3-blue?logo=docker
 [mythtv-badge]: https://img.shields.io/badge/mythtv-v0.27-blue
