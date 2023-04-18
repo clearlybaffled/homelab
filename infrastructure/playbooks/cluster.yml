@@ -9,32 +9,24 @@
   gather_facts: true
   any_errors_fatal: true
   become: true
-  tags: never
   roles:
-    - kubernetes/users
+    - role: kubernetes/node
     - role: download
       tags: download
       vars:
         download_container: false
       when: not skip_downloads
-    - kubernetes/node
-
-- name: Install Container Engine and download containers
-  hosts: kube_node
-  gather_facts: false
-  any_errors_fatal: true
-  become: true
-  tags: never
-  roles:
-    - container_engine
-    - { role: download, tags: download, when: not skip_downloads }
+    - role: container_engine
+    - role: download
+      tags: download
+      when: not skip_downloads
+    - role: kubernetes/kubelet
 
 - name: Install control plane
   hosts: kube_control_plane
   gather_facts: false
   any_errors_fatal: true
   become: true
-  tags: never
   roles:
     - kubernetes/control_plane
 
@@ -42,14 +34,12 @@
   hosts: kube_control_plane[0]
   gather_facts: false
   any_errors_fatal: true
-  tags: never
   roles:
     - kubernetes/cni
 
 - name: Configure local binaries for cluster admin
   gather_facts: true
   hosts: kube_control_plane[0]
-  tags: never
   roles:
     - kubernetes/client
 

@@ -4,7 +4,7 @@
     name: "{{ k8s_common_packages | union(k8s_required_packages|default([])) }}"
     state: present
 
-# - import_tasks: install.yml # noqa name
+- import_tasks: accounts.yml # noqa name
 
 - name: Enable kernel modules now
   community.general.modprobe:
@@ -70,6 +70,3 @@
   when:
     - kube_network_plugin in ["calico", "weave", "canal", "flannel", "cilium", "kube-ovn", "kube-router", "macvlan"]
     - inventory_hostname in groups['k8s_cluster']
-
-- name: Setup Kubelet
-  include_tasks: kubelet.yml
