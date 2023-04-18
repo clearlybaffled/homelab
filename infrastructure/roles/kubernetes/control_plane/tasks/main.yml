@@ -19,41 +19,6 @@
   changed_when: false
   when: not kubeadm_already_run.stat.exists
 
-- name: Install kubectl bash completion
-  command: "{{ bin_dir }}/kubectl completion bash"
-  when: not kubeadm_already_run.stat.exists
-  ignore_errors: true  # noqa ignore-errors
-  changed_when: false
-  register: kubectl_completion
-
-- name: Set kubectl bash completion file permissions
-  copy:
-    dest: /etc/bash_completion.d/kubectl.sh
-    owner: root
-    group: root
-    mode: "0755"
-    content: "{{ kubectl_completion.stdout }}"
-  when: not kubeadm_already_run.stat.exists
-  ignore_errors: true  # noqa ignore-errors
-
-- name: Ensure ansible_user has a ~/.kube directory
-  file:
-    path: "{{ ansible_home }}/.kube"
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_group }}"
-    state: directory
-    mode: "0750"
-
-- name: Copy kubeconfig to ansible_home
-  copy:
-    src: "{{ kube_config_dir }}/admin.conf"
-    dest: "{{ ansible_home }}/.kube/config"
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_group }}"
-    mode: "0600"
-    force: true
-    remote_src: true
-
 - name: Apply crun Runtime class
   kubernetes.core.k8s:
     kind: RuntimeClass
@@ -62,3 +27,11 @@
       metadata:
         name: crun
       handler: crun
+
+- name: Create cluster user for ansible
+  include_role: users
+  vars:
+    kube_user: ansible-admin
+    username: "{{ ansible_user }}"
+    groupname: "{{ ansible_group }}"
+    dest_dir: "{{ ansible_home }}/.kube"

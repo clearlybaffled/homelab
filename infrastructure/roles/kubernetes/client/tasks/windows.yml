@@ -1,0 +1,28 @@
+---
+- name: windows | Install argocd
+  ansible.windows.win_powershell:
+    executable: 'C:\Program Files\Powershell\7\pwsh.exe'
+    script: Invoke-WebRequest -Uri $url -OutFile $output
+    parameters:
+      Version: "{{ argocd_version | regex_replace('^v','') }}"
+      Url: 'https://github.com/argoproj/argo-cd/releases/download/$Version/argocd-windows-amd64.exe'
+      Output: '$env:localappdata\Microsoft\Winget\Links\argocd.exe'
+  when: install not defined or "argocd" in install
+
+- name: windows | Install kubectl
+  ansible.windows.win_powershell:
+    executable: 'C:\Program Files\Powershell\7\pwsh.exe'
+    script: "winget install -e --id $Id  --version $Version --source winget"
+    parameters:
+      Id: Kubernetes.kubectl
+      Version: "{{ kube_version | regex_replace('^v','') }}"
+  when: install not defined or "kubectl" in install
+
+- name: windows | Install helm
+  ansible.windows.win_powershell:
+    executable: 'C:\Program Files\Powershell\7\pwsh.exe'
+    script: "winget install -e --id $Id  --version $Version --source winget"
+    parameters:
+      Id: Helm.Helm
+      Version: "{{ helm_version | regex_replace('^v', '') }}"
+  when: install not defined or "helm" in install
