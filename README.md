@@ -69,7 +69,8 @@ Welcome to my homelab! It's a modest "cluster" with one kubernetes control plan/
 |<img width="32" src="https://github.com/paperless-ngx/paperless-ngx/raw/dev/docs/assets/favicon.png">|[Paperless-ngx][paperless-uri] | `File Sharing` | Document Management System | | |
 |<img width="32" src="https://github.com/kovidgoyal/calibre/raw/master/icons/calibre.png">|[Calibre][calibre-uri]| `Media` | e-book Manager | | |
 |<img width="32" src="https://avatars.githubusercontent.com/u/2131270?s=200&v=4">|[qBittorrent][qbittorrent-uri]| `Meida` | Torrent client | | | 
-
+|<img width="32" src="https://avatars.githubusercontent.com/u/44905828?s=200&v=4">|[NetBox][netbox-uri]| `Services`| Full-scale network inventory | | |
+|<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">|[ListenBrainz][listenbrainz-uri]| `Media` | Open Source scrobbler | | | 
 
 ## Thank you!
 - https://github.com/bjw-s/home-ops
@@ -92,6 +93,8 @@ Welcome to my homelab! It's a modest "cluster" with one kubernetes control plan/
 [paperless-uri]: https://docs.paperless-ngx.com/
 [calibre-uri]: https://calibre-ebook.com/
 [qbittorrent-uri]: https://www.qbittorrent.org/
+[netboxk-uri]: https://netbox.dev
+[listenbrainz-uri]: https://listenbrainz.org
 
 [wahoo-uri]: https://en.wikipedia.org/wiki/USS_Wahoo_(SS-238)
 [ww2-sub-moh-uri]: https://www.navalsubleague.org/links/historymuseums/submarine-force-medal-honor-recipients/
