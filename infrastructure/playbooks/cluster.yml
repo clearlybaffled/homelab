@@ -30,18 +30,19 @@
   roles:
     - kubernetes/control_plane
 
-- name: Perform control plane setup
-  hosts: kube_control_plane[0]
-  gather_facts: false
-  any_errors_fatal: true
-  roles:
-    - kubernetes/cni
-
 - name: Configure local binaries for cluster admin
   gather_facts: true
   hosts: kube_control_plane[0]
   roles:
     - kubernetes/client
+
+- name: Perform additional control plane setup
+  hosts: localhost
+  connection: local 
+  gather_facts: true
+  any_errors_fatal: true
+  roles:
+    - kubernetes/cni
 
 - name: Bootstrap Cluster
   hosts: localhost

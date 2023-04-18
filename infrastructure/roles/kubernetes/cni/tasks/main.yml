@@ -3,9 +3,9 @@
   kubernetes.core.k8s:
     template: cni-flannel.yml.j2
     state: present
-  when: inventory_hostname == groups['kube_control_plane'][0]
 
 - name: Flannel | Wait for flannel subnet.env file presence
+  delegate_to: "{{ groups['kube_control_plane'][0] }}"
   wait_for:
     path: /run/flannel/subnet.env
     delay: 5
