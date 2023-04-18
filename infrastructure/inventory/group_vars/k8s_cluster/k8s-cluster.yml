@@ -11,6 +11,7 @@ ansible_ssh_common_args: "{% if 'bastion' in groups['all'] %} -o ProxyCommand='s
 kube_config_dir: /etc/kubernetes
 kube_script_dir: "{{ bin_dir }}/kubernetes-scripts"
 kube_manifest_dir: "{{ kube_config_dir }}/manifests"
+kubeconfig_file: "{{ kube_config_dir }}/admin.conf"
 
 # Where the binaries will be downloaded.
 # Note: ensure that you've enough disk space (about 1G)
@@ -18,7 +19,7 @@ download_cache_dir: /tmp/cluster_cache
 
 # Kubectl command
 # This is for consistency when using kubectl command in roles, and ensure
-kubectl: "{{ bin_dir }}/kubectl --kubeconfig {{ kube_config_dir }}/admin.conf"
+kubectl: "{{ bin_dir }}/kubectl --kubeconfig {{ kubeconfig_file }}"
 
 # This is where all the cert scripts and certs will be located
 kube_cert_dir: "{{ kube_config_dir }}/pki"
@@ -195,7 +196,7 @@ kube_apiserver_port: 6443  # (https)
 
 # NOTE: If you specific address/interface and use loadbalancer_apiserver_localhost
 # loadbalancer_apiserver_localhost (nginx/haproxy) will deploy on masters on 127.0.0.1:{{ loadbalancer_apiserver_port|default(kube_apiserver_port) }} too.
-kube_apiserver_bind_address: 0.0.0.0
+kube_apiserver_bind_address: 172.16.1.10   # 0.0.0.0
 
 # configure arp_ignore and arp_announce to avoid answering ARP queries from kube-ipvs0 interface
 # must be set to true for MetalLB, kube-vip(ARP enabled) to work
@@ -421,9 +422,9 @@ kube_apiserver_address: "{{ ip | default(fallback_ips[inventory_hostname]) }}"
 kube_apiserver_access_address: "{{ access_ip | default(kube_apiserver_address) }}"
 first_kube_control_plane_address: "{{ hostvars[groups['kube_control_plane'][0]]['access_ip'] | default(hostvars[groups['kube_control_plane'][0]]['ip'] | default(fallback_ips[groups['kube_control_plane'][0]])) }}"
 loadbalancer_apiserver_localhost: "{{ loadbalancer_apiserver is not defined }}"
-loadbalancer_apiserver_type: "nginx"
+# loadbalancer_apiserver_type: "nginx"
 # applied if only external loadbalancer_apiserver is defined, otherwise ignored
-apiserver_loadbalancer_domain_name: "lb-apiserver.kubernetes.local"
+# apiserver_loadbalancer_domain_name: "lb-apiserver.kubernetes.local"
 kube_apiserver_global_endpoint: |-
   {% if loadbalancer_apiserver is defined -%}
       https://{{ apiserver_loadbalancer_domain_name }}:{{ loadbalancer_apiserver.port|default(kube_apiserver_port) }}
@@ -512,10 +513,10 @@ containerd_min_version_required: "1.3.7"
 
 ## Local loadbalancer should use this port
 ## And must be set port 6443
-loadbalancer_apiserver_port: 6443
+# loadbalancer_apiserver_port: 6443
 
 ## If loadbalancer_apiserver_healthcheck_port variable defined, enables proxy liveness check for nginx.
-loadbalancer_apiserver_healthcheck_port: 8081
+# loadbalancer_apiserver_healthcheck_port: 8081
 
 ### OTHER OPTIONAL VARIABLES
 
