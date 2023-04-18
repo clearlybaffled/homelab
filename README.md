@@ -93,7 +93,7 @@ Welcome to my homelab! It's a modest "cluster" with one kubernetes control plan/
 [paperless-uri]: https://docs.paperless-ngx.com/
 [calibre-uri]: https://calibre-ebook.com/
 [qbittorrent-uri]: https://www.qbittorrent.org/
-[netboxk-uri]: https://netbox.dev
+[netbox-uri]: https://netbox.dev
 [listenbrainz-uri]: https://listenbrainz.org
 
 [wahoo-uri]: https://en.wikipedia.org/wiki/USS_Wahoo_(SS-238)
