@@ -31,3 +31,6 @@
 [submodule "references/gruberdev"]
 	path = references/gruberdev
 	url = https://github.com/gruberdev/homelab
+[submodule "refrences/vehagn"]
+	path = references/vehagn
+	url = https://github.com/vehagn/homelab.git
