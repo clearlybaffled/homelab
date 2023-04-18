@@ -6,9 +6,9 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: infrastructure
+  project: default
   source:
-    path: infra/argocd
+    path: core/argocd
     repoURL: https://github.com/clearlybaffled/homelab
     targetRevision: HEAD
   destination:

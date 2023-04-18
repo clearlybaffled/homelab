@@ -1,0 +1,35 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cluster
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+  - git:
+      repoURL: https://github.com/clearlybaffled/homelab
+      revision: HEAD
+      directories:
+        - path: cluster/*
+        - path: cluster/argocd
+          exclude: true
+template:
+    metadata:
+      name: '{{index .path.segments 1}}'
+      namespace: argocd
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: default
+      source:
+        path: '{{.path.path}}'
+        repoURL: https://github.com/clearlybaffled/homelab
+        targetRevision: HEAD
+      destination:
+        server: in-cluster
+        namespace: cluster
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

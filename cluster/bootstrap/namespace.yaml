@@ -5,6 +5,6 @@ metadata:
   name: argocd
 ---
 apiVersion: v1
-kind: Namespace
+Kind: Namespace
 metadata:
   name: cluster
