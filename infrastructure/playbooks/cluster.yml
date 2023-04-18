@@ -34,6 +34,7 @@
   gather_facts: false
   any_errors_fatal: true
   become: true
+  tags: never
   roles:
     - kubernetes/control_plane
 
@@ -45,11 +46,19 @@
   roles:
     - kubernetes/cni
 
-- name: Bootstrap Cluster
+- name: Configure local binaries for cluster admin
+  gather_facts: true
   hosts: kube_control_plane[0]
-  gather_facts: false
+  tags: never
+  roles:
+    - kubernetes/client
+
+- name: Bootstrap Cluster
+  hosts: localhost
+  connection: local
+  gather_facts: true
   tags:
     - bootstrap
   tasks:
     - name: Start it up
-      command: kubectl -k cluster/argocd
+      command: kubectl apply -k ../../cluster/argocd

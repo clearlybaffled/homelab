@@ -23,13 +23,15 @@
   kubernetes.core.k8s:
     kind: RuntimeClass
     api_version: node.k8s.io/v1
+    kubeconfig: "{{ kubeconfig_file }}"
     resource_definition: |-
       metadata:
         name: crun
       handler: crun
 
 - name: Create cluster user for ansible
-  include_role: users
+  include_role:
+    name: kubernetes/users
   vars:
     kube_user: ansible-admin
     username: "{{ ansible_user }}"
