@@ -13,28 +13,18 @@
 - name: windows | Ensure all networks are private
   ansible.windows.win_powershell: Set-NetConnectionProfile -NetworkCategory Private
 
-
 - name: windows | Install packages with winget
   ansible.windows.win_powershell:
     executable: 'C:\Program Files\Powershell\7\pwsh.exe'
-    script: "winget install -e"
+    script: "winget install -e --name $Name --id $Id --source $Source"
     parameters:
-      -Name: item.name
-      -Id: item.Id
-      -source: item.source
+      Name: item.name
+      Id: item.Id
+      Source: item.source
     with_list: winget_packages
 
 - name: windows | Update all winget packages to latest
   ansible.windows.win_powershell: winget upgrade --all --silent
-
-- name: windows | Install argocd
-  ansible.windows.win_powershell:
-    executable: 'C:\Program Files\Powershell\7\pwsh.exe'
-    script: |
-      $version = (Invoke-RestMethod https://api.github.com/repos/argoproj/argo-cd/releases/latest).tag_name
-      $url = "https://github.com/argoproj/argo-cd/releases/download/" + $version + "/argocd-windows-amd64.exe"
-      $output = "argocd.exe"
-      Invoke-WebRequest -Uri $url -OutFile $output
 
 - name: windows | Setup opensshd
   become: true

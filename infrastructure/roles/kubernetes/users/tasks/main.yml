@@ -1,24 +1,45 @@
 ---
-- name: Create kube_cert_group
-  group:
-    name: "{{ kube_cert_group }}"
-    system: true
-- name: Create kube group
-  group:
-    name: "{{ kube_group }}"
-    system: true
-- name: Create user
-  user:
-    name: "{{ kube_owner }}"
-    groups:
-      - "{{ kube_cert_group }}"
-      - sys
-    shell: "/sbin/nologin"
-    create_home: false
-    system: true
-    comment: "Kubernetes User"
-- name: Add ansible_user to kube_group
-  user:
-    name: "{{ ansible_user }}"
-    group: "{{ kube_group }}"
-    append: true
+- block: # noqa name
+    - name: user | Generate private key
+      community.crypto.openssl_privatekey_pipe:
+        type: RSA
+        size: 4096
+      register: private_key
+
+    - name: user | Generate CSR
+      community.crypto.openssl_csr_pipe:
+        privatekey_content: "{{ private_key.privatekey }}"
+        common_name: "{{ kube_user }}"
+        organization_name: system:masters
+      register: csr
+
+    - name: user | Process user request on control plane
+      delegate_to: "{{ groups['kube_control_plane'][0] }}"
+      become: true
+      block:
+        - name: user | Create ClusterRoleBinding and submit CSR
+          kubernetes.core.k8s:
+            template: create-user.yml.j2
+
+        - name: user | Approve CSR
+          command: "{{ bin_dir }}/kubectl certificate approve {{ kube_user }}-csr"
+          register: approve_csr
+          failed_when: approve_csr.rc != 0
+
+        - name: user | Get Signed certificate
+          command: "{{ bin_dir }}/kubectl get csr {{ kube_user }}-csr -o jsonpath='{.status.certificate}'"
+          register: crt
+
+    - name: user | Create kubeconfig file
+      template:
+        name: kubeconfig.yml.j2
+        dest: "{{ dest_dir }}/config"
+        owner: "{{ username }}"
+        group: "{{ groupname | default(omit) }}"
+        mode: "0600"
+  always:
+    - name: Make sure that output (which contains the private key) is overwritten
+      set_fact:
+        private_key: ''
+        csr: ''
+        crt: ''

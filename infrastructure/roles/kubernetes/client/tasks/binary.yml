@@ -1,0 +1,32 @@
+---
+- name: "binary | Setup local client - {{ binary }}"
+  when: ansible_os_family|lower in ["redhat","debian"]
+  block:
+    - name: binary | Copy binary to ansible host
+      fetch:
+        src: "{{ bin_dir }}/{{ binary }}"
+        dest: "{{ artifacts_dir }}/{{ binary }}"
+        flat: true
+        validate_checksum: false
+      register: copy_binary_result
+      until: copy_binary_result is falset failed
+      retries: 20
+      become: false
+      run_once: true
+      when: kubectl_localhost
+
+    - name: binary | Get bash completion
+      command: "{{ bin_dir }}/{{ binary }} completion bash"
+      ignore_errors: true  # noqa ignore-errors
+      changed_when: false
+      register: binary_completion
+
+    - name: binary | Install bash completion
+      copy:
+        dest: "/etc/bash_completion.d/{{ binary }}.sh"
+        owner: root
+        group: root
+        mode: "0755"
+        content: "{{ binary_completion.stdout }}"
+      when: binary_completion.rc == 0
+      ignore_errors: true  # noqa ignore-errors
