@@ -45,10 +45,11 @@
   roles:
     - kubernetes/cni
 
-- name: Install Apps
+- name: Bootstrap Cluster
   hosts: kube_control_plane[0]
   gather_facts: false
-  roles:
-    - kubernetes/apps
   tags:
-    - apps
+    - bootstrap
+  tasks:
+    - name: Start it up
+      command: kubectl -k cluster/argocd

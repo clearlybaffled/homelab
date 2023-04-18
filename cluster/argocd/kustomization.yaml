@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argocd
+
+resources:
+  - namespace.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/core-install.yaml
+  # - ingress.yaml
+  # - project.yaml
+  # - infrastructure.yaml
+  # - applications.yaml
+
+# patchesStrategicMerge:
+  # Let Traefik manage TLS-termination
+  # - patches/argocd-cmd-params-cm-server-insecrure-patch.yaml
