@@ -14,7 +14,7 @@ spec:
         - path: cluster/*
         - path: cluster/argocd
           exclude: true
-template:
+  template:
     metadata:
       name: '{{index .path.segments 1}}'
       namespace: argocd
@@ -33,3 +33,5 @@ template:
         automated:
           prune: true
           selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
