@@ -15,7 +15,10 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup virtual env
-        run: python -m virtualenv .venv && source .venv/bin/activate && pip install -U -r ./requirements.txt
-          
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pipenv'
+      - run: pip install -r requirements.txt
       - name: Ansible Lint
         run: source .venv/bin/activate && ansible-lint infrastructure
