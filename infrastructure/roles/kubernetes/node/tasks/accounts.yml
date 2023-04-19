@@ -23,7 +23,8 @@
 - name: Add ansible_user to kube_group
   user:
     name: "{{ ansible_user }}"
-    group: "{{ kube_group }}"
+    groups:
+      - "{{ kube_group }}"
     append: true
 
 - name: Ensure ansible_user has a ~/.kube directory

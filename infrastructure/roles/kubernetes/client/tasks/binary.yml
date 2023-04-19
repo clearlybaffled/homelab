@@ -1,7 +1,6 @@
 ---
 - name: "binary | Setup local client - {{ binary }}"
   when: ansible_os_family|lower in ["redhat","debian"]
-  become: true
   block:
     - name: binary | Copy {{ binary }} binary to ansible host # noqa name
       copy:
@@ -22,14 +21,14 @@
       ignore_errors: true  # noqa ignore-errors
       changed_when: false
       register: binary_completion
+      delegate_to: localhost
       when: completion is not exists
 
     - name: binary | Install bash completion
       copy:
         dest: "{{ completion }}"
-        owner: root
-        group: root
         mode: "0755"
         content: "{{ binary_completion.stdout }}"
+      delegate_to: localhost
       when: binary_completion is not skipped
       ignore_errors: true  # noqa ignore-errors

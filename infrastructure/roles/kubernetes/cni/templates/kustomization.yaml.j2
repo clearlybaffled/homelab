@@ -1,0 +1,71 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+
+patches:
+  - patch: |-
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: kube-flannel-cfg
+        namespace: kube-flannel
+      data:
+        net-conf.json: |
+          {
+              "Network": "{{ kube_pods_subnet }}",
+              "EnableIPv4": true,
+              "Backend": {
+                "Type": "{{ flannel_backend_type }}"{% if flannel_backend_type == "vxlan" %},
+                "VNI": {{ flannel_vxlan_vni }},
+                "Port": {{ flannel_vxlan_port }},
+                "DirectRouting": {{ flannel_vxlan_direct_routing | to_json }}{% endif %} 
+              }
+          }
+  - patch: |-
+      apiVersion: apps/v1
+      kind: DaemonSet
+      metadata:
+        name: kube-flannel-ds
+        namespace: kube-flannel
+      spec:
+        template:
+          spec:
+            containers:
+              - name: kube-flannel
+                image: {{ flannel_image_repo }}:{{ flannel_image_tag }}
+                imagePullPolicy: {{ k8s_image_pull_policy }}
+                resources:
+                  limits:
+                    cpu: {{ flannel_cpu_limit }}
+                    memory: {{ flannel_memory_limit }}
+                  requests:
+                    cpu: {{ flannel_cpu_requests }}
+                    memory: {{ flannel_memory_requests }}
+            affinity:
+              nodeAffinity:
+                  requiredDuringSchedulingIgnoredDuringExecution:
+                    nodeSelectorTerms:
+                    - matchExpressions:
+                      - key: kubernetes.io/arch
+                        operator: In
+                        values:
+                        - {{ host_architecture }}
+            initContainers:
+            - name: install-cni-plugin
+              image: {{ flannel_init_image_repo }}:{{ flannel_init_image_tag }}
+            - name: install-cni
+              image: {{ flannel_image_repo }}:{{ flannel_image_tag }}
+  - patch: |-
+      - op: replace
+        path: /metadata/name
+        value: {% if host_architecture == 'amd64' %}kube-flannel{% else %}kube-flannel-ds-{{ host_architecture }}{% endif %}
+
+    target:
+      group: apps
+      version: v1
+      kind: DaemonSet
+      name: kube-flannel-ds
+      

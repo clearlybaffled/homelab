@@ -1,0 +1,13 @@
+---
+- name: Reset
+  hosts: kube_control_plane
+  any_errors_fatal: true
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Reset cluster
+      command: "{{ bin_dir }}/kubeadm reset --force"
+    - name: Clean CNI
+      file:
+        path: /etc/cni/net.d
+        state: absent

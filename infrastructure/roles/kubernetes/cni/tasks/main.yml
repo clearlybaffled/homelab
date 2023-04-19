@@ -1,10 +1,17 @@
 ---
-- name: Flannel | Start Resources
-  kubernetes.core.k8s:
-    template: cni-flannel.yml.j2
-    state: present
+- name: Render kustomize template
+  template:
+    src: "{{ item }}.j2"
+    dest: "/tmp/{{ item }}"
+    mode: "0644"
+  with_items:
+    - kustomization.yaml
 
-- name: Flannel | Wait for flannel subnet.env file presence
+- name: Start Resources
+  kubernetes.core.k8s:
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='/tmp') }}"
+
+- name: Wait for flannel subnet.env file presence
   delegate_to: "{{ groups['kube_control_plane'][0] }}"
   wait_for:
     path: /run/flannel/subnet.env
