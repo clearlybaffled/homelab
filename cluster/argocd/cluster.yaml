@@ -27,7 +27,7 @@ spec:
         repoURL: https://github.com/clearlybaffled/homelab
         targetRevision: HEAD
       destination:
-        server: in-cluster
+        name: in-cluster
         namespace: cluster
       syncPolicy:
         automated:
