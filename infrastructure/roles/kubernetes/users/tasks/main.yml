@@ -30,6 +30,9 @@
         - name: user | Get Signed certificate
           command: "{{ kubectl }} get csr {{ kube_user }}-csr -o jsonpath='{.status.certificate}'"
           register: crt
+          until: crt.stdout is ne ""
+          retries: 5
+          delay: 5
 
         - name: user | get kubernetes cluster ca file
           slurp:
@@ -40,12 +43,9 @@
             cluster_ca_data: "{{ ca_file_data.content  | replace('\n','') }}"
 
     - name: user | Create kubeconfig file
-      template:
-        src: kubeconfig.yml.j2
-        dest: "{{ dest_dir }}/config"
-        owner: "{{ username }}"
-        group: "{{ groupname | default(username) }}"
-        mode: "0600"
+      set_fact:
+        kubeconfig: "{{ lookup('ansible.builtin.template', 'kubeconfig.yml.j2') }}"
+
   always:
     - name: Make sure that output (which contains the private key) is overwritten
       set_fact:

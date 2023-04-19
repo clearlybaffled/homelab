@@ -15,7 +15,7 @@
   register: kubeadm_already_run
 
 - name: Create control plane with kubeadm
-  command: "{{ bin_dir }}/kubeadm init --config {{ kube_config_dir }}/kubeadm.config"
+  command: "{{ bin_dir }}/kubeadm init --config {{ kube_config_dir }}/kubeadm-config.yml"
   changed_when: false
   when: not kubeadm_already_run.stat.exists
 
@@ -36,4 +36,12 @@
     kube_user: ansible-admin
     username: "{{ ansible_user }}"
     groupname: "{{ ansible_group }}"
-    dest_dir: "{{ ansible_home }}/.kube"
+
+- name: Write kubeconfig
+  copy:
+    dest: "{{ ansible_home }}/.kube/config"
+    content: "{{ kubeconfig }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_group }}"
+    mode: "0600"
+    force: true

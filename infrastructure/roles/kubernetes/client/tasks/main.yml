@@ -2,16 +2,16 @@
 - name: Localhost setup
   delegate_to: localhost
   block:
-    - name: Set Homedir
+    - name: Set some facts
       set_fact:
         home_directory: "{{ lookup('env','HOME') }}"
         local_user: "{{ lookup('env','USER') }}"
+        kubedir: "{{ lookup('env','HOME')  }}/.kube"
 
     - name: Create kube config dir for current/ansible become user
-      delegate_to: localhost
       file:
-        path: "{{ home_directory }}/.kube"
-        owner: "{{ lookup('env','USER') }}"
+        path: "{{ kubedir }}"
+        owner: "{{ local_user }}"
         mode: "0700"
         state: directory
 
@@ -26,7 +26,14 @@
         kube_user: "{{ local_user }}"
         username: "{{ local_user }}"
         groupname: "{{ local_user }}"
-        dest_dir: "{{ home_directory }}/.kube"
+
+    - name: Write local kubeconfig
+      copy:
+        dest: "{{ kubedir }}/config"
+        content: "{{ kubeconfig }}"
+        owner: "{{ local_user }}"
+        mode: "0600"
+        force: true
 
 - name: Setup local binary clients
   include_tasks: binary.yml

@@ -1,0 +1,4 @@
+---
+node_labels:
+  - 'hermleigh.home/dvb=installed'
+  - 'hermleigh.home/jbod=true'
