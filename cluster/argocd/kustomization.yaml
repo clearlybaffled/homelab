@@ -7,4 +7,3 @@ resources:
   - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/core-install.yaml
   - argocd.yaml
   - cluster.yaml
-  - ingress.yaml
