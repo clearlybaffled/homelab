@@ -31,7 +31,7 @@
           command: "{{ kubectl }} get csr {{ kube_user }}-csr -o jsonpath='{.status.certificate}'"
           register: crt
           until: crt.stdout is ne ""
-          retries: 5
+          retries: 10
           delay: 5
 
         - name: user | get kubernetes cluster ca file

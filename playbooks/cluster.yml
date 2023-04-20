@@ -36,10 +36,17 @@
   roles:
     - kubernetes/client
 
-- name: Finish setting up control plane
+- name: Register CNI pluin
   hosts: localhost
   gather_facts: true
   any_errors_fatal: true
   roles:
     - kubernetes/cni
+
+- name: Start up ArgoCD deployment
+  hosts: localhost
+  gather_facts: true
+  any_errors_fatal: true
+  tags: argocd
+  roles:
     - kubernetes/argocd
