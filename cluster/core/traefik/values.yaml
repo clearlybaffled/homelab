@@ -23,3 +23,6 @@ persistence:
   size: 128Mi
   storageClass: cert-storage
   path: /data
+
+service:
+  type: NodePort
