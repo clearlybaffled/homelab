@@ -17,6 +17,15 @@ Welcome to my homelab! It's a modest "cluster" with one kubernetes control plan/
 - [ ] RADIUS server
 - [ ] Offsite access via VPN
 
+## Getting Started
+
+```shell
+$ virtualenv .venv
+$ source .venv/bin/activate
+$ pip install -U -r requirements.txt
+$ ansible-playbook infrastructure/playbooks/cluster.yml --private-key=/path/to/ansible/key
+```
+
 ## Layout
 
 - Location: America / North East
