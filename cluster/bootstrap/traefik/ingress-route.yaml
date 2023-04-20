@@ -7,17 +7,8 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`auth-traefik.gato.hermleigh.home`)
-      kind: Rule
-      services:
-        - name: traefik-forward-auth
-          port: 4181
-      middlewares:
-        - name: traefik-forward-auth
     - match: Host(`traefik.gato.hermleigh.home`)
       kind: Rule
       services:
         - name: api@internal
           kind: TraefikService
-      middlewares:
-        - name: traefik-forward-auth
