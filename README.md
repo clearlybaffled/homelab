@@ -23,7 +23,7 @@ Welcome to my homelab! It's a modest "cluster" with one kubernetes control plan/
 $ virtualenv .venv
 $ source .venv/bin/activate
 $ pip install -U -r requirements.txt
-$ ansible-playbook infrastructure/playbooks/cluster.yml --private-key=/path/to/ansible/key
+$ ansible-playbook infrastructure/cluster.yml --private-key=/path/to/ansible/key
 ```
 
 ## Layout
