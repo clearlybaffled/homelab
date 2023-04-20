@@ -1,0 +1,3 @@
+---
+- name: Reset cluster
+  command: "{{ bin_dir }}/kubeadm reset --force"
