@@ -6,9 +6,10 @@
 
 - name: Kubernetes Node setup
   hosts: kube_node
-  gather_facts: true
+  gather_facts: false
   any_errors_fatal: true
   become: true
+  tags: node
   roles:
     - role: kubernetes/node
     - role: download
@@ -16,7 +17,7 @@
       vars:
         download_container: false
       when: not skip_downloads
-    - role: container_engine
+    - role: containers/runtime
     - role: download
       tags: download
       when: not skip_downloads
@@ -27,21 +28,25 @@
   gather_facts: false
   any_errors_fatal: true
   become: true
+  tags: control_plane
   roles:
     - kubernetes/control_plane
 
 - name: Configure local binaries for cluster admin
   gather_facts: true
   hosts: kube_control_plane[0]
+  tags: client
   roles:
     - kubernetes/client
 
 - name: Register CNI pluin
   hosts: localhost
+  connection: local
   gather_facts: true
   any_errors_fatal: true
+  tags: cni
   roles:
-    - kubernetes/cni
+    - containers/network
 
 - name: Start up ArgoCD deployment
   hosts: localhost
