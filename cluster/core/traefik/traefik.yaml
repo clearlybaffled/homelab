@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/main/argoproj.io/application_v1alpha1.json
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -10,10 +11,10 @@ spec:
   project: default
   source:
     chart: traefik
-    repoURL: https://helm.traefik.io/traefik
+    repoURL: https://traefik.github.io/charts
     targetRevision: 22.1.0
     helm:
-      valuesFile: 
+      valueFiles: 
         - values.yaml
   destination:
     name: in-cluster
