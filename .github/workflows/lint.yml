@@ -6,8 +6,8 @@ on:
       - main
 
 jobs:
-  lint:
-    name: Lint
+  ansible-lint:
+    name: Ansible Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,3 +22,16 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Ansible Lint
         run: source .venv/bin/activate && ansible-lint infrastructure
+  kubeconform:
+    name: Kubernetes Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Kubeconform
+        uses: docker://ghcr.io/yannh/kubeconform:master
+        with:
+          entrypoint: '/kubeconform'
+          args: "-summary -output json -schema-location default -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' cluster"
