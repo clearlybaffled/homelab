@@ -1,0 +1,8 @@
+---
+- name: Render kustomize template
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ playbook_dir}}/../cluster/bootstrap/flannel/{{ item }}"
+    mode: "0644"
+  with_items:
+    - kustomization.yaml

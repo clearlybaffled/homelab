@@ -1,0 +1,200 @@
+---
+- name: containers/runtime | Create containers posix group
+  ansible.builtin.group:
+    name: containers
+    system: true
+    state: present
+
+- name: cri-o | make sure needed folders exist in the system
+  with_items:
+    - /etc/crio
+    - /etc/containers
+    - /etc/systemd/system/crio.service.d
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+
+- name: cri-o | install cri-o config
+  ansible.builtin.template:
+    src: crio.conf.j2
+    dest: /etc/crio/crio.conf
+    mode: "0644"
+  register: config_install
+
+- name: cri-o | install config.json
+  ansible.builtin.template:
+    src: config.json.j2
+    dest: /etc/crio/config.json
+    mode: "0644"
+  register: reg_auth_install
+
+- name: cri-o | copy service file
+  ansible.builtin.copy:
+    src: "{{ download_cache_dir }}/cri-o/contrib/crio.service"
+    dest: /etc/systemd/system/crio.service
+    mode: "0755"
+    remote_src: true
+  notify: Restart crio
+
+- name: cri-o | copy default policy
+  ansible.builtin.copy:
+    src: "{{ download_cache_dir }}/cri-o/contrib/policy.json"
+    dest: /etc/containers/policy.json
+    mode: "0755"
+    remote_src: true
+  notify: Restart crio
+
+- name: cri-o | copy mounts.conf
+  ansible.builtin.copy:
+    src: mounts.conf
+    dest: /etc/containers/mounts.conf
+    mode: "0644"
+  when:
+    - ansible_os_family == 'RedHat'
+  notify: Restart crio
+
+- name: cri-o | create directory for oci hooks
+  ansible.builtin.file:
+    path: /etc/containers/oci/hooks.d
+    state: directory
+    owner: root
+    mode: "0755"
+
+- name: cri-o | set overlay driver
+  community.general.ini_file:
+    dest: /etc/containers/storage.conf
+    section: storage
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    mode: "0644"
+  with_items:
+    - option: driver
+      value: '"overlay"'
+    - option: graphroot
+      value: '"/var/lib/containers/storage"'
+
+# metacopy=on is available since 4.19 and was backported to RHEL 4.18 kernel
+- name: cri-o | set metacopy mount options correctly
+  community.general.ini_file:
+    dest: /etc/containers/storage.conf
+    section: storage.options.overlay
+    option: mountopt
+    value: "{{ '\"nodev\"' if ansible_kernel is version_compare((\"4.19\"), \"<\") else '\"nodev,metacopy=on\"' }}"
+    mode: "0644"
+
+- name: cri-o | create directory registries configs
+  ansible.builtin.file:
+    path: /etc/containers/registries.conf.d
+    state: directory
+    owner: root
+    mode: "0755"
+
+- name: cri-o | write registries configs
+  ansible.builtin.template:
+    src: registry.conf.j2
+    dest: /etc/containers/registries.conf.d/10-{{ item.prefix | default(item.location) | regex_replace(':', '_') }}.conf
+    mode: "0644"
+  loop: "{{ crio_registries }}"
+  notify: Restart crio
+
+- name: cri-o | configure unqualified registry settings
+  ansible.builtin.template:
+    src: unqualified.conf.j2
+    dest: /etc/containers/registries.conf.d/01-unqualified.conf
+    mode: "0644"
+  notify: Restart crio
+
+- name: cri-o | write cri-o proxy drop-in
+  ansible.builtin.template:
+    src: http-proxy.conf.j2
+    dest: /etc/systemd/system/crio.service.d/http-proxy.conf
+    mode: "0644"
+  notify: Restart crio
+  when: http_proxy is defined or https_proxy is defined
+
+- name: cri-o | find man files
+  find:
+    path: "{{ download_cache_dir }}/cri-o/man"
+  register: man_files
+
+- name: cri-o | make man dirs
+  file:
+    path: "/usr/local/man/man{{ item | basename | splitext| last | regex_replace('^\\.','') }}"
+    owner: root
+    group: root
+    state: directory
+    mode: "0755"
+  loop: "{{ man_files.files | map(attribute='path') }}"
+
+- name: cri-o | copy man files
+  community.general.archive:
+    path: "{{download_cache_dir}}/cri-o/man/{{ item | join('.') }}"
+    dest: "/usr/local/man/man{{ item[1] }}/{{ item[0] }}.{{ item[1] }}.gz"
+    mode: "0644"
+    owner: "{{ kube_owner }}"
+    group: "{{ kube_group }}"
+  loop: "{{ man_files.files | map(attribute='path') | map('basename') | map('regex_search', '(.*?)\\.([0-9])$','\\1','\\2')  | list }}"
+
+- name: cri-o | configure the uid/gid space for user namespaces
+  ansible.builtin.lineinfile:
+    path: "{{ item.path }}"
+    line: "{{ item.entry }}"
+    regex: "^\\s*{{ crio_remap_user }}:"
+    state: '{{ "present" if crio_remap_enable | bool else "absent" }}'
+  loop:
+    - path: /etc/subuid
+      entry: "{{ crio_remap_user }}:{{ crio_subuid_start }}:{{ crio_subuid_length }}"
+    - path: /etc/subgid
+      entry: "{{ crio_remap_user }}:{{ crio_subgid_start }}:{{ crio_subgid_length }}"
+  loop_control:
+    label: "{{ item.path }}"
+
+- name: cri-o | ensure crio service is started and enabled
+  ansible.builtin.service:
+    name: crio
+    daemon_reload: true
+    enabled: true
+    state: started
+  register: service_start
+
+- name: cri-o | trigger service restart only when needed
+  ansible.builtin.service: # noqa 503
+    name: crio
+    state: restarted
+  when:
+    - config_install.changed
+    - reg_auth_install.changed
+    - not service_start.changed
+
+- name: cri-o | verify that crio is running
+  ansible.builtin.command: "{{ bin_dir }}/crio-status info"
+  register: get_crio_info
+  until: get_crio_info is succeeded
+  changed_when: false
+  retries: 5
+  delay: "{{ retry_stagger | random + 3 }}"
+
+- name: cri-o | Set socket group owner
+  file:
+    path: "{{ cri_socket_path }}"
+    group: containers
+
+- name: crictl | Install config
+  ansible.builtin.template:
+    src: crictl.yaml.j2
+    dest: /etc/crictl.yaml
+    owner: root
+    mode: "0644"
+
+- name: Get crictl completion
+  ansible.builtin.command: "{{ bin_dir }}/crictl completion"
+  changed_when: false
+  register: cri_completion
+  check_mode: false
+
+- name: Install crictl completion
+  ansible.builtin.copy:
+    dest: /etc/bash_completion.d/crictl
+    content: "{{ cri_completion.stdout }}"
+    mode: "0644"

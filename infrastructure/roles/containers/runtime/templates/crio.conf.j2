@@ -51,7 +51,7 @@ version_file_persist = "/var/lib/crio/version"
 [crio.api]
 
 # Path to AF_LOCAL socket on which CRI-O will listen.
-listen = "/var/run/crio/crio.sock"
+listen = "{{ cri_socket_path }}"
 
 # IP address on which the stream server will listen.
 stream_address = "127.0.0.1"

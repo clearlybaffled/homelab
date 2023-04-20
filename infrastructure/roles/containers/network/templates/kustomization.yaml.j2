@@ -12,7 +12,7 @@ patches:
       metadata:
         name: kube-flannel-cfg
         namespace: kube-flannel
-      data:
+      data:      
         net-conf.json: |
           {
               "Network": "{{ kube_pods_subnet }}",

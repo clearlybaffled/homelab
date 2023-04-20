@@ -21,7 +21,8 @@ crun_version: 1.8.3
 skopeo_version: v1.11.1
 
 # CRI socket path
-cri_socket: unix:///var/run/crio/crio.sock
+cri_socket_path: /var/run/crio/crio.sock
+cri_socket: "unix://{{ cri_socket_path }}"
 
 image_info_command: "{{ bin_dir }}/crictl images --verbose | awk -F ': ' '/RepoTags|RepoDigests/ {print $2}' | tr '\n' ','"
 image_pull_command: "{{ bin_dir }}/crictl pull"
