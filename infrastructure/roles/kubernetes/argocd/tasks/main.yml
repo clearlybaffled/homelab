@@ -1,0 +1,20 @@
+---
+- name: Create argocd namespace
+  kubernetes.core.k8s:
+    api_version: v1
+    kind: namespace
+    definition: |-
+      metadata:
+        namespace: argocd
+
+- name: Apply argocd core install manifest
+  kubernetes.core.k8s:
+    definition: "{{ lookup('url', 'https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/core-install.yaml') }}"
+
+- name: Take a breather..
+  wait_for:
+    timeout: 30
+
+- name: Apply ApplicationSet definition
+  kubernetes.core.k8s:
+    src: cluster.yaml

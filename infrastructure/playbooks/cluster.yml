@@ -36,20 +36,10 @@
   roles:
     - kubernetes/client
 
-- name: Perform additional control plane setup
+- name: Finish setting up control plane
   hosts: localhost
   gather_facts: true
   any_errors_fatal: true
   roles:
     - kubernetes/cni
-
-- name: Bootstrap Cluster
-  hosts: localhost
-  connection: local
-  gather_facts: true
-  tags:
-    - bootstrap
-  tasks:
-    - name: Start it up
-      kubernetes.core.k8s:
-        definition: "{{ lookup('kubernetes.core.kustomize', dir='cluster/argocd') }}"
+    - kubernetes/argocd
