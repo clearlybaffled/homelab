@@ -2,19 +2,20 @@
 - name: Create argocd namespace
   kubernetes.core.k8s:
     api_version: v1
-    kind: namespace
+    kind: Namespace
     definition: |-
       metadata:
-        namespace: argocd
+        name: argocd
 
 - name: Apply argocd core install manifest
   kubernetes.core.k8s:
-    definition: "{{ lookup('url', 'https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/core-install.yaml') }}"
+    definition: "{{ lookup('url', 'https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/core-install.yaml', split_lines=False) | from_yaml_all | list }}"
+    namespace: argocd
 
 - name: Take a breather..
   wait_for:
     timeout: 30
 
-- name: Apply ApplicationSet definition
+- name: Bootstrap Cluster
   kubernetes.core.k8s:
-    src: cluster.yaml
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='cluster/bootstrap') }}"

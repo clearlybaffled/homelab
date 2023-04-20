@@ -5,5 +5,5 @@ resources:
   - traefik.yaml
   - storageClass.yaml
   - persistentVolume.yaml
-#  - traefik-forward-auth
+  - traefik-forward-auth
   - ingress-route.yaml

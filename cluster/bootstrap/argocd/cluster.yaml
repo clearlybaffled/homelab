@@ -15,22 +15,22 @@ spec:
         - path: cluster/**/config.json
   template:
     metadata:
-      name: '{{.path.basename }}'
+      name: '{{.path.basename}}'
       namespace: argocd
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
       project: default
       source:
-        chart: '{{ source.chart }}'
-        repoURL: '{{ source.repo }}'
-        targetRevision: '{{ source.version }}'
+        chart: '{{ .source.chart }}'
+        repoURL: '{{ .source.repo }}'
+        targetRevision: '{{ .source.version }}'
         helm:
           valueFiles:
             - values.yaml
       destination:
         name: in-cluster
-        namespace: '{{if namespace}}{{namespace}}{{else}}{{index .path.segments 2}}{{end}}'
+        namespace: '{{if .namespace}}{{.namespace}}{{else}}{{index .path.segments 2}}{{end}}'
       syncPolicy:
         automated:
           prune: true
