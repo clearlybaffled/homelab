@@ -1,0 +1,5 @@
+---
+- name: Clean CNI config directory
+  file:
+    path: /etc/cni/net.d
+    state: absent
