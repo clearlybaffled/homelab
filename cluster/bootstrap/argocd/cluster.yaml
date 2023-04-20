@@ -27,10 +27,10 @@ spec:
         targetRevision: '{{ .source.version }}'
         helm:
           valueFiles:
-            - values.yaml
+            - '{{ .path.path}}/values.yaml'
       destination:
         name: in-cluster
-        namespace: '{{if .namespace}}{{.namespace}}{{else}}{{index .path.segments 2}}{{end}}'
+        namespace: '{{if .namespace}}{{.namespace}}{{else}}{{index .path.segments 1}}{{end}}'
       syncPolicy:
         automated:
           prune: true
