@@ -9,12 +9,3 @@
   notify:
     - Kubelet | reload systemd
     - Kubelet | restart kubelet
-
-- name: Kubelet | reload systemd
-  systemd:
-    daemon_reload: true
-
-- name: Kubelet | restart kubelet
-  systemd:
-    name: kubelet
-    state: restarted

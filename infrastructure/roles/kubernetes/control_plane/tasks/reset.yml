@@ -1,3 +1,9 @@
 ---
-- name: Reset cluster
+- name: Check if cluster is still up
+  kubernetes.core.k8s_cluster_info:
+  register: cluster_status
+  ignore_errors: true
+
+- name: kubeadm | Reset cluster
   command: "{{ bin_dir }}/kubeadm reset --force"
+  when: cluster_status is not failed
