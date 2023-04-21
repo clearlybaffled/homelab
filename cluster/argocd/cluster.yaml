@@ -12,7 +12,7 @@ spec:
       repoURL: https://github.com/clearlybaffled/homelab
       revision: HEAD
       files:
-        - path: cluster/**/config.json
+        - path: cluster/**/config.js
   template:
     metadata:
       name: '{{.path.basename }}'
