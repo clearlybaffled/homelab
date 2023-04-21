@@ -41,17 +41,17 @@
 
 - name: Register CNI pluin
   hosts: localhost
-  connection: local
   gather_facts: true
   any_errors_fatal: true
   tags: cni
   roles:
     - containers/network
 
-- name: Start up ArgoCD deployment
+- name: Start up cluster
   hosts: localhost
+  connection: local
   gather_facts: true
   any_errors_fatal: true
-  tags: argocd
+  tags: cluster
   roles:
-    - kubernetes/argocd
+    - kubernetes/cluster

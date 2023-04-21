@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    path: cluster/bootstrap/argocd
+    path: cluster/argocd
     repoURL: https://github.com/clearlybaffled/homelab
     targetRevision: HEAD
   destination:
@@ -18,5 +18,4 @@ spec:
     automated:
       selfHeal: true
       prune: true
-    syncOptions:
-      - CreateNamespace=true
+

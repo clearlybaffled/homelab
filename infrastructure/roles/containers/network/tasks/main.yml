@@ -2,19 +2,20 @@
 - name: Render kustomize template
   template:
     src: "{{ item }}.j2"
-    dest: "{{ playbook_dir }}/../cluster/bootstrap/flannel/{{ item }}"
+    dest: "{{ playbook_dir }}/../cluster/infrastructure/flannel/{{ item }}"
     mode: "0644"
   with_items:
     - kustomization.yaml
 
 - name: Start Resources
   kubernetes.core.k8s:
-    definition: "{{ lookup('kubernetes.core.kustomize', dir=playbook_dir+'/../cluster/bootstrap/flannel') }}"
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='cluster/infrastructure/flannel') | from_yaml_all }}"
     namespace: kube-flannel
+  register: flannel_apply
 
 - name: Wait for flannel subnet.env file presence
   delegate_to: "{{ groups['kube_control_plane'][0] }}"
   wait_for:
     path: /run/flannel/subnet.env
     delay: 5
-    timeout: 600
+    timeout: 10

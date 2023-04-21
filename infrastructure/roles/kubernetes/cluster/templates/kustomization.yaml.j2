@@ -3,4 +3,6 @@ kind: Kustomization
 namespace: argocd
 
 resources:
-  - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/core-install.yaml
+  - {{ argocd_manifest }}
+  - cluster.yaml
+  - ingress-route.yaml

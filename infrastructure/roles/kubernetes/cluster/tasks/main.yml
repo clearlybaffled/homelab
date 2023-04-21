@@ -1,0 +1,29 @@
+---
+- name: Create argocd namespace
+  kubernetes.core.k8s:
+    api_version: v1
+    kind: Namespace
+    inline: |-
+      metadata:
+        name: argocd
+
+- name: Apply argocd manifest
+  kubernetes.core.k8s:
+    definition: "{{ lookup('url', argocd_manifest, split_lines=false) | from_yaml_all }}"
+    namespace: argocd
+
+- name: Wait for all argocd crds to load
+  command: |-
+    kubectl -n argocd wait --timeout=60s --for condition=Established \
+      crd/applications.argoproj.io \
+      crd/applicationsets.argoproj.io
+
+- name: Install ArgoCD Kustomization
+  template:
+    src: kustomization.yaml.j2
+    dest: "{{ playbook_dir }}/../cluster/argocd/kustomization.yaml"
+    mode: preserve
+
+- name: Kick off cluster boostrap
+  kubernetes.core.k8s:
+    definition: "{{ playbook_dir }}/../cluster/infrastructure/argocd.yaml"

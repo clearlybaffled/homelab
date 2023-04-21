@@ -38,3 +38,39 @@ spec:
         syncOptions:
           - CreateNamespace=true
           - ServerSideApply=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cluster
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+  - git:
+      repoURL: https://github.com/clearlybaffled/homelab
+      revision: HEAD
+      directories:
+        - path: cluster
+  template:
+    metadata:
+      name: '{{ .path.basename }}'
+      namespace: argocd
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: default
+      source:
+        path: '{{ .path.path }}'
+        repoURL: https://github.com/clearlybaffled/homelab
+        targetRevision: HEAD
+      destination:
+        name: in-cluster
+        namespace: '{{ .path.basename }}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true
