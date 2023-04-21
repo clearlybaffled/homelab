@@ -1,3 +1,18 @@
----
-defaultEnable: true
-alwaysTargetBlank: true
+hajirmari:
+  defaultEnable: true
+  alwaysTargetBlank: true
+  name: Jared
+ingress:
+  main:
+    enabled: true
+    hosts:
+      - host: hajimari.hermleigh.home
+        paths:
+          - path: /
+            pathType: Prefix
+persistence:
+  data:
+    enabled: false
+    accessMode: ReadWriteOnce
+    size: 1Gi
+
