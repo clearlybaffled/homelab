@@ -32,8 +32,6 @@ spec:
           path: '{{ .path.path }}'
           targetRevision: HEAD
           ref: cluster
-          directory:
-            exclude: config.json
       destination:
         name: in-cluster
         namespace: '{{ default .path.basename .namespace }}'
