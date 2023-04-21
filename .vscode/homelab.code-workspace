@@ -15,6 +15,9 @@
 		"files.autoSave": "onFocusChange",
 		"gitlens.currentLine.enabled": false,
 		"explorer.excludeGitIgnore": true,
-		"python.terminal.activateEnvironment": false
+		"python.terminal.activateEnvironment": false,
+		"yaml.schemas": {
+			"https://github.com/datreeio/CRDs-catalog/raw/main/traefik.containo.us/ingressroute_v1alpha1.json": ["ingress-route.yaml"]
+		}
 	}
 }
