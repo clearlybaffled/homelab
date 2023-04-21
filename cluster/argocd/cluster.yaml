@@ -3,7 +3,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: cluster-helm
+  name: cluster
   namespace: argocd
 spec:
   goTemplate: true
@@ -27,7 +27,7 @@ spec:
           targetRevision: '{{ default "0.0.0" .helm.version }}'
           helm:
             valueFiles:
-              - $cluster/'{{ .path.path }}'/values.yaml
+              - "{{ print .path.path '/values.yaml' }}"
         - repoURL: https://github.com/clearlybaffled/homelab
           path: '{{ .path.path }}'
           targetRevision: HEAD
