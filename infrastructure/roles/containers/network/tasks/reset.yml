@@ -3,3 +3,38 @@
   file:
     path: /etc/cni/net.d
     state: absent
+- name: Clear iptables
+  block:
+    - name: iptables | flush
+      ansible.builtin.iptables:
+        flush: true
+    - name: iptables | flush tables
+      iptables:
+        flush: true
+        table: "{{ item }}"
+      with_items:
+        - nat
+        - mangle
+    - name: iptables | delete chains
+      command: 'iptables -X'
+
+- name: Remove cni0 interface
+  shell: |
+    ip link set cni0 down
+    ip link delete cni0 type bridge
+  register: rm_if
+  failed_when: rm_if.rc != 0 and not "Cannot find device" in rm_if.stderr
+  notify:
+    - 'Kubelet | stop kubelet'
+    - 'CRI-O | stop crio'
+
+- name: iptables flush all
+  iptables:
+    flush: true
+- name: iptables flush nat
+  iptables:
+    flush: true
+    table: nat
+  notify:
+    - 'Kubelet | start kubelet'
+    - 'CRI-O | start crio'
