@@ -4,3 +4,4 @@ namespace: argocd
 
 resources:
   - https://raw.githubusercontent.com/argoproj/argo-cd/v2.6.7/manifests/install.yaml
+  - cluster.yaml
