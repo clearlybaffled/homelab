@@ -3,7 +3,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: cluster
+  name: cluster-helm
   namespace: argocd
 spec:
   goTemplate: true
@@ -15,58 +15,26 @@ spec:
         - path: cluster/**/config.json
   template:
     metadata:
-      name: '{{.path.basename}}'
+      name: '{{.path.basename }}'
       namespace: argocd
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
       project: default
-      source:
-        chart: '{{ .source.chart }}'
-        repoURL: '{{ .source.repo }}'
-        targetRevision: '{{ .source.version }}'
-        helm:
-          valueFiles:
-            - '{{ .path.path}}/values.yaml'
+      sources:
+        - chart: '{{ default "default-helm/noop" .helm.chart }}'
+          repoURL: '{{ default "https://github.com/clearlybaffled/homelab" .helm.repo }}'
+          targetRevision: '{{ default "0.0.0" .helm.version }}'
+          helm:
+            valueFiles:
+              - $cluster/values.yaml
+        - repoURL: https://github.com/clearlybaffled/homelab
+          path: '{{ .path.path }}'
+          targetRevision: HEAD
+          ref: cluster
       destination:
         name: in-cluster
-        namespace: '{{if .namespace}}{{.namespace}}{{else}}{{index .path.segments 1}}{{end}}'
-      syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
-        syncOptions:
-          - CreateNamespace=true
-          - ServerSideApply=true
----
-apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
-metadata:
-  name: cluster
-  namespace: argocd
-spec:
-  goTemplate: true
-  generators:
-  - git:
-      repoURL: https://github.com/clearlybaffled/homelab
-      revision: HEAD
-      directories:
-        - path: cluster
-  template:
-    metadata:
-      name: '{{ .path.basename }}'
-      namespace: argocd
-      finalizers:
-        - resources-finalizer.argocd.argoproj.io
-    spec:
-      project: default
-      source:
-        path: '{{ .path.path }}'
-        repoURL: https://github.com/clearlybaffled/homelab
-        targetRevision: HEAD
-      destination:
-        name: in-cluster
-        namespace: '{{ .path.basename }}'
+        namespace: '{{ default .path.basename .namespace }}'
       syncPolicy:
         automated:
           prune: true
