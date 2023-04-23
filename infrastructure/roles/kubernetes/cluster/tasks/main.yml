@@ -28,4 +28,4 @@
 
 - name: Kick off cluster boostrap
   kubernetes.core.k8s:
-    definition: "{{ lookup('file', playbook_dir+'/../cluster/infrastructure/argocd.yaml') }}"
+    definition: "{{ lookup('file', playbook_dir+'/../cluster/argocd/argocd.yaml') }}"
