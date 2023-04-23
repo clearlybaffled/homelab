@@ -10,7 +10,8 @@
 	"settings": {
 		"files.associations": {
 			"*.yml": "ansible",
-			"*.j2": "ansible-jinja"
+			"*.j2": "ansible-jinja",
+			"config.js":"json"
 		},
 		"files.autoSave": "onFocusChange",
 		"gitlens.currentLine.enabled": false,
