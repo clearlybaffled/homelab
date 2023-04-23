@@ -1,4 +1,12 @@
 ---
+- name: Make sure ArgoCD manifest version matches in cluster kustomize
+  template:
+    src: "{{ item }}.yaml.j2"
+    dest: "{{ playbook_dir }}/../cluster/argocd/{{ item }}.yaml"
+    mode: "0644"
+  with_items:
+    - kustomization
+
 - name: Create argocd namespace
   kubernetes.core.k8s:
     api_version: v1
@@ -17,12 +25,6 @@
     kubectl -n argocd wait --timeout=60s --for condition=Established \
       crd/applications.argoproj.io \
       crd/applicationsets.argoproj.io
-
-- name: Install ArgoCD Kustomization
-  template:
-    src: kustomization.yaml.j2
-    dest: "{{ playbook_dir }}/../cluster/argocd/kustomization.yaml"
-    mode: preserve
 
 - name: Kick off cluster boostrap
   kubernetes.core.k8s:
