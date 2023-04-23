@@ -1,0 +1,5 @@
+metrics:
+  enabled: true
+primary:
+  persistence:
+    storageclass: "mysql"
