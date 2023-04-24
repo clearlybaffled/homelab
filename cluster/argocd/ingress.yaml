@@ -6,7 +6,7 @@ metadata:
   namespace: argocd
 spec:
   rules:
-    - host: argocd.gato.hermleigh.home
+    - host: argocd-server.argocd.svc.gato.hermleigh.home
       https:
         paths:
           - path: /
