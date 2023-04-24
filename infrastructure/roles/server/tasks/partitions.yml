@@ -1,0 +1,19 @@
+---
+- name: Create Partitions
+  community.general.lvg:
+    vg: "{{ inventory_hostname }}-vg"
+
+- name: Create Logical volumes
+  community.general.lvol:
+    vg: "{{ inventory_hostname }}-vg"
+    lv: "{{ item.name }}"
+    size: "{{ item.size }}"
+    active: true
+    state: present
+  loop: partitions
+
+- name: Create Filsystems
+  community.general.filesystem:
+    dev: "/dev/mapper/{{ inventory_hostname }}--vg-{{ item.name|regex_sub('-','--') }}"
+    fstype: "{{ item.fstype }}"
+  loop: partitions
