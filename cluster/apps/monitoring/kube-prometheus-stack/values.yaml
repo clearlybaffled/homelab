@@ -1,7 +1,7 @@
 ---
 grafana:
   ingress:
-    enabled: "true"
+    enabled: true
     ingressClassName: traefik
     annotations:
-      hajimari.io/enable: true
+      hajimari.io/enable: "true"
