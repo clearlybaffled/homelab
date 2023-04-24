@@ -6,7 +6,7 @@ ingress:
   main:
     enabled: true
     hosts:
-      - host: hajimari.hermleigh.home
+      - host: hajimari.hajimari.svc.gato.hermleigh.home
         paths:
           - path: /
             pathType: Prefix
