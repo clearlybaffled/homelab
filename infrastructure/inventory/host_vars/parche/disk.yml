@@ -1,4 +1,26 @@
 ---
+partitions:
+  - name: root
+    path: /
+    fstype: ext4
+    size: 46G
+  - name: temp
+    path: /tmp
+    fstype: ext4
+    size: 4.6G
+  - name: servers
+    path: /srv
+    fstype: xfs
+    size: 153G
+  - name: var
+    path: /var
+    fstype: ext4
+    size: 23G
+  - name: var-log
+    path: /var/log
+    fstype: ext4
+    size: 4.6G
+
 mounts:
   - name: Share
     path: /share
