@@ -25,26 +25,6 @@ $ source .venv/bin/activate
 $ pip install -U -r requirements.txt
 $ ansible-playbook infrastructure/cluster.yml --private-key=/path/to/ansible/key
 ```
-
-## Layout
-
-- Location: America / North East
-- Network:
-  - ISP: Verizon FIOS (100MB/100MB)
-  - WiFi: Netgear R6700 with DD-WRT
-  - Switch: Cisco Catalyst 3750-X 48 port 10/100/1000 PoE
-  - Gateway/Firewall: OpnSense 23
-<p>Custom build boxes:</p>
-
-|Hostname|Use(s)|Hardware|RAM|Storage|Other|
-|:-------|:-----|:--------|:--|:------|:----|
-|`growler`|Gateway/Firewall| ASUS Z170-M Pentium G440 3.3GHz| 8GB| 250GB NVMe ||
-|`parche`|Server|ASUS Z170-A i7-6700 4.0GHz|32GB|- 250GB SSD<br/>- 24TB HDDs| Happauge 1609 WinTV-quadHD tuner|
-|`barb`|Desktop|Gigabyte Z370 AORUS Intel i5-8600K @ 3.60 GHz| 64GB | - 500GB NVMe<br/>- 250GB SSD| Zotac GeForce GTX 1660 Super 6GB GDDR6|
-|`seawolf`|Laptop|Dell XPS 13|16GB|250GB HDD||
-
-  Host naming conventions. All of the physical and virtual hosts are named for the [WW2 submarines commanded][ww2-sub-moh-uri] by a [Congressional Medal of Honor](https://mohmuseum.org/the-medal/) recipient. The Kubernetes cluster is named `gato`  for the first major class of submarines built by the U.S. for use in WW2. I wanted to name something `wahoo`, after [one][wahoo-uri] of the most succesful and prolific submarines of the pacific theater, but she did not meet the requirement of having been commanded by a MoH recipient. So, anything inside the cluster that gets named will be a Gato-class submarine. Maybe the hajimari homepage, but we're not quite there yet ...
-
 ## Tech Stack
 
 ### Infrastructure
