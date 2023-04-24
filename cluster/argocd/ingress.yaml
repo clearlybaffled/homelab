@@ -1,25 +1,18 @@
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: argocd-server
   namespace: argocd
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - kind: Rule
-      match: Host(`argocd.gato.hermleigh.home`)
-      priority: 10
-      services:
-        - name: argocd-server
-          port: 80
-    - kind: Rule
-      match: Host(`argocd.gato.hermleigh.home`) && Headers(`Content-Type`, `application/grpc`)
-      priority: 11
-      services:
-        - name: argocd-server
-          port: 80
-          scheme: h2c
-  tls:
-    certResolver: default
+  rules:
+    - host: argocd.gato.hermleigh.home
+      https:
+        paths:
+          - path: /
+            pathType: Exact
+            backend:
+              service:
+                name: argocd-server
+                port:
+                  number: 443
