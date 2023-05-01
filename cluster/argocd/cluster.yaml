@@ -1,5 +1,5 @@
-# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/main/argoproj.io/applicationset_v1alpha1.json
 ---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/main/argoproj.io/applicationset_v1alpha1.json
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
@@ -11,8 +11,8 @@ spec:
   - git:
       repoURL: https://github.com/clearlybaffled/homelab
       revision: HEAD
-      files:
-        - path: cluster/**/config.js
+      directories:
+        - path: cluster/**
   template:
     metadata:
       name: '{{.path.basename }}'
@@ -21,21 +21,13 @@ spec:
         - resources-finalizer.argocd.argoproj.io
     spec:
       project: default
-      sources:
-        - chart: '{{ default "default-helm/noop" .helm.chart }}'
-          repoURL: '{{ default "https://github.com/clearlybaffled/homelab" .helm.repo }}'
-          targetRevision: '{{ default "0.0.0" .helm.version }}'
-          helm:
-            valueFiles:
-              - $cluster/{{ print .path.path "/values.yaml" }}
-        - repoURL: https://github.com/clearlybaffled/homelab
-          path: '{{ .path.path }}'
-          targetRevision: HEAD
-          ref: cluster
+      source:
+        repoURL: https://github.com/clearlybaffled/homelab
+        path: '{{ .path.path }}'
+        targetRevision: HEAD
       destination:
         name: in-cluster
-        namespace: '{{ default .path.basename .namespace }}'
-      syncPolicy:
+      syncPolicy: 
         automated:
           prune: true
           selfHeal: true
