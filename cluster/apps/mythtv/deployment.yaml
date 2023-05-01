@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mythtv
+  labels:
+    app: mythtv
+  annotations:
+    # link.argocd.argoproj.io/external-link:
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: mythtv
+  template:
+    metadata:
+      labels:
+        app: mythtv
+    spec:
+      containers:
+        - name: mythtv
+          image: lscr.io/linuxserver/grocy:v3.3.2-ls175
+          envFrom:
+            - configMapRef:
+                name: mythtv-cm
+          ports:
+            - name: web
+              containerPort: 80
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 80m
+              memory: 256Mi
+            limits:
+              cpu: 220m
+              memory: 512Mi
+          volumeMounts:
+            - name: config-storage
+              mountPath: /config
+      volumes:
+        - name: config-storage
+          persistentVolumeClaim:
+            claimName: mythtv-storage

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mythtv-svc
+  labels:
+    app: mythtv
+spec:
+  selector:
+    app: mythtv
+  ports:
+    - name: web
+      port: 80
+      targetPort: 80
+      protocol: TCP
+  loadBalancerClass: metallb
+  type: LoadBalancer
