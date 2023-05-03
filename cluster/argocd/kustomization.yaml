@@ -9,7 +9,7 @@ resources:
   - ingress.yaml
 
 patches:
-  - path: plugin/sidecar-plugin-patch.yaml
+  - path: sidecar-plugin-patch.yaml
     target:
       group: apps
       version: v1
@@ -22,4 +22,4 @@ generatorOptions:
 configMapGenerator:
 - name: plugin-config
   files:
-  - plugin/plugin.yaml
+  - plugin.yaml
