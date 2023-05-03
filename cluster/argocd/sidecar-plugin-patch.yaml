@@ -8,6 +8,9 @@
     securityContext:
       runAsNonRoot: true
       runAsUser: 999
+    env:
+    - name: PATH
+      value: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/var/run/argocd
     volumeMounts:
       - mountPath: /var/run/argocd
         name: var-files
@@ -25,7 +28,11 @@
   value:
     - sh
     - -c
-    - "cp -n /usr/local/bin/argocd /var/run/argocd/argocd-cmp-server ; cp -n /usr/local/bin/kustomize /var/run/argocd"
+- op: add
+  path: /spec/template/spec/initContainers/0/args
+  value:
+    - cp -n /usr/local/bin/argocd /var/run/argocd/argocd-cmp-server ; 
+        cp -n /usr/local/bin/kustomize /usr/bin/git /var/run/argocd
 - op: add
   path: /spec/template/spec/volumes/-
   value:
