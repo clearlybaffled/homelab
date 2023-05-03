@@ -4,6 +4,7 @@ providers:
     allowCrossNamespace: true
   kubernetesIngress:
     publishedService:
+      # To fix argocd stuck in progressing https://github.com/argoproj/argo-cd/issues/968#issuecomment-955976397
       enabled: true
       # Need to override path since otherwise the namespace is set as default
       pathOverride: traefik-system/traefik

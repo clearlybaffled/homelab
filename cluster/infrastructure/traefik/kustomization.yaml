@@ -7,3 +7,10 @@ resources:
   - persistentVolume.yaml
 # - traefik-forward-auth
   - ingress-route.yaml
+
+helmCharts:
+  - name: traefik
+    repo: https://traefik.github.io/charts
+    version: "22.1.0"
+    valuesFile: values.yaml
+    namespace: traefik-system

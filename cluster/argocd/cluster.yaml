@@ -12,7 +12,7 @@ spec:
       repoURL: https://github.com/clearlybaffled/homelab
       revision: HEAD
       directories:
-        - path: cluster/**
+        - path: cluster/**/*
   template:
     metadata:
       name: '{{.path.basename }}'

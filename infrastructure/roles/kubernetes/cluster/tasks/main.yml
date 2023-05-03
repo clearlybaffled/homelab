@@ -1,11 +1,13 @@
 ---
-- name: Make sure ArgoCD manifest version matches in cluster kustomize
+- name: Copy template kustomize yaml to tempdir
   template:
     src: "{{ item }}.yaml.j2"
     dest: "{{ playbook_dir }}/../cluster/argocd/{{ item }}.yaml"
     mode: "0644"
+  register: kustomize
   with_items:
     - kustomization
+  # failed_when: kustomize.changed
 
 - name: Create argocd namespace
   kubernetes.core.k8s:
@@ -17,7 +19,7 @@
 
 - name: Apply argocd manifest
   kubernetes.core.k8s:
-    definition: "{{ lookup('url', argocd_manifest, split_lines=false) | from_yaml_all }}"
+    definition: "{{ lookup('kubernetes.core.kustomize', dir='github.com/argoproj/argo-cd/manifests/crds?ref='+argocd_version) | from_yaml_all }}"
     namespace: argocd
 
 - name: Wait for all argocd crds to load
@@ -28,4 +30,5 @@
 
 - name: Kick off cluster boostrap
   kubernetes.core.k8s:
-    definition: "{{ lookup('file', playbook_dir+'/../cluster/argocd/argocd.yaml') }}"
+    # definition: "{{ lookup('file', playbook_dir+'/../cluster/argocd/argocd.yaml') | from_yaml_all }}"
+    definition: "{{ lookup('kubernetes.core.kustomize', dir=playbook_dir+'/../cluster/argocd') | from_yaml_all }}"
