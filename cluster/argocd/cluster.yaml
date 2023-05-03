@@ -22,6 +22,8 @@ spec:
     spec:
       project: default
       source:
+        plugin:
+          name: kustomize-with-helm
         repoURL: https://github.com/clearlybaffled/homelab
         path: '{{ .path.path }}'
         targetRevision: HEAD
