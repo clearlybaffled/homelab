@@ -5,4 +5,4 @@
   spec:
     generate:
       command: [ "sh", "-c" ]
-      args: [ "kustomize build --enable-helm" ]
+      args: [ "/var/run/argocd/kustomize build --enable-helm" ]

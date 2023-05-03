@@ -20,6 +20,12 @@
       # mitigate path traversal attacks.
       - mountPath: /tmp
         name: cmp-tmp
+- op: replace
+  path: /spec/template/spec/initContainers/command
+  value:
+    - sh
+    - -c
+    - "cp -n /usr/local/bin/argocd /var/run/argocd/argocd-cmp-server ; cp -n /usr/local/bin/kustomize /var/run/argocd"
 - op: add
   path: /spec/template/spec/volumes/-
   value:
