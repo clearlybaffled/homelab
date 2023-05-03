@@ -21,7 +21,7 @@
       - mountPath: /tmp
         name: cmp-tmp
 - op: replace
-  path: /spec/template/spec/initContainers/command
+  path: /spec/template/spec/initContainers/0/command
   value:
     - sh
     - -c
