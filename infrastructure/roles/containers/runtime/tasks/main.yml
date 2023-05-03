@@ -35,6 +35,7 @@
     dest: /etc/systemd/system/crio.service
     mode: "0755"
     remote_src: true
+    force: false
   notify: Restart crio
 
 - name: cri-o | copy default policy
@@ -43,6 +44,7 @@
     dest: /etc/containers/policy.json
     mode: "0755"
     remote_src: true
+    force: false
   notify: Restart crio
 
 - name: cri-o | copy mounts.conf
