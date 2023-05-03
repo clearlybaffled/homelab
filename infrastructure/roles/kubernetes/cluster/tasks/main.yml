@@ -17,7 +17,7 @@
       metadata:
         name: argocd
 
-- name: Apply argocd manifest
+- name: Install argocd CRDs
   kubernetes.core.k8s:
     definition: "{{ lookup('kubernetes.core.kustomize', dir='github.com/argoproj/argo-cd/manifests/crds?ref='+argocd_version) | from_yaml_all }}"
     namespace: argocd
