@@ -3,17 +3,15 @@
   path: /spec/template/spec/containers/-
   value:
     name: plugins
-    command: [/var/run/argocd/argocd-cmp-server] # Entrypoint should be Argo CD lightweight CMP server i.e. argocd-cmp-server
+    command: [argocd-cmp-server] # Entrypoint should be Argo CD lightweight CMP server i.e. argocd-cmp-server
     image: busybox # This can be off-the-shelf or custom-built image
     securityContext:
       runAsNonRoot: true
       runAsUser: 999
-    env:
-    - name: PATH
-      value: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/var/run/argocd
     volumeMounts:
-      - mountPath: /var/run/argocd
+      - mountPath: /usr/local/bin
         name: var-files
+        subPath: bin
       - mountPath: /home/argocd/cmp-server/plugins
         name: plugins
       - mountPath: /home/argocd/cmp-server/config/plugin.yaml
@@ -26,13 +24,11 @@
 - op: replace
   path: /spec/template/spec/initContainers/0/command
   value:
-    - sh
-    - -c
-- op: add
-  path: /spec/template/spec/initContainers/0/args
-  value:
-    - cp -n /usr/local/bin/argocd /var/run/argocd/argocd-cmp-server ; 
-        cp -n /usr/local/bin/kustomize /usr/bin/git /var/run/argocd
+    - cp
+    - -rn
+    - /usr/local/bin
+    - /usr/bin/git
+    - /var/run/argocd/
 - op: add
   path: /spec/template/spec/volumes/-
   value:
