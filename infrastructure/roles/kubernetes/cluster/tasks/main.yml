@@ -8,6 +8,14 @@
   with_items:
     - kustomization
 
+- name: Commit changes if necessary
+  lvrfrc87.git_acp.git_acp:
+    name: "{{ playbook_dir }}/.."
+    comment: "Updated ArgoCD kustomization"
+    add: ["cluster/argocd"]
+    url: "git@github.com/clearlybaffled/homelab"
+    push: true
+
 - name: Create argocd namespace
   kubernetes.core.k8s:
     api_version: v1
