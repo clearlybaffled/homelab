@@ -13,8 +13,8 @@ spec:
       revision: HEAD
       directories:
         - path: cluster/apps/*
-        - path: cluster/apps/media/*
-        - path: cluster/apps/media
+        - path: cluster/database/*
+        - path: cluster/database
           exclude: true
   template:
     metadata:
