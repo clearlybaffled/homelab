@@ -12,7 +12,7 @@ spec:
       repoURL: https://github.com/clearlybaffled/homelab
       revision: HEAD
       directories:
-        - path: cluster/**/*
+        - path: cluster/apps/*
   template:
     metadata:
       name: '{{.path.basename }}'
@@ -22,8 +22,6 @@ spec:
     spec:
       project: default
       source:
-        plugin:
-          name: kustomize-with-helm
         repoURL: https://github.com/clearlybaffled/homelab
         path: '{{ .path.path }}'
         targetRevision: HEAD

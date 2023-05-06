@@ -4,22 +4,6 @@ namespace: argocd
 
 resources:
   - https://raw.githubusercontent.com/argoproj/argo-cd/v2.6.7/manifests/install.yaml
-  - argocd.yaml
+  - argocd-cm.yaml
   - cluster.yaml
-  - ingress.yaml
-
-patches:
-  - path: sidecar-plugin-patch.yaml
-    target:
-      group: apps
-      version: v1
-      kind: Deployment
-      name: argocd-repo-server
-
-generatorOptions:
-  disableNameSuffixHash: true
-
-configMapGenerator:
-- name: plugin-config
-  files:
-  - plugin.yaml
+  # - ingress.yaml
