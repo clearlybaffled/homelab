@@ -4,6 +4,8 @@ kind: Ingress
 metadata:
   name: argocd-server
   namespace: argocd
+  annotations:
+    hajimari.io/enable: "true"
 spec:
   rules:
     - host: argocd-server.argocd.svc.gato.hermleigh.home

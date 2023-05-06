@@ -5,7 +5,7 @@ metadata:
   name: mythtv
   labels:
     app: mythtv
-  annotations:
+#  annotations:
     # link.argocd.argoproj.io/external-link:
 spec:
   replicas: 1
@@ -21,13 +21,13 @@ spec:
     spec:
       containers:
         - name: mythtv
-          image: lscr.io/linuxserver/grocy:v3.3.2-ls175
+          image: instantlinux/mythtv-backend:32.0-fixes.202301091618.e677dd354f
           envFrom:
             - configMapRef:
                 name: mythtv-cm
           ports:
             - name: web
-              containerPort: 80
+              containerPort: 6443
               protocol: TCP
           resources:
             requests:

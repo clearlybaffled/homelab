@@ -3,10 +3,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: grocy
+  namespace: grocy
   labels:
     app: grocy
   annotations:
-    link.argocd.argoproj.io/external-link: http://grocy
+    link.argocd.argoproj.io/external-link: http://grocy.grocy.svc.gato.hermleigh.home
 spec:
   replicas: 1
   strategy:
