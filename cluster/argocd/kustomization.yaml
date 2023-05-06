@@ -6,4 +6,4 @@ resources:
   - https://raw.githubusercontent.com/argoproj/argo-cd/v2.6.7/manifests/install.yaml
   - argocd-cm.yaml
   - cluster.yaml
-  # - ingress.yaml
+#  - ingress.yaml
