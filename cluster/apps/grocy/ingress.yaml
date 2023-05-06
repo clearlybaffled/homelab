@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grocy
+  annotations:
+    hajimari.io/enable: "true"
+spec:
+  rules:
+  - host: grocy.grocy.svc.gato.hermleigh.home
+    http:
+      paths:
+      - path: /
+        pathType: Exact
+        backend:
+          serviceName: grocy
+          servicePort: 80
