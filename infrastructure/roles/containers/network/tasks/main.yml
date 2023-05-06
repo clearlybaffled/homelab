@@ -2,14 +2,14 @@
 - name: Render kustomize template
   template:
     src: "{{ item }}.j2"
-    dest: "{{ playbook_dir }}/../cluster/infrastructure/flannel/{{ item }}"
+    dest: "{{ role_dir }}/files/{{ item }}"
     mode: "0644"
   with_items:
     - kustomization.yaml
 
 - name: Start Resources
   kubernetes.core.k8s:
-    definition: "{{ lookup('kubernetes.core.kustomize', dir='cluster/infrastructure/flannel') | from_yaml_all }}"
+    definition: "{{ lookup('kubernetes.core.kustomize', dir=role_dir+'/files') | from_yaml_all }}"
     namespace: kube-flannel
   register: flannel_apply
 
