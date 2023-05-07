@@ -4,6 +4,7 @@ metadata:
   name: mythtv-svc
   labels:
     app: mythtv
+  namespace: mythtv
 spec:
   selector:
     app: mythtv

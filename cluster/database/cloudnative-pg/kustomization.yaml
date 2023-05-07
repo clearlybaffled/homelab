@@ -6,3 +6,4 @@ helmCharts:
     repo: https://cloudnative-pg.github.io/charts
     version: "0.17.1"
     valuesFile: values.yaml
+    releaseName: cloudnative-pg
