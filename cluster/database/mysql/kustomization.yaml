@@ -9,3 +9,4 @@ helmCharts:
     repo: https://charts.bitnami.com/bitnami
     version: "9.7.2"
     valuesFile: values.yaml
+    releaseName: mysql

@@ -1,5 +1,14 @@
 metrics:
   enabled: true
+auth:
+  createDatabase: false
 primary:
   persistence:
     storageclass: "mysql"
+  podSecurityContext:
+    enabled: true
+    fsGroup: 996
+  containerSecurityContext:
+    enabled: true
+    runAsUser: 996
+    runAsNonRoot: true

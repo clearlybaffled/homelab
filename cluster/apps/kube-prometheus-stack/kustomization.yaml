@@ -7,3 +7,4 @@ helmCharts:
     version: "45.10.1"
     valuesFile: values.yaml
     namespace: monitoring
+    releaseName: kube-prometheus-stack
