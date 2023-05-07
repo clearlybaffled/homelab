@@ -6,6 +6,15 @@ dashboard_enabled: true
 # Helm deployment
 helm_enabled: true
 helm_version: v3.11.1
+helm_repositories:
+  k8s-at-home: https://k8s-at-home.com/charts/
+  hajimari: https://hajimari.io
+  prometheus-community: https://prometheus-community.github.io/helm-charts
+  traefik: https://traefik.github.io/charts
+  argocd: https://argoproj.github.io/argo-helm
+  bjw-s-charts: https://bjw-s.github.io/helm-charts/
+  cnpg: https://cloudnative-pg.github.io/charts
+  bitnami: https://charts.bitnami.com/bitnami
 
 # Registry deployment
 registry_enabled: false
