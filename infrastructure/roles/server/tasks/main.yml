@@ -47,7 +47,7 @@
         groups: "{{ ansible_group }}"
         append: true
         create_home: true
-        home: "{{ ansible_home }}"
+        home: "{{ ansible_home_dir }}"
         shell: /bin/bash
     - name: User Configuration | Add additional SSH public keys
       ansible.posix.authorized_key:

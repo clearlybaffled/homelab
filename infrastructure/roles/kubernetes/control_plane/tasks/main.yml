@@ -39,7 +39,7 @@
 
 - name: Write kubeconfig
   copy:
-    dest: "{{ ansible_home }}/.kube/config"
+    dest: "{{ ansible_home_dir }}/.kube/config"
     content: "{{ kubeconfig }}"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_group }}"

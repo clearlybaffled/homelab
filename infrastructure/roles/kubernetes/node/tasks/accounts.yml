@@ -29,7 +29,7 @@
 
 - name: Ensure ansible_user has a ~/.kube directory
   file:
-    path: "{{ ansible_home }}/.kube"
+    path: "{{ ansible_home_dir }}/.kube"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_group }}"
     state: directory
