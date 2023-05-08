@@ -24,7 +24,7 @@ Much of it shamelesesly ripped from [kubernetes-sigs/kubespray](https://github.c
 |`barb`|Desktop|Gigabyte Z370 AORUS Intel i5-8600K @ 3.60 GHz| 64GB | - 500GB NVMe<br/>- 250GB SSD| Zotac GeForce GTX 1660 Super 6GB GDDR6|
 |`seawolf`|Laptop|Dell XPS 13|16GB|250GB HDD||
 
-  Host naming conventions. All of the physical and virtual hosts are named for the [WW2 submarines commanded][ww2-sub-moh-uri] by a [Congressional Medal of Honor](https://mohmuseum.org/the-medal/) recipient. The Kubernetes cluster is named `gato`  for the first major class of submarines built by the U.S. for use in WW2. I wanted to name something `wahoo`, after [one][wahoo-uri] of the most succesful and prolific submarines of the pacific theater, but she did not meet the requirement of having been commanded by a MoH recipient. So, anything inside the cluster that gets named will be a Gato-class submarine. Maybe the hajimari homepage, but we're not quite there yet ...
+  Host naming conventions. All of the physical and virtual hosts are named for the [WW2 submarines commanded](ww2-sub-moh-uri) by a [Congressional Medal of Honor](https://mohmuseum.org/the-medal/) recipient. The Kubernetes cluster is named `gato`  for the first major class of submarines built by the U.S. for use in WW2. I wanted to name something `wahoo`, after [one](wahoo-uri) of the most succesful and prolific submarines of the pacific theater, but she did not meet the requirement of having been commanded by a MoH recipient. So, anything inside the cluster that gets named will be a Gato-class submarine. Maybe the hajimari homepage, but we're not quite there yet ...
 
 
 ## Code Layout
