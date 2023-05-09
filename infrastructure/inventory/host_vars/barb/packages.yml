@@ -88,3 +88,7 @@ winget_packages:
     Name: "Python 3.11"
     Id: 9NRWMJP3717K
     source: msstore
+  vlc:
+    Name: "VLC media player"
+    Id: "VideoLAN.VLC"
+    source: winget
