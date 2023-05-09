@@ -1,7 +1,5 @@
 ---
 # DNS configuration.
-# Kubernetes cluster name, also will be used as DNS domain
-cluster_name: "gato.{{ domain_name }}"
 # Subdomains of DNS domain to be resolved via /etc/resolv.conf for hostnet pods
 ndots: 2
 # dns_timeout: 2
@@ -46,7 +44,7 @@ nodelocaldns_secondary_skew_seconds: 5
 #   - name website.tld website.namespace.svc.cluster.local
 
 # CoreDNS
-coredns_version: "{{ 'v1.9.3' if (kube_version is version('v1.25.0','>=')) else 'v1.8.6' }}"
+coredns_version: 'v1.9.3'
 
 # Enable k8s_external plugin for CoreDNS
 enable_coredns_k8s_external: false
