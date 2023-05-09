@@ -15,6 +15,7 @@
 
     - name: user | Process user request on control plane
       delegate_to: "{{ groups['kube_control_plane'][0] }}"
+      connection: ssh
       become: true
       block:
         - name: user | Create ClusterRoleBinding and submit CSR
