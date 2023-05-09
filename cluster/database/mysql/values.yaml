@@ -12,3 +12,5 @@ primary:
     enabled: true
     runAsUser: 996
     runAsNonRoot: true
+  service:
+    type: LoadBalancer

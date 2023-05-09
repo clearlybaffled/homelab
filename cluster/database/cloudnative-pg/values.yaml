@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/cloudnative-pg/charts/main/charts/cloudnative-pg/values.schema.json
 replicaCount: 1
 
 image:
@@ -79,7 +80,7 @@ podSecurityContext:
 priorityClassName: ""
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   # -- DO NOT CHANGE THE SERVICE NAME as it is currently used to generate the certificate
   # and can not be configured
   name: cnpg-webhook-service
