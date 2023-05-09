@@ -2,14 +2,14 @@
 - name: Render kustomize template
   template:
     src: "{{ item }}.j2"
-    dest: "{{ role_dir }}/files/{{ item }}"
+    dest: "{{ role_path }}/files/{{ item }}"
     mode: "0644"
   with_items:
     - kustomization.yaml
 
 - name: Start Resources
   kubernetes.core.k8s:
-    definition: "{{ lookup('kubernetes.core.kustomize', dir=role_dir+'/files') | from_yaml_all }}"
+    definition: "{{ lookup('kubernetes.core.kustomize', dir=role_path+'/files') | from_yaml_all }}"
     namespace: kube-flannel
   register: flannel_apply
 
@@ -19,3 +19,9 @@
     path: /run/flannel/subnet.env
     delay: 5
     timeout: 10
+  when: flannel_apply is not failed
+
+- name: Remove kustomized manifest
+  file:
+    path: "{{ role_path/files/kustomization.yaml }}"
+    state: absent
