@@ -47,10 +47,10 @@
   roles:
     - containers/network
     - kubernetes/metallb
+    - kubernetes/traefik
 
 - name: Start up cluster
   hosts: localhost
-  connection: local
   gather_facts: true
   any_errors_fatal: true
   tags: cluster

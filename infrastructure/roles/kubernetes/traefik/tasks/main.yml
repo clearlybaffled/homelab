@@ -1,0 +1,22 @@
+---
+- name: Install traefik helm repo
+  kubernetes.core.helm_repository:
+    repo_name: traefik
+    repo_url: https://traefik.github.io/charts
+
+- name: Install traefik helm chart
+  kubernetes.core.helm:
+    name: traefik
+    chart_ref: traefik/traefik
+    release_namespace: traefik-system
+    create_namespace: true
+    values_files:
+      - values.yaml
+
+- name: Add resources
+  kubernetes.core.k8s:
+    definition: item
+  with_file:
+    - storageClass.yaml
+    - persistentVolume.yaml
+    - ingress-route.yaml
