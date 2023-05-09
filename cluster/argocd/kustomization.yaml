@@ -1,9 +1,19 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: argocd
 
 resources:
   - https://raw.githubusercontent.com/argoproj/argo-cd/v2.6.7/manifests/install.yaml
-  - argocd-cm.yaml
   - cluster.yaml
 # END ANSIBLE MANAGED BLOCK
+
+patches:
+  - patch: |-
+      - op: add
+        path: /data/kustomize.buildOptions
+        value: "--enable-helm"
+    target:
+      version: v1
+      kind: ConfigMap
+      name: argocd-cm
