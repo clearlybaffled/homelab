@@ -44,4 +44,4 @@
 
 - name: Boostrap cluster
   kubernetes.core.k8s:
-    definition: "{{ lookup('kubernetes.core.kustomize', dir=(rood_dir, 'cluster', 'argocd')| path_join ) | from_yaml_all }}"
+    src: "{{ (root_dir, 'cluster', 'argocd', 'argocd.yaml')| path_join }}"
