@@ -23,5 +23,5 @@
 
 - name: Remove kustomized manifest
   file:
-    path: "{{ role_path/files/kustomization.yaml }}"
+    path: "{{ role_path }}/files/kustomization.yaml"
     state: absent
