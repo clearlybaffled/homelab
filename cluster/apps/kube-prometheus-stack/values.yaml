@@ -5,3 +5,5 @@ grafana:
     ingressClassName: traefik
     annotations:
       hajimari.io/enable: "true"
+  service:
+    type: LoadBalancer
