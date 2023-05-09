@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: {{ app.namespace | default(app.name, true) }}
+{% if app.resources is defined %}
+
+resources:
+{% for resource in app.resources %}
+  - {{ resource }}
+{% endfor %}{% endif %}
+{% if app.charts is defined %}
+
+helmCharts:
+{% for chart in app.charts %}
+  - name: {{ chart.name | default(app.name, true) }}
+    repo: {{ helm_repositories[chart.repo] }}
+    version: {{ chart.version }}
+    valuesFile: {{ chart.valuesFile | default('values.yaml', true)}}
+    releaseName: {{ chart.release | default(app.name, true) }}
+    namespace: {{ app.namespace | default(app.name, true) }}{% endfor %}{% endif %}
+{{- app.extras if app.extras is defined -}}
