@@ -910,5 +910,5 @@ download_defaults:
   url: None
   unarchive: false
   owner: "{{ kube_owner }}"
-  grouop: "{{ kube_group }}"
+  group: "{{ kube_group }}"
   mode: None
