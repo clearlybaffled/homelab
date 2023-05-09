@@ -35,6 +35,7 @@
         owner: "{{ local_user }}"
         mode: "0600"
         force: true
+      when: kubeconfig != ""
 
 - name: Setup local binary clients
   include_tasks: binary.yml
@@ -53,8 +54,4 @@
   with_items: "{{ helm_repositories | dict2items }}"
 
 - name: Update helm repository cache
-  kubernetes.core.helm:
-    name: dummy
-    namespace: kube-system
-    state: absent
-    update_repo_cache: true
+  command: "helm repo update"

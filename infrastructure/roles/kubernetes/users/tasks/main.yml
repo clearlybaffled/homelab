@@ -1,5 +1,17 @@
 ---
-- block: # noqa name
+- name: Check for existing user
+  delegate_to: "{{ groups['kube_control_plane'][0] }}"
+  connection: ssh
+  become: true
+  kubernetes.core.k8s_info:
+    kind: CertificateSigningRequest
+    name: "{{ kube_user }}-csr"
+    api_version: certificates.k8s.io/v1
+  register: user_status
+
+- name: Create User
+  when: user_status is not failed
+  block:
     - name: user | Generate private key
       community.crypto.openssl_privatekey_pipe:
         type: RSA
@@ -46,7 +58,6 @@
     - name: user | Create kubeconfig file
       set_fact:
         kubeconfig: "{{ lookup('ansible.builtin.template', 'kubeconfig.yml.j2') }}"
-
   always:
     - name: Make sure that output (which contains the private key) is overwritten
       set_fact:
