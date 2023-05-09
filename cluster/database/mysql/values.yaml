@@ -7,10 +7,10 @@ primary:
     storageclass: "mysql"
   podSecurityContext:
     enabled: true
-    fsGroup: 996
+    fsGroup: 997
   containerSecurityContext:
     enabled: true
-    runAsUser: 996
+    runAsUser: 997
     runAsNonRoot: true
   service:
     type: LoadBalancer
