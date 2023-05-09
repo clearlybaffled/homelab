@@ -1,6 +1,7 @@
 ---
 - name: Localhost setup
   delegate_to: localhost
+  connection: local
   block:
     - name: Set some facts
       set_fact:
