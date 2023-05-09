@@ -1,20 +1,27 @@
 ---
-- name: Install kustomization yaml
-  template:
-    src: "{{ item }}.yaml.j2"
-    dest: "{{ playbook_dir }}/../cluster/argocd/{{ item }}.yaml"
+- name: Install Kustomization files for each app
+  blockinfile:
+    block: "{{ lookup('template', 'kustomization.j2', convert_data=false) }}"
+    dest: "{{ (root_dir, 'cluster', (app.path | default('') | split('/')), app.name, 'kustomization.yaml') | flatten | path_join }}"
     mode: "0644"
+    create: true
   register: kustomize
-  with_items:
-    - kustomization
+  loop: "{{ apps |flatten(levels=1) }}"
+  loop_control:
+    loop_var: app
 
-- name: Commit changes if necessary
+- name: Commit changes to Kustomization files, if necessary # noqa no-handler
   lvrfrc87.git_acp.git_acp:
-    name: "{{ playbook_dir }}/.."
-    comment: "Updated ArgoCD kustomization"
-    add: ["cluster/argocd"]
-    url: "git@github.com/clearlybaffled/homelab"
-    push: true
+    path: "{{ root_dir }}" # noqa jinja
+    comment: "Updated ArgoCD kustomization files" # \n{{ changed_list | to_yaml }}
+    add: "{{ changed_list }}"
+    url: "ssh://github.com/clearlybaffled/homelab"
+    push: false
+    ssh_params:
+      key_file: "/home/jared/.ssh/github_clearlybaffled"
+  when: kustomize is changed
+  vars:
+    changed_list: "{{ kustomize.results | select('changed') | map(attribute='invocation.module_args.dest') | map('relpath',root_dir)}}"
 
 - name: Create argocd namespace
   kubernetes.core.k8s:
@@ -35,7 +42,6 @@
       crd/applications.argoproj.io \
       crd/applicationsets.argoproj.io
 
-- name: Kick off cluster boostrap
+- name: Boostrap cluster
   kubernetes.core.k8s:
-    # definition: "{{ lookup('file', playbook_dir+'/../cluster/argocd/argocd.yaml') | from_yaml_all }}"
-    definition: "{{ lookup('kubernetes.core.kustomize', dir=playbook_dir+'/../cluster/argocd') | from_yaml_all }}"
+    definition: "{{ lookup('kubernetes.core.kustomize', dir=(rood_dir, 'cluster', 'argocd')| path_join ) | from_yaml_all }}"
