@@ -11,7 +11,7 @@
     release_namespace: traefik-system
     create_namespace: true
     values_files:
-      - values.yaml
+      - "{{ role_path }}/files/values.yaml"
 
 - name: Add resources
   kubernetes.core.k8s:
