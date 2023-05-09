@@ -1,4 +1,7 @@
 ---
+# Kubernetes cluster name, also will be used as DNS domain
+cluster_name: "gato"
+
 # Use proxycommand if bastion host is in group all
 # This change obseletes editing ansible.cfg file depending on bastion existence
 ansible_ssh_common_args: "{% if 'bastion' in groups['all'] %} -o ProxyCommand='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -W %h:%p -p {{ hostvars['bastion']['ansible_port'] | default(22) }} {{ hostvars['bastion']['ansible_user'] }}@{{ hostvars['bastion']['ansible_host'] }} {% if ansible_ssh_private_key_file is defined %}-i {{ ansible_ssh_private_key_file }}{% endif %} ' {% endif %}"
@@ -52,7 +55,7 @@ kube_major_version: "{{ kube_version | regex_replace('^v([0-9])+\\.([0-9]+)\\.[0
 kube_version_min_required: v1.24.0
 
 ## Kube Proxy mode One of ['iptables','ipvs']
-kube_proxy_mode: ipvs
+kube_proxy_mode: iptables
 
 ## The timeout for init first control-plane
 kubeadm_init_timeout: 300s
