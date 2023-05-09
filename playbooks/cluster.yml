@@ -39,13 +39,14 @@
   roles:
     - kubernetes/client
 
-- name: Register CNI pluin
+- name: Setup cluster infrastructure services
   hosts: localhost
   gather_facts: true
   any_errors_fatal: true
-  tags: cni
+  tags: infra
   roles:
     - containers/network
+    - kubernetes/metallb
 
 - name: Start up cluster
   hosts: localhost
