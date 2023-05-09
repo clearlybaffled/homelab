@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: grocy
-          image: lscr.io/linuxserver/grocy:v3.3.2
+          image: lscr.io/linuxserver/grocy:3.3.2
           envFrom:
             - configMapRef:
                 name: grocy-cm
