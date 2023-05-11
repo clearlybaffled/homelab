@@ -16,7 +16,7 @@
     comment: "Updated ArgoCD kustomization files" # \n{{ changed_list | to_yaml }}
     add: "{{ changed_list }}"
     url: "ssh://github.com/clearlybaffled/homelab"
-    push: false
+    push: true
     ssh_params:
       key_file: "/home/jared/.ssh/github_clearlybaffled"
   when: kustomize is changed
@@ -31,9 +31,9 @@
       metadata:
         name: argocd
 
-- name: Install argocd CRDs
+- name: Start ArgoCD
   kubernetes.core.k8s:
-    definition: "{{ lookup('kubernetes.core.kustomize', dir='github.com/argoproj/argo-cd/manifests/crds?ref='+argocd_version) | from_yaml_all }}"
+    src: "{{ argocd_manifest }}"
     namespace: argocd
 
 - name: Wait for all argocd crds to load
@@ -42,6 +42,25 @@
       crd/applications.argoproj.io \
       crd/applicationsets.argoproj.io
 
+- name: Configure ArgoCD to use helm with kustomize
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      kind: ConfigMap
+      name: argocd-cm
+      namespace: argocd
+      api_version: v1
+      data:
+        kustomize.buildOptions: --enable-helm
+
+- name: Change ArgoCD Server to LoadBalancer
+  kubernetes.core.k8s_service:
+    name: argocd-server
+    namespace: argocd
+    definition:
+      spec:
+        type: LoadBalancer
+
 - name: Boostrap cluster
   kubernetes.core.k8s:
-    src: "{{ (root_dir, 'cluster', 'argocd', 'argocd.yaml')| path_join }}"
+    src: "{{ (root_dir, 'cluster', 'argocd', 'argocd.yaml')| path_join  }}"
