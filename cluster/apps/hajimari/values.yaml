@@ -6,13 +6,15 @@ ingress:
   main:
     enabled: true
     hosts:
-      - host: hajimari.hajimari.svc.gato.hermleigh.home
+      - host: hajimari.gato.hermleigh.home
         paths:
           - path: /
             pathType: Prefix
 persistence:
   data:
-    enabled: false
+    enabled: true
     accessMode: ReadWriteOnce
     size: 1Gi
-
+service:
+  main:
+    type: LoadBalancer
