@@ -8,7 +8,7 @@ metadata:
     hajimari.io/enable: "true"
 spec:
   rules:
-    - host: argocd-server.argocd.svc.gato.hermleigh.home
+    - host: argocd.gato.hermleigh.home
       http:
         paths:
           - path: /

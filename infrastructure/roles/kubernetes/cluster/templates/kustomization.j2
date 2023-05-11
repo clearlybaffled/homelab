@@ -1,6 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: {{ app.namespace | default(app.name, true) }}
+{% if app.namespace is defined and app.namespace != '' %}
+namespace: {{ app.namespace }}
+{% else %}
+namespace: {{ app.name }}
+{% endif %}
 {% if app.resources is defined %}
 
 resources:

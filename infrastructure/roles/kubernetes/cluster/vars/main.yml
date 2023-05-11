@@ -5,12 +5,6 @@ apps:
     charts:
       - repo: hajimari
         version: 2.0.2
-  - name: argocd
-    resources:
-      - "{{ argocd_manifest }}"
-      - argocd-cm.yaml
-      - cluster.yaml
-    #  - ingress.yaml
   - name: kube-prometheus-stack
     path: apps
     namespace: monitoring
