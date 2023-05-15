@@ -24,14 +24,3 @@ apps:
     charts:
       - repo: bitnami
         version: "9.7.2"
-  - name: traefik
-    path: infrastructure
-    namespace: traefik-system
-    resources:
-      - storageClass.yaml
-      - persistentVolume.yaml
-    # - traefik-forward-auth
-      - ingress-route.yaml
-    charts:
-      - repo: traefik
-      - version: "22.1.0"
