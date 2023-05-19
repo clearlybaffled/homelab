@@ -1,6 +1,3 @@
-[submodule "references/home-ops"]
-	path = references/home-ops
-	url = https://github.com/bjw-s/home-ops.git
 [submodule "references/blackjid"]
 	path = references/blackjid
 	url = https://github.com/blackjid/k8s-gitops.git
