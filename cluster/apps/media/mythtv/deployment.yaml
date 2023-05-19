@@ -37,6 +37,15 @@ spec:
             limits:
               cpu: 220m
               memory: 512Mi
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                    - key: hermleigh.home/dvb
+                      operator: In
+                      values:
+                        - "installed"
           volumeMounts:
             - name: videos
               mountPath: /videos
