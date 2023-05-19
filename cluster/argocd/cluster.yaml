@@ -31,7 +31,6 @@ spec:
         targetRevision: HEAD
       destination:
         name: in-cluster
-        namespace: '{{ index .path.segments 2 }}'
       syncPolicy: 
         automated:
           prune: true
