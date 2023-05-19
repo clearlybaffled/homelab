@@ -80,7 +80,7 @@ podSecurityContext:
 priorityClassName: ""
 
 service:
-  type: LoadBalancer
+  type: ClusterIP
   # -- DO NOT CHANGE THE SERVICE NAME as it is currently used to generate the certificate
   # and can not be configured
   name: cnpg-webhook-service
