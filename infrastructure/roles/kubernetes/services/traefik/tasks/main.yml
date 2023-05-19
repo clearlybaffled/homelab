@@ -15,8 +15,7 @@
 
 - name: Add resources
   kubernetes.core.k8s:
-    definition: item
-  with_file:
+    src: "files/{{item}}"
+  with_items:
     - storageClass.yaml
     - persistentVolume.yaml
-    - ingress-route.yaml

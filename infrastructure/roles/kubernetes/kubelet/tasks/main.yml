@@ -36,12 +36,12 @@
     mode: "0640"
   notify: Node | restart kubelet
 
-# - name: Write kubelet config file
-#   template:
-#     src: "kubelet-config.{{ kubeletConfig_api_version }}.yaml.j2"
-#     dest: "{{ kube_config_dir }}/kubelet-config.yaml"
-#     mode: "0640"
-#   notify: Kubelet | restart kubelet
+- name: Write kubelet config file
+  template:
+    src: "kubelet-config.{{ kubeletConfig_api_version }}.yaml.j2"
+    dest: "/var/lib/kubelet/config.yaml"
+    mode: "0640"
+  notify: Kubelet | restart kubelet
 
 - name: Write kubelet systemd init file
   # template:

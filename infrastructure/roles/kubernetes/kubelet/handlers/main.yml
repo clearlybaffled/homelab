@@ -7,5 +7,5 @@
 - name: Node | restart kubelet # noqa no-changed-when
   command: /bin/true
   notify:
-    - Kubelet | reload systemd
+    - Reload systemd
     - Kubelet | restart kubelet

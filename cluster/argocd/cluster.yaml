@@ -15,8 +15,6 @@ spec:
         - path: cluster/apps/*
         - path: cluster/database/*
         - path: cluster/apps/media/*
-        - path: cluster/apps/media
-          exclude: true
   template:
     metadata:
       name: '{{ .path.basename }}'

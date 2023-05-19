@@ -1,7 +1,7 @@
 ---
 # Kubernetes dashboard
 # RBAC required. see docs/getting-started.md for access details.
-dashboard_enabled: true
+dashboard_enabled: false
 
 # Helm deployment
 helm_enabled: true
@@ -23,28 +23,13 @@ registry_version: 2.8.1
 # registry_storage_class: ""
 # registry_disk_size: "10Gi"
 
-# Metrics Server deployment
-metrics_server_enabled: false
-metrics_server_version: v0.6.2
-# metrics_server_container_port: 4443
-# metrics_server_kubelet_insecure_tls: true
-# metrics_server_metric_resolution: 15s
-# metrics_server_kubelet_preferred_address_types: "InternalIP,ExternalIP,Hostname"
-# metrics_server_host_network: false
-# metrics_server_replicas: 1
-
 # Rancher Local Path Provisioner
 local_path_provisioner_enabled: false
 local_path_provisioner_version: v0.0.23
-# local_path_provisioner_namespace: "local-path-storage"
-# local_path_provisioner_storage_class: "local-path"
-# local_path_provisioner_reclaim_policy: Delete
-# local_path_provisioner_claim_root: /opt/local-path-provisioner/
-# local_path_provisioner_debug: false
-# local_path_provisioner_image_repo: "rancher/local-path-provisioner"
-# local_path_provisioner_image_tag: "v0.0.23"
-# local_path_provisioner_helper_image_repo: "busybox"
-# local_path_provisioner_helper_image_tag: "latest"
+local_path_provisioner_image_repo: "rancher/local-path-provisioner"
+local_path_provisioner_image_tag: "v0.0.23"
+local_path_provisioner_helper_image_repo: "busybox"
+local_path_provisioner_helper_image_tag: "latest"
 
 # Local volume provisioner deployment
 local_volume_provisioner_enabled: false
@@ -125,45 +110,6 @@ rbd_provisioner_version: v2.1.1-k8s1.11
 # rbd_provisioner_storage_class: rbd
 # rbd_provisioner_reclaim_policy: Delete
 
-# Nginx ingress controller deployment
-ingress_nginx_enabled: false
-ingress_nginx_version: v1.6.4
-# ingress_nginx_host_network: false
-ingress_publish_status_address: ""
-# ingress_nginx_nodeselector:
-#   kubernetes.io/os: "linux"
-# ingress_nginx_tolerations:
-#   - key: "node-role.kubernetes.io/master"
-#     operator: "Equal"
-#     value: ""
-#     effect: "NoSchedule"
-#   - key: "node-role.kubernetes.io/control-plane"
-#     operator: "Equal"
-#     value: ""
-#     effect: "NoSchedule"
-# ingress_nginx_namespace: "ingress-nginx"
-# ingress_nginx_insecure_port: 80
-# ingress_nginx_secure_port: 443
-# ingress_nginx_configmap:
-#   map-hash-bucket-size: "128"
-#   ssl-protocols: "TLSv1.2 TLSv1.3"
-# ingress_nginx_configmap_tcp_services:
-#   9000: "default/example-go:8080"
-# ingress_nginx_configmap_udp_services:
-#   53: "kube-system/coredns:53"
-# ingress_nginx_extra_args:
-#   - --default-ssl-certificate=default/foo-tls
-# ingress_nginx_termination_grace_period_seconds: 300
-# ingress_nginx_class: nginx
-
-# ALB ingress controller deployment
-ingress_alb_enabled: false
-# alb_ingress_aws_region: "us-east-1"
-# alb_ingress_restrict_scheme: "false"
-# Enables logging on all outbound requests sent to the AWS API.
-# If logging is desired, set to true.
-# alb_ingress_aws_debug: "false"
-
 # Cert manager deployment
 cert_manager_enabled: false
 cert_manager_version: v1.11.0
@@ -198,76 +144,6 @@ cert_manager_version: v1.11.0
 #     - "1.1.1.1"
 #     - "8.8.8.8"
 
-# MetalLB deployment
-metallb_enabled: true
-metallb_speaker_enabled: "{{ metallb_enabled }}"
-# metallb_speaker_nodeselector:
-#   kubernetes.io/os: "linux"
-# metallb_controller_nodeselector:
-#   kubernetes.io/os: "linux"
-# metallb_speaker_tolerations:
-#   - key: "node-role.kubernetes.io/master"
-#     operator: "Equal"
-#     value: ""
-#     effect: "NoSchedule"
-#   - key: "node-role.kubernetes.io/control-plane"
-#     operator: "Equal"
-#     value: ""
-#     effect: "NoSchedule"
-# metallb_controller_tolerations:
-#   - key: "node-role.kubernetes.io/master"
-#     operator: "Equal"
-#     value: ""
-#     effect: "NoSchedule"
-#   - key: "node-role.kubernetes.io/control-plane"
-#     operator: "Equal"
-#     value: ""
-#     effect: "NoSchedule"
-metallb_version: v0.13.9
-metallb_protocol: "layer2"
-# metallb_port: "7472"
-# metallb_memberlist_port: "7946"
-metallb_config:
-  address_pools:
-    primary:
-      ip_range:
-        - 172.16.1.33/27
-      auto_assign: true
-#     pool1:
-#       ip_range:
-#         - 10.6.0.0/16
-#       auto_assign: true
-#     pool2:
-#       ip_range:
-#         - 10.10.0.0/16
-#       auto_assign: true
-  layer2:
-    - primary
-#   layer3:
-#     defaults:
-#       peer_port: 179
-#       hold_time: 120s
-#     communities:
-#       vpn-only: "1234:1"
-#       NO_ADVERTISE: "65535:65282"
-#     metallb_peers:
-#         peer1:
-#           peer_address: 10.6.0.1
-#           peer_asn: 64512
-#           my_asn: 4200000000
-#           communities:
-#             - vpn-only
-#           address_pool:
-#             - pool1
-#         peer2:
-#           peer_address: 10.10.0.1
-#           peer_asn: 64513
-#           my_asn: 4200000000
-#           communities:
-#             - NO_ADVERTISE
-#           address_pool:
-#             - pool2
-
 # ArgoCD GitOps
 argocd_enabled: true
 argocd_version: v2.6.7
@@ -292,3 +168,8 @@ krew_root_dir: "/usr/local/krew"
 enable_network_policy: true
 cinder_csi_enabled: false
 csi_snapshot_controller_enabled: false
+
+# MetalLB deployment
+metallb_enabled: true
+metallb_speaker_enabled: "{{ metallb_enabled }}"
+metallb_version: v0.13.9

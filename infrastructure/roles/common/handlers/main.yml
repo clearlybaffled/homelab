@@ -1,5 +1,5 @@
 ---
-- name: CRI-O | reload systemd
+- name: Reload systemd
   systemd:
     daemon_reload: true
 
@@ -18,11 +18,6 @@
   service:
     name: crio
     state: started
-
-
-- name: Kubelet | reload systemd
-  systemd:
-    daemon_reload: true
 
 - name: Kubelet | restart kubelet
   systemd:

@@ -3,5 +3,5 @@
   command: /bin/true
   changed_when: false
   notify:
-    - CRI-O | reload systemd
+    - Reload systemd
     - CRI-O | reload crio

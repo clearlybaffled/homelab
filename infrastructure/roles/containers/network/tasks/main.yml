@@ -1,27 +1,38 @@
 ---
-- name: Render kustomize template
-  template:
-    src: "{{ item }}.j2"
-    dest: "{{ role_path }}/files/{{ item }}"
-    mode: "0644"
-  with_items:
-    - kustomization.yaml
-
-- name: Start Resources
-  kubernetes.core.k8s:
-    definition: "{{ lookup('kubernetes.core.kustomize', dir=role_path+'/files') | from_yaml_all }}"
-    namespace: kube-flannel
-  register: flannel_apply
-
-- name: Wait for flannel subnet.env file presence
+- name: Check for flannel subnet file
   delegate_to: "{{ groups['kube_control_plane'][0] }}"
-  wait_for:
+  connection: ssh
+  stat:
     path: /run/flannel/subnet.env
-    delay: 5
-    timeout: 10
-  when: flannel_apply is not failed
+  register: subnetenv_file
 
-- name: Remove kustomized manifest
-  file:
-    path: "{{ role_path }}/files/kustomization.yaml"
-    state: absent
+- name: Install Flannel
+  when: not subnetenv_file.stat.exists
+  block:
+    - name: Render kustomize template
+      template:
+        src: "{{ item }}.j2"
+        dest: "{{ role_path }}/files/{{ item }}"
+        mode: "0644"
+      with_items:
+        - kustomization.yaml
+
+    - name: Start Resources
+      kubernetes.core.k8s:
+        definition: "{{ lookup('kubernetes.core.kustomize', dir=role_path+'/files') | from_yaml_all }}"
+        namespace: kube-flannel
+      register: flannel_apply
+
+    - name: Wait for flannel subnet.env file presence
+      delegate_to: "{{ groups['kube_control_plane'][0] }}"
+      connection: ssh
+      wait_for:
+        path: /run/flannel/subnet.env
+        delay: 5
+        timeout: 10
+      when: flannel_apply is not failed
+
+    - name: Remove kustomized manifest
+      file:
+        path: "{{ role_path }}/files/kustomization.yaml"
+        state: absent

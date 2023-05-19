@@ -10,6 +10,7 @@
         name: "{{ item }}"
         tasks_from: reset
       with_items:
+      #  - kubernetes/coredns
         - kubernetes/control_plane
         - containers/network
        # - containers/runtime

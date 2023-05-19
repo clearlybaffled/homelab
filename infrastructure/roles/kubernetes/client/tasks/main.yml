@@ -15,6 +15,7 @@
         owner: "{{ local_user }}"
         mode: "0700"
         state: directory
+      when: kubedir is not exists
 
     - name: Install windows clients
       include_tasks: windows.yml

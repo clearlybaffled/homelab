@@ -10,5 +10,13 @@ spec:
     storage: 10Gi
   accessModes:
     - ReadWriteOnce
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - parche
   hostPath:
     path: "/srv/data/mysql"

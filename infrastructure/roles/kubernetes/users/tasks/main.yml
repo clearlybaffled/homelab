@@ -7,12 +7,11 @@
     kind: CertificateSigningRequest
     name: "{{ kube_user }}-csr"
     api_version: certificates.k8s.io/v1
+    kubeconfig: "{{ kubeconfig_file }}"
   register: user_status
-  vars:
-    user_created: false
 
 - name: Create User
-  when: not user_status.resources
+  when: user_status is not failed
   block:
     - name: user | Generate private key
       community.crypto.openssl_privatekey_pipe:
@@ -60,7 +59,6 @@
     - name: user | Create kubeconfig file
       set_fact:
         kubeconfig: "{{ lookup('ansible.builtin.template', 'kubeconfig.yml.j2') }}"
-        user_created: true
   always:
     - name: Make sure that output (which contains the private key) is overwritten
       set_fact:
