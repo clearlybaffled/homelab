@@ -21,7 +21,6 @@
     - role: download
       tags: download
       when: not skip_downloads
-    - role: kubernetes/kubelet
 
 - name: Install control plane
   hosts: kube_control_plane
@@ -30,10 +29,11 @@
   become: true
   tags: control_plane
   roles:
+    - role: kubernetes/kubelet
     - kubernetes/control_plane
 
 - name: Configure local binaries for cluster admin
-  gather_facts: true
+  gather_facts: false
   hosts: kube_control_plane[0]
   tags: client
   roles:
@@ -46,12 +46,11 @@
   tags: infra
   roles:
     - containers/network
-    - kubernetes/metallb
-    - kubernetes/traefik
+    - kubernetes/services
 
 - name: Start up cluster
   hosts: localhost
-  gather_facts: true
+  gather_facts: false
   any_errors_fatal: true
   tags: cluster
   roles:

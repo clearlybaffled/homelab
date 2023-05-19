@@ -46,7 +46,7 @@ is_fedora_coreos: false
 disable_swap: true
 
 ## Change this to use another Kubernetes version, e.g. a current beta release
-kube_version: v1.26.3
+kube_version: v1.27.1
 
 # Get kubernetes major version (i.e. 1.17.4 => 1.17)
 kube_major_version: "{{ kube_version | regex_replace('^v([0-9])+\\.([0-9]+)\\.[0-9]+', 'v\\1.\\2') }}"
@@ -66,25 +66,7 @@ kubeadm_version: "{{ kube_version }}"
 ## List of kubeadm init phases that should be skipped during control plane setup
 ## By default 'addon/coredns' is skipped
 ## 'addon/kube-proxy' gets skipped for some network plugins
-kubeadm_init_phases_skip_default: ["addon/coredns"]
-kubeadm_init_phases_skip: >-
-  {%- if kube_network_plugin == 'kube-router' and (kube_router_run_service_proxy is defined and kube_router_run_service_proxy) -%}
-  {{ kubeadm_init_phases_skip_default }} + [ "addon/kube-proxy" ]
-  {%- elif kube_network_plugin == 'cilium' and (cilium_kube_proxy_replacement is defined and cilium_kube_proxy_replacement == 'strict') -%}
-  {{ kubeadm_init_phases_skip_default }} + [ "addon/kube-proxy" ]
-  {%- elif kube_network_plugin == 'calico' and (calico_bpf_enabled is defined and calico_bpf_enabled) -%}
-  {{ kubeadm_init_phases_skip_default }} + [ "addon/kube-proxy" ]
-  {%- elif kube_proxy_remove is defined and kube_proxy_remove -%}
-  {{ kubeadm_init_phases_skip_default }} + [ "addon/kube-proxy" ]
-  {%- else -%}
-  {{ kubeadm_init_phases_skip_default }}
-  {%- endif -%}
-
-# List of kubeadm phases that should be skipped when joining a new node
-# You may need to set this to ['preflight'] for air-gaped deployments to avoid failing connectivity tests.
-kubeadm_join_phases_skip_default: []
-kubeadm_join_phases_skip: >-
- {{ kubeadm_join_phases_skip_default }}
+kubeadm_init_phases_skip: [] # ["addon/coredns"]
 
 # A string slice of values which specify the addresses to use for NodePorts.
 # Values may be valid IP blocks (e.g. 1.2.3.0/24, 1.2.3.4/32).
@@ -102,16 +84,9 @@ ignore_assert_errors: false
 
 kube_vip_enabled: false
 
-# nginx-proxy configure
-nginx_config_dir: "/etc/nginx"
-
-# haproxy configure
-haproxy_config_dir: "/etc/haproxy"
-
 # Random shifts for retrying failed ops like pushing/downloading
 retry_stagger: 5
 
-# TODO: Make sure this user gets created
 # This is the user that owns tha cluster installation.
 kube_owner: kube
 kube_group: kube
@@ -124,7 +99,7 @@ kube_cert_group: kube-cert
 # When true, disables all tasks manipulating certificates. Ensure before the kubespray run that:
 # - Certificates and CAs are present in kube_cert_dir
 # - Kubeconfig files are present in kube_config_dir
-kube_external_ca_mode: true
+kube_external_ca_mode: false
 
 # Cluster Loglevel configuration
 kube_log_level: 2
@@ -151,7 +126,7 @@ kube_service_addresses: 10.233.0.0/18
 # internal network. When used, it will assign IP
 # addresses from this range to individual pods.
 # This network must be unused in your network infrastructure!
-kube_pods_subnet: 172.17.0.0/18 # 10.233.64.0/18
+kube_pods_subnet: 10.233.64.0/18
 
 # internal network node size allocation (optional). This is the size allocated
 # to each node for pod IP address allocation. Note that the number of pods per node is

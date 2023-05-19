@@ -38,3 +38,8 @@
   notify:
     - 'Kubelet | start kubelet'
     - 'CRI-O | start crio'
+
+- name: Remove flannel/subnet.env
+  file:
+    path: /run/flannel/subnet.env
+    state: absent

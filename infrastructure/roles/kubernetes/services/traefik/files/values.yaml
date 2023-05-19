@@ -16,6 +16,9 @@ additionalArguments:
 ingressRoute:
   dashboard:
     enabled: true
+    annotations: 
+      hajimari.io/enable: "true"
+      hajimari.io/icon: "web"
 
 persistence:
   enabled: true
@@ -27,3 +30,5 @@ persistence:
 
 service:
   type: LoadBalancer
+  annotations:
+    metallb.universe.tf/address-pool: ingress

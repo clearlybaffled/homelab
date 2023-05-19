@@ -9,6 +9,8 @@
   loop: "{{ apps |flatten(levels=1) }}"
   loop_control:
     loop_var: app
+  tags:
+    - manifests
 
 - name: Commit changes to Kustomization files, if necessary # noqa no-handler
   lvrfrc87.git_acp.git_acp:
@@ -22,6 +24,8 @@
   when: kustomize is changed
   vars:
     changed_list: "{{ kustomize.results | select('changed') | map(attribute='invocation.module_args.dest') | map('relpath',root_dir)}}"
+  tags:
+    - manifests
 
 - name: Create argocd namespace
   kubernetes.core.k8s:
@@ -35,6 +39,7 @@
   kubernetes.core.k8s:
     src: "{{ argocd_manifest }}"
     namespace: argocd
+    wait: true
 
 - name: Wait for all argocd crds to load
   command: |-
@@ -45,21 +50,30 @@
 - name: Configure ArgoCD to use helm with kustomize
   kubernetes.core.k8s:
     state: present
+    namespace: argocd
+    name: argocd-cm
+    api_version: v1
+    kind: ConfigMap
     definition:
-      kind: ConfigMap
-      name: argocd-cm
-      namespace: argocd
-      api_version: v1
       data:
         kustomize.buildOptions: --enable-helm
 
-- name: Change ArgoCD Server to LoadBalancer
-  kubernetes.core.k8s_service:
-    name: argocd-server
-    namespace: argocd
-    definition:
-      spec:
-        type: LoadBalancer
+# - name: Change ArgoCD Server to LoadBalancer
+#   kubernetes.core.k8s_service:
+#     name: argocd-server
+#     namespace: argocd
+#     definition:
+#       spec:
+#         type: LoadBalancer
+#         ports:
+#           - name: http
+#             port: 80
+#             protocol: TCP
+#             targetPort: 8080
+#           - name: https
+#             port: 443
+#             protocol: TCP
+#             targetPort: 8080
 
 - name: Boostrap cluster
   kubernetes.core.k8s:

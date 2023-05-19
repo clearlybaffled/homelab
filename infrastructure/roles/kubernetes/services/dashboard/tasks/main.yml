@@ -1,0 +1,6 @@
+---
+- name: Kubernetes Apps | Start dashboard
+  kubernetes.core.k8s:
+    template: "dashboard.yml.j2"
+    namespace: "{{ dashboard_namespace }}"
+    state: "latest"

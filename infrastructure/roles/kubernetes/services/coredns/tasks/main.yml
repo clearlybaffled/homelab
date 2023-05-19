@@ -1,0 +1,25 @@
+---
+# - name: Kubernetes Apps | Cleanup DNS
+#   import_tasks: cleanup_dns.yml
+#   when:
+#     - inventory_hostname == groups['kube_control_plane'][0]
+#   tags:
+#     - upgrade
+#     - coredns
+
+- name: Install manifests
+  kubernetes.core.k8s:
+    template: "{{ item }}.yml.j2"
+  loop:
+    # - coredns-clusterrole
+    # - coredns-clusterrolebinding
+    - coredns-config
+    # - coredns-deployment
+    # - coredns-sa
+    # - coredns-svc
+    # - ext-dns
+  register: coredns_manifests
+  vars:
+    clusterIP: "{{ dns_server }}"
+  tags:
+    - coredns
