@@ -7,9 +7,12 @@ ingress:
     enabled: true
     hosts:
       - host: hajimari.gato.hermleigh.home
-        paths:
+        paths: &paths
           - path: /
             pathType: Prefix
+      - host: wahoo.hermleigh.home
+        paths: 
+         <<: *paths
 persistence:
   data:
     enabled: true
@@ -17,4 +20,4 @@ persistence:
     size: 1Gi
 service:
   main:
-    type: LoadBalancer
+    type: ClusterIP
