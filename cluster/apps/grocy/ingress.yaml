@@ -6,11 +6,13 @@ metadata:
     hajimari.io/enable: "true"
 spec:
   rules:
-  - host: grocy.grocy.svc.gato.hermleigh.home
+  - host: grocy.gato.hermleigh.home
     http:
       paths:
       - path: /
         pathType: Exact
         backend:
-          serviceName: grocy
-          servicePort: 80
+          service:
+            name: grocy
+            port:
+              number: 80
