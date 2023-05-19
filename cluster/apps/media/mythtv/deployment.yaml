@@ -38,9 +38,17 @@ spec:
               cpu: 220m
               memory: 512Mi
           volumeMounts:
-            - name: config-storage
-              mountPath: /config
+            - name: videos
+              mountPath: /videos
+            - name: dvb
+              mountPath: /dev/dvb
+
       volumes:
-        - name: config-storage
-          persistentVolumeClaim:
-            claimName: mythtv-storage
+        - name: videos
+          hostPath: 
+            path: /videos
+            type: Directory
+        - name: dvb
+          hostPath:
+            path: /dev/dvb
+            type: Directory
