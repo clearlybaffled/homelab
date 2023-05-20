@@ -26,7 +26,7 @@ spec:
       source:
         repoURL: https://github.com/clearlybaffled/homelab
         path: '{{ .path.path }}'
-        targetRevision: HEAD
+        targetRevision: main
       destination:
         name: in-cluster
       syncPolicy: 
