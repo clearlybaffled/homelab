@@ -1,10 +1,7 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: mysql
-
-resources:
-  - pv.yaml
+namespace: db
 
 helmCharts:
   - name: mysql
@@ -12,5 +9,5 @@ helmCharts:
     version: 9.7.2
     valuesFile: values.yaml
     releaseName: mysql
-    namespace: mysql
+    namespace: db
 # END ANSIBLE MANAGED BLOCK

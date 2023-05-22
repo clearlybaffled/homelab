@@ -13,12 +13,14 @@ apps:
         repo: prometheus-community
         version: "45.10.1"
   - name: cloudnative-pg
-    path: database
+    path: db
+    namespace: db
     charts:
       - repo: cnpg
         version: "0.17.1"
   - name: mysql
-    path: database
+    path: db
+    namespace: db
     resources:
       - pv.yaml
     charts:
