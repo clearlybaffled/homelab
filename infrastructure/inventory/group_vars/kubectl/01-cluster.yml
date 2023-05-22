@@ -197,6 +197,9 @@ k8s_image_pull_policy: IfNotPresent
 dashboard_enabled: true
 dashboard_image_tag: v2.7.0
 dashboard_metrics_scraper_tag: v1.0.8
+dashboard_image_repo: "{{ docker_image_repo }}/kubernetesui/dashboard"
+dashboard_metrics_scraper_repo: "{{ docker_image_repo }}/kubernetesui/metrics-scraper"
+
 
 # audit log for kubernetes
 kubernetes_audit: false
