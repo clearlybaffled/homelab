@@ -10,6 +10,8 @@
     - inventory_hostname == groups['kube_control_plane'][0]
 
 - name: Local Path Provisioner | Create claim root dir
+  delegate_to: "{{ groups['kube_control_plane'][0] }}"
+  become: true
   file:
     path: "{{ local_path_provisioner_claim_root }}"
     state: directory
@@ -48,9 +50,8 @@
 
 - name: Local Path Provisioner | Apply manifests
   kubernetes.core.k8s:
-    name: "{{ item.item.name }}"
     namespace: "{{ local_path_provisioner_namespace }}"
-    src: "{{ kube_config_dir }}/addons/local_path_provisioner/{{ item.item.file }}"
-    state: "latest"
-  with_items: "{{ local_path_provisioner_manifests.results }}"
-  when: inventory_hostname == groups['kube_control_plane'][0]
+    template: "{{ item.file }}.j2"
+    # src: "{{ kube_config_dir }}/addons/local_path_provisioner/{{ item.item.file }}"
+    ca_cert: "{{ cluster_cacerts }}"
+  with_items: "{{ local_path_provisioner_templates }}"
