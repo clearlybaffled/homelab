@@ -21,6 +21,9 @@ etcd_deployment_type: kubeadm
 # etcd group can be empty when kubeadm manages etcd
 etcd_hosts: "{{ groups['etcd'] | default(groups['kube_control_plane']) }}"
 
+etcd_image_repo: "{{ quay_image_repo }}/coreos/etcd"
+etcd_image_tag: "{{ etcd_version }}"
+
 # Vars for pointing to etcd endpoints
 is_etcd_master: "{{ inventory_hostname in groups['etcd'] }}"
 etcd_address: "{{ ip | default('172.16.1.10') }}"

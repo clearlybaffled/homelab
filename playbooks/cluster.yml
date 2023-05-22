@@ -1,6 +1,9 @@
 ---
 - name: Gather Cluster Facts
-  hosts: k8s_cluster
+  hosts:
+    - k8s_cluster
+    - localhost
+  tags: always
   become: true
   gather_facts: true
 
@@ -21,6 +24,7 @@
     - role: download
       tags: download
       when: not skip_downloads
+    - role: kubernetes/kubelet
 
 - name: Install control plane
   hosts: kube_control_plane
@@ -29,12 +33,11 @@
   become: true
   tags: control_plane
   roles:
-    - role: kubernetes/kubelet
     - kubernetes/control_plane
 
 - name: Configure local binaries for cluster admin
   gather_facts: false
-  hosts: kube_control_plane[0]
+  hosts: localhost
   tags: client
   roles:
     - kubernetes/client

@@ -1,6 +1,8 @@
 ---
 dependencies:
-  # - role: kubernetes/services/coredns
+  - role: kubernetes/services/coredns
+    when:
+      - "{{ 'addons/coredns' in kubeadm_init_phases_skip }}"
   - role: kubernetes/services/metallb
     when:
       - metallb_enabled
