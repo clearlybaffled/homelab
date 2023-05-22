@@ -4,7 +4,7 @@ auth:
   createDatabase: false
 primary:
   persistence:
-    storageclass: "mysql"
+    storageclass: local-path
   podSecurityContext:
     enabled: true
     fsGroup: 997
