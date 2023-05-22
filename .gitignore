@@ -20,3 +20,10 @@ tags
 [._]*.un~
 
 # End of https://www.toptal.com/developers/gitignore/api/vim
+
+infrastructure/roles/containers
+
+infrastructure/pki
+infrastructure/roles/**/etcd*
+
+.unotes
