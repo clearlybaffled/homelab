@@ -6,13 +6,14 @@
     owner: "{{ kube_owner }}"
     mode: "0640"
 
-# - name: kubeadm | Check if kubeadm has already run
-#   stat:
-#     path: "/var/lib/kubelet/config.yaml"
-#     get_attributes: false
-#     get_checksum: false
-#     get_mime: false
-#   register: kubeadm_already_run
+- name: kubeadm | Check if kubeadm has already run
+  stat:
+    path: "/etc/kubernetes/admin.config"
+    get_attributes: false
+    get_checksum: false
+    get_mime: false
+  register: kubeadm_already_run
+  any_errors_fatal: false
 
 - name: kubeadm | Initialize first master
   command: >-
@@ -31,16 +32,6 @@
   environment:
     PATH: "{{ bin_dir }}:{{ ansible_env.PATH }}"
   notify: Kubelet | restart kubelet
-
-- name: Apply crun Runtime class
-  kubernetes.core.k8s:
-    kind: RuntimeClass
-    api_version: node.k8s.io/v1
-    kubeconfig: "{{ kubeconfig_file }}"
-    resource_definition: |-
-      metadata:
-        name: crun
-      handler: crun
 
 # - name: Create cluster user for ansible
 #   include_role:
