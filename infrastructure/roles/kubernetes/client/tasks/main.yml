@@ -1,42 +1,40 @@
 ---
-- name: Localhost setup
-  delegate_to: localhost
-  connection: local
+- name: Set some facts
   block:
-    - name: Set some facts
-      set_fact:
+    - set_fact: # noqa name
         home_directory: "{{ lookup('env','HOME') }}"
+    - set_fact: # noqa name
         local_user: "{{ lookup('env','USER') }}"
-        kubedir: "{{ lookup('env','HOME')  }}/.kube"
+        kubedir: "{{ [home_directory, '.kube']|path_join }}"
 
-    - name: Create kube config dir for current/ansible become user
-      file:
-        path: "{{ kubedir }}"
-        owner: "{{ local_user }}"
-        mode: "0700"
-        state: directory
-      when: kubedir is not exists
+- name: Create kube config dir for current/ansible become user
+  file:
+    path: "{{ kubedir }}"
+    owner: "{{ local_user }}"
+    mode: "0700"
+    state: directory
+  when: kubedir is not exists
 
-    - name: Install windows clients
-      include_tasks: windows.yml
-      when: ansible_os_family|lower == "windows"
+- name: Install windows clients
+  include_tasks: windows.yml
+  when: ansible_os_family|lower == "windows"
 
-    - name: Create cluster user for local controller user
-      include_role:
-        name: kubernetes/users
-      vars:
-        kube_user: "{{ local_user }}"
-        username: "{{ local_user }}"
-        groupname: "{{ local_user }}"
+- name: Create cluster user for local controller user
+  include_role:
+    name: kubernetes/users
+  vars:
+    kube_user: "{{ local_user }}"
+    username: "{{ local_user }}"
+    groupname: "{{ local_user }}"
 
-    - name: Write local kubeconfig
-      copy:
-        dest: "{{ kubedir }}/config"
-        content: "{{ kubeconfig }}"
-        owner: "{{ local_user }}"
-        mode: "0600"
-        force: true
-      when: kubeconfig != ""
+- name: Write local kubeconfig
+  when: kubeconfig != ""
+  copy:
+    dest: "{{ kubedir }}/config"
+    content: "{{ kubeconfig }}"
+    owner: "{{ local_user }}"
+    mode: "0600"
+    force: true
 
 - name: Setup local binary clients
   include_tasks: binary.yml

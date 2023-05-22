@@ -12,7 +12,7 @@
   register: user_status
 
 - name: Create User
-  when: user_status is not failed
+  when: not user_status.resources
   block:
     - name: user | Generate private key
       community.crypto.openssl_privatekey_pipe:
@@ -60,10 +60,14 @@
 
     - name: user | Create kubeconfig file
       set_fact:
-        kubeconfig: "{{ lookup('ansible.builtin.template', 'kubeconfig.yml.j2') }}"
+        kubeconfig_str: "{{ lookup('ansible.builtin.template', 'kubeconfig.yml.j2') }}"
   always:
     - name: Make sure that output (which contains the private key) is overwritten
       set_fact:
         private_key: ''
         csr: ''
         crt: ''
+
+- name: Make sure kubeconfig is set
+  set_fact:
+    kubeconfig: "{{ kubeconfig_str | default('') }}"
