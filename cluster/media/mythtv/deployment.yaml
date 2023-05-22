@@ -51,7 +51,8 @@ spec:
               mountPath: /videos
             - name: dvb
               mountPath: /dev/dvb
-
+            - name: homedir
+              mountPath: /home/mythtv
       volumes:
         - name: videos
           hostPath: 
@@ -61,3 +62,6 @@ spec:
           hostPath:
             path: /dev/dvb
             type: Directory
+        - name: homedir
+          persistentVolumeClaim:
+            claimName: mythtv-homedir
