@@ -358,6 +358,8 @@ auto_renew_certificates: false
 # First Monday of each month
 # auto_renew_certificates_systemd_calendar: "Mon *-*-1,2,3,4,5,6,7 03:{{ groups['kube_control_plane'].index(inventory_hostname) }}0:00"
 
+pki_dir: "{{ (root_dir, 'infrastructure', 'pki')|path_join }}"
+cluster_cacerts: "{{( pki_dir, 'kubernetes-ca', 'cacerts.pem') | path_join}}"
 
 ssl_ca_dirs: |-
   [
@@ -368,6 +370,7 @@ ssl_ca_dirs: |-
   '/etc/pki/ca-trust',
   {% elif ansible_os_family == 'Debian' -%}
   '/usr/share/ca-certificates',
+  '/usr/local/share/ca-certificates'
   {% endif -%}
   ]
 

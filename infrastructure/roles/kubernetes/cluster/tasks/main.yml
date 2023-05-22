@@ -29,6 +29,7 @@
 
 - name: Create argocd namespace
   kubernetes.core.k8s:
+    ca_cert: "{{ cluster_cacerts }}"
     api_version: v1
     kind: Namespace
     inline: |-
@@ -37,6 +38,7 @@
 
 - name: Start ArgoCD
   kubernetes.core.k8s:
+    ca_cert: "{{ cluster_cacerts }}"
     src: "{{ argocd_manifest }}"
     namespace: argocd
 
@@ -48,6 +50,7 @@
 
 - name: Configure ArgoCD to use helm with kustomize
   kubernetes.core.k8s:
+    ca_cert: "{{ cluster_cacerts }}"
     state: present
     namespace: argocd
     name: argocd-cm

@@ -10,6 +10,7 @@
 - name: Install manifests
   kubernetes.core.k8s:
     template: "{{ item }}.yml.j2"
+    ca_cert: "{{ cluster_cacerts }}"
   loop:
     # - coredns-clusterrole
     # - coredns-clusterrolebinding
