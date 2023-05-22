@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: grocy-svc
+  name: grocy
   namespace: grocy
   labels:
     app: grocy
@@ -12,5 +12,26 @@ spec:
     - name: web
       port: 80
       targetPort: 80
+      protocol: TCP
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: barcode-buddy
+  namespace: grocy
+  labels:
+    app: barcode-buddy
+spec:
+  selector:
+    app: barcode-buddy
+  ports:
+    - name: web
+      port: 80
+      targetPort: 80
+      protocol: TCP
+    - name: tls
+      port: 443
+      targetPort: 443
       protocol: TCP
   type: ClusterIP
