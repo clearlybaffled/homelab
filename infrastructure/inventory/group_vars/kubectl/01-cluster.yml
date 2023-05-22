@@ -2,17 +2,12 @@
 # Kubernetes cluster name, also will be used as DNS domain
 cluster_name: "gato"
 
-# Use proxycommand if bastion host is in group all
-# This change obseletes editing ansible.cfg file depending on bastion existence
-ansible_ssh_common_args: "{% if 'bastion' in groups['all'] %} -o ProxyCommand='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -W %h:%p -p {{ hostvars['bastion']['ansible_port'] | default(22) }} {{ hostvars['bastion']['ansible_user'] }}@{{ hostvars['bastion']['ansible_host'] }} {% if ansible_ssh_private_key_file is defined %}-i {{ ansible_ssh_private_key_file }}{% endif %} ' {% endif %}"
-
 # Kubernetes configuration dirs and system namespace.
 # Those are where all the additional config stuff goes
 # the kubernetes normally puts in /srv/kubernetes.
 # This puts them in a sane location and namespace.
 # Editing those values will almost surely break something.
 kube_config_dir: /etc/kubernetes
-kube_script_dir: "{{ bin_dir }}/kubernetes-scripts"
 kube_manifest_dir: "{{ kube_config_dir }}/manifests"
 kubeconfig_file: "{{ kube_config_dir }}/admin.conf"
 
@@ -27,20 +22,11 @@ kubectl: "{{ bin_dir }}/kubectl --kubeconfig {{ kubeconfig_file }}"
 # This is where all the cert scripts and certs will be located
 kube_cert_dir: "{{ kube_config_dir }}/pki"
 
-# compatibility directory for kubeadm
-kube_cert_compat_dir: "/etc/kubernetes/pki"
-
-# This is where all of the bearer tokens will be stored
-kube_token_dir: "{{ kube_config_dir }}/tokens"
-
 # selinux state
 # try enforcing at some point
 preinstall_selinux_state: permissive
 
 kube_api_anonymous_auth: true
-
-# Default value, but will be set to true automatically if detected
-is_fedora_coreos: false
 
 # optional disable the swap
 disable_swap: true
@@ -50,9 +36,6 @@ kube_version: v1.27.1
 
 # Get kubernetes major version (i.e. 1.17.4 => 1.17)
 kube_major_version: "{{ kube_version | regex_replace('^v([0-9])+\\.([0-9]+)\\.[0-9]+', 'v\\1.\\2') }}"
-
-## The minimum version working
-kube_version_min_required: v1.24.0
 
 ## Kube Proxy mode One of ['iptables','ipvs']
 kube_proxy_mode: iptables
@@ -114,9 +97,6 @@ kube_network_plugin: flannel
 # Setting multi_networking to true will install Multus: https://github.com/k8snetworkplumbingwg/multus-cni
 kube_network_plugin_multus: false
 
-# Determines if calico_rr group exists
-peer_with_calico_rr: "{{ 'calico_rr' in groups and groups['calico_rr']|length > 0 }}"
-
 # Choose data store type for calico: "etcd" or "kdd" (kubernetes datastore)
 calico_datastore: "kdd"
 
@@ -157,18 +137,8 @@ kube_apiserver_port: 6443  # (https)
 # loadbalancer_apiserver_localhost (nginx/haproxy) will deploy on masters on 127.0.0.1:{{ loadbalancer_apiserver_port|default(kube_apiserver_port) }} too.
 kube_apiserver_bind_address: 172.16.1.10   # 0.0.0.0
 
-# configure arp_ignore and arp_announce to avoid answering ARP queries from kube-ipvs0 interface
-# must be set to true for MetalLB, kube-vip(ARP enabled) to work
-kube_proxy_strict_arp: true
-
 # If non-empty, will use this string as identification instead of the actual hostname
 kube_override_hostname: "{{ inventory_hostname }}"
-
-## Encrypting Secret Data at Rest
-kube_encrypt_secret_data: false
-
-# Aggregator
-kube_api_aggregator_routing: false
 
 # Profiling
 kube_profiling: false
@@ -181,13 +151,7 @@ kubelet_shutdown_grace_period_critical_pods: 20s
 
 kubeadm_certificate_key: "{{ lookup('password', credentials_dir + '/kubeadm_certificate_key.creds length=64 chars=hexdigits') | lower }}"
 
-
 cert_management: script
-
-# Make a copy of kubeconfig on the host that runs Ansible in {{ inventory_dir }}/artifacts
-kubeconfig_localhost: false
-# Download kubectl onto the host that runs Ansible in {{ bin_dir }}
-kubectl_localhost: false
 
 # K8s image pull policy (imagePullPolicy)
 k8s_image_pull_policy: IfNotPresent
@@ -380,24 +344,15 @@ ssl_ca_dirs: |-
 certificates_key_size: 2048
 certificates_duration: 36500
 
+
 # Vars for pointing to kubernetes api endpoints
 is_kube_master: "{{ inventory_hostname in groups['kube_control_plane'] }}"
-kube_apiserver_count: "{{ groups['kube_control_plane'] | length }}"
 kube_apiserver_address: "{{ ip | default(fallback_ips[inventory_hostname]) }}"
-kube_apiserver_access_address: "{{ access_ip | default(kube_apiserver_address) }}"
 first_kube_control_plane_address: "{{ hostvars[groups['kube_control_plane'][0]]['access_ip'] | default(hostvars[groups['kube_control_plane'][0]]['ip'] | default(fallback_ips[groups['kube_control_plane'][0]])) }}"
 loadbalancer_apiserver_localhost: "{{ loadbalancer_apiserver is not defined }}"
 # loadbalancer_apiserver_type: "nginx"
 # applied if only external loadbalancer_apiserver is defined, otherwise ignored
 # apiserver_loadbalancer_domain_name: "lb-apiserver.kubernetes.local"
-kube_apiserver_global_endpoint: |-
-  {% if loadbalancer_apiserver is defined -%}
-      https://{{ apiserver_loadbalancer_domain_name }}:{{ loadbalancer_apiserver.port|default(kube_apiserver_port) }}
-  {%- elif loadbalancer_apiserver_localhost and (loadbalancer_apiserver_port is not defined or loadbalancer_apiserver_port == kube_apiserver_port) -%}
-      https://localhost:{{ kube_apiserver_port }}
-  {%- else -%}
-      https://{{ first_kube_control_plane_address }}:{{ kube_apiserver_port }}
-  {%- endif %}
 kube_apiserver_endpoint: |-
   {% if loadbalancer_apiserver is defined -%}
       https://{{ apiserver_loadbalancer_domain_name }}:{{ loadbalancer_apiserver.port|default(kube_apiserver_port) }}
@@ -420,14 +375,6 @@ kube_scheduler_feature_gates: []
 kube_proxy_feature_gates: []
 kubelet_feature_gates: []
 kubeadm_feature_gates: []
-
-# kubeadm patches path
-kubeadm_patches:
-  enabled: false
-  source_dir: "{{ inventory_dir }}/patches"
-  dest_dir: "{{ kube_config_dir }}/patches"
-
-
 calico_apiserver_enabled: false
 
 # Sets the eventRecordQPS parameter in kubelet-config.yaml. The default value is 5 (see types.go)
@@ -456,13 +403,6 @@ proxy_disable_env:
 
 
 # Kubespray constants
-
-kube_proxy_deployed: "{{ 'addon/kube-proxy' not in kubeadm_init_phases_skip }}"
-
-# The lowest version allowed to upgrade from (same as calico_version in the previous branch)
-calico_min_version_required: "v3.19.4"
-
-containerd_min_version_required: "1.3.7"
 
 ## The access_ip variable is used to define how other nodes should access
 ## the node.  This is used in flannel to allow other flannel nodes to see
@@ -531,7 +471,7 @@ containerd_min_version_required: "1.3.7"
 ## Since workers are included in the no_proxy variable by default, docker engine will be restarted on all nodes (all
 ## pods will restart) when adding or removing workers.  To override this behaviour by only including master nodes in the
 ## no_proxy variable, set below to true:
-no_proxy_exclude_workers: false
+# no_proxy_exclude_workers: false
 
 ## Certificate Management
 ## This setting determines whether certs are generated via scripts.
@@ -564,6 +504,3 @@ kube_webhook_token_auth_url_skip_tls_verify: false
 # kube_webhook_token_auth_url: https://...
 ## base64-encoded string of the webhook's CA certificate
 # kube_webhook_token_auth_ca_data: "LS0t..."
-
-## If enabled it will allow kubespray to attempt setup even if the distribution is not supported. For unsupported distributions this can lead to unexpected failures in some cases.
-allow_unsupported_distribution_setup: false
