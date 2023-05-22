@@ -25,7 +25,7 @@ persistence:
   name: data
   accessMode: ReadWriteOnce
   size: 128Mi
-  storageClass: cert-storage
+  storageClass: local-path
   path: /data
 
 service:
