@@ -3,4 +3,4 @@
   kubernetes.core.k8s:
     template: "dashboard.yml.j2"
     namespace: "{{ dashboard_namespace }}"
-    state: "latest"
+    ca_cert: "{{ cluster_cacerts }}"

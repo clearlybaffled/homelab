@@ -21,6 +21,7 @@
       kubernetes.core.k8s:
         definition: "{{ lookup('kubernetes.core.kustomize', dir=role_path+'/files') | from_yaml_all }}"
         namespace: kube-flannel
+        ca_cert: "{{ cluster_cacerts }}"
       register: flannel_apply
 
     - name: Wait for flannel subnet.env file presence

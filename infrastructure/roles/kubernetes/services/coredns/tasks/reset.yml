@@ -21,6 +21,7 @@
 
 - name: Kubernetes Apps | Delete kubeadm CoreDNS
   kubernetes.core.k8s:
+    ca_cert: "{{ cluster_cacerts }}"
     name: "coredns"
     namespace: "kube-system"
     kind: deployment
@@ -32,6 +33,7 @@
 
 - name: Kubernetes Apps | Delete kubeadm Kube-DNS service
   kubernetes.core.k8s:
+    ca_cert: "{{ cluster_cacerts }}"
     name: "kube-dns"
     namespace: "kube-system"
     kind: "svc"
