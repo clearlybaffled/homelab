@@ -173,3 +173,6 @@ csi_snapshot_controller_enabled: false
 metallb_enabled: true
 metallb_speaker_enabled: "{{ metallb_enabled }}"
 metallb_version: v0.13.9
+
+# Traefik proxy
+traefik_enabled: true

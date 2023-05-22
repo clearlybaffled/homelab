@@ -5,6 +5,8 @@ dependencies:
     when:
       - metallb_enabled
   - role: kubernetes/services/traefik
+    when:
+      - traefik_enabled
   - role: kubernetes/services/dashboard
     when:
       - dashboard_enabled
