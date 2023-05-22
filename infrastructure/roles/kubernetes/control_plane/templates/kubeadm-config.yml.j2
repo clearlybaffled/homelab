@@ -12,6 +12,10 @@ nodeRegistration:
   kubeletExtraArgs:
     node-labels: "{{ node_labels | join(',') }}"
   taints: []
+{% if kubeadm_init_phases_skip %}
+skipPhases:
+{{ kubeadm_init_phases_skip | to_yaml(indent=2) }}
+{% endif %}
 ---
 apiVersion: kubeadm.k8s.io/v1beta3
 kind: ClusterConfiguration

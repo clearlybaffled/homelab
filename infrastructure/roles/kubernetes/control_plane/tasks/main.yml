@@ -21,7 +21,6 @@
     {{ bin_dir }}/kubeadm init
     --config={{ kube_config_dir }}/kubeadm-config.yml
     --ignore-preflight-errors=all
-    --skip-phases={{ kubeadm_init_phases_skip | join(',') }}
     {{ kube_external_ca_mode | ternary('', '--upload-certs') }}
   register: kubeadm_init
   # Retry is because upload config sometimes fails
