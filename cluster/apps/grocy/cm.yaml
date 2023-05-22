@@ -6,5 +6,5 @@ metadata:
 data:
   GENERIC_TIMEZONE: "America/New_York"
   TZ: "America/New_York"
-  PUID: "1000"
-  PGID: "1000"
+  PUID: "997"
+  PGID: "997"
