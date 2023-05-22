@@ -39,13 +39,12 @@
   kubernetes.core.k8s:
     src: "{{ argocd_manifest }}"
     namespace: argocd
-    wait: true
 
-- name: Wait for all argocd crds to load
-  command: |-
-    kubectl -n argocd wait --timeout=60s --for condition=Established \
-      crd/applications.argoproj.io \
-      crd/applicationsets.argoproj.io
+# - name: Wait for all argocd crds to load
+#   command: |-
+#     kubectl -n argocd wait --timeout=60s --for condition=Established \
+#       crd/applications.argoproj.io \
+#       crd/applicationsets.argoproj.io
 
 - name: Configure ArgoCD to use helm with kustomize
   kubernetes.core.k8s:
@@ -75,6 +74,6 @@
 #             protocol: TCP
 #             targetPort: 8080
 
-- name: Boostrap cluster
-  kubernetes.core.k8s:
-    src: "{{ (root_dir, 'cluster', 'argocd', 'argocd.yaml')| path_join  }}"
+# - name: Boostrap cluster
+#   kubernetes.core.k8s:
+#     src: argocd.yaml
