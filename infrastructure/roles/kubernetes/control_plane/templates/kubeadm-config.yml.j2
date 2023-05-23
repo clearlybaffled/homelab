@@ -56,10 +56,10 @@ apiServer:
     readOnly: true
 {% endfor %}
 {% endif %}
-  {# certSANs:
+  certSANs:
 {% for san in apiserver_sans %}
   - {{ san }}
-{% endfor %} #}
+{% endfor %}
   timeoutForControlPlane: 5m0s
 controllerManager: 
  extraArgs:
