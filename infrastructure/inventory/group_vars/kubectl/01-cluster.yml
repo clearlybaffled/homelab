@@ -346,6 +346,11 @@ ssl_ca_dirs: |-
 certificates_key_size: 2048
 certificates_duration: 36500
 
+# External LB example config
+apiserver_loadbalancer_domain_name: "parche"
+loadbalancer_apiserver:
+  address: "{{ kube_apiserver_bind_address }}"
+  port: "{{ kube_apiserver_port }}"
 
 # Vars for pointing to kubernetes api endpoints
 is_kube_master: "{{ inventory_hostname in groups['kube_control_plane'] }}"
