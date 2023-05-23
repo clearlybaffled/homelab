@@ -15,3 +15,6 @@ dependencies:
   - role: kubernetes/services/local_path_provisioner
     when:
       - local_path_provisioner_enabled
+  - role: kubernetes/services/cert-manager
+    when:
+      - cert_manager_enabled
