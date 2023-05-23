@@ -1,0 +1,15 @@
+---
+- name: Install Cert Manager
+  kubernetes.core.helm:
+    release_name: cert-manager
+    release_namespace: "{{ cert_manager_namespace }}"
+    chart_ref: jetstack/cert-manager
+    chart_version: "{{ cert_manager_version | regex_replace('^v') }}"
+    values: "{{ lookup('template', 'values.yaml.j2') | from_yaml }}"
+    create_namespace: true
+
+- name: Install Trust Manager
+  kubernetes.core.helm:
+    release_name: trust-manager
+    release_namespace: "{{ cert_manager_namespace }}"
+    chart_ref: jetstack/trust-manager
