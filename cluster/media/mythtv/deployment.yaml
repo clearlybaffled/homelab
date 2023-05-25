@@ -32,11 +32,11 @@ spec:
               protocol: TCP
           resources:
             requests:
-              cpu: 80m
-              memory: 256Mi
-            limits:
-              cpu: 220m
+              cpu: 500m
               memory: 512Mi
+            limits:
+              cpu: 750m
+              memory: 2048Mi
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
