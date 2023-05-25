@@ -5,6 +5,7 @@ hajirmari:
 ingress:
   main:
     enabled: true
+    ingressClassName: traefik
     hosts:
       - host: hajimari.gato.hermleigh.home
         paths:
@@ -19,6 +20,14 @@ persistence:
     enabled: true
     accessMode: ReadWriteOnce
     size: 1Gi
+  config:
+    enabled: true
+    storageClass: local-path
+  viewcache:
+    enabled: true
+    type: emptyDir
+    mountPath: /config/data/viewcache
 service:
   main:
     type: ClusterIP
+
