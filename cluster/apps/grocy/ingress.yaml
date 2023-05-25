@@ -5,6 +5,8 @@ metadata:
   namespace: grocy
   annotations:
     hajimari.io/enable: "true"
+    hajimari.io/icon: "cart-variant"
+    hajimari.io/appName: "Grocy"
 spec:
   rules:
   - host: grocy.gato.hermleigh.home
