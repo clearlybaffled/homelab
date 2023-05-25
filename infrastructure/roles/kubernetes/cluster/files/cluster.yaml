@@ -12,9 +12,9 @@ spec:
       repoURL: https://github.com/clearlybaffled/homelab
       revision: HEAD
       directories:
-        - path: cluster/apps/*
-        - path: cluster/database/*
-        - path: cluster/apps/media/*
+        - path: cluster/*/*
+        - path: cluster/*
+          exclude: true
   template:
     metadata:
       name: '{{ .path.basename }}'
@@ -29,6 +29,7 @@ spec:
         targetRevision: HEAD
       destination:
         name: in-cluster
+        namespace: '{{ index .path.segments 1 }}'
       syncPolicy: 
         automated:
           prune: true
