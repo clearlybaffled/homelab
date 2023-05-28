@@ -9,7 +9,11 @@
         name: aptitude
         state: latest
         update_cache: true
-
+    ## TODO: VERiFY
+    - name: packages | Add bullseye backports source
+      lineinfile:
+        path: /etc/apt/sources.list
+        line: "deb http://deb.debian.org/debian bullseye-backports main"
     - name: packages | Update apt repo and cache on all Debian/Ubuntu machines
       package:
         update_cache: true
@@ -37,3 +41,6 @@
   package:
     name: "{{ common_packages | union(system_packages|default([])) | union(host_packages|default([])) }}"
     state: present
+
+- name: Install Mozilla SOPS
+  inclue_role: community.sops.install
