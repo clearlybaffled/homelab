@@ -1,20 +1,21 @@
 ---
 dependencies:
-  - role: kubernetes/services/coredns
+  - role: cluster/setup
+  - role: cluster/coredns
     when:
       - "{{ 'addons/coredns' in kubeadm_init_phases_skip }}"
-  - role: kubernetes/services/metallb
+  - role: cluster/metallb
     when:
       - metallb_enabled
-  - role: kubernetes/services/traefik
+  - role: cluster/traefik
     when:
       - traefik_enabled
-  - role: kubernetes/services/dashboard
+  - role: cluster/dashboard
     when:
       - dashboard_enabled
-  - role: kubernetes/services/local_path_provisioner
+  - role: cluster/local_path_provisioner
     when:
       - local_path_provisioner_enabled
-  - role: kubernetes/services/cert-manager
+  - role: cluster/cert-manager
     when:
       - cert_manager_enabled
