@@ -4,7 +4,8 @@ auth:
   createDatabase: false
 primary:
   persistence:
-    storageclass: local-path
+    #    storageclass: local-path
+    existingClaim: data-mysql-0
   podSecurityContext:
     enabled: true
     fsGroup: 997
