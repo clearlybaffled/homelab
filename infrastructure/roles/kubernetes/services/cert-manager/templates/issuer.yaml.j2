@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ca-key-pair
+  namespace: cert-manager
+data:
+  tls.crt: {{ cert_chain }}
+  tls.key: {{ key }}
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: ca-issuer
+  namespace: cert-manager
+spec:
+  ca:
+    secretName: ca-key-pair
+

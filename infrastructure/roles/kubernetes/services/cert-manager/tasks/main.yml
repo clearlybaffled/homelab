@@ -13,3 +13,17 @@
     release_name: trust-manager
     release_namespace: "{{ cert_manager_namespace }}"
     chart_ref: jetstack/trust-manager
+
+- name: Configure ClusterIssuer
+  block:
+    - name: Configure ClusterIssuer
+      kubernetes.core.k8s:
+        template: issuer.yaml.j2
+      vars:
+        cert_chain: "{{ lookup('file', (pki_dir, 'kubernetes-ca','ca.pem')|string|b64encode) }}{{ lookup('file', (pki_dir, 'root-ca','ca.pem')|string|b64encode) }}""{{ lookup('file', (pki_dir, 'kubernetes-ca','ca.pem')|string|b64encode) }}"
+        key: ""
+  always:
+    - name: Clear certs from memory
+      set_facts:
+        cert_chain: ""
+        key: ""
