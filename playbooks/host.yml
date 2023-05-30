@@ -1,19 +1,17 @@
 ---
 - name: Server Provisioning
-  hosts: all
+  hosts: servers
   gather_facts: true
   any_errors_fatal: true
   become: true
   become_method: sudo
   tags: server
-  vars:
-    ansible_user: jared
-    ansible_ssh_private_key_file: /home/jared/.ssh/id_rsa
   roles:
     - server
+    - dvb
 
 - name: Workstation Provisioning
-  hosts: all
+  hosts: workstations
   gather_facts: true
   tags: workstation
   roles:

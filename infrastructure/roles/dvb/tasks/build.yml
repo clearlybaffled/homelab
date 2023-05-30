@@ -1,0 +1,40 @@
+---
+- name: Create a work directory
+  ansible.builtin.tempfile:
+    state: directory
+  register: workdir
+
+- name: Git clone mythtv repo
+  git:
+    repo: 'https://github.com/mythtv/mythtv.git'
+    dest: "{{ workdir.path }}"
+    version: 'fixes/33'
+    single_branch: true
+  register: git_clone
+
+- name: Configure
+  command:
+    argv:
+      - ./configure
+      - --disable-firewire
+      - --disable-hdhomerun
+      - --disable-vbox
+      - --disable-ceton
+      - --disable-satip
+      - --enable-libxvid
+      - --enable-libx264
+      - --enable-libx265
+      - --enable-libmp3lame
+    chdir: "{{ git_clone.git_dir_now }}"
+
+- name: Make
+  community.general.make:
+    chdir: "{{ git_clone.git_dir_now }}"
+    jobs: 5
+  register: make
+
+- name: Make Install
+  community.general.make:
+    chdir: "{{ git_clone.git_dir_now }}"
+    target: Install
+  when: make is not failed
