@@ -9,8 +9,8 @@ spec:
   goTemplate: true
   generators:
   - git:
-      repoURL: https://github.com/clearlybaffled/homelab
-      revision: HEAD
+      repoURL: ssh://git@parche:/srv/homelab.git
+      revision: development
       directories:
         - path: cluster/*/*
         - path: cluster/*
@@ -24,9 +24,9 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/clearlybaffled/homelab
+        repoURL: ssh://git@parche:/srv/homelab.git
         path: '{{ .path.path }}'
-        targetRevision: HEAD
+        targetRevision: development
       destination:
         name: in-cluster
         namespace: '{{ index .path.segments 1 }}'
