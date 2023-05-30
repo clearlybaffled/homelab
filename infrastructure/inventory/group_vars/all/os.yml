@@ -29,7 +29,6 @@ common_packages:
   - policycoreutils-python-utils
   - tree
   - jq
-  - yq
   - lshw
   - htop
   - hdparm
