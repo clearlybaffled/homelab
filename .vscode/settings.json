@@ -13,5 +13,5 @@
     "yaml.schemas": {
         "https://github.com/datreeio/CRDs-catalog/raw/main/traefik.containo.us/ingressroute_v1alpha1.json": ["ingress-route.yaml"]
     },
-    "ansible.python.interpreterPath": "/bin/python3"
+    "ansible.python.interpreterPath": ".venv/bin/python"
 }
