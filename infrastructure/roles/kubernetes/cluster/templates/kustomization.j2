@@ -7,8 +7,10 @@ namespace: {{ app.name }}
 {% endif %}
 {% if app.resources is defined %}
 
-{{ app.resources | to_yaml }}
-{% endif %}
+resources:
+{% for resource in app.resources %}
+  - {{ resource }}
+{% endfor %}{% endif %}
 {% if app.charts is defined %}
 
 helmCharts:
