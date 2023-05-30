@@ -7,6 +7,7 @@ metadata:
     hajimari.io/enable: "true"
     hajimari.io/icon: "cart-variant"
     hajimari.io/appName: "Grocy"
+    cert-manager.io/cluster-issuer: ca-issuer
 spec:
   rules:
   - host: grocy.gato.hermleigh.home
@@ -19,6 +20,10 @@ spec:
             name: grocy
             port:
               number: 80
+  tls:
+    - hosts:
+      - grocy.gato.hermleigh.home
+      secretName: grocy-ingress-cert
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -27,6 +32,7 @@ metadata:
   namespace: grocy
   annotations:
     hajimari.io/enable: "true"
+    cert-manager.io/cluster-issuer: ca-issuer
 spec:
   rules:
   - host: barcode-buddy.gato.hermleigh.home
@@ -39,3 +45,7 @@ spec:
             name: barcode-buddy
             port:
               number: 80
+  tls:
+    - hosts:
+      - barcode-buddy.gato.hermleigh.home
+      secretName: barcode-buddy-ingress-cert
