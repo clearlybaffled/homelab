@@ -3,11 +3,13 @@ kind: IngressRoute
 metadata:
   name: traefik-dashboard
   namespace: traefik-system
+  annotations:
+    cert-manager.io/cluster-issuer: ca-issuer
 spec:
   #  entryPoints:
   #  - websecure
   routes:
-    - match: Host(`traefik.gato.hermleigh.home`)
+    - match: Host(`traefik.gato.hermleigh.home`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
       kind: Rule
       services:
         - name: api@internal

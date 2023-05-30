@@ -10,6 +10,5 @@
     chart_ref: traefik/traefik
     release_namespace: traefik-system
     create_namespace: true
-
     values_files:
       - "{{ role_path }}/files/values.yaml"
