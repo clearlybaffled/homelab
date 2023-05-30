@@ -22,7 +22,7 @@
       when:
         - not download_always_pull
 
-    - debug:  # noqa unnamed-task
+    - debug:  # noqa name
         msg: "Pull {{ image_reponame }} required is: {{ pull_required }}"
 
     - name: download_container | Determine if image is in cache
@@ -71,7 +71,7 @@
         - not image_is_cached
 
     - name: download_container | Save and compress image
-      shell: "{{ image_save_command }}"  # noqa 305 image_save_command_on_localhost contains a pipe, therefore requires shell
+      shell: "{{ image_save_command }}"  # noqa command-instead-of-shell image_save_command_on_localhost contains a pipe, therefore requires shell
       delegate_to: "{{ download_delegate }}"
       delegate_facts: false
       register: container_save_status
@@ -83,7 +83,7 @@
         - download_run_once
 
     - name: download_container | Load image into the local container registry
-      shell: "{{ image_load_command }}"  # noqa 305 image_load_command uses pipes, therefore requires shell
+      shell: "{{ image_load_command }}"  # noqa command-instead-of-shell image_load_command uses pipes, therefore requires shell
       register: container_load_status
       failed_when: container_load_status is failed
       when:

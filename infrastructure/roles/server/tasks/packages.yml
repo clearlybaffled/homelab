@@ -43,4 +43,5 @@
     state: present
 
 - name: Install Mozilla SOPS
-  inclue_role: community.sops.install
+  include_role:
+    name: community.sops.install

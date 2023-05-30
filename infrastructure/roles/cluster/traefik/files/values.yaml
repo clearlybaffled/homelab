@@ -18,7 +18,7 @@ ingressRoute:
     enabled: true
     annotations: 
       hajimari.io/enable: "true"
-      hajimari.io/icon: "web"
+      hajimari.io/icon: "simple-icons:traefikproxy"
 
 persistence:
   enabled: true
