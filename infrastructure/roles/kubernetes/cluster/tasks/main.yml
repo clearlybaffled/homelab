@@ -19,6 +19,7 @@
     add: "{{ changed_list }}"
     url: "ssh://github.com/clearlybaffled/homelab"
     push: true
+    branch: development
     ssh_params:
       key_file: "/home/jared/.ssh/github_clearlybaffled"
   when: kustomize is changed
@@ -59,6 +60,18 @@
     definition:
       data:
         kustomize.buildOptions: --enable-helm
+
+- name: argocd server insecure
+  kubernetes.core.k8s:
+    ca_cert: "{{ cluster_cacerts }}"
+    state: present
+    namespace: argocd
+    name: argocd-cmd-params-cm
+    api_version: v1
+    kind: ConfigMap
+    definition:
+      data:
+        server.insecure: "true"
 
 # - name: Change ArgoCD Server to LoadBalancer
 #   kubernetes.core.k8s_service:
