@@ -6,15 +6,23 @@ metadata:
   namespace: argocd
   annotations:
     hajimari.io/enable: "true"
+    hajimari.io/icon: devicon:argocd
+    cert-manager.io/cluster-issuer: ca-issuer
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
 spec:
   rules:
     - host: argocd.gato.hermleigh.home
       http:
         paths:
           - path: /
-            pathType: Exact
+            pathType: Prefix
             backend:
               service:
                 name: argocd-server
                 port:
                   number: 443
+  tls:
+    - hosts:
+      - argocd.gato.hermleigh.home
+      secretName: argocd-ingress-cert
