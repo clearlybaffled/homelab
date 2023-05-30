@@ -1,7 +1,7 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: hajimari
+namespace: apps
 
 helmCharts:
   - name: hajimari
@@ -9,5 +9,5 @@ helmCharts:
     version: 2.0.2
     valuesFile: values.yaml
     releaseName: hajimari
-    namespace: hajimari
+    namespace: apps
 # END ANSIBLE MANAGED BLOCK
