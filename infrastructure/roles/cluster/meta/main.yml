@@ -1,6 +1,7 @@
 ---
 dependencies:
   - role: cluster/setup
+  - role: containers/network
   - role: cluster/coredns
     when:
       - "{{ 'addons/coredns' in kubeadm_init_phases_skip }}"

@@ -35,21 +35,13 @@
   roles:
     - kubernetes/control_plane
 
-- name: Configure local binaries for cluster admin
-  gather_facts: false
-  hosts: localhost
-  tags: client
-  roles:
-    - kubernetes/client
-
 - name: Setup cluster infrastructure services
   hosts: localhost
   gather_facts: true
   any_errors_fatal: true
   tags: infra
   roles:
-    - containers/network
-    - kubernetes/services
+    - cluster
 
 - name: Start up cluster
   hosts: localhost
