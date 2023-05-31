@@ -249,6 +249,39 @@ spec:
     k8s-app: kubernetes-dashboard
 
 ---
+
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  annotations:
+    hajimari.io/enable: "true"
+    hajimari.io/icon: "logos:kubernetes"
+    cert-manager.io/cluster-issuer: ca-issuer
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+  labels:
+    k8s-app: kubernetes-dashboard
+  name: kubernetes-dashboard
+  namespace: {{ dashboard_namespace }}
+spec:
+  rules:
+    - host: dashboard.gato.hermleigh.home
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kubernetes-dashboard
+                port:
+                  number: 443
+  tls:
+    - hosts:
+      - dashboard.gato.hermleigh.home
+      secretName: dashboard-ingress-cert
+
+
+---
 # ------------------- Metrics Scrapper Service Account ------------------- #
 
 kind: ClusterRole
@@ -337,3 +370,23 @@ spec:
         - key: node-role.kubernetes.io/control-plane
           effect: NoSchedule
 {% endif %}
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dashboard-user
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: dashboard-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: dashboard-user
+  namespace: kube-system
