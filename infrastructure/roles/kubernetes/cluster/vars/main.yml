@@ -7,6 +7,7 @@ apps:
         version: 2.0.2
     resources:
       - https://raw.githubusercontent.com/toboshii/hajimari/main/charts/hajimari/templates/crd.yaml
+      - traefik-dashboard.yaml
   - name: kube-prometheus-stack
     path: monitoring
     namespace: monitoring
@@ -14,18 +15,32 @@ apps:
       - name: kube-prometheus-stack
         repo: prometheus-community
         version: "46.4.1"
+    resources:
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_probes.yaml
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_prometheusagents.yaml
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_scrapeconfigs.yaml
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml
   - name: cloudnative-pg
     path: db
     namespace: db
     charts:
       - repo: cnpg
         version: "0.18.0"
+    resources:
+      - storage.yaml
   - name: mysql
     path: db
     namespace: db
     resources:
       - pv.yaml
       - pvc.yaml
+      - secret.yaml
     charts:
       - repo: bitnami
         version: "9.10.1"

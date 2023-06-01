@@ -2,7 +2,7 @@ apiVersion: hajimari.io/v1alpha1
 kind: Application
 metadata:
   name: traefik-dashboard
-  namespace: traefik-system
+  namespace: apps
 spec:
   name: Traefik Dashboard
   group: Infrastructure
