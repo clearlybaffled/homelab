@@ -1,13 +1,11 @@
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: traefik-dashboard
   namespace: traefik-system
-  annotations:
-    cert-manager.io/cluster-issuer: ca-issuer
 spec:
-  #  entryPoints:
-  #  - websecure
+  entryPoints:
+    - websecure
   routes:
     - match: Host(`traefik.gato.hermleigh.home`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
       kind: Rule

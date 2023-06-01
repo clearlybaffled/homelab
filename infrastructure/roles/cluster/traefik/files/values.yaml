@@ -11,22 +11,13 @@ providers:
 
 additionalArguments:
   - "--log.level=ERROR"
-  - "--api.insecure"
 
 ingressRoute:
   dashboard:
-    enabled: true
-    annotations: 
-      hajimari.io/enable: "true"
-      hajimari.io/icon: "simple-icons:traefikproxy"
+    enabled: false
 
 persistence:
-  enabled: true
-  name: data
-  accessMode: ReadWriteOnce
-  size: 128Mi
-  storageClass: local-path
-  path: /data
+  enabled: false
 
 service:
   type: LoadBalancer
