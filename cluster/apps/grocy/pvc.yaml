@@ -2,29 +2,27 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: grocy
-  namespace: grocy
+  namespace: apps
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
-  storageClassName: local-path
   volumeMode: Filesystem
-  volumeName: pvc-d836b684-2b31-47a9-91b9-32bc5cbf0096
+  volumeName: grocy
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: bbuddy
-  namespace: grocy
+  namespace: apps
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 10Mi
-  storageClassName: local-path
   volumeMode: Filesystem
-  volumeName: pvc-61bda5e8-7e60-4d46-9b20-53090a6811ba
+  volumeName: barcode-buddy
 

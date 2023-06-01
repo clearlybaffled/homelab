@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: grocy
-  namespace: grocy
+  namespace: apps
   annotations:
     hajimari.io/enable: "true"
     hajimari.io/icon: "cart-variant"
@@ -29,7 +29,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: barcode-buddy
-  namespace: grocy
+  namespace: apps
   annotations:
     hajimari.io/enable: "true"
     hajimari.io/icon: ph:barcode

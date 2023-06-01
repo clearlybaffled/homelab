@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: grocy
-  namespace: grocy
+  namespace: apps
   labels:
     app: grocy
 spec:
@@ -19,7 +19,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: barcode-buddy
-  namespace: grocy
+  namespace: apps
   labels:
     app: barcode-buddy
 spec:
