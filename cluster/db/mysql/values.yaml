@@ -1,4 +1,9 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bitnami/charts/main/bitnami/mysql/values.schema.json
+auth:
+  createDatabase: false
+  username: ''
+  password: ''
+  existingSecret: mysql
 metrics:
   enabled: true
 primary:
