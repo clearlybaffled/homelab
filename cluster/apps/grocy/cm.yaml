@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: grocy-cm
-  namespace: grocy
+  namespace: apps
 data:
   GENERIC_TIMEZONE: "America/New_York"
   TZ: "America/New_York"

@@ -1,44 +1,9 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  annotations:
-    pv.kubernetes.io/provisioned-by: rancher.io/local-path
   finalizers:
   - kubernetes.io/pv-protection
-  name: pvc-61bda5e8-7e60-4d46-9b20-53090a6811ba
-spec:
-  accessModes:
-  - ReadWriteOnce
-  capacity:
-    storage: 10Mi
-  claimRef:
-    apiVersion: v1
-    kind: PersistentVolumeClaim
-    name: bbuddy
-    namespace: grocy
-  hostPath:
-    path: /srv/cluster/volumes/pvc-61bda5e8-7e60-4d46-9b20-53090a6811ba_grocy_bbuddy
-    type: DirectoryOrCreate
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - parche
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: local-path
-  volumeMode: Filesystem
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  annotations:
-    pv.kubernetes.io/provisioned-by: rancher.io/local-path
-  finalizers:
-  - kubernetes.io/pv-protection
-  name: pvc-d836b684-2b31-47a9-91b9-32bc5cbf0096
+  name: grocy
 spec:
   accessModes:
   - ReadWriteOnce
@@ -48,9 +13,9 @@ spec:
     apiVersion: v1
     kind: PersistentVolumeClaim
     name: grocy
-    namespace: grocy
+    namespace: apps
   hostPath:
-    path: /srv/cluster/volumes/pvc-d836b684-2b31-47a9-91b9-32bc5cbf0096_grocy_grocy
+    path: /srv/cluster/volumes/grocy
     type: DirectoryOrCreate
   nodeAffinity:
     required:
@@ -61,5 +26,34 @@ spec:
           values:
           - parche
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: local-path
+  volumeMode: Filesystem
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  finalizers:
+  - kubernetes.io/pv-protection
+  name: barcode-buddy
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 10Mi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: bbuddy
+    namespace: apps
+  hostPath:
+    path: /srv/cluster/volumes/barcodebuddy
+    type: DirectoryOrCreate
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - parche
+  persistentVolumeReclaimPolicy: Retain
   volumeMode: Filesystem
