@@ -73,16 +73,16 @@ ingress:
         secretName: hajimari-ingress-cert
 persistence:
   data:
-    enabled: true
-    accessMode: ReadWriteOnce
-    size: 1Gi
-  config:
-    enabled: true
-    storageClass: local-path
-  viewcache:
-    enabled: true
-    type: emptyDir
-    mountPath: /config/data/viewcache
+    enabled: false
+  #   accessMode: ReadWriteOnce
+  #   size: 1Gi
+  # config:
+  #   enabled: true
+  #   storageClass: local-path
+  # viewcache:
+  #   enabled: true
+  #   type: emptyDir
+  #   mountPath: /config/data/viewcache
 service:
   main:
     type: ClusterIP
