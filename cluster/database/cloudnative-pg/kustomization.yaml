@@ -6,7 +6,7 @@ namespace: cloudnative-pg
 helmCharts:
   - name: cloudnative-pg
     repo: https://cloudnative-pg.github.io/charts
-    version: 0.17.1
+    version: 0.18.0
     valuesFile: values.yaml
     releaseName: cloudnative-pg
     namespace: cloudnative-pg
