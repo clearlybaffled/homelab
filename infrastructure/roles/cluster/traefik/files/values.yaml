@@ -10,7 +10,12 @@ providers:
       pathOverride: traefik-system/traefik
 
 additionalArguments:
-  - "--log.level=ERROR"
+  - "--api"
+  - "--api.insecure=true"
+
+logs:
+  general:
+    level: ERROR
 
 ingressRoute:
   dashboard:
@@ -23,3 +28,10 @@ service:
   type: LoadBalancer
   annotations:
     metallb.universe.tf/address-pool: ingress
+
+ports:
+  mysql:
+    port: 3306
+    expose: true
+    exposedPort: 3306
+    protocol: TCP
