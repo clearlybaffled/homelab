@@ -44,3 +44,9 @@ apps:
     charts:
       - repo: bitnami
         version: "9.10.1"
+  - name: redis
+    path: db
+    namespace: db
+    charts:
+      - repo: bitnami
+        version: 17.11.3
