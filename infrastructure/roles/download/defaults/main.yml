@@ -621,6 +621,7 @@ downloads:
     dest: "{{ download_cache_dir }}/krew-{{ host_os }}_{{ image_arch }}.tar.gz"
     sha256: "{{ krew_archive_checksum }}"
     url: "{{ krew_download_url }}"
+    install: "{{ bin_dir }}/krew"
     unarchive: true
     mode: "0755"
     groups:
