@@ -1,0 +1,29 @@
+---
+- name: Kubernetes Apps | Create MetalLB resources
+  kubernetes.core.k8s:
+    src: "https://raw.githubusercontent.com/metallb/metallb/{{ metallb_version }}/config/manifests/metallb-native.yaml"
+    ca_cert: "{{ cluster_cacerts }}"
+
+- name: Kubernetes Apps | Wait for MetalLB controller to be running
+  kubernetes.core.k8s_info:
+    ca_cert: "{{ cluster_cacerts }}"
+    kind: Deployment
+    namespace: metallb-system
+    name: controller
+    wait: true
+    wait_sleep: 10
+    wait_timeout: 360
+    wait_condition:
+      status: "True"
+      type: Available
+  register: result
+  until: result is not failed
+
+- name: Kubernetes Apps | Install and configure MetalLB
+  kubernetes.core.k8s:
+    name: "MetalLB"
+    ca_cert: "{{ cluster_cacerts }}"
+    template: "{{ item }}.yaml.j2"
+  with_list:
+    - pools
+    - layer2

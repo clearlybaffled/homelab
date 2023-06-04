@@ -1,46 +1,91 @@
 ---
+
+- name: kubeadm | Check if kubeadm has already run
+  stat:
+    path: "/etc/kubernetes/admin.config"
+    get_attributes: false
+    get_checksum: false
+    get_mime: false
+  register: kubeadm_already_run
+  any_errors_fatal: false
+
+- name: kubeadm | aggregate all SANs
+  set_fact:
+    apiserver_sans: "{{ (sans_base + groups['kube_control_plane'] + sans_lb + sans_lb_ip + sans_supp + sans_access_ip + sans_ip + sans_address + sans_override + sans_hostname + sans_fqdn + sans_kube_vip_address + sans_kube_service_ip) | unique }}"
+  vars:
+    sans_base:
+      - "kubernetes"
+      - "kubernetes.default"
+      - "kubernetes.default.svc"
+      - "kubernetes.default.svc.{{ dns_domain }}"
+      - "{{ kube_apiserver_ip }}"
+      - "localhost"
+      - "127.0.0.1"
+    sans_lb: "{{ [apiserver_loadbalancer_domain_name] if apiserver_loadbalancer_domain_name is defined else [] }}"
+    sans_lb_ip: "{{ [loadbalancer_apiserver.address] if loadbalancer_apiserver is defined and loadbalancer_apiserver.address is defined else [] }}"
+    sans_supp: "{{ supplementary_addresses_in_ssl_keys if supplementary_addresses_in_ssl_keys is defined else [] }}"
+    sans_access_ip: "{{ groups['kube_control_plane'] | map('extract', hostvars, 'access_ip') | list | select('defined') | list }}"
+    sans_ip: "{{ groups['kube_control_plane'] | map('extract', hostvars, 'ip') | list | select('defined') | list }}"
+    sans_address: "{{ groups['kube_control_plane'] | map('extract', hostvars, ['ansible_default_ipv4', 'address']) | list | select('defined') | list }}"
+    sans_override: "{{ [kube_override_hostname] if kube_override_hostname else [] }}"
+    sans_hostname: "{{ groups['kube_control_plane'] | map('extract', hostvars, ['ansible_hostname']) | list | select('defined') | list }}"
+    sans_fqdn: "{{ groups['kube_control_plane'] | map('extract', hostvars, ['ansible_fqdn']) | list | select('defined') | list }}"
+    sans_kube_vip_address: "{{ [kube_vip_address] if kube_vip_address is defined and kube_vip_address else [] }}"
+    sans_kube_service_ip: "{{ [ kube_service_addresses | ipaddr('net')|ipaddr(1)|ipaddr('address') ] }}"
+  tags: facts
+
 - name: Install kubeadm.config file
   template:
     src: kubeadm-config.yml.j2
-    dest: "{{ kube_config_dir }}/kubeadm-config.yml"
+    dest: "{{ kube_config_dir }}/kubeadm-config.yaml"
     owner: "{{ kube_owner }}"
     mode: "0640"
 
-# - name: kubeadm | Check if kubeadm has already run
-#   stat:
-#     path: "/var/lib/kubelet/config.yaml"
-#     get_attributes: false
-#     get_checksum: false
-#     get_mime: false
-#   register: kubeadm_already_run
 
 - name: kubeadm | Initialize first master
-  command: >-
-    timeout -k {{ kubeadm_init_timeout }} {{ kubeadm_init_timeout }}
-    {{ bin_dir }}/kubeadm init
-    --config={{ kube_config_dir }}/kubeadm-config.yml
-    --ignore-preflight-errors=all
-    --skip-phases={{ kubeadm_init_phases_skip | join(',') }}
-    {{ kube_external_ca_mode | ternary('', '--upload-certs') }}
-  register: kubeadm_init
-  # Retry is because upload config sometimes fails
-  retries: 3
-  until: kubeadm_init is succeeded or "field is immutable" in kubeadm_init.stderr
-  when: inventory_hostname == groups["kube_control_plane"][0] # and not kubeadm_already_run.stat.exists
-  failed_when: kubeadm_init.rc != 0 and "field is immutable" not in kubeadm_init.stderr
-  environment:
-    PATH: "{{ bin_dir }}:{{ ansible_env.PATH }}"
-  notify: Kubelet | restart kubelet
+  block:
+    - name: kubeadm | Install Kubernetes CA certs
+      copy:
+        dest: "{{ kube_cert_dir }}/{{ item.dest }}"
+        src: "/srv/pki/kubernetes-ca/{{ item.src }}"
+        owner: root
+        group: root
+        mode: preserve
+        remote_src: true
+      with_items:
+        - { src: ca.pem, dest: ca.crt }
+        - { src: private/ca.key, dest: ca.key }
 
-- name: Apply crun Runtime class
-  kubernetes.core.k8s:
-    kind: RuntimeClass
-    api_version: node.k8s.io/v1
-    kubeconfig: "{{ kubeconfig_file }}"
-    resource_definition: |-
-      metadata:
-        name: crun
-      handler: crun
+    - name: kubeadm | Init certs phase
+      command: >-
+        {{ bin_dir }}/kubeadm init
+        phase certs all
+        --config={{ kube_config_dir }}/kubeadm-config.yaml
+
+    - name: kubeadm | Append ca cert to apiserver cert
+      blockinfile:
+        path: "{{ kube_cert_dir }}/apiserver.crt"
+        content: "{{ item }}"
+        marker: ''
+      with_file: "{{ pki_dir }}/kubernetes-ca/ca.pem"
+
+    - name: kubeadm | Finish kubeadm init
+      command: >-
+        timeout -k {{ kubeadm_init_timeout }} {{ kubeadm_init_timeout }}
+        {{ bin_dir }}/kubeadm init
+        --config={{ kube_config_dir }}/kubeadm-config.yaml
+        --skip-phases=certs
+        --ignore-preflight-errors=all
+        {{ kube_external_ca_mode | ternary('', '--upload-certs') }}
+      register: kubeadm_init
+      # Retry is because upload config sometimes fails
+      retries: 3
+      until: kubeadm_init is succeeded or "field is immutable" in kubeadm_init.stderr
+      when: inventory_hostname == groups["kube_control_plane"][0] # and not kubeadm_already_run.stat.exists
+      failed_when: kubeadm_init.rc != 0 and "field is immutable" not in kubeadm_init.stderr
+      environment:
+        PATH: "{{ bin_dir }}:{{ ansible_env.PATH }}"
+      notify: Kubelet | restart kubelet
 
 # - name: Create cluster user for ansible
 #   include_role:

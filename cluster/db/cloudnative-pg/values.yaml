@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/cloudnative-pg/charts/main/charts/cloudnative-pg/values.schema.json
+
+# -- Container Security Context
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsUser: 997
+  runAsGroup: 997
+  capabilities:
+    drop:
+      - "ALL"
+
+# -- Security Context for the whole pod
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+  fsGroup: 997
+
+# -- Priority indicates the importance of a Pod relative to other Pods.
+priorityClassName: ""
+
+service:
+  type: ClusterIP
+  # -- DO NOT CHANGE THE SERVICE NAME as it is currently used to generate the certificate
+  # and can not be configured
+  name: cnpg-webhook-service
+  port: 443
+

@@ -5,22 +5,48 @@ apps:
     charts:
       - repo: hajimari
         version: 2.0.2
+    resources:
+      - https://raw.githubusercontent.com/toboshii/hajimari/main/charts/hajimari/templates/crd.yaml
+      - traefik-dashboard.yaml
   - name: kube-prometheus-stack
-    path: apps
+    path: monitoring
     namespace: monitoring
     charts:
       - name: kube-prometheus-stack
         repo: prometheus-community
-        version: "45.10.1"
+        version: "46.4.1"
+    resources:
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_probes.yaml
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_prometheusagents.yaml
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_scrapeconfigs.yaml
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
+      - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.65.1/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml
   - name: cloudnative-pg
-    path: database
+    path: db
+    namespace: db
     charts:
       - repo: cnpg
-        version: "0.17.1"
+        version: "0.18.0"
+    resources:
+      - storage.yaml
   - name: mysql
-    path: database
+    path: db
+    namespace: db
     resources:
       - pv.yaml
+      - pvc.yaml
+      - secret.yaml
     charts:
       - repo: bitnami
-        version: "9.7.2"
+        version: "9.10.1"
+  - name: redis
+    path: db
+    namespace: db
+    charts:
+      - repo: bitnami
+        version: 17.11.3

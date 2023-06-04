@@ -1,0 +1,39 @@
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/main/argoproj.io/applicationset_v1alpha1.json
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cluster
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+  - git:
+      repoURL: https://github.com/clearlybaffled/homelab
+      revision: HEAD
+      directories:
+        - path: cluster/*/*
+        - path: cluster/*
+          exclude: true
+  template:
+    metadata:
+      name: '{{ .path.basename }}'
+      namespace: argocd
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/clearlybaffled/homelab
+        path: '{{ .path.path }}'
+        targetRevision: HEAD
+      destination:
+        name: in-cluster
+        namespace: '{{ index .path.segments 1 }}'
+      syncPolicy: 
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true

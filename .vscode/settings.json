@@ -11,6 +11,16 @@
     "explorer.excludeGitIgnore": true,
     "python.terminal.activateEnvironment": false,
     "yaml.schemas": {
-        "https://github.com/datreeio/CRDs-catalog/raw/main/traefik.containo.us/ingressroute_v1alpha1.json": ["ingress-route.yaml"]
-    }
+        "https://github.com/datreeio/CRDs-catalog/raw/main/traefik.io/ingressroute_v1alpha1.json": [
+            "ingress-route.yaml"
+        ],
+        "https://github.com/datreeio/CRDs-catalog/raw/main/traefik.io/ingressroutetcp_v1alpha1.json": [
+            "ingress-route-tcp.yaml"
+        ],
+        "https://github.com/datreeio/CRDs-catalog/raw/main/cert-manager.io/certificate_v1.json": [
+            "certificate.yaml"
+        ],
+        "kubernetes": []
+    },
+    "ansible.python.interpreterPath": ".venv/bin/python"
 }

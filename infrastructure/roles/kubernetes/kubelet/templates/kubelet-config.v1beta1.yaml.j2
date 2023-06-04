@@ -8,7 +8,7 @@ authentication:
   webhook:
     enabled: {{ kubelet_authentication_token_webhook }}
   x509:
-    clientCAFile: {{ kube_cert_dir }}/ca.crt
+    clientCAFile: {{ kube_apiserver_client_cert }}
 authorization:
 {% if kubelet_authorization_mode_webhook %}
   mode: Webhook

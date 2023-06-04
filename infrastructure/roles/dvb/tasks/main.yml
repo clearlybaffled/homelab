@@ -5,10 +5,23 @@
       - v4l-utils
       - v4l-conf
       - dtv-scan-tables
+      - dvb-apps
       - w-scan
       - jmtpfs
-      - libmtp
+      - libmtp-runtime
+      - mtp-tools
       - i2c-tools
       - xmltv
-  state: latest
-  update_cache: true
+    update_cache: true
+
+
+- name: Create mythtv user
+  user:
+    name: mythtv
+    uid: 990
+    group: mythtv
+    home: /srv/mythtv
+    system: true
+    groups:
+      - video
+    append: true

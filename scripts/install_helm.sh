@@ -3,6 +3,14 @@
 HELM=/usr/local/bin/helm
 JQ=/usr/bin/jq
 VALUES=values.yaml
-CONFIG=config.js
+KONFIG=kustomization.yaml
+YQ=/usr/local/bin/yq
 
-$HELM install -f $VALUES $($JQ -r --arg name $(basename $PWD) '"\(.helm.chart) \($name) --version \(.helm.version) --repo \(.helm.repo) -n \(if .namespace then .namespace else $name end) "' <$CONFIG)
+# $HELM install --create-namespace -f $VALUES $($YQ -o=json -I=0 '.helmCharts[0]' $KONFIG | $JQ -r --arg name $(basename $PWD) '"\($name) \(.name) --version \(.version) --repo \(.repo) -n \(if .namespace then .namespace else $name end) "')
+
+CMD="$HELM install --create-namespace -f $VALUES "
+CMD+=$($YQ -o=json -I=0 '.helmCharts[0]' $KONFIG | $JQ -r --arg name $(basename $PWD) '"\($name) \(.name) --version \(.version) --repo \(.repo) -n \(if .namespace then .namespace else $name end) "')
+
+echo "Command is: $CMD"
+
+exec $CMD

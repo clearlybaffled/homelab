@@ -29,7 +29,6 @@ common_packages:
   - policycoreutils-python-utils
   - tree
   - jq
-  - yq
   - lshw
   - htop
   - hdparm
@@ -62,10 +61,3 @@ host_os: >-
   {%- else -%}
   {{ ansible_system }}
   {%- endif -%}
-
-## NTP Settings
-# Start the ntpd or chrony service and enable it at system boot.
-ntp_enabled: false
-ntp_manage_config: false
-ntp_servers:
-  - "172.16.1.1 parche"

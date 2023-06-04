@@ -19,6 +19,7 @@
     add: "{{ changed_list }}"
     url: "ssh://github.com/clearlybaffled/homelab"
     push: true
+    branch: development
     ssh_params:
       key_file: "/home/jared/.ssh/github_clearlybaffled"
   when: kustomize is changed
@@ -29,6 +30,7 @@
 
 - name: Create argocd namespace
   kubernetes.core.k8s:
+    ca_cert: "{{ cluster_cacerts }}"
     api_version: v1
     kind: Namespace
     inline: |-
@@ -37,18 +39,19 @@
 
 - name: Start ArgoCD
   kubernetes.core.k8s:
+    ca_cert: "{{ cluster_cacerts }}"
     src: "{{ argocd_manifest }}"
     namespace: argocd
-    wait: true
 
-- name: Wait for all argocd crds to load
-  command: |-
-    kubectl -n argocd wait --timeout=60s --for condition=Established \
-      crd/applications.argoproj.io \
-      crd/applicationsets.argoproj.io
+# - name: Wait for all argocd crds to load
+#   command: |-
+#     kubectl -n argocd wait --timeout=60s --for condition=Established \
+#       crd/applications.argoproj.io \
+#       crd/applicationsets.argoproj.io
 
 - name: Configure ArgoCD to use helm with kustomize
   kubernetes.core.k8s:
+    ca_cert: "{{ cluster_cacerts }}"
     state: present
     namespace: argocd
     name: argocd-cm
@@ -57,6 +60,18 @@
     definition:
       data:
         kustomize.buildOptions: --enable-helm
+
+- name: argocd server insecure
+  kubernetes.core.k8s:
+    ca_cert: "{{ cluster_cacerts }}"
+    state: present
+    namespace: argocd
+    name: argocd-cmd-params-cm
+    api_version: v1
+    kind: ConfigMap
+    definition:
+      data:
+        server.insecure: "true"
 
 # - name: Change ArgoCD Server to LoadBalancer
 #   kubernetes.core.k8s_service:
@@ -75,6 +90,6 @@
 #             protocol: TCP
 #             targetPort: 8080
 
-- name: Boostrap cluster
-  kubernetes.core.k8s:
-    src: "{{ (root_dir, 'cluster', 'argocd', 'argocd.yaml')| path_join  }}"
+# - name: Boostrap cluster
+#   kubernetes.core.k8s:
+#     src: argocd.yaml

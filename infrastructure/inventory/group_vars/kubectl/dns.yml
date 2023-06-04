@@ -1,7 +1,5 @@
 ---
 # DNS configuration.
-# Subdomains of DNS domain to be resolved via /etc/resolv.conf for hostnet pods
-ndots: 2
 # dns_timeout: 2
 # dns_attempts: 2
 # Custom search domains to be added in addition to the default cluster search domains
@@ -30,12 +28,6 @@ coredns_kubernetes_extra_opts:
   - 'ttl 30'
 # Forward extra domains to the coredns kubernetes plugin
 # coredns_kubernetes_extra_domains: ''
-
-# Should be set to a cluster IP if using a custom cluster DNS
-manual_dns_server: ""
-
-# Can be docker_dns, host_resolvconf or none
-resolvconf_mode: host_resolvconf
 
 # Ip address of the kubernetes dns service
 dns_server: "{{ kube_service_addresses|ipaddr('net')|ipaddr(10)|ipaddr('address') }}"

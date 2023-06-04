@@ -12,31 +12,86 @@ nodeRegistration:
   kubeletExtraArgs:
     node-labels: "{{ node_labels | join(',') }}"
   taints: []
+{% if kubeadm_init_phases_skip %}
+skipPhases:
+{{ kubeadm_init_phases_skip | to_yaml(indent=2) }}
+{% endif %}
 ---
 apiVersion: kubeadm.k8s.io/v1beta3
 kind: ClusterConfiguration
 clusterName: {{ cluster_name }}
-apiServer:
-  timeoutForControlPlane: 4m0s
-certificatesDir: {{ kube_cert_dir }}
-controlPlaneEndpoint: {{ ip | default(fallback_ips[inventory_hostname]) }}:{{ kube_apiserver_port }}
-imageRepository: {{ kube_image_repo }}
-controllerManager: 
- extraArgs:
-    cluster-cidr: "{{ kube_pods_subnet }}"
-    service-cluster-ip-range: "{{ kube_service_addresses }}"
-    node-cidr-mask-size: "{{ kube_network_node_prefix }}"
+etcd:
+  local:
+    imageRepository: "{{ etcd_image_repo | regex_replace("/etcd$","") }}"
+    imageTag: "{{ etcd_image_tag }}"
+    dataDir: {{ etcd_data_dir }}
 dns:
   imageRepository: {{ coredns_image_repo | regex_replace('/coredns(?!/coredns).*$','') }}
   imageTag: {{ coredns_image_tag }}
-etcd:
-  local:
-    dataDir: {{ etcd_data_dir }}
-imageRepository: registry.k8s.io
-kubernetesVersion: {{ kube_version }}
 networking:
   dnsDomain: {{ dns_domain }}
   serviceSubnet: {{ kube_service_addresses }}
   podSubnet: {{ kube_pods_subnet }}
 kubernetesVersion: {{ kube_version }}
+controlPlaneEndpoint: {{ ip | default(fallback_ips[inventory_hostname]) }}:{{ kube_apiserver_port }}
+certificatesDir: {{ kube_cert_dir }}
+imageRepository: {{ kube_image_repo }}
+apiServer:
+  extraArgs:
+{% if kube_api_anonymous_auth is defined %}
+    anonymous-auth: "{{ kube_api_anonymous_auth }}"
+{% endif %}
+{% if kube_apiserver_feature_gates or kube_feature_gates %}
+    feature-gates: "{{ kube_apiserver_feature_gates | default(kube_feature_gates, true) | join(',') }}"
+{% endif %}
+{% if event_ttl_duration is defined %}
+    event-ttl: {{ event_ttl_duration }}
+{% endif %}
+  extraVolumes:
+{% if ssl_ca_dirs|length %}
+{% for dir in ssl_ca_dirs %}
+  - name: {{ dir | regex_replace('^/(.*)$', '\\1' ) | regex_replace('/', '-') }}
+    hostPath: {{ dir }}
+    mountPath: {{ dir }}
+    readOnly: true
+{% endfor %}
+{% endif %}
+  certSANs:
+{% for san in apiserver_sans %}
+  - {{ san }}
+{% endfor %}
+  timeoutForControlPlane: 5m0s
+controllerManager: 
+ extraArgs:
+    cluster-cidr: "{{ kube_pods_subnet }}"
+    service-cluster-ip-range: "{{ kube_service_addresses }}"
+    node-cidr-mask-size: "{{ kube_network_node_prefix }}"
+{% if kube_controller_feature_gates or kube_feature_gates %}
+    feature-gates: "{{ kube_controller_feature_gates | default(kube_feature_gates, true) | join(',') }}"
+{% endif %}
+    configure-cloud-routes: "false"
 scheduler: {}
+---
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration
+bindAddress: {{ kube_proxy_bind_address }}
+clientConnection:
+  acceptContentTypes: {{ kube_proxy_client_accept_content_types }}
+  burst: {{ kube_proxy_client_burst }}
+  contentType: {{ kube_proxy_client_content_type }}
+  kubeconfig: {{ kube_proxy_client_kubeconfig }}
+clusterCIDR: "{{ kube_pods_subnet }}"
+hostnameOverride: {{ kube_override_hostname }}
+iptables:
+  masqueradeAll: {{ kube_proxy_masquerade_all }}
+  masqueradeBit: {{ kube_proxy_masquerade_bit }}
+  minSyncPeriod: {{ kube_proxy_min_sync_period }}
+  syncPeriod: {{ kube_proxy_sync_period }}
+mode: {{ kube_proxy_mode }}
+{% if kube_proxy_feature_gates or kube_feature_gates %}
+{% set feature_gates = ( kube_proxy_feature_gates | default(kube_feature_gates, true) ) %}
+featureGates:
+{% for feature in feature_gates %}
+  {{ feature|replace("=", ": ") }}
+{% endfor %}
+{% endif %}

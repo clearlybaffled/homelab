@@ -1,0 +1,10 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: cnpg-cluster
+  namespace: db
+spec:
+  instances: 1
+  storage:
+    storageClass: local-path
+    size: 10Gi

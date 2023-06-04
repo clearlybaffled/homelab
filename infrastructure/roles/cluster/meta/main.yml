@@ -1,0 +1,22 @@
+---
+dependencies:
+  - role: cluster/setup
+  - role: containers/network
+  - role: cluster/coredns
+    when:
+      - "{{ 'addons/coredns' in kubeadm_init_phases_skip }}"
+  - role: cluster/metallb
+    when:
+      - metallb_enabled
+  - role: cluster/traefik
+    when:
+      - traefik_enabled
+  - role: cluster/dashboard
+    when:
+      - dashboard_enabled
+  - role: cluster/local_path_provisioner
+    when:
+      - local_path_provisioner_enabled
+  - role: cluster/cert-manager
+    when:
+      - cert_manager_enabled
