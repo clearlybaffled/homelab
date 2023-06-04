@@ -8,10 +8,11 @@
     name: "{{ kube_user }}-csr"
     api_version: certificates.k8s.io/v1
     kubeconfig: "{{ kubeconfig_file }}"
+    ca_cert: "/etc/ssl/certs/ca-certificates.crt"
   register: user_status
 
 - name: Create User
-  when: user_status is not failed
+  when: not user_status.resources
   block:
     - name: user | Generate private key
       community.crypto.openssl_privatekey_pipe:
@@ -35,6 +36,7 @@
           kubernetes.core.k8s:
             kubeconfig: "{{ kubeconfig_file }}"
             template: create-user.yml.j2
+            ca_cert: "/etc/ssl/certs/ca-certificates.crt"
 
         - name: user | Approve CSR
           command: "{{ kubectl }} certificate approve {{ kube_user }}-csr"
@@ -58,10 +60,14 @@
 
     - name: user | Create kubeconfig file
       set_fact:
-        kubeconfig: "{{ lookup('ansible.builtin.template', 'kubeconfig.yml.j2') }}"
+        kubeconfig_str: "{{ lookup('ansible.builtin.template', 'kubeconfig.yml.j2') }}"
   always:
     - name: Make sure that output (which contains the private key) is overwritten
       set_fact:
         private_key: ''
         csr: ''
         crt: ''
+
+- name: Make sure kubeconfig is set
+  set_fact:
+    kubeconfig: "{{ kubeconfig_str | default('') }}"

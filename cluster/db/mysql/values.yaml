@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bitnami/charts/main/bitnami/mysql/values.schema.json
+auth:
+  createDatabase: false
+  username: ''
+  password: ''
+  existingSecret: mysql
+metrics:
+  enabled: true
+primary:
+  persistence:
+    existingClaim: data-mysql-0
+  podSecurityContext:
+    enabled: true
+    fsGroup: 997
+  containerSecurityContext:
+    enabled: true
+    runAsUser: 997
+    runAsNonRoot: true
+  service:
+    type: ClusterIP

@@ -165,8 +165,7 @@ yq_download_url: https://github.com/mikefarah/yq/releases/download/{{ yq_version
 # Also provide the address of your own private registry.
 # And use --insecure-registry options for docker
 kube_proxy_image_repo: "{{ kube_image_repo }}/kube-proxy"
-etcd_image_repo: "{{ quay_image_repo }}/coreos/etcd"
-etcd_image_tag: "{{ etcd_version }}"
+
 calico_node_image_repo: "{{ quay_image_repo }}/calico/node"
 calico_node_image_tag: "{{ calico_version }}"
 calico_cni_image_repo: "{{ quay_image_repo }}/calico/cni"
@@ -622,6 +621,7 @@ downloads:
     dest: "{{ download_cache_dir }}/krew-{{ host_os }}_{{ image_arch }}.tar.gz"
     sha256: "{{ krew_archive_checksum }}"
     url: "{{ krew_download_url }}"
+    install: "{{ bin_dir }}/krew"
     unarchive: true
     mode: "0755"
     groups:

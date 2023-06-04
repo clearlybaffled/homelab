@@ -1,0 +1,12 @@
+- [ ] Cert manager
+  - [x] Deploy
+  - [ ] Configure
+- [ ] CA certs management in ansible with sops and age
+- [x] External CA
+  - [ ] Fixes for apiserver ca cert to include kube-ca in chain 
+- [ ] Vault
+- [ ] block Storage setup
+- [ ] preload helm repos on argoxd-app-controller usong ansible kubectl connection
+- [ ] Ingress+LB+DNS
+- [ ] Kubelet / kubeadm config managed from ansible
+- [ ] CoreDns standalone config (still doing this??)

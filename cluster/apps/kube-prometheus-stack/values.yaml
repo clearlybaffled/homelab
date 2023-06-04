@@ -1,9 +1,0 @@
----
-grafana:
-  ingress:
-    enabled: true
-    ingressClassName: traefik
-    annotations:
-      hajimari.io/enable: "true"
-  service:
-    type: ClusterIP

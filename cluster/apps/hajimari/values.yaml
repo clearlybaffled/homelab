@@ -1,10 +1,62 @@
-hajirmari:
-  defaultEnable: true
+hajimari:
+  defaultEnable: false
   alwaysTargetBlank: true
   name: Jared
+  namespaceSelector:
+    any: true
+    lightTheme: gazette
+  darkTheme: horizon
+  customThemes:
+    - name: danger
+      backgroundColor: '#0c0e0c'
+      primaryColor: '#eaebea'
+      accentColor: '#d8323c'
+  showGreeting: true
+  showAppGroups: true
+  showAppUrls: false
+  showAppInfo: true
+  showAppStatus: true
+  defaultAppIcon: mdi:application
+  showBookmarkGroups: true
+  showGlobalBookmarks: false
+  defaultSearchProvider: Google
+  searchProviders:
+    - name: Google
+      token: g
+      icon: simple-icons:google
+      searchUrl: https://www.google.com/search?q={query}
+      url: https://www.google.com
+    - name: DuckDuckGo
+      token: d
+      icon: simple-icons:duckduckgo
+      searchUrl: https://duckduckgo.com/?q={query}
+      url: https://duckduckgo.com
+    - name: IMDB
+      token: i
+      icon: simple-icons:imdb
+      searchUrl: https://www.imdb.com/find?q={query}
+      url: https://www.imdb.com
+    - name: Reddit
+      token: r
+      icon: simple-icons:reddit
+      searchUrl: https://www.reddit.com/search?q={query}
+      url: https://www.reddit.com
+    - name: YouTube
+      token: 'y'
+      icon: simple-icons:youtube
+      searchUrl: https://www.youtube.com/results?search_query={query}
+      url: https://www.youtube.com
+    - name: Spotify
+      token: s
+      icon: simple-icons:spotify
+      searchUrl: hhttps://open.spotify.com/search/{query}
+      url: https://open.spotify.com
 ingress:
   main:
     enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: ca-issuer
+    ingressClassName: traefik
     hosts:
       - host: hajimari.gato.hermleigh.home
         paths:
@@ -14,11 +66,24 @@ ingress:
         paths:
           - path: /
             pathType: Prefix 
+    tls:
+      - hosts:
+        - hajimari.gato.hermleigh.home
+        - wahoo.hermleigh.home
+        secretName: hajimari-ingress-cert
 persistence:
   data:
-    enabled: true
-    accessMode: ReadWriteOnce
-    size: 1Gi
+    enabled: false
+  #   accessMode: ReadWriteOnce
+  #   size: 1Gi
+  # config:
+  #   enabled: true
+  #   storageClass: local-path
+  # viewcache:
+  #   enabled: true
+  #   type: emptyDir
+  #   mountPath: /config/data/viewcache
 service:
   main:
     type: ClusterIP
+

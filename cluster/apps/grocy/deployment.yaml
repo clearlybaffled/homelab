@@ -3,11 +3,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: grocy
-  namespace: grocy
+  namespace: apps
   labels:
     app: grocy
   annotations:
-    link.argocd.argoproj.io/external-link: http://grocy.grocy.svc.gato.hermleigh.home
+    link.argocd.argoproj.io/external-link: http://grocy.gato.hermleigh.home
 spec:
   replicas: 1
   strategy:
@@ -38,14 +38,54 @@ spec:
               cpu: 220m
               memory: 512Mi
           volumeMounts:
-            - name: config-storage
+            - name: grocy
               mountPath: /config
-            - name: db
-              mountPath: /var/www/data
       volumes:
-        - name: config-storage
+        - name: grocy
           persistentVolumeClaim:
-            claimName: grocy-config
-        - name: db
+            claimName: grocy
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: barcode-buddy
+  namespace: apps
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: barcode-buddy
+  template:
+    metadata:
+      labels:
+        app: barcode-buddy
+    spec:
+      containers:
+        - name: barcodebuddy
+          image: docker.io/f0rc3/barcodebuddy:latest
+          envFrom:
+            - configMapRef:
+                name: grocy-cm
+          ports:
+            - name: web
+              containerPort: 80
+              protocol: TCP
+            - name: tls
+              containerPort: 443
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 80m
+              memory: 256Mi
+            limits:
+              cpu: 220m
+              memory: 512Mi
+          volumeMounts:
+            - name: bbuddy
+              mountPath: /config
+      volumes:
+        - name: bbuddy
           persistentVolumeClaim:
-            claimName: grocy-data
+            claimName: bbuddy

@@ -1,0 +1,26 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: infrastructure/roles/kubernetes/cluster/templates/kustomization.j2
+# date: 2023-06-01 04:03:00
+# user: jared
+# host: parche
+# commit: aae1fb7
+#
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: db
+
+resources:
+  - pv.yaml
+  - pvc.yaml
+  - secret.yaml
+
+helmCharts:
+  - name: mysql
+    repo: https://charts.bitnami.com/bitnami
+    version: 9.10.1
+    valuesFile: values.yaml
+    releaseName: mysql
+    namespace: db
+# END ANSIBLE MANAGED BLOCK
+
