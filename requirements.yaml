@@ -7,7 +7,7 @@ collections:
   - name: ansible.posix
     version: 1.5.1
   - name: ansible.utils
-    version: 2.9.0
+    version: 2.10.3
   - name: kubernetes.core
     version: 2.4.0
   - name: lvrfrc87.git_acp
