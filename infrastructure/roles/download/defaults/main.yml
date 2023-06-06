@@ -244,10 +244,6 @@ snapshot_controller_supported_versions: v4.2.1
 snapshot_controller_image_repo: "{{ kube_image_repo }}/sig-storage/snapshot-controller"
 snapshot_controller_image_tag: "{{ snapshot_controller_supported_versions }}"
 
-cinder_csi_plugin_version: v1.22.0
-cinder_csi_plugin_image_repo: "{{ docker_image_repo }}/k8scloudprovider/cinder-csi-plugin"
-cinder_csi_plugin_image_tag: "{{ cinder_csi_plugin_version }}"
-
 dashboard_image_repo: "{{ docker_image_repo }}/kubernetesui/dashboard"
 dashboard_metrics_scraper_repo: "{{ docker_image_repo }}/kubernetesui/metrics-scraper"
 
@@ -699,33 +695,6 @@ downloads:
     groups:
       - kube_node
 
-  csi_attacher:
-    enabled: "{{ cinder_csi_enabled  }}"
-    container: true
-    repo: "{{ csi_attacher_image_repo }}"
-    tag: "{{ csi_attacher_image_tag }}"
-    sha256: "{{ csi_attacher_digest_checksum|default(None) }}"
-    groups:
-      - kube_node
-
-  csi_provisioner:
-    enabled: "{{ cinder_csi_enabled }}"
-    container: true
-    repo: "{{ csi_provisioner_image_repo }}"
-    tag: "{{ csi_provisioner_image_tag }}"
-    sha256: "{{ csi_provisioner_digest_checksum|default(None) }}"
-    groups:
-      - kube_node
-
-  csi_snapshotter:
-    enabled: "{{ cinder_csi_enabled }}"
-    container: true
-    repo: "{{ csi_snapshotter_image_repo }}"
-    tag: "{{ csi_snapshotter_image_tag }}"
-    sha256: "{{ csi_snapshotter_digest_checksum|default(None) }}"
-    groups:
-      - kube_node
-
   snapshot_controller:
     enabled: "{{ csi_snapshot_controller_enabled }}"
     container: true
@@ -734,34 +703,6 @@ downloads:
     sha256: "{{ snapshot_controller_digest_checksum|default(None) }}"
     groups:
       - kube_node
-
-  csi_resizer:
-    enabled: "{{ cinder_csi_enabled }}"
-    container: true
-    repo: "{{ csi_resizer_image_repo }}"
-    tag: "{{ csi_resizer_image_tag }}"
-    sha256: "{{ csi_resizer_digest_checksum|default(None) }}"
-    groups:
-      - kube_node
-
-  csi_node_driver_registrar:
-    enabled: "{{ cinder_csi_enabled  }}"
-    container: true
-    repo: "{{ csi_node_driver_registrar_image_repo }}"
-    tag: "{{ csi_node_driver_registrar_image_tag }}"
-    sha256: "{{ csi_node_driver_registrar_digest_checksum|default(None) }}"
-    groups:
-      - kube_node
-
-  cinder_csi_plugin:
-    enabled: "{{ cinder_csi_enabled }}"
-    container: true
-    repo: "{{ cinder_csi_plugin_image_repo }}"
-    tag: "{{ cinder_csi_plugin_image_tag }}"
-    sha256: "{{ cinder_csi_plugin_digest_checksum|default(None) }}"
-    groups:
-      - kube_node
-
   dashboard:
     enabled: "{{ dashboard_enabled }}"
     container: true
