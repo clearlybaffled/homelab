@@ -17,4 +17,4 @@ primary:
     runAsUser: 997
     runAsNonRoot: true
   service:
-    type: ClusterIP
+    type: LoadBalancer

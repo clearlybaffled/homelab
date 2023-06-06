@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mysql
+  namespace: argocd
+spec:    
+  project: default
+  sources:
+    - chart: mysql
+      repoURL: https://charts.bitnami.com/bitnami
+      targetRevision: 9.10.1
+      helm:
+        valueFiles:
+          - $cluster/db/mysql/values.yaml
+  
+    - repoURL: https://github.com/clearlybaffled/homelab
+      path: cluster/db/mysql
+      targetRevision: HEAD
+      ref: cluster
+  
+  destination:
+    name: in-cluster
+    namespace: db
+  
+  syncPolicy: 
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

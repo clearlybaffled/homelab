@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgresql
+  namespace: argocd
+spec:    
+  project: default
+  sources:
+    - chart: cloudnative-pg
+      repoURL: https://cloudnative-pg.github.io/charts
+      targetRevision: 0.18.0
+      helm:
+        valueFiles:
+          - $cluster/db/cloudnative-pg/values.yaml
+  
+    - repoURL: https://github.com/clearlybaffled/homelab
+      path: cluster/db/cloudnative-pg
+      targetRevision: HEAD
+      ref: cluster
+  
+  destination:
+    name: in-cluster
+    namespace: db
+  
+  syncPolicy: 
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

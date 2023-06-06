@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  
+  sources:
+  
+    - chart: prometheus-operator-crds
+      repoURL: &repo https://prometheus-community.github.io/helm-charts
+      targetRevision: 4.0.2
+    
+    - chart: kube-prometheus-stack
+      repoURL: *repo
+      targetRevision: 46.6.0
+      helm:
+        valueFiles:
+          - $cluster/monitoring/prometheus/prometheus-operator.yaml
+
+    - chart: prometheus-adapter
+      repoURL: *repo
+      targetRevision: 4.2.0
+      helm:
+        valueFiles:
+          - $cluster/monitoring/prometheus/prometheus-adapter.yaml
+
+    - repoURL: https://github.com/clearlybaffled/homelab
+      path: cluster/monitoring/prometheus
+      targetRevision: HEAD
+      ref: cluster
+  
+  destination:
+    name: in-cluster
+    namespace: monitoring
+  
+  syncPolicy: 
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
