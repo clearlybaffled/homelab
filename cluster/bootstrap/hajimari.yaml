@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hajimari
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  
+  sources:
+  
+    - chart: hajimari
+      repoURL: https://hajimari.io
+      targetRevision: 2.0.2
+      helm:
+        valueFiles:
+          - $cluster/apps/hajimari/values.yaml
+  
+    - repoURL: https://github.com/clearlybaffled/homelab
+      path: cluster/apps/hajimari
+      targetRevision: HEAD
+      ref: cluster
+  
+  destination:
+    name: in-cluster
+    namespace: apps
+  
+  syncPolicy: 
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
