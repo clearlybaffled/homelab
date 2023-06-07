@@ -22,6 +22,4 @@ tags
 # End of https://www.toptal.com/developers/gitignore/api/vim
 
 infrastructure/roles/**/etcd*
-
-.unotes
 infrastructure/roles/containers/network/files/kustomization.yaml

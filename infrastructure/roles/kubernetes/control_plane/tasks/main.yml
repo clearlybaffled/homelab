@@ -67,6 +67,7 @@
         path: "{{ kube_cert_dir }}/apiserver.crt"
         content: "{{ item }}"
         marker: ''
+      no_log: true
       with_file: "{{ pki_dir }}/kubernetes-ca/ca.pem"
 
     - name: kubeadm | Finish kubeadm init

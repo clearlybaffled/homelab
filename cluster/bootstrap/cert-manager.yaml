@@ -20,13 +20,10 @@ spec:
     - chart: trust-manager
       repoURL: *repo
       targetRevision: v0.5.0
-      helm:
-        valueFiles:
-          - $cluster/cluster/infrastructure/cert-manager/trust-manager.yaml
 
     - repoURL: https://github.com/clearlybaffled/homelab
       path: cluster/infrastructure/cert-manager
-      targetRevision: HEAD
+      targetRevision: development
       ref: cluster
   
   destination:

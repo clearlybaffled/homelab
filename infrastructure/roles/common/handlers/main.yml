@@ -6,7 +6,7 @@
 - name: CRI-O | reload crio
   service:
     name: crio
-    state: restarted
+    state: reloaded
     enabled: true
 
 - name: CRI-O | stop crio

@@ -6,21 +6,21 @@ metadata:
 spec:    
   project: default
   sources:
-    - chart: mysql
-      repoURL: https://charts.bitnami.com/bitnami
-      targetRevision: 9.10.1
+    - chart: metallb
+      repoURL: https://metallb.github.io/metallb
+      targetRevision: v0.13.10
       helm:
         valueFiles:
-          - $cluster/cluster/db/mysql/values.yaml
+          - $cluster/cluster/infrastructure/metallb/values.yaml
   
     - repoURL: https://github.com/clearlybaffled/homelab
-      path: cluster/db/mysql
+      path: cluster/infrastructure/metallb
       targetRevision: development
       ref: cluster
   
   destination:
     name: in-cluster
-    namespace: db
+    namespace: metallb-system
   
   syncPolicy: 
     automated:

@@ -1,0 +1,22 @@
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  namespace: metallb-system
+  name: general-pool
+spec:
+  addresses:
+  - 172.16.1.32/27
+  autoAssign: true
+  avoidBuggyIPs: true
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  namespace: metallb-system
+  name: ingress-pool
+spec:
+  addresses:
+  - 172.16.1.24/32
+  autoAssign: true
+  avoidBuggyIPs: true

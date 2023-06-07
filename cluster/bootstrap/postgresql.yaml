@@ -11,11 +11,11 @@ spec:
       targetRevision: 0.18.0
       helm:
         valueFiles:
-          - $cluster/db/cloudnative-pg/values.yaml
+          - $cluster/cluster/db/cloudnative-pg/values.yaml
   
     - repoURL: https://github.com/clearlybaffled/homelab
       path: cluster/db/cloudnative-pg
-      targetRevision: HEAD
+      targetRevision: development
       ref: cluster
   
   destination:

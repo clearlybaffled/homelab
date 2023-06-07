@@ -3,11 +3,8 @@ host_packages:
   - fuse
   - ntfs-3g
   - nmap
-  - exfat-fuse
-  - exfat-utils
   - exuberant-ctags
-  - hdparm
-  - lm-sensors
-  - nfs-common
   - nvme-cli
+  - direnv
+  - jc
   - zerotier-one

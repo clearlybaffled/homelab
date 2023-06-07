@@ -21,7 +21,7 @@ registry_version: 2.8.1
 # registry_disk_size: "10Gi"
 
 # Rancher Local Path Provisioner
-local_path_provisioner_enabled: true
+local_path_provisioner_enabled: false
 local_path_provisioner_version: v0.0.24
 local_path_provisioner_image_repo: "rancher/local-path-provisioner"
 local_path_provisioner_image_tag: "v0.0.24"

@@ -15,11 +15,11 @@ spec:
       targetRevision: 2.0.2
       helm:
         valueFiles:
-          - $cluster/apps/hajimari/values.yaml
+          - $cluster/cluster/apps/hajimari/values.yaml
   
     - repoURL: https://github.com/clearlybaffled/homelab
       path: cluster/apps/hajimari
-      targetRevision: HEAD
+      targetRevision: development
       ref: cluster
   
   destination:

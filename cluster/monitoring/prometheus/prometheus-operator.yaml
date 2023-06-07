@@ -2,13 +2,10 @@
 grafana:
   ingress:
     enabled: true
-    ingressClassName: traefik
     annotations:
       hajimari.io/enable: "true"
       hajimari.io/icon: "logos:grafana"
       cert-manager.io/cluster-issuer: ca-issuer
-      traefik.ingress.kubernetes.io/router.tls: "true"
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
     hosts:
       - grafana.gato.hermleigh.home
     tls:

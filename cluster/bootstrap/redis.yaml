@@ -11,11 +11,11 @@ spec:
       targetRevision: 17.11.3
       helm:
         valueFiles:
-          - $cluster/db/redis/values.yaml
+          - $cluster/cluster/db/redis/values.yaml
   
     - repoURL: https://github.com/clearlybaffled/homelab
       path: cluster/db/redis
-      targetRevision: HEAD
+      targetRevision: development
       ref: cluster
   
   destination:

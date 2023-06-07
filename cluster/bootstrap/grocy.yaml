@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/grocy
-    targetRevision: HEAD
+    targetRevision: development
   
   destination:
     name: in-cluster
