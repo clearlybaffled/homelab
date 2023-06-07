@@ -1,6 +1,6 @@
 ---
 # Version
-etcd_version: v3.5.6
+etcd_version: v3.5.7
 
 ## Directory where etcd data stored
 etcd_data_dir: /var/lib/etcd
