@@ -1,0 +1,10 @@
+---
+host_packages:
+  - fuse
+  - ntfs-3g
+  - nmap
+  - exuberant-ctags
+  - nvme-cli
+  - direnv
+  - jc
+  - zerotier-one

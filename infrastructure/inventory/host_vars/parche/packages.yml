@@ -10,3 +10,4 @@ host_packages:
   - lm-sensors
   - nfs-common
   - nvme-cli
+  - zerotier-one

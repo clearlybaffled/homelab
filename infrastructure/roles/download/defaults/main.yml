@@ -154,7 +154,7 @@ krew_download_url: https://github.com/kubernetes-sigs/krew/releases/download/{{ 
 skopeo_download_url: https://github.com/lework/skopeo-binary/releases/download/{{ skopeo_version }}/skopeo-linux-{{ image_arch }}
 argocd_download_url: https://github.com/argoproj/argo-cd/releases/download/{{ argocd_version }}/argocd-linux-{{ image_arch }}
 yq_download_url: https://github.com/mikefarah/yq/releases/download/{{ yq_version }}/yq_linux_{{ image_arch }}
-
+runc_download_url: "https://github.com/opencontainers/runc/releases/download/{{ runc_version }}/runc.{{ image_arch }}"
 
 # Containers
 # In some cases, we need a way to set --registry-mirror or --insecure-registry for docker,
@@ -355,6 +355,19 @@ downloads:
     sha256: "{{ crun_binary_checksum }}"
     url: "{{ crun_download_url }}"
     unarchive: false
+    mode: "0755"
+    groups:
+      - k8s_cluster
+
+  runc:
+    file: true
+    enabled: "{{ runc_enabled }}"
+    version: "{{ runc_version }}"
+    dest: "{{ download_cache_dir }}/runc-{{ runc_version }}.{{ image_arch }}"
+    url: "{{ runc_download_url }}"
+    install: "{{ bin_dir }}/runc"
+    unarchive: false
+    owner: "root"
     mode: "0755"
     groups:
       - k8s_cluster
@@ -695,14 +708,6 @@ downloads:
     groups:
       - kube_node
 
-  snapshot_controller:
-    enabled: "{{ csi_snapshot_controller_enabled }}"
-    container: true
-    repo: "{{ snapshot_controller_image_repo }}"
-    tag: "{{ snapshot_controller_image_tag }}"
-    sha256: "{{ snapshot_controller_digest_checksum|default(None) }}"
-    groups:
-      - kube_node
   dashboard:
     enabled: "{{ dashboard_enabled }}"
     container: true

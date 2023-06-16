@@ -55,7 +55,7 @@
       ansible.posix.synchronize:
         src: "{{ download.dest }}"
         dest: "{{ download.install }}"
-        use_ssh_args: true
+        # use_ssh_args: true
         mode: push
       delegate_to: "{{ download_delegate }}"
       when:

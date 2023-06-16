@@ -6,8 +6,6 @@ metadata:
   namespace: apps
   labels:
     app: grocy
-  annotations:
-    link.argocd.argoproj.io/external-link: http://grocy.gato.hermleigh.home
 spec:
   replicas: 1
   strategy:

@@ -20,6 +20,9 @@
         "https://github.com/datreeio/CRDs-catalog/raw/main/cert-manager.io/certificate_v1.json": [
             "certificate.yaml"
         ],
+        "https://github.com/datreeio/CRDs-catalog/raw/main/argoproj.io/application_v1alpha1.json": [
+            "cluster/bootstrap/*.yaml"
+        ],
         "kubernetes": []
     },
     "ansible.python.interpreterPath": ".venv/bin/python"
