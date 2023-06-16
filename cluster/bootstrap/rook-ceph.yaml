@@ -1,34 +1,44 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: infrastructure/roles/kubernetes/cluster/templates/application.yaml.j2
+# date: 2023-06-16 02:38:44
+# user: jared
+# host: tirante
+# commit: 824cc3f
+#
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
+  name: rook-ceph
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   project: default
   
   sources:
-  
     - chart: rook-ceph
-      repoURL: &repo  https://charts.rook.io/release
-      targetRevision: &version v1.11.7
+      repoURL: https://charts.rook.io/release
+      targetRevision: v1.11.7
       helm:
         valueFiles:
-          - $cluster/cluster/infrastructure/rook-ceph/operator.yaml
+          - $repo/cluster/infrastructure/rook-ceph/operator.yaml
 
     - chart: rook-ceph-cluster
-      repoURL: *repo
-      targetRevision: *version
+      repoURL: https://charts.rook.io/release
+      targetRevision: v1.11.7
       helm:
+        releaseName: rook-ceph-cluster
         valueFiles:
-          - $cluster/cluster/infrastructure/rook-ceph/ceph-cluster.yaml
+          - $repo/cluster/infrastructure/rook-ceph/ceph-cluster.yaml
 
     - repoURL: https://github.com/clearlybaffled/homelab
       path: cluster/infrastructure/rook-ceph
       targetRevision: development
-      ref: cluster
-  
+      ref: repo
+
   destination:
     name: in-cluster
     namespace: rook-ceph
@@ -40,3 +50,4 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+# END ANSIBLE MANAGED BLOCK

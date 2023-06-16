@@ -1,10 +1,4 @@
-toolbox:
-  enabled: true
-
-monitoring:
-  enabled: true
-  createPrometheusRules: true
-
+# -- Cluster ceph.conf override
 configOverride: |
   [global]
   osd_pool_default_size = 1
@@ -13,11 +7,15 @@ configOverride: |
   bluefs_buffered_io = false
   mon_data_avail_warn = 10
 
+monitoring:
+  enabled: true
+  createPrometheusRules: true
+
 cephClusterSpec:
-  dataDirHostPath: /var/lib/rook
   cephVersion:
     image: quay.io/ceph/ceph:v17.2.6
     allowUnsupported: false
+  dataDirHostPath: /var/lib/rook
   mon:
     count: 1
     allowMultiplePerNode: true
@@ -42,16 +40,6 @@ cephClusterSpec:
     maxLogSize: 500M # SUFFIX may be 'M' or 'G'. Must be at least 1
   cleanupPolicy:
     confirmation: ""
-  healthCheck:
-    daemonHealth:
-      mon:
-        interval: 45s
-        timeout: 600s
-  priorityClassNames:
-    all: system-node-critical
-    mgr: system-cluster-critical
-  disruptionManagement:
-    managePodBudgets: true
 
   resources:
     mgr:
@@ -97,6 +85,12 @@ cephClusterSpec:
       limits:
         memory: "1G"
 
+  # priority classes to apply to ceph resources
+  priorityClassNames:
+    mon: system-node-critical
+    osd: system-node-critical
+    mgr: system-cluster-critical
+
   storage:
     useAllNodes: false
     useAllDevices: false
@@ -108,8 +102,33 @@ cephClusterSpec:
           - name: "/dev/disk/by-id/ata-WDC_WD40EFRX-68WT0N0_WD-WCC4E7LC3T9S"
           - name: "/dev/disk/by-id/ata-WDC_WD40EFRX-68WT0N0_WD-WCC4E6ZHVFSP"
 
-cephBlockPoolsVolumeSnapshotClass:
-  enabled: false
+  disruptionManagement:
+    managePodBudgets: true
+  healthCheck:
+    daemonHealth:
+      mon:
+        interval: 45s
+        timeout: 600s
+
+
+ingress:
+  # -- Enable an ingress for the ceph-dashboard
+  dashboard:
+    annotations:
+      hajimari.io/enable: "true"
+      hajimari.io/icon: simple-icons:ceph
+      cert-manager.io/cluster-issuer: 'ca-issuer'
+    host:
+      name: dashboard.gato.hermleigh.home
+      path: /
+    tls:
+    - hosts:
+        - dashboard.gato.hermleigh.home
+        - dashboard.gato
+      secretName: ceph-dashboard-tls
+    # Note: Only one of ingress class annotation or the `ingressClassName:` can be used at a time
+    # to set the ingress class
+    ingressClassName: nginx
 
 cephBlockPools:
   - name: ceph-blockpool
@@ -171,6 +190,8 @@ cephFileSystems:
         csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
         csi.storage.k8s.io/fstype: ext4
 
+cephBlockPoolsVolumeSnapshotClass:
+  enabled: false
 cephObjectStores:
   - name: ceph-objectstore
     spec:
@@ -190,10 +211,21 @@ cephObjectStores:
           limits:
             memory: 1Gi
         instances: 1
-      healthCheck:
-        bucket:
-          interval: 60s
     storageClass:
       enabled: true
       name: ceph-bucket
       reclaimPolicy: Delete
+    ingress:
+      # Enable an ingress for the ceph-objectstore
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: 'ca-issuer'
+      host:
+        name: objectstore.gato.hermleigh.home
+        path: /
+      tls:
+      - hosts:
+          - objectstore.gato.hermleigh.home
+          - objectstore.gato
+        secretName: ceph-objectstore-tls
+      ingressClassName: nginx

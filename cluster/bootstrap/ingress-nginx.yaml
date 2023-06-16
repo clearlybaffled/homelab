@@ -9,7 +9,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: metallb
+  name: ingress-nginx
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -19,21 +19,21 @@ spec:
   project: default
   
   sources:
-    - chart: metallb
-      repoURL: https://metallb.github.io/metallb
-      targetRevision: 0.13.10
+    - chart: ingress-nginx
+      repoURL: https://kubernetes.github.io/ingress-nginx
+      targetRevision: 4.7.0
       helm:
         valueFiles:
-          - $repo/cluster/infrastructure/metallb/values.yaml
+          - $repo/cluster/infrastructure/ingress-nginx/values.yaml
 
     - repoURL: https://github.com/clearlybaffled/homelab
-      path: cluster/infrastructure/metallb
+      path: cluster/infrastructure/ingress-nginx
       targetRevision: development
       ref: repo
 
   destination:
     name: in-cluster
-    namespace: metallb-system
+    namespace: infrastructure
   
   syncPolicy: 
     automated:

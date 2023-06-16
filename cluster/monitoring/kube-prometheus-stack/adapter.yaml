@@ -1,7 +1,7 @@
 # Url to access prometheus
 prometheus:
   # Value is templated
-  url: http://prometheus-operated.monitoring
+  url: http://kube-prometheus-stack-prometheus.monitoring
   port: 9090
   path: ""
 
@@ -172,7 +172,7 @@ podDisruptionBudget:
   maxUnavailable: 1
 
 certManager:
-  enabled: true
+  enabled: false
   caCertDuration: 43800h
   certDuration: 8760h
 

@@ -9,31 +9,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: metallb
+  name: argocd
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
   
-  sources:
-    - chart: metallb
-      repoURL: https://metallb.github.io/metallb
-      targetRevision: 0.13.10
-      helm:
-        valueFiles:
-          - $repo/cluster/infrastructure/metallb/values.yaml
-
-    - repoURL: https://github.com/clearlybaffled/homelab
-      path: cluster/infrastructure/metallb
-      targetRevision: development
-      ref: repo
+  source:
+    repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/argocd
+    targetRevision: development
 
   destination:
     name: in-cluster
-    namespace: metallb-system
+    namespace: argocd
   
   syncPolicy: 
     automated:

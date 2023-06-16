@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cluster
+  name: bootstrap
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-
-  sources:
-    - repoURL: https://github.com/clearlybaffled/homelab
-      path: cluster/bootstrap
-      targetRevision: HEAD
+  
+  source:
+    repoURL: ssh://git@parche:/srv/homelab.git
+    path: cluster/bootstrap
+    targetRevision: parche
 
   destination:
     name: in-cluster

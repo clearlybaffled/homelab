@@ -1,3 +1,11 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: infrastructure/roles/kubernetes/cluster/templates/application.yaml.j2
+# date: 2023-06-16 02:38:44
+# user: jared
+# host: tirante
+# commit: 824cc3f
+#
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -5,34 +13,33 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   project: default
   
   sources:
-  
-    - chart: prometheus-operator-crds
-      repoURL: &repo https://prometheus-community.github.io/helm-charts
-      targetRevision: 4.0.2
-    
     - chart: kube-prometheus-stack
-      repoURL: *repo
-      targetRevision: 46.6.0
+      repoURL: https://prometheus-community.github.io/helm-charts
+      targetRevision: 46.8.0
       helm:
+        releaseName: prometheus
         valueFiles:
-          - $cluster/cluster/monitoring/prometheus/prometheus-operator.yaml
+          - $repo/cluster/monitoring/kube-prometheus-stack/operator.yaml
 
     - chart: prometheus-adapter
-      repoURL: *repo
-      targetRevision: 4.2.0
+      repoURL: https://prometheus-community.github.io/helm-charts
+      targetRevision: 4.0.2
       helm:
+        releaseName: prometheus-adapter
         valueFiles:
-          - $cluster/cluster/monitoring/prometheus/prometheus-adapter.yaml
+          - $repo/cluster/monitoring/kube-prometheus-stack/adapter.yaml
 
     - repoURL: https://github.com/clearlybaffled/homelab
-      path: cluster/monitoring/prometheus
+      path: cluster/monitoring/kube-prometheus-stack
       targetRevision: development
-      ref: cluster
-  
+      ref: repo
+
   destination:
     name: in-cluster
     namespace: monitoring
@@ -44,3 +51,4 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+# END ANSIBLE MANAGED BLOCK

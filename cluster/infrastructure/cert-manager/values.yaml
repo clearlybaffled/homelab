@@ -1,0 +1,6 @@
+installCRDs: true
+
+prometheus:
+    enabled: true
+    servicemonitor:
+        enabled: true

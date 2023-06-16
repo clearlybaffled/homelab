@@ -326,7 +326,7 @@ auto_renew_certificates: false
 # auto_renew_certificates_systemd_calendar: "Mon *-*-1,2,3,4,5,6,7 03:{{ groups['kube_control_plane'].index(inventory_hostname) }}0:00"
 
 pki_dir: "{{ (root_dir, 'infrastructure', 'pki')|path_join }}"
-cluster_cacerts: "{{( pki_dir, 'root-ca', 'ca.pem') | path_join}}"
+cluster_cacerts: "{{( pki_dir, 'cacerts.crt') | path_join}}"
 kube_apiserver_client_cert: "{{ kube_cert_dir }}/ca.crt"
 kube_apiserver_client_key: "{{ kube_cert_dir }}/ca.key"
 

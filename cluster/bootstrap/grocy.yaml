@@ -1,3 +1,11 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: infrastructure/roles/kubernetes/cluster/templates/application.yaml.j2
+# date: 2023-06-16 02:38:44
+# user: jared
+# host: tirante
+# commit: 824cc3f
+#
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -5,6 +13,8 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
 spec:
   project: default
   
@@ -12,10 +22,10 @@ spec:
     repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/grocy
     targetRevision: development
-  
+
   destination:
     name: in-cluster
-    namespace: apps
+    namespace: grocy
   
   syncPolicy: 
     automated:
@@ -24,3 +34,4 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+# END ANSIBLE MANAGED BLOCK
