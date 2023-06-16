@@ -1,10 +1,10 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
 # template: infrastructure/roles/kubernetes/cluster/templates/application.yaml.j2
-# date: 2023-06-16 02:38:44
+# date: 2023-06-16 03:39:12
 # user: jared
 # host: tirante
-# commit: 824cc3f
+# commit: 9a92cd0
 #
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -33,7 +33,7 @@ spec:
 
     - repoURL: https://github.com/clearlybaffled/homelab
       path: cluster/infrastructure/cert-manager
-      targetRevision: development
+      targetRevision: main
       ref: repo
 
   destination:

@@ -1,6 +1,6 @@
 ---
 repo_url: 'https://github.com/clearlybaffled/homelab'
-branch: development
+branch: main
 apps:
   - name: argocd
     namespace: argocd
