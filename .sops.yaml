@@ -7,5 +7,5 @@ creation_rules:
   - path_regex: .*\.sops\.ya?ml
     encrypted_regex: "^(data|stringData)$"
     key_groups: *default_keys
-  - path_regex: .*\.(crt|pem)
+  - path_regex: .*\.(crt|pem|key)
     key_groups: *default_keys

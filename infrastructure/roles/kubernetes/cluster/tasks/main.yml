@@ -1,66 +1,60 @@
 ---
-- name: Create argocd namespace
+- name: Install Applications files
+  blockinfile:
+    block: "{{ lookup('template', 'application.yaml.j2', convert_data=false) }}"
+    dest: "{{ (root_dir, 'cluster','bootstrap', app.name+'.yaml') | path_join }}"
+    mode: "0644"
+    create: true
+  register: applications
+  when: app.createApp is not defined or app.createApp
+  loop: "{{ apps |flatten(levels=1) }}"
+  loop_control:
+    loop_var: app
+  tags:
+    - applications
+
+- name: Install any Kustomization files
+  blockinfile:
+    block: "{{ lookup('template', 'kustomization.yaml.j2', convert_data=false) }}"
+    dest: "{{ (root_dir, 'cluster', (app.path | default('') | split('/')), app.name, 'kustomization.yaml') | flatten | path_join }}"
+    mode: "0644"
+    create: true
+  register: kustomziation
+  when: app.kustomize is defined
+  loop: "{{ apps |flatten(levels=1) }}"
+  loop_control:
+    loop_var: app
+  tags:
+    - kustomize
+
+# - name: Commit changes to Kustomization files, if necessary # noqa no-handler
+#   lvrfrc87.git_acp.git_acp:
+#     path: "{{ root_dir }}" # noqa jinja
+#     comment: "Updated ArgoCD kustomization files" # \n{{ changed_list | to_yaml }}
+#     add: "{{ changed_list }}"
+#     url: "ssh://github.com/clearlybaffled/homelab"
+#     push: true
+#     branch: development
+#     ssh_params:
+#       key_file: "/home/jared/.ssh/github_clearlybaffled"
+#   when: applications is changed or kustomize is changed
+#   vars:
+#     changed_list: "{{ kustomize.results | select('changed') | map(attribute='invocation.module_args.dest') | map('relpath',root_dir)}}"
+#   tags:
+#     - manifests
+
+- name: Install ArgoCD
   kubernetes.core.k8s:
+    definition: "{{ lookup('kubernetes.core.kustomize', dir=((cluster_dir, 'argocd')|path_join), binary_path=root_dir+'/scripts/kustomize') }}"
     ca_cert: "{{ cluster_cacerts }}"
-    api_version: v1
-    kind: Namespace
-    inline: |-
-      metadata:
-        name: argocd
+    server_side_apply:
+      field_manager: ansible
+  tags: argocd
 
-- name: Start ArgoCD
+- name: Bootstrap cluster
   kubernetes.core.k8s:
+    src: "{{ (cluster_dir, 'bootstrap.yaml') | path_join }}"
     ca_cert: "{{ cluster_cacerts }}"
-    src: "{{ argocd_manifest }}"
-    namespace: argocd
-
-# - name: Wait for all argocd crds to load
-#   command: |-
-#     kubectl -n argocd wait --timeout=60s --for condition=Established \
-#       crd/applications.argoproj.io \
-#       crd/applicationsets.argoproj.io
-
-- name: Configure ArgoCD to use helm with kustomize
-  kubernetes.core.k8s:
-    ca_cert: "{{ cluster_cacerts }}"
-    state: present
-    namespace: argocd
-    name: argocd-cm
-    api_version: v1
-    kind: ConfigMap
-    definition:
-      data:
-        kustomize.buildOptions: --enable-helm
-
-- name: argocd server insecure
-  kubernetes.core.k8s:
-    ca_cert: "{{ cluster_cacerts }}"
-    state: present
-    namespace: argocd
-    name: argocd-cmd-params-cm
-    api_version: v1
-    kind: ConfigMap
-    definition:
-      data:
-        server.insecure: "true"
-
-# - name: Change ArgoCD Server to LoadBalancer
-#   kubernetes.core.k8s_service:
-#     name: argocd-server
-#     namespace: argocd
-#     definition:
-#       spec:
-#         type: LoadBalancer
-#         ports:
-#           - name: http
-#             port: 80
-#             protocol: TCP
-#             targetPort: 8080
-#           - name: https
-#             port: 443
-#             protocol: TCP
-#             targetPort: 8080
-
-# - name: Boostrap cluster
-#   kubernetes.core.k8s:
-#     src: argocd.yaml
+    server_side_apply:
+      field_manager: ansible
+  tags: bootstrap

@@ -9,31 +9,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: redis
+  name: argocd
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
   
-  sources:
-    - chart: redis
-      repoURL: https://charts.bitnami.com/bitnami
-      targetRevision: 17.11.3
-      helm:
-        valueFiles:
-          - $repo/cluster/db/redis/values.yaml
-
-    - repoURL: ssh://git@parche:/srv/homelab.git
-      path: cluster/db/redis
-      targetRevision: parche
-      ref: repo
+  source:
+    repoURL: ssh://git@parche:/srv/homelab.git
+    path: cluster/argocd
+    targetRevision: parche
 
   destination:
     name: in-cluster
-    namespace: db
+    namespace: argocd
   
   syncPolicy: 
     automated:

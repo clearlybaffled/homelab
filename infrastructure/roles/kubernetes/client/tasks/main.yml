@@ -54,3 +54,9 @@
 
 - name: Update helm repository cache
   command: "helm repo update"
+
+- name: Decrypt root-ca cert on disk for cacerts param to k8s module
+  copy:
+    dest: "{{ cluster_cacerts }}"
+    content: "{{ lookup('community.sops.sops', (pki_dir, 'root-ca','ca.crt')|path_join) }}"
+    mode: "0644"

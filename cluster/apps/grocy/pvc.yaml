@@ -9,7 +9,7 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  volumeMode: Filesystem
+  # volumeMode: Filesystem
   volumeName: grocy
 ---
 apiVersion: v1
@@ -23,6 +23,6 @@ spec:
   resources:
     requests:
       storage: 10Mi
-  volumeMode: Filesystem
+  # volumeMode: Filesystem
   volumeName: barcode-buddy
 

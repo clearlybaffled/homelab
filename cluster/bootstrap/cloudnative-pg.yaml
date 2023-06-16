@@ -9,7 +9,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: redis
+  name: cloudnative-pg
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -19,15 +19,15 @@ spec:
   project: default
   
   sources:
-    - chart: redis
-      repoURL: https://charts.bitnami.com/bitnami
-      targetRevision: 17.11.3
+    - chart: cloudnative-pg
+      repoURL: https://cloudnative-pg.github.io/charts
+      targetRevision: 0.18.0
       helm:
         valueFiles:
-          - $repo/cluster/db/redis/values.yaml
+          - $repo/cluster/db/cloudnative-pg/values.yaml
 
     - repoURL: ssh://git@parche:/srv/homelab.git
-      path: cluster/db/redis
+      path: cluster/db/cloudnative-pg
       targetRevision: parche
       ref: repo
 

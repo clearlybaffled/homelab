@@ -1,0 +1,39 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: infrastructure/roles/kubernetes/cluster/templates/kustomization.yaml.j2
+# date: 2023-06-10 16:47:36
+# user: jared
+# host: tirante
+# commit: 6bf09b8
+#
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argocd
+
+resources:
+  - https://github.com/cert-manager/cert-manager/releases/download/v1.12.0/cert-manager.crds.yaml
+  - ns.yaml
+  - parche-git-repo.yaml
+
+helmCharts:
+  - name: argo-cd
+    repo: https://argoproj.github.io/argo-helm
+    version: 5.36.1
+    valuesFile: values.yaml
+    includeCRDs: true
+    releaseName: argocd
+    namespace: argocd
+
+# END ANSIBLE MANAGED BLOCK
+
+patches:
+  - patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value: {name: ARGOCD_SYNC_WAVE_DELAY, value: "30"}
+    target:
+      version: v1
+      group: apps
+      kind: StatefulSet
+      name: argocd-application-controller
+      labelSelector: "app.kubernetes.io/name=argocd-application-controller"

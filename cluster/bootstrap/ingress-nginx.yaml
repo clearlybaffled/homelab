@@ -9,31 +9,31 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: redis
+  name: ingress-nginx
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   
   sources:
-    - chart: redis
-      repoURL: https://charts.bitnami.com/bitnami
-      targetRevision: 17.11.3
+    - chart: ingress-nginx
+      repoURL: https://kubernetes.github.io/ingress-nginx
+      targetRevision: 4.7.0
       helm:
         valueFiles:
-          - $repo/cluster/db/redis/values.yaml
+          - $repo/cluster/infrastructure/ingress-nginx/values.yaml
 
     - repoURL: ssh://git@parche:/srv/homelab.git
-      path: cluster/db/redis
+      path: cluster/infrastructure/ingress-nginx
       targetRevision: parche
       ref: repo
 
   destination:
     name: in-cluster
-    namespace: db
+    namespace: infrastructure
   
   syncPolicy: 
     automated:

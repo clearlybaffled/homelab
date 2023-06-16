@@ -1,27 +1,46 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: infrastructure/roles/kubernetes/cluster/templates/application.yaml.j2
+# date: 2023-06-15 03:38:44
+# user: jared
+# host: tirante
+# commit: b60a78c
+#
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: mysql
   namespace: argocd
-spec:    
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
   project: default
+  
   sources:
     - chart: mysql
       repoURL: https://charts.bitnami.com/bitnami
-      targetRevision: 9.10.1
+      targetRevision: 9.10.2
       helm:
         valueFiles:
-          - $cluster/cluster/db/mysql/values.yaml
-  
-    - repoURL: https://github.com/clearlybaffled/homelab
+          - $repo/cluster/db/mysql/values.yaml
+
+    - repoURL: ssh://git@parche:/srv/homelab.git
       path: cluster/db/mysql
-      targetRevision: development
-      ref: cluster
-  
+      targetRevision: parche
+      ref: repo
+
   destination:
     name: in-cluster
     namespace: db
   
+  ignoreDifferences:
+    - kind: PersistentVolume
+      jsonPointers:
+        - /spec/claimRef/resourceVersion
+        - /spec/claimRef/uid
+
   syncPolicy: 
     automated:
       prune: true
@@ -29,3 +48,5 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+      - RespectIgnoreDifferences=true
+# END ANSIBLE MANAGED BLOCK

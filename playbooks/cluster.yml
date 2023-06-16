@@ -35,6 +35,15 @@
   roles:
     - kubernetes/control_plane
 
+- name: Set up cluster infrastructure services
+  hosts: localhost
+  gather_facts: false
+  any_errors_fatal: true
+  tags: infra
+  roles:
+    - kubernetes/client
+    - containers/network
+
 - name: Start up cluster
   hosts: localhost
   gather_facts: false
