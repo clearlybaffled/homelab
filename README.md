@@ -11,9 +11,9 @@ Welcome to my homelab! It's a modest "cluster" with one kubernetes control plan/
 
 - [x] Kubernetes deployment using kubeadm
 - [x] Infrastructure Automation management 
-- [ ] Offline Root CA
-- [ ] Manage cluster state and apps using GitOps
-- [ ] Automated server provisioning
+- [x] Offline Root CA
+- [x] Manage cluster state and apps using GitOps
+- [x] Automated server provisioning
 - [ ] FreeIPA server
 - [ ] RADIUS server
 - [ ] Offsite access via VPN
@@ -39,10 +39,10 @@ $ ansible-playbook infrastructure/cluster.yml
 |<img width="32" src="https://www.debian.org/logos/openlogo-nd.svg">|[Debian](https://debian.org)|Base OS for Kubernetes Control plane|
 |<img width="32" src="https://raw.githubusercontent.com/flannel-io/flannel/master/logos/flannel-glyph-color.svg">|[Flannel](https://www.github.com/flannel-io/flannel)|Kubernetes Network Plugin|
 |<img width="32" src="https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-color.svg">|[Helm](https://helm.sh)|The package manager for Kubernetes|
+|<img width="32" src="https://docs.nginx.com/nginx-ingress-controller/images/icons/NGINX-Ingress-Controller-product-icon.svg">|[Ingress-nginx](https://kubernetes.github.io/ingress-nginx/)| Ingress controller for Kubernetes using NGINX as a reverse proxy and load balancer|
 |<img width="32" src="https://cncf-branding.netlify.app/img/projects/kubernetes/icon/color/kubernetes-icon-color.svg">|[Kubernetes](https://kubernetes.io)|Container Orchestration|
 |<img width="32" src="https://avatars.githubusercontent.com/u/60239468?s=200&v=4">|[MetalLB](https://metallb.org)|Bare metal load-balancer for Kubernetes|
 |<img width="32" src="https://cncf-branding.netlify.app/img/projects/prometheus/icon/color/prometheus-icon-color.svg">|[Prometheus](https://prometheus.io)|Systems monitoring and alerting toolkit|
-|<img width="32" src="https://vectorlogo.zone/logos/traefikio/traefikio-icon.svg">|[Traefik](https://traefik.io)|Cloud native ingress controller for Kubernetes|
 |<img width="32" src="https://docs.zerotier.com/img/ZeroTierIcon.png">|[ZeroTier](https://zerotier.com)|Virtual Networking that just works|
 
 ### Applications

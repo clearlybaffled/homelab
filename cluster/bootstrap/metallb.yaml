@@ -1,0 +1,45 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: infrastructure/roles/kubernetes/cluster/templates/application.yaml.j2
+# date: 2023-06-16 02:38:44
+# user: jared
+# host: tirante
+# commit: 824cc3f
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: default
+  
+  sources:
+    - chart: metallb
+      repoURL: https://metallb.github.io/metallb
+      targetRevision: 0.13.10
+      helm:
+        valueFiles:
+          - $repo/cluster/infrastructure/metallb/values.yaml
+
+    - repoURL: https://github.com/clearlybaffled/homelab
+      path: cluster/infrastructure/metallb
+      targetRevision: development
+      ref: repo
+
+  destination:
+    name: in-cluster
+    namespace: metallb-system
+  
+  syncPolicy: 
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+# END ANSIBLE MANAGED BLOCK

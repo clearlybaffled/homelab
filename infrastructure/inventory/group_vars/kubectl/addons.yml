@@ -12,6 +12,9 @@ helm_repositories:
   cnpg: https://cloudnative-pg.github.io/charts
   bitnami: https://charts.bitnami.com/bitnami
   jetstack: https://charts.jetstack.io
+  ingress-nginx: https://kubernetes.github.io/ingress-nginx
+  rook: https://charts.rook.io/release
+  metallb: https://metallb.github.io/metallb
 
 # Registry deployment
 registry_enabled: false
@@ -20,97 +23,11 @@ registry_version: 2.8.1
 # registry_storage_class: ""
 # registry_disk_size: "10Gi"
 
-# Rancher Local Path Provisioner
-local_path_provisioner_enabled: true
-local_path_provisioner_version: v0.0.24
-local_path_provisioner_image_repo: "rancher/local-path-provisioner"
-local_path_provisioner_image_tag: "v0.0.24"
-local_path_provisioner_helper_image_repo: "busybox"
-local_path_provisioner_helper_image_tag: "latest"
-
-# Local volume provisioner deployment
-local_volume_provisioner_enabled: false
-local_volume_provisioner_version: v2.5.0
-# local_volume_provisioner_namespace: kube-system
-# local_volume_provisioner_nodelabels:
-#   - kubernetes.io/hostname
-#   - topology.kubernetes.io/region
-#   - topology.kubernetes.io/zone
-# local_volume_provisioner_storage_classes:
-#   local-storage:
-#     host_dir: /mnt/disks
-#     mount_dir: /mnt/disks
-#     volume_mode: Filesystem
-#     fs_type: ext4
-#   fast-disks:
-#     host_dir: /mnt/fast-disks
-#     mount_dir: /mnt/fast-disks
-#     block_cleaner_command:
-#       - "/scripts/shred.sh"
-#       - "2"
-#     volume_mode: Filesystem
-#     fs_type: ext4
-# Local volume provisioner storage classes
-# Levarages Ansibles string to Python datatype casting. Otherwise the dict_key isn't substituted
-# see https://github.com/ansible/ansible/issues/17324
-local_volume_provisioner_storage_classes: |
-  {
-    "{{ local_volume_provisioner_storage_class | default('local-storage') }}": {
-      "host_dir": "{{ local_volume_provisioner_base_dir | default ('/mnt/disks') }}",
-      "mount_dir": "{{ local_volume_provisioner_mount_dir | default('/mnt/disks') }}",
-      "volume_mode": "Filesystem",
-      "fs_type": "ext4"
-
-    }
-  }
-# local_volume_provisioner_tolerations:
-#   - effect: NoSchedule
-#     operator: Exists
-
-# CSI Volume Snapshot Controller deployment, set this to true if your CSI is able to manage snapshots
-# currently, setting cinder_csi_enabled=true would automatically enable the snapshot controller
-# Longhorn is an extenal CSI that would also require setting this to true but it is not included in kubespray
-# csi_snapshot_controller_enabled: false
-# csi snapshot namespace
-# snapshot_controller_namespace: kube-system
-
-# CephFS provisioner deployment
-cephfs_provisioner_enabled: false
-cephfs_provisioner_version: v2.1.0-k8s1.11
-# cephfs_provisioner_namespace: "cephfs-provisioner"
-# cephfs_provisioner_cluster: ceph
-# cephfs_provisioner_monitors: "172.24.0.1:6789,172.24.0.2:6789,172.24.0.3:6789"
-# cephfs_provisioner_admin_id: admin
-# cephfs_provisioner_secret: secret
-# cephfs_provisioner_storage_class: cephfs
-# cephfs_provisioner_reclaim_policy: Delete
-# cephfs_provisioner_claim_root: /volumes
-# cephfs_provisioner_deterministic_names: true
-
-# RBD provisioner deployment
-rbd_provisioner_enabled: false
-rbd_provisioner_version: v2.1.1-k8s1.11
-# rbd_provisioner_namespace: rbd-provisioner
-# rbd_provisioner_replicas: 2
-# rbd_provisioner_monitors: "172.24.0.1:6789,172.24.0.2:6789,172.24.0.3:6789"
-# rbd_provisioner_pool: kube
-# rbd_provisioner_admin_id: admin
-# rbd_provisioner_secret_name: ceph-secret-admin
-# rbd_provisioner_secret: ceph-key-admin
-# rbd_provisioner_user_id: kube
-# rbd_provisioner_user_secret_name: ceph-secret-user
-# rbd_provisioner_user_secret: ceph-key-user
-# rbd_provisioner_user_secret_namespace: rbd-provisioner
-# rbd_provisioner_fs_type: ext4
-# rbd_provisioner_image_format: "2"
-# rbd_provisioner_image_features: layering
-# rbd_provisioner_storage_class: rbd
-# rbd_provisioner_reclaim_policy: Delete
-
 # Cert manager deployment
 cert_manager_enabled: true
 cert_manager_version: v1.12.0
 cert_manager_namespace: "cert-manager"
+trust_manager_version: v0.5.0
 # cert_manager_tolerations:
 #   - key: node-role.kubernetes.io/master
 #     effect: NoSchedule
@@ -144,6 +61,7 @@ cert_manager_namespace: "cert-manager"
 # ArgoCD GitOps
 argocd_enabled: true
 argocd_version: v2.7.4
+argocd_chart_version: 5.36.1
 argocd_manifest: "https://raw.githubusercontent.com/argoproj/argo-cd/{{ argocd_version }}/manifests/install.yaml"
 # Default password:
 #   - https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli
@@ -169,5 +87,21 @@ metallb_enabled: true
 metallb_speaker_enabled: "{{ metallb_enabled }}"
 metallb_version: v0.13.10
 
-# Traefik proxy
-traefik_enabled: true
+
+prometheus_version: v0.65.2
+kube_prometheus_stack_chart_version: 46.8.0
+prometheus_adapter_chart_version: 4.0.2
+prometheus_crds_chart_version: 4.0.2
+
+hajimari_version: 2.0.2
+
+cnpg_chart_version: 0.18.0
+bitnami_mysql_chart_version: 9.10.2
+mysql_version: 8.0.33
+
+ingress_nginx_version: 4.7.0
+
+bitnami_redis_chart_version: 17.11.3
+redis_version: 7.0.11
+
+rook_ceph_version: v1.11.7

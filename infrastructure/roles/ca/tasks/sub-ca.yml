@@ -1,0 +1,20 @@
+---
+- name: Ensure the sub ca has a name
+  assert:
+    that: "ca_name is defined"
+
+- name: Setup directory
+  include_tasks: directory.yml
+  vars:
+    home: "{{ ('srv','pki', ca_name ) | path_join}}"
+
+- name: Generate private key and CSR
+  command:
+    cmd: >-
+      openssl req -nodes -new -config {{ (pki_dir, 'sub-ca.conf') | path_join }} -out ca.csr -keyout private/ca.key
+  register: csr
+
+- name: Sign CSR with Root CA
+  command:
+    cmd: >-
+      openssl ca  -config {{(pki_dir, 'root-ca.conf') | path_join }} -in {{ csr.stdout }} -out {{(home, 'ca.crt')|path_join}} -extensions sub_ca_ext

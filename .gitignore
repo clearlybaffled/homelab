@@ -23,4 +23,6 @@ tags
 
 .gitmodules
 references/
-.unotes
+
+infrastructure/roles/**/etcd*
+infrastructure/roles/containers/network/files/kustomization.yaml

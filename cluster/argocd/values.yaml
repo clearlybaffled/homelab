@@ -1,0 +1,99 @@
+crds:
+  install: true
+
+configs:
+  cm:
+    kustomize.buildOptions: '--enable-helm'
+    resource.customizations: |
+      argoproj.io/Application:
+        health.lua: |
+          hs = {}
+          hs.status = "Progressing"
+          hs.message = ""
+          if obj.status ~= nil then
+            if obj.status.health ~= nil then
+              hs.status = obj.status.health.status
+              if obj.status.health.message ~= nil then
+                hs.message = obj.status.health.message
+              end
+            end
+          end
+          return hs
+
+
+  params:
+    server.insecure: "true"
+    server.disable.auth: "true"
+  ssh:
+    extraHosts: |
+      parche ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCS+wNspim6FJ0/IUbOKqXhiFBQjHcAnVHGGgk9dCepnvQ2EcqJoyRTs8doVVqttM+vEGziTis3e9pEg8N9ij4o=
+      parche ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDRuyv4HK9ZjnXo4RxZcnV/a4tySL7XfxzxlGuC7aVWqtDGFYkbagndzvl/oz8m3I/87Hd2qwQVlAonjrgRSkpKEI+OZ6tZML6cPCb4eKCIwpJXgxMpGrlgXV1I572UY/WxibL3amlYLxv0e54QMxFs7cKN44+T/B93Pdu2PXgTZ6BIDGp8tnW2nBM4DsH0Fuxmw9U8TR8fjNhsbDafzT6NrUTjqYTnBlY2MtNp2r/D63e17D5fp9++OeJ9zo8B7imLZIIVrZsPl5T8mEefDlG4jblUYkRrwwyASipZGMIoCGfhPaIYKez7jfxrK9F9AhEeMDN+StNNZq3rMM/cFceN8h4jgD3Nrdtb7vPwJnr7cyW0XuLVwkbrhosXKZ+9gmJHy1AsQGGxcOT95fD3YGfxtidW4pLqwDYn1Uj4YmQwk0QXFZl9RxcUZo/B+6sUqB1GxRL6qhMcm5V0+a4y/ZMtMOqWzQcP6NNfg5TLeimAF0N+JtayLB8WuEFeUSaiAqU=
+      parche ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMcNbj3FqmFJ6B4gSmjO0OKuwr9JW6E4rqhChxFf1owu
+
+controller:
+  ## Application controller metrics configuration
+  metrics:
+    # -- Deploy metrics service
+    enabled: true
+    applicationLabels:
+      enabled: true
+    serviceMonitor: &service-monitor
+      enabled: true
+      additionalLabels:
+        release: prometheus
+## Dex
+dex:
+  metrics:
+    enabled: true
+    serviceMonitor: *service-monitor
+
+## Redis
+redis:
+  enabled: false
+# External Redis parameters
+externalRedis:
+  host: redis.db
+
+## Server
+server:
+  metrics:
+    enabled: true
+    serviceMonitor: *service-monitor
+
+  ingress:
+    enabled: true
+    annotations:
+      hajimari.io/icon: devicon:argocd
+      hajimari.io/appName: ArgoCD
+      cert-manager.io/cluster-issuer: ca-issuer
+    ingressClassName: nginx
+    hosts:
+      - argocd.gato.hermleigh.home
+      - argocd.gato
+    paths:
+      - /
+    pathType: Prefix
+
+    tls:
+      - secretName: argocd-ingress-cert
+        hosts: 
+          - argocd
+          - argocd.argocd
+          - argocd.argocd.svc
+          - argocd.gato
+          - argocd.gato.hermleigh.home
+
+repoServer:
+  metrics:
+    enabled: true
+    serviceMonitor: *service-monitor
+
+applicationSet:
+  enabled: false
+
+## Notifications controller
+notifications:
+  enabled: false
+  metrics:
+    enabled: false
+    serviceMonitor: *service-monitor

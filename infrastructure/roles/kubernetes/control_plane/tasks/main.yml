@@ -65,9 +65,10 @@
     - name: kubeadm | Append ca cert to apiserver cert
       blockinfile:
         path: "{{ kube_cert_dir }}/apiserver.crt"
-        content: "{{ item }}"
+        content: "{{ lookup('community.sops.sops', item) }}"
         marker: ''
-      with_file: "{{ pki_dir }}/kubernetes-ca/ca.pem"
+      no_log: true
+      with_file: "{{ pki_dir }}/kubernetes-ca/ca.sops.pem"
 
     - name: kubeadm | Finish kubeadm init
       command: >-

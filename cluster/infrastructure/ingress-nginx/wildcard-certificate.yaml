@@ -1,0 +1,25 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard
+  namespace: infrastructure
+spec:
+  secretName: wildcard-certificate
+  issuerRef:
+    kind: ClusterIssuer
+    name: ca-issuer
+  commonName: "gato.hermleigh.home"
+  subject:
+    organizations:
+      - "HERMLEIGH.HOME"
+    organizationalUnits:
+      - "Kubernetes Cluster - Gato"
+    countries:
+      - "US"
+  dnsNames:
+    - "gato.hermleigh.home"
+    - "gato"
+    - "*.gato.hermleigh.home"
+    - "*.gato"
+  ipAddresses:
+    - "172.16.1.24"

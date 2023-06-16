@@ -16,7 +16,7 @@ spec:
     namespace: apps
   hostPath:
     path: /srv/cluster/volumes/grocy
-    type: DirectoryOrCreate
+    type: Directory
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -46,7 +46,7 @@ spec:
     namespace: apps
   hostPath:
     path: /srv/cluster/volumes/barcodebuddy
-    type: DirectoryOrCreate
+    type: Directory
   nodeAffinity:
     required:
       nodeSelectorTerms:

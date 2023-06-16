@@ -1,0 +1,45 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: infrastructure/roles/kubernetes/cluster/templates/application.yaml.j2
+# date: 2023-06-16 02:38:44
+# user: jared
+# host: tirante
+# commit: 824cc3f
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloudnative-pg
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  project: default
+  
+  sources:
+    - chart: cloudnative-pg
+      repoURL: https://cloudnative-pg.github.io/charts
+      targetRevision: 0.18.0
+      helm:
+        valueFiles:
+          - $repo/cluster/db/cloudnative-pg/values.yaml
+
+    - repoURL: https://github.com/clearlybaffled/homelab
+      path: cluster/db/cloudnative-pg
+      targetRevision: development
+      ref: repo
+
+  destination:
+    name: in-cluster
+    namespace: db
+  
+  syncPolicy: 
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+# END ANSIBLE MANAGED BLOCK

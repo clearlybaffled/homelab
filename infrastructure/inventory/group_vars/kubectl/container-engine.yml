@@ -8,7 +8,9 @@ container_manager: crio
 
 # Enable crun as additional container runtime
 # When enabled, it requires container_manager=crio
-crun_enabled: true
+crun_enabled: false
+
+runc_enabled: true
 
 # Project versions
 crio_version: v1.27.0
