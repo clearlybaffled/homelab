@@ -1,10 +1,10 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
 # template: infrastructure/roles/cluster/templates/application.yaml.j2
-# date: 2023-07-18 03:38:25
+# date: 2023-07-18 17:02:06
 # user: clearlybaffled
-# host: tirante
-# commit: 7d91d84
+# host: parche
+# commit: 1917aa4
 #
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -26,9 +26,9 @@ spec:
         valueFiles:
           - $repo/cluster/apps/db/mysql/values.yaml
 
-    - repoURL: ssh://git@parche:/srv/homelab.git
+    - repoURL: https://github.com/clearlybaffled/homelab
       path: cluster/apps/db/mysql
-      targetRevision: parche
+      targetRevision: development
       ref: repo
 
   destination:

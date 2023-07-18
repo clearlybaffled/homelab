@@ -1,10 +1,10 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
 # template: infrastructure/roles/cluster/templates/kustomization.yaml.j2
-# date: 2023-07-18 01:24:03
+# date: 2023-07-18 17:02:06
 # user: clearlybaffled
-# host: tirante
-# commit: 7d91d84
+# host: parche
+# commit: 1917aa4
 #
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
