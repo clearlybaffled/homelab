@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shared-files
+  namespace: apps
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5.5Ti
+  volumeName: shared-files-apps
+  storageClassName: local-storage
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: videos
+  namespace: apps
+spec:
+  resources:
+    requests:
+      storage: 7.5Ti
+  accessModes:
+    - ReadWriteMany
+  volumeName: video-files
+  storageClassName: local-storage

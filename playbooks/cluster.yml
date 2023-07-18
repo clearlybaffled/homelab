@@ -50,6 +50,4 @@
   any_errors_fatal: true
   tags: cluster
   roles:
-    - kubernetes/client
-    - containers/network
-    - kubernetes/cluster
+    - cluster

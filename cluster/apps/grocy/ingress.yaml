@@ -31,7 +31,6 @@ metadata:
   name: barcode-buddy
   namespace: apps
   annotations:
-    hajimari.io/enable: "true"
     hajimari.io/icon: ph:barcode
     cert-manager.io/cluster-issuer: ca-issuer
 spec:

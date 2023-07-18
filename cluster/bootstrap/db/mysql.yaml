@@ -1,0 +1,52 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: infrastructure/roles/cluster/templates/application.yaml.j2
+# date: 2023-07-18 03:38:25
+# user: clearlybaffled
+# host: tirante
+# commit: 7d91d84
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mysql
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  project: default
+  
+  sources:
+    - chart: mysql
+      repoURL: https://charts.bitnami.com/bitnami
+      targetRevision: 9.10.2
+      helm:
+        valueFiles:
+          - $repo/cluster/apps/db/mysql/values.yaml
+
+    - repoURL: ssh://git@parche:/srv/homelab.git
+      path: cluster/apps/db/mysql
+      targetRevision: parche
+      ref: repo
+
+  destination:
+    name: in-cluster
+    namespace: db
+
+  ignoreDifferences:
+    - kind: PersistentVolume
+      jsonPointers:
+        - /spec/claimRef/resourceVersion
+        - /spec/claimRef/uid
+
+  syncPolicy: 
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - RespectIgnoreDifferences=true
+# END ANSIBLE MANAGED BLOCK

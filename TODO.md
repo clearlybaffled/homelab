@@ -3,11 +3,11 @@
   - [x] Configure
 - [x] External CA
   - [ ] Fixes for apiserver ca cert to include kube-ca in chain 
-- [ ] block Storage setup
-- [ ] Ingress+LB+DNS
-  - [ ] Traefik->Nginx-proxy
-- [ ] Kubelet / kubeadm config managed from ansible
+- [x] block Storage setup
+- [x] Ingress+LB+DNS
+  - [x] Traefik->Nginx-proxy
+- [x] Kubelet / kubeadm config managed from ansible
 - [ ] CA certs management in ansible with sops and age
 - [ ] Vault
-- [ ] preload helm repos on argocd-app-controller usong ansible kubectl connection
+- [ ] preload helm repos on argocd-app-controller using ansible kubectl connection
 - [ ] CoreDns standalone config (still doing this??)

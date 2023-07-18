@@ -1,0 +1,8 @@
+  apiVersion: argoproj.io/v1alpha1
+  kind: ConfigManagementPlugin
+  metadata:
+    name: kustomize-with-helm
+  spec:
+    generate:
+      command: [ "sh", "-c" ]
+      args: [ "kustomize build --enable-helm" ]

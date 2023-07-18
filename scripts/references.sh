@@ -10,7 +10,7 @@ then
   for repo in "$@"
   do
     path=$(dirname $repo)
-    git clone --single-repo https://github.com/$repo $base/references/$path
+    git clone --single-branch https://github.com/$repo $base/references/$path
   done
 
 else

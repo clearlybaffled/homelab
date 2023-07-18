@@ -1,0 +1,99 @@
+postgresql:
+  enabled: false
+
+externalDatabase:
+  host: cnpg-rw.db
+  port: 5432
+  database: netbox
+  username: netbox
+  password: ""
+  existingSecretName: ""
+  existingSecretKey: postgresql-password
+
+  # The following settings also apply when using the bundled PostgreSQL chart:
+  sslMode: prefer
+  connMaxAge: 300
+  disableServerSideCursors: false
+  targetSessionAttrs: read-write
+
+redis:
+  enabled: false
+
+tasksRedis:
+  database: 0
+  ssl: false
+  insecureSkipTlsVerify: false
+  caCertPath: ""
+
+  # Used only when redis.enabled is false. host and port are not used if
+  # sentinels are given.
+  host: redis.db
+  port: 6379
+  sentinels: []
+  #  - mysentinel:26379
+  sentinelService: netbox-redis
+  sentinelTimeout: 300
+  username: ""
+  password: ""
+  existingSecretName: redis
+  existingSecretKey: password
+
+cachingRedis:
+  database: 1
+  ssl: false
+  insecureSkipTlsVerify: false
+  caCertPath: ""
+
+  # Used only when redis.enabled is false. host and port are not used if
+  # sentinels are given.
+  host: redis.db
+  port: 6379
+  sentinels: []
+  #  - mysentinel:26379
+  sentinelService: netbox-redis
+  sentinelTimeout: 300
+  username: ""
+  password: ""
+  existingSecretName: redis
+  existingSecretKey: password
+
+podSecurityContext:
+  fsGroup: 997
+  runAsNonRoot: true
+  runAsUser: 997
+  runAsGroup: 997
+
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 997
+  runAsGroup: 997
+
+persistence:
+  enabled: true
+  storageClass: ceph-block
+
+ingress:
+  enabled: true
+  className: ingress-nginx
+  annotations:
+    hajimari.io/icon: https://github.com/netbox-community/netbox/wiki/images/logos/netbox_icon.svg
+  hosts:
+    - host: &host netbox.gato.hermleigh.home
+      paths:
+        - /
+  tls:
+    - secretName: netbox-ingress-tls
+      hosts:
+        - *host
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi

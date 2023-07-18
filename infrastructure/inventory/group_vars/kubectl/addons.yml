@@ -8,13 +8,17 @@ helm_repositories:
   prometheus-community: https://prometheus-community.github.io/helm-charts
   traefik: https://traefik.github.io/charts
   argocd: https://argoproj.github.io/argo-helm
-  bjw-s-charts: https://bjw-s.github.io/helm-charts/
+  bjw-s: https://bjw-s.github.io/helm-charts/
   cnpg: https://cloudnative-pg.github.io/charts
   bitnami: https://charts.bitnami.com/bitnami
   jetstack: https://charts.jetstack.io
   ingress-nginx: https://kubernetes.github.io/ingress-nginx
   rook: https://charts.rook.io/release
   metallb: https://metallb.github.io/metallb
+  nextcloud: https://nextcloud.github.io/helm/
+  hashicorp: https://helm.releases.hashicorp.com
+  immich: https://immich-app.github.io/immich-charts
+  bootc: https://charts.boo.tc
 
 # Registry deployment
 registry_enabled: false
@@ -60,8 +64,8 @@ trust_manager_version: v0.5.0
 
 # ArgoCD GitOps
 argocd_enabled: true
-argocd_version: v2.7.4
-argocd_chart_version: 5.36.1
+argocd_version: v2.7.6
+argocd_chart_version: 5.36.2
 argocd_manifest: "https://raw.githubusercontent.com/argoproj/argo-cd/{{ argocd_version }}/manifests/install.yaml"
 # Default password:
 #   - https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli
@@ -86,22 +90,3 @@ enable_network_policy: true
 metallb_enabled: true
 metallb_speaker_enabled: "{{ metallb_enabled }}"
 metallb_version: v0.13.10
-
-
-prometheus_version: v0.65.2
-kube_prometheus_stack_chart_version: 46.8.0
-prometheus_adapter_chart_version: 4.0.2
-prometheus_crds_chart_version: 4.0.2
-
-hajimari_version: 2.0.2
-
-cnpg_chart_version: 0.18.0
-bitnami_mysql_chart_version: 9.10.2
-mysql_version: 8.0.33
-
-ingress_nginx_version: 4.7.0
-
-bitnami_redis_chart_version: 17.11.3
-redis_version: 7.0.11
-
-rook_ceph_version: v1.11.7

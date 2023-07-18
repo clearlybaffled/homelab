@@ -1,10 +1,10 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
-# template: infrastructure/roles/kubernetes/cluster/templates/kustomization.yaml.j2
-# date: 2023-06-10 16:47:36
-# user: jared
+# template: infrastructure/roles/cluster/templates/kustomization.yaml.j2
+# date: 2023-07-18 01:24:03
+# user: clearlybaffled
 # host: tirante
-# commit: 6bf09b8
+# commit: 7d91d84
 #
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -18,11 +18,20 @@ resources:
 helmCharts:
   - name: argo-cd
     repo: https://argoproj.github.io/argo-helm
-    version: 5.36.1
+    version: 5.36.2
     valuesFile: values.yaml
     includeCRDs: true
     releaseName: argocd
     namespace: argocd
+
+  - name: prometheus-operator-crds
+    repo: https://prometheus-community.github.io/helm-charts
+    version: 4.0.2
+    valuesFile: values.yaml
+    includeCRDs: true
+    releaseName: prometheus-operator-crds
+    namespace: monitoring
+
 
 # END ANSIBLE MANAGED BLOCK
 

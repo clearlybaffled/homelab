@@ -1,0 +1,108 @@
+hajimari:
+  defaultEnable: true
+  alwaysTargetBlank: true
+  name: Jared
+  namespaceSelector:
+    any: true
+    lightTheme: gazette
+  darkTheme: espresso
+  customThemes:
+    - name: danger
+      backgroundColor: '#0c0e0c'
+      primaryColor: '#eaebea'
+      accentColor: '#d8323c'
+  showGreeting: true
+  showAppGroups: true
+  showAppUrls: false
+  showAppInfo: true
+  showAppStatus: true
+  defaultAppIcon: mdi:application
+  showBookmarkGroups: true
+  showGlobalBookmarks: false
+  defaultSearchProvider: Google
+  searchProviders:
+    - name: Google
+      token: g
+      icon: simple-icons:google
+      searchUrl: https://www.google.com/search?q={query}
+      url: https://www.google.com
+    - name: DuckDuckGo
+      token: d
+      icon: simple-icons:duckduckgo
+      searchUrl: https://duckduckgo.com/?q={query}
+      url: https://duckduckgo.com
+    - name: IMDB
+      token: i
+      icon: simple-icons:imdb
+      searchUrl: https://www.imdb.com/find?q={query}
+      url: https://www.imdb.com
+    - name: Reddit
+      token: r
+      icon: simple-icons:reddit
+      searchUrl: https://www.reddit.com/search?q={query}
+      url: https://www.reddit.com
+    - name: YouTube
+      token: 'y'
+      icon: simple-icons:youtube
+      searchUrl: https://www.youtube.com/results?search_query={query}
+      url: https://www.youtube.com
+    - name: Spotify
+      token: s
+      icon: simple-icons:spotify
+      searchUrl: hhttps://open.spotify.com/search/{query}
+      url: https://open.spotify.com
+  customApps:
+    - group: infrastructure
+      apps:
+        - name: OpnSense 
+          icon: simple-icons:opnsense
+          url: https://growler.hermleigh.home
+          info: OpnSense web portal
+        - name: AdGuard Home
+          icon: simple-icons:adguard
+          url: http://growler.hermleigh.home:3001
+          info: AdGuard web portal
+        - name: ntop-ng
+          icon: https://www.ntop.org/wp-content/uploads/2011/08/ntopng-icon-150x150.png
+          url: https://growler.hermleigh.home:3443
+          info: ntop-ng web portal
+
+ingress:
+  main:
+    enabled: true
+    annotations:
+      hajimari.io/enabled: "false"
+      cert-manager.io/cluster-issuer: ca-issuer
+      hajimari.io/enable: "false"
+    hosts:
+      - host: hajimari.gato.hermleigh.home
+        paths:
+          - path: /
+            pathType: Prefix
+      - host: wahoo.hermleigh.home
+        paths:
+          - path: /
+            pathType: Prefix 
+    tls:
+      - hosts:
+        - hajimari.gato.hermleigh.home
+        - wahoo.hermleigh.home
+        secretName: hajimari-ingress-cert
+persistence:
+  data:
+    enabled: true
+    type: emptyDir
+  config:
+    enabled: true
+    type: emptyDir
+  viewcache:
+    enabled: true
+    type: emptyDir
+    mountPath: /config/data/viewcache
+service:
+  main:
+    type: ClusterIP
+podSecurityContext:
+  runAsUser: 997
+  runAsGroup: 997
+  fsGroup: 997

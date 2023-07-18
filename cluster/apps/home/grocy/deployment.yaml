@@ -1,0 +1,89 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grocy
+  namespace: home
+  labels:
+    app: grocy
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: grocy
+  template:
+    metadata:
+      labels:
+        app: grocy
+    spec:
+      containers:
+        - name: grocy
+          image: lscr.io/linuxserver/grocy:3.3.2
+          envFrom:
+            - configMapRef:
+                name: grocy-cm
+          ports:
+            - name: web
+              containerPort: 80
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 80m
+              memory: 256Mi
+            limits:
+              cpu: 220m
+              memory: 512Mi
+          volumeMounts:
+            - name: grocy
+              mountPath: /config
+      volumes:
+        - name: grocy
+          persistentVolumeClaim:
+            claimName: grocy
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: barcode-buddy
+  namespace: home
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: barcode-buddy
+  template:
+    metadata:
+      labels:
+        app: barcode-buddy
+    spec:
+      containers:
+        - name: barcodebuddy
+          image: docker.io/f0rc3/barcodebuddy:latest
+          envFrom:
+            - configMapRef:
+                name: grocy-cm
+          ports:
+            - name: web
+              containerPort: 80
+              protocol: TCP
+            - name: tls
+              containerPort: 443
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 80m
+              memory: 256Mi
+            limits:
+              cpu: 220m
+              memory: 512Mi
+          volumeMounts:
+            - name: bbuddy
+              mountPath: /config
+      volumes:
+        - name: bbuddy
+          persistentVolumeClaim:
+            claimName: bbuddy

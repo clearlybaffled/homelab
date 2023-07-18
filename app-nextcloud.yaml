@@ -1,0 +1,305 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+  creationTimestamp: "2023-07-17T21:43:45Z"
+  deletionGracePeriodSeconds: 0
+  deletionTimestamp: "2023-07-17T21:48:16Z"
+  generation: 20
+  labels:
+    argocd.argoproj.io/instance: nextcloud
+  name: nextcloud
+  namespace: argocd
+  resourceVersion: "8976304"
+  uid: 0627d9bf-0181-4a7e-b365-02b8aa23a1b8
+spec:
+  destination:
+    name: in-cluster
+    namespace: apps
+  project: default
+  sources:
+  - chart: nextcloud
+    helm:
+      valueFiles:
+      - $repo/cluster/apps/nextcloud/values.yaml
+    repoURL: https://nextcloud.github.io/helm/
+    targetRevision: 3.5.15
+  - path: cluster/apps/nextcloud
+    ref: repo
+    repoURL: ssh://git@parche:/srv/homelab.git
+    targetRevision: parche
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
+status:
+  health:
+    status: Healthy
+  history:
+  - deployStartedAt: "2023-07-17T21:43:45Z"
+    deployedAt: "2023-07-17T21:44:17Z"
+    id: 0
+    revisions:
+    - 3.5.15
+    - f5ab97af117fed12e86fc2d90b7f83e8b38553b6
+    source:
+      repoURL: ""
+    sources:
+    - chart: nextcloud
+      helm:
+        valueFiles:
+        - $repo/cluster/apps/nextcloud/values.yaml
+      repoURL: https://nextcloud.github.io/helm/
+      targetRevision: 3.5.15
+    - path: cluster/apps/nextcloud
+      ref: repo
+      repoURL: ssh://git@parche:/srv/homelab.git
+      targetRevision: parche
+  operationState:
+    finishedAt: "2023-07-17T21:44:17Z"
+    message: successfully synced (all tasks run)
+    operation:
+      initiatedBy:
+        automated: true
+      retry:
+        limit: 5
+      sync:
+        prune: true
+        revisions:
+        - 3.5.15
+        - f5ab97af117fed12e86fc2d90b7f83e8b38553b6
+        syncOptions:
+        - CreateNamespace=true
+        - ServerSideApply=true
+    phase: Succeeded
+    startedAt: "2023-07-17T21:43:45Z"
+    syncResult:
+      resources:
+      - group: ""
+        hookPhase: Succeeded
+        kind: Secret
+        message: secret/nextcloud-secret serverside-applied
+        name: nextcloud-secret
+        namespace: apps
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: ""
+        hookPhase: Succeeded
+        kind: ConfigMap
+        message: configmap/nextcloud-config serverside-applied
+        name: nextcloud-config
+        namespace: apps
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: ""
+        hookPhase: Succeeded
+        kind: PersistentVolumeClaim
+        message: persistentvolumeclaim/nextcloud-nextcloud-data serverside-applied
+        name: nextcloud-nextcloud-data
+        namespace: apps
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: ""
+        hookPhase: Succeeded
+        kind: PersistentVolumeClaim
+        message: persistentvolumeclaim/nextcloud-nextcloud serverside-applied
+        name: nextcloud-nextcloud
+        namespace: apps
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: ""
+        hookPhase: Succeeded
+        kind: Service
+        message: service/nextcloud serverside-applied
+        name: nextcloud
+        namespace: apps
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: ""
+        hookPhase: Succeeded
+        kind: Service
+        message: service/nextcloud-metrics serverside-applied
+        name: nextcloud-metrics
+        namespace: apps
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: apps
+        hookPhase: Succeeded
+        kind: Deployment
+        message: deployment.apps/nextcloud-metrics serverside-applied
+        name: nextcloud-metrics
+        namespace: apps
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: apps
+        hookPhase: Succeeded
+        kind: Deployment
+        message: deployment.apps/nextcloud serverside-applied
+        name: nextcloud
+        namespace: apps
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: networking.k8s.io
+        hookPhase: Succeeded
+        kind: Ingress
+        message: ingress.networking.k8s.io/nextcloud serverside-applied
+        name: nextcloud
+        namespace: apps
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: monitoring.coreos.com
+        hookPhase: Succeeded
+        kind: ServiceMonitor
+        message: servicemonitor.monitoring.coreos.com/nextcloud serverside-applied
+        name: nextcloud
+        namespace: monitoring
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: argoproj.io
+        hookPhase: Running
+        kind: Application
+        message: application.argoproj.io/nextcloud serverside-applied
+        name: nextcloud
+        namespace: argocd
+        status: Synced
+        syncPhase: Sync
+        version: v1alpha1
+      revision: ""
+      revisions:
+      - 3.5.15
+      - f5ab97af117fed12e86fc2d90b7f83e8b38553b6
+      source:
+        repoURL: ""
+      sources:
+      - chart: nextcloud
+        helm:
+          valueFiles:
+          - $repo/cluster/apps/nextcloud/values.yaml
+        repoURL: https://nextcloud.github.io/helm/
+        targetRevision: 3.5.15
+      - path: cluster/apps/nextcloud
+        ref: repo
+        repoURL: ssh://git@parche:/srv/homelab.git
+        targetRevision: parche
+  reconciledAt: "2023-07-17T21:48:17Z"
+  resources:
+  - kind: ConfigMap
+    name: nextcloud-config
+    namespace: apps
+    status: Synced
+    version: v1
+  - health:
+      status: Healthy
+    kind: PersistentVolumeClaim
+    name: nextcloud-nextcloud
+    namespace: apps
+    status: Synced
+    version: v1
+  - health:
+      status: Healthy
+    kind: PersistentVolumeClaim
+    name: nextcloud-nextcloud-data
+    namespace: apps
+    status: Synced
+    version: v1
+  - kind: Secret
+    name: nextcloud-secret
+    namespace: apps
+    status: Synced
+    version: v1
+  - health:
+      status: Healthy
+    kind: Service
+    name: nextcloud
+    namespace: apps
+    status: Synced
+    version: v1
+  - health:
+      status: Healthy
+    kind: Service
+    name: nextcloud-metrics
+    namespace: apps
+    status: Synced
+    version: v1
+  - group: apps
+    health:
+      status: Healthy
+    kind: Deployment
+    name: nextcloud
+    namespace: apps
+    status: Synced
+    version: v1
+  - group: apps
+    health:
+      status: Healthy
+    kind: Deployment
+    name: nextcloud-metrics
+    namespace: apps
+    status: Synced
+    version: v1
+  - group: argoproj.io
+    kind: Application
+    name: nextcloud
+    namespace: argocd
+    status: Synced
+    syncWave: 4
+    version: v1alpha1
+  - group: monitoring.coreos.com
+    kind: ServiceMonitor
+    name: nextcloud
+    namespace: monitoring
+    status: Synced
+    version: v1
+  - group: networking.k8s.io
+    health:
+      status: Healthy
+    kind: Ingress
+    name: nextcloud
+    namespace: apps
+    status: Synced
+    version: v1
+  sourceTypes:
+  - Helm
+  - Directory
+  summary:
+    externalURLs:
+    - https://nextcloud.gato.hermleigh.home/
+    images:
+    - nextcloud:27.0.0-apache
+    - xperimental/nextcloud-exporter:0.6.0
+  sync:
+    comparedTo:
+      destination:
+        name: in-cluster
+        namespace: apps
+      source:
+        repoURL: ""
+      sources:
+      - chart: nextcloud
+        helm:
+          valueFiles:
+          - $repo/cluster/apps/nextcloud/values.yaml
+        repoURL: https://nextcloud.github.io/helm/
+        targetRevision: 3.5.15
+      - path: cluster/apps/nextcloud
+        ref: repo
+        repoURL: ssh://git@parche:/srv/homelab.git
+        targetRevision: parche
+    revisions:
+    - 3.5.15
+    - f5ab97af117fed12e86fc2d90b7f83e8b38553b6
+    status: Synced
