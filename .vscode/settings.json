@@ -25,5 +25,7 @@
         ],
         "kubernetes": []
     },
-    "ansible.python.interpreterPath": ".venv/bin/python"
+    "ansible.python.interpreterPath": ".venv/bin/python",
+    "ansible.ansible.path": ".venv/bin/ansible",
+    "ansible.ansibleNavigator.path": ".venv/bin/ansible-navigator"
 }

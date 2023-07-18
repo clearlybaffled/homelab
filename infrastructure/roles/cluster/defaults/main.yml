@@ -1,0 +1,223 @@
+---
+app_template: &app_template
+  chart: bjw-s/app-template
+  version: "{{ app_template_version }}"
+
+apps:
+  - name: argocd
+    namespace: argocd
+    wave: 0
+    path: ''
+    kustomize:
+      resources:
+        - "https://github.com/cert-manager/cert-manager/releases/download/{{ cert_manager_version }}/cert-manager.crds.yaml"
+        - ns.yaml
+        - parche-git-repo.yaml
+      charts:
+        - chart: argocd/argo-cd
+          version: "{{ argocd_chart_version }}"
+          namespace: argocd
+          release: argocd
+        - chart: prometheus-community/prometheus-operator-crds
+          version: "{{ prometheus_crds_chart_version }}"
+          namespace: monitoring
+
+  - name: kube-prometheus-stack
+    path: monitoring
+    wave: 2
+    sources:
+      - chart: prometheus-community/kube-prometheus-stack
+        version: "{{ kube_prometheus_stack_chart_version }}"
+        release: prometheus
+        valueFiles:
+          - operator.yaml
+      - chart: prometheus-community/prometheus-adapter
+        version: "{{ prometheus_adapter_chart_version }}"
+        valueFiles:
+          - adapter.yaml
+
+  - name: hajimari
+    path: home
+    wave: 4
+    sources:
+      - chart: hajimari/hajimari
+        version: "{{ hajimari_version }}"
+
+  - name: cloudnative-pg
+    path: db
+    wave: 3
+    sources:
+      - chart: cnpg/cloudnative-pg
+        version: "{{ cnpg_chart_version }}"
+
+  - name: mysql
+    path: db
+    wave: 3
+    pv: true
+    sources:
+      - chart: bitnami/mysql
+        version: "{{ bitnami_mysql_chart_version }}"
+
+  - name: cert-manager
+    path: infrastructure
+    namespace: cert-manager
+    wave: 1
+    sources:
+      - chart: jetstack/cert-manager
+        version: "{{ cert_manager_version }}"
+        skipCrds: true
+      - chart: jetstack/trust-manager
+        version: "{{ trust_manager_version }}"
+        valueFiles: []
+
+  - name: grocy
+    path: home
+    wave: 4
+    namespace: grocy
+    pv: true
+
+  - name: ingress-nginx
+    path: infrastructure
+    wave: 1
+    sources:
+      - chart: ingress-nginx/ingress-nginx
+        version: "{{ ingress_nginx_version }}"
+
+  - name: metallb
+    path: infrastructure
+    namespace: metallb-system
+    wave: 1
+    sources:
+      - chart: metallb/metallb
+        version: "{{ metallb_version[1:] }}"
+
+  - name: redis
+    path: db
+    wave: 3
+    sources:
+      - chart: bitnami/redis
+        version: "{{ bitnami_redis_chart_version }}"
+
+  - name: rook-ceph
+    path: infrastructure
+    namespace: rook-ceph
+    wave: 2
+    sources:
+      - chart: rook/rook-ceph
+        version: "{{ rook_ceph_version }}"
+        valueFiles:
+          - operator.yaml
+      - chart: rook/rook-ceph-cluster
+        version: "{{ rook_ceph_version }}"
+        valueFiles:
+          - ceph-cluster.yaml
+
+  - name: paperless-ngx
+    path: home
+    wave: 4
+    sources:
+      - <<: *app_template
+        release: paperless-ngx
+
+  - name: nextcloud
+    path: home
+    wave: 4
+    sources:
+      - chart: nextcloud/nextcloud
+        version: "{{ nextcloud_chart_version }}"
+
+  - name: mealie
+    path: home
+    wave: 4
+    sources:
+      - chart: k8s-at-home/mealie
+        version: 5.1.2
+
+  - name: heimdall
+    path: home
+    sources:
+      - chart: k8s-at-home/heimdall
+        version: 8.4.2
+
+  - name: vault
+    path: infrastructure
+    namespace: vault
+    sources:
+      - chart: hashicorp/vault
+        version: "{{ vault_chart_version }}"
+
+  - name: qbittorrent
+    path: home
+    sources:
+      - <<: *app_template
+        release: qbitorrent
+
+  - name: calibre
+    path: media
+    sources:
+      - chart: k8s-at-home/calibre
+        version: 5.4.2
+      - chart: k8s-at-home/calibre-web
+        version: 8.4.2
+        valueFiles:
+          - values-web.yaml
+
+  - name: listen-brainz
+    path: media
+
+  - name: photonix
+    path: media
+
+  - name: immich
+    path: media
+    sources:
+      - chart: immich/immich
+        version: 0.1.2
+
+  - name: typesense
+    path: db
+    sources:
+      - <<: *app_template
+        release: typesense
+
+  - name: sonarr
+    path: media
+    sources:
+      - <<: *app_template
+        release: sonarr
+
+  - name: radarr
+    path: media
+    sources:
+      - <<: *app_template
+        release: radarr
+
+  - name: readarr
+    path: media
+    sources:
+      - <<: *app_template
+        release: readarr
+
+  - name: prowlarr
+    path: media
+    sources:
+      - <<: *app_template
+        release: prowlarr
+
+  - name: overseerr
+    path: media
+    sources:
+      - <<: *app_template
+        release: overseerr
+
+  - name: lidarr
+    path: media
+    sources:
+      - <<: *app_template
+        release: lidarr
+
+  - name: netbox
+    path: infrastructure
+    sources:
+      - chart: bootc/netbox
+        version: 4.1.1

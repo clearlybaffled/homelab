@@ -1,0 +1,91 @@
+{{ ansible_managed | comment }}
+{% if app.namespace is defined and app.namespace != '' %}
+{% set namespace = app.namespace %}
+{% else %}
+{% set namespace = (app.path | default('default') | basename) %}
+{% endif %}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ app.name }}
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+{% if 'wave' in app %}
+    argocd.argoproj.io/sync-wave: "{{ app.wave }}"
+{% endif %}
+spec:
+  project: default
+  
+{% set repo_dir = ('cluster', app.path | ternary('apps/'+app.path, ''), app.name) | path_join %}
+{% if 'sources' in app %}
+  sources:
+{% for source in app.sources %}
+{% if 'chart' in source %}
+{% set (helm_repo,chart_name) = source.chart.split('/') %}
+    - chart: {{ chart_name }}
+      repoURL: {{ helm_repositories[helm_repo] }}
+      targetRevision: {{ source.version }}
+{% if 'skipCrds' in source or 'valueFiles' not in source or source.valueFiles %}
+      helm:
+{% if 'skipCrds' in source %}
+        skipCrds: {{ source.skipCrds }}
+{% endif %}
+{% if 'release' in source %}
+        releaseName: {{ source.release }}
+{% elif app.name != chart_name %}
+        releaseName: {{ chart_name }}
+{% endif %}
+{% if 'valueFiles' not in source or source.valueFiles %}
+        valueFiles:
+{% if 'valueFiles' not in source  %}
+          - {{ ('$repo', repo_dir, 'values.yaml') | path_join }}
+{% else %}
+{% for file in source.valueFiles %}
+          - {{ ('$repo', repo_dir, file) | path_join }}
+{% endfor %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% endfor %}
+{% else %}
+  source:
+{% endif %}
+
+{%- filter indent(4 if app.sources is defined else 2) %}
+    {% if app.sources is defined %}- {% endif %}repoURL: {{ app.repo_url | default(repo_url) }}
+  path: {{ repo_dir }}
+  targetRevision: {{ app.branch | default(branch) }}
+{% if app.sources is defined and (app.sources | map(attribute='chart')) %}
+  ref: repo
+{% endif %}
+{% if app.directory is defined %}
+  directory:
+    {{ app.directory | to_nice_yaml(indent=4)}}
+{% endif %}{% endfilter %}
+
+  destination:
+    name: in-cluster
+    namespace: {{ namespace }}
+
+{% if 'pv' in app and app.pv %}
+  ignoreDifferences:
+    - kind: PersistentVolume
+      jsonPointers:
+        - /spec/claimRef/resourceVersion
+        - /spec/claimRef/uid
+
+{% endif %}
+  syncPolicy: 
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+{% if 'pv' in app and app.pv %}
+      - RespectIgnoreDifferences=true
+{% endif %}

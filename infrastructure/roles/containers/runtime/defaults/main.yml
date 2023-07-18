@@ -38,10 +38,10 @@ crio_required_version: "{{ kube_version | regex_replace('^v(?P<major>\\d+).(?P<m
 
 # The crio_runtimes variable defines a list of OCI compatible runtimes.
 crio_runtimes:
-  - name: crun
-    path: "{{ bin_dir }}/crun"
+  - name: runc
+    path: "{{ bin_dir }}/runc"
     type: oci
-    root: /run/crun
+    root: /run/runc
 
 # TODO(cristicalin): remove this after 2.21
 crio_download_base: download.opensuse.org/repositories/devel:kubic:libcontainers:stable

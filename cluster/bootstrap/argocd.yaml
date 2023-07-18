@@ -1,10 +1,10 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
-# template: infrastructure/roles/kubernetes/cluster/templates/application.yaml.j2
-# date: 2023-06-16 03:39:12
-# user: jared
+# template: infrastructure/roles/cluster/templates/application.yaml.j2
+# date: 2023-07-18 03:38:25
+# user: clearlybaffled
 # host: tirante
-# commit: 9a92cd0
+# commit: 7d91d84
 #
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -19,14 +19,14 @@ spec:
   project: default
   
   source:
-    repoURL: https://github.com/clearlybaffled/homelab
+    repoURL: ssh://git@parche:/srv/homelab.git
     path: cluster/argocd
-    targetRevision: main
+    targetRevision: parche
 
   destination:
     name: in-cluster
     namespace: argocd
-  
+
   syncPolicy: 
     automated:
       prune: true

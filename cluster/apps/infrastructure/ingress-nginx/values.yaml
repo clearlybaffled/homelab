@@ -1,0 +1,53 @@
+## nginx configuration
+## Ref: https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/nginx-configuration/index.md
+##
+
+controller:
+  # -- Will add custom configuration options to Nginx https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/
+  config:
+    client-body-buffer-size: 100M
+    client-body-timeout: 120
+    client-header-timeout: 120
+    enable-brotli: "true"
+    enable-real-ip: "true"
+    hsts-max-age: 31449600
+    keep-alive-requests: 10000
+    keep-alive: 120
+    proxy-body-size: 0
+    proxy-buffer-size: 16k
+    ssl-protocols: "TLSv1.3 TLSv1.2"
+  ingressClassResource:
+    name: nginx
+    enabled: true
+    default: true
+ 
+  # -- Additional command line arguments to pass to Ingress-Nginx Controller
+  # E.g. to specify the default SSL certificate you can use
+  extraArgs:
+    default-ssl-certificate: "infrastructure/wildcard-certificate"
+
+
+  # -- The update strategy to apply to the Deployment or DaemonSet
+  ##
+  updateStrategy:
+    type: RollingUpdate
+  service:
+    annotations:
+      metallb.universe.tf/address-pool: ingress-pool
+    externalTrafficPolicy: Local
+
+  admissionWebhooks:
+    # Use certmanager to generate webhook certs
+    certManager:
+      enabled: true
+      admissionCert:
+        issuerRef:
+          name: "ca-issuer"
+          kind: "ClusterIssuer"
+  metrics:
+    port: 10254
+    portName: metrics
+    # if this port is changed, change healthz-port: in extraArgs: accordingly
+    enabled: true
+    serviceMonitor:
+      enabled: true

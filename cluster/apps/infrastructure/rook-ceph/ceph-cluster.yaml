@@ -1,0 +1,231 @@
+# -- Cluster ceph.conf override
+configOverride: |
+  [global]
+  osd_pool_default_size = 1
+  mon_warn_on_pool_no_redundancy = false
+  bdev_flock_retry = 20
+  bluefs_buffered_io = false
+  mon_data_avail_warn = 10
+
+monitoring:
+  enabled: true
+  createPrometheusRules: true
+
+cephClusterSpec:
+  cephVersion:
+    image: quay.io/ceph/ceph:v17.2.6
+    allowUnsupported: false
+  dataDirHostPath: /var/lib/rook
+  mon:
+    count: 1
+    allowMultiplePerNode: true
+  mgr:
+    count: 1
+    allowMultiplePerNode: true
+    modules:
+      - name: pg_autoscaler
+        enabled: true
+      - name: rook
+        enabled: true
+  dashboard:
+    enabled: true
+    ssl: false
+  crashCollector:
+    disable: false
+    daysToRetain: 7
+  # enable log collector, daemons will log on files and rotate
+  logCollector:
+    enabled: true
+    periodicity: weekly # one of: hourly, daily, weekly, monthly
+    maxLogSize: 500M # SUFFIX may be 'M' or 'G'. Must be at least 1
+  cleanupPolicy:
+    confirmation: ""
+
+  resources:
+    mgr:
+      requests:
+        cpu: "125m"
+        memory: "549M"
+      limits:
+        memory: "1219M"
+    mon:
+      requests:
+        cpu: "49m"
+        memory: "477M"
+      limits:
+        memory: "1059M"
+    osd:
+      requests:
+        cpu: "442m"
+        memory: "2678M"
+      limits:
+        memory: "5944M"
+    mgr-sidecar:
+      requests:
+        cpu: "49m"
+        memory: "94M"
+      limits:
+        memory: "208M"
+    crashcollector:
+      requests:
+        cpu: "15m"
+        memory: "64M"
+      limits:
+        memory: "64M"
+    logcollector:
+      requests:
+        cpu: "100m"
+        memory: "100M"
+      limits:
+        memory: "1G"
+    cleanup:
+      requests:
+        cpu: "250m"
+        memory: "100M"
+      limits:
+        memory: "1G"
+
+  # priority classes to apply to ceph resources
+  priorityClassNames:
+    mon: system-node-critical
+    osd: system-node-critical
+    mgr: system-cluster-critical
+
+  storage:
+    useAllNodes: false
+    useAllDevices: false
+    config:
+      osdsPerDevice: "1"
+    nodes:
+      - name: "parche"
+        devices:
+          - name: "/dev/disk/by-id/ata-WDC_WD40EFRX-68WT0N0_WD-WCC4E7LC3T9S"
+          - name: "/dev/disk/by-id/ata-WDC_WD40EFRX-68WT0N0_WD-WCC4E6ZHVFSP"
+
+  disruptionManagement:
+    managePodBudgets: true
+  healthCheck:
+    daemonHealth:
+      mon:
+        interval: 45s
+        timeout: 600s
+
+
+ingress:
+  # -- Enable an ingress for the ceph-dashboard
+  dashboard:
+    annotations:
+      hajimari.io/icon: simple-icons:ceph
+      cert-manager.io/cluster-issuer: 'ca-issuer'
+    host:
+      name: dashboard.gato.hermleigh.home
+      path: /
+    tls:
+    - hosts:
+        - dashboard.gato.hermleigh.home
+        - dashboard.gato
+      secretName: ceph-dashboard-tls
+    # Note: Only one of ingress class annotation or the `ingressClassName:` can be used at a time
+    # to set the ingress class
+    ingressClassName: nginx
+
+cephBlockPools:
+  - name: ceph-blockpool
+    spec:
+      failureDomain: osd
+      replicated:
+        size: 1
+    storageClass:
+      enabled: true
+      name: ceph-block
+      isDefault: true
+      reclaimPolicy: Retain
+      allowVolumeExpansion: true
+      parameters:
+        imageFormat: "2"
+        imageFeatures: layering
+        csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
+        csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
+        csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
+        csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
+        csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
+        csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
+        csi.storage.k8s.io/fstype: ext4
+
+cephFileSystems:
+  - name: ceph-filesystem
+    spec:
+      metadataPool:
+        replicated:
+          size: 1
+      dataPools:
+        - name: data0
+          failureDomain: osd
+          replicated:
+            size: 1
+            requireSafeReplicaSize: false
+      metadataServer:
+        activeCount: 1
+        activeStandby: true
+        resources:
+          requests:
+            cpu: "35m"
+            memory: "64M"
+          limits:
+            memory: "144M"
+    storageClass:
+      enabled: true
+      isDefault: false
+      name: ceph-filesystem
+      pool: data0
+      reclaimPolicy: Retain
+      allowVolumeExpansion: true
+      mountOptions: []
+      parameters:
+        csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
+        csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
+        csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
+        csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
+        csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
+        csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
+        csi.storage.k8s.io/fstype: ext4
+
+cephBlockPoolsVolumeSnapshotClass:
+  enabled: false
+cephObjectStores:
+  - name: ceph-objectstore
+    spec:
+      metadataPool:
+        replicated:
+          size: 1
+      dataPool:
+        replicated:
+          size: 1
+      preservePoolsOnDelete: false
+      gateway:
+        port: 80
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128M
+          limits:
+            memory: 1Gi
+        instances: 1
+    storageClass:
+      enabled: true
+      name: ceph-bucket
+      reclaimPolicy: Retain
+    ingress:
+      # Enable an ingress for the ceph-objectstore
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: 'ca-issuer'
+      host:
+        name: objectstore.gato.hermleigh.home
+        path: /
+      tls:
+      - hosts:
+          - objectstore.gato.hermleigh.home
+          - objectstore.gato
+        secretName: ceph-objectstore-tls
+      ingressClassName: nginx

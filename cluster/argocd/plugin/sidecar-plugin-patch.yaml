@@ -1,0 +1,34 @@
+---
+- op: add
+  path: /spec/template/spec/containers/-
+  value:
+    name: plugins
+    command: [/var/run/argocd/argocd-cmp-server] # Entrypoint should be Argo CD lightweight CMP server i.e. argocd-cmp-server
+    image: busybox # This can be off-the-shelf or custom-built image
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 999
+    volumeMounts:
+      - mountPath: /var/run/argocd
+        name: var-files
+      - mountPath: /home/argocd/cmp-server/plugins
+        name: plugins
+      - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+        name: plugin-config
+        subPath: plugin.yaml
+      # Starting with v2.4, do NOT mount the same tmp volume as the repo-server container. The filesystem separation helps 
+      # mitigate path traversal attacks.
+      - mountPath: /tmp
+        name: cmp-tmp
+- op: add
+  path: /spec/template/spec/volumes/-
+  value:
+    configMap:
+      name: plugin-config
+    name: plugin-config
+- op: add
+  path: /spec/template/spec/volumes/-
+  value:
+    emptyDir: {}
+    name: cmp-tmp
+      
