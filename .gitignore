@@ -215,5 +215,7 @@ tags
 
 # End of https://www.toptal.com/developers/gitignore/api/python,vim,visualstudiocode
 
+references/
+
 infrastructure/roles/**/etcd*
 infrastructure/roles/containers/network/files/kustomization.yaml

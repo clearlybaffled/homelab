@@ -1,12 +1,12 @@
 <p align="center">
-<a href="https://argo-cd.readthedocs.org"><img src="https://api.iconify.design/logos/argo.svg?height=250"></a>
-
+<a href="https://argoproj.github.io/cd"><img src="https://api.iconify.design/logos/argo.svg?height=250"></a><br/><img src="https://img.shields.io/github/v/release/argoproj/argo-cd?label=Latest%20Version&logo=github&style=for-the-badge">
+</p>
 
 
 ```console
 $ tree . -P bootstrap.yaml
 .
-├── apps
+├──apps
 │   ├── db
 │   │   ├── cloudnative-pg
 │   │   ├── mysql
