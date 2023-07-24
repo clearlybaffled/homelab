@@ -38,22 +38,22 @@ $ python3 -m venv .venv
 $ source .venv/bin/activate
 $ pip install -U -r requirements.txt
 $ ansible-playbook -K playbooks/cluster.yml
-$ kubectl apply --server-side -f cluster/bootstrap.yaml
+$ kubectl apply --server-side -f cluster/cluster.yaml
 ```
 
 ## 🍇 Cluster
 
 ### Infrastructure Automation
 
-Host buildout is handled by [Ansible][ansible-uri] automation.  The main Kubernetes cluster playbook is `playbooks/cluster.yml`. (As a convention, all Ansible yaml files are suffixed `.yml` to allow VSCode to distinguish between those and all other yaml files.) The full task list can be found in the [infrastructure][./infrastructure/README.md] folder, but as an overview, it will:
+Host buildout is handled by [Ansible][ansible-uri] automation.  The main Kubernetes cluster playbook is [`playbooks/cluster.yml`](./playbooks/cluster.yml). (As a convention, all Ansible yaml files are suffixed `.yml` to allow VSCode to distinguish between those and all other yaml files.) The full task list can be found in the [infrastructure](./infrastructure/README.md) folder, but as an overview, it will:
 - Install system packages and any other necessary system related setup
 - Pull down cluster images and binaries
 - Install container runtime and start kubelet
 - Run `kubeadm` to setup to create cluster
 - Creates a separate user to continue setting up the cluster with to get away from using the admin credentials
 - Applies cni configuration
-- Generates Application files for every cluster app and drops them into `cluster/bootstrap` and Kustomization files into `cluster/apps` for the respective apps
-- Bootstraps the cluster by starting ArgoCD and then applying `cluster/bootstrap.yaml`
+- Generates Application files for every cluster app and drops them into [`cluster/bootstrap`](./cluster/bootstrap) and Kustomization files into[ `cluster/apps`](./cluster/apps) for the respective apps
+- Bootstraps the cluster by starting ArgoCD and then applying [`cluster/cluster.yaml`](./cluster/cluster.yaml)
 
 ### GitOps
 
