@@ -1,3 +1,1 @@
 *.sops.* diff=sopsdiffer
-cluster/bootstrap/* merge=ours
-infrastructure/roles/kubernetes/cluster/vars/main.yml merge=ours

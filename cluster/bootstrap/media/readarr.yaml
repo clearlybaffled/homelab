@@ -1,9 +1,9 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
 # template: infrastructure/roles/cluster/templates/application.yaml.j2
-# date: 2023-07-18 17:02:06
+# date: 2023-07-18 23:19:21
 # user: clearlybaffled
-# host: parche
+# host: tirante
 # commit: 1917aa4
 #
 apiVersion: argoproj.io/v1alpha1
@@ -28,7 +28,7 @@ spec:
 
     - repoURL: https://github.com/clearlybaffled/homelab
       path: cluster/apps/media/readarr
-      targetRevision: development
+      targetRevision: main
       ref: repo
 
   destination:

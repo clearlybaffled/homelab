@@ -1,72 +1,126 @@
-# Homelab
+<img src="https://camo.githubusercontent.com/5b298bf6b0596795602bd771c5bddbb963e83e0f/68747470733a2f2f692e696d6775722e636f6d2f7031527a586a512e706e67" width="144px" height="144px" align="left"/>
 
-[![WTFPL](https://img.shields.io/github/license/clearlybaffled/homelab?style=plastic)](http://www.wtfpl.net/)
-[![GitHub last commit](https://img.shields.io/github/last-commit/clearlybaffled/homelab/main?style=plastic)](https://github.com/clearlybaffled/homelab/commits/main)
-[![Lint](https://github.com/clearlybaffled/homelab/actions/workflows/lint.yml/badge.svg)](https://github.com/clearlybaffled/homelab/actions/workflows/lint.yml)
-![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/clearlybaffled/homelab?style=plastic)
+<h1 tabindex="-1" dir="auto" style="bottom-border:none;"><a id="user-content-homelab" class="anchor" aria-hidden="true" href="#homelab"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a>
+Homelab
+</h1>
 
-Welcome to my homelab! It's a modest "cluster" with one kubernetes control plan/node with all of my self hosted services and storage, an OpnSense gateway/firewall and a couple of workstations and wireless devices.  Ultimately, this will include all applications for managing home IT systems.
+> K8S cluster built with Ansible and managed using ArgoCD for GitOps 
 
-## Features
+<div align="center">
+
+[![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60&style=flat-square&logo=discord)](https://discord.gg/DNCynrJ)&nbsp;&nbsp;&nbsp;
+[![k8s](https://img.shields.io/badge/k8s-v1.27.2-blue?style=flat-square&logo=kubernetes)](https://k8s.io/)&nbsp;&nbsp;&nbsp;
+[![debian](https://img.shields.io/badge/debian-bullseye-C70036?style=flat-square&logo=debian&logoColor=C70036)](https://debian.org)&nbsp;&nbsp;&nbsp;
+[![GitHub last commit](https://img.shields.io/github/last-commit/clearlybaffled/homelab/main?style=flat-square&logo=git&color=F05133)](https://github.com/clearlybaffled/homelab/commits/main)
+
+[![WTFPL](https://img.shields.io/github/license/clearlybaffled/homelab?style=flat-square&color=darkred)](http://www.wtfpl.net/)&nbsp;&nbsp;&nbsp;
+[![Lint](https://github.com/clearlybaffled/homelab/actions/workflows/lint.yml/badge.svg)](https://github.com/clearlybaffled/homelab/actions/workflows/lint.yml)&nbsp;&nbsp;&nbsp;
+![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/clearlybaffled/homelab?style=flat-square)
+</div>
+<br/>
+
+Welcome to my homelab! The repository is mostly focused on a modest kubernetes cluster with one control plane/node running all of my self hosted services and storage, but it also serves as the Infrastructure-as-Code (IaC) for my entire home network and devices, to include: an OpnSense gateway/firewall, a couple of workstations, wireless devices, and a Cisco switch.  Ultimately, this will include all applications for managing home IT systems.
+
+## 🤯 Features
 
 - [x] Kubernetes deployment using kubeadm
-- [x] Infrastructure Automation management 
-- [x] Offline Root CA
-- [x] Manage cluster state and apps using GitOps
-- [x] Automated server provisioning
+- [x] Infrastructure Automation with Ansible to provision hosts, clusters, devices, etc.
+- [x] Offline Root CA / Scripted PKI management using `openssl(1)`
+- [x] Manage cluster state and apps using GitOps and ArgoCD
 - [ ] FreeIPA server
 - [ ] RADIUS server
-- [ ] Offsite access via VPN
+- [ ] Remote access via VPN
 
-## Getting Started
+## ⌨️ Getting Started
 
-```shell
-$ virtualenv .venv
+```console
+$ python3 -m venv .venv
 $ source .venv/bin/activate
 $ pip install -U -r requirements.txt
-$ ansible-playbook infrastructure/cluster.yml
+$ ansible-playbook -K playbooks/cluster.yml
+$ kubectl apply --server-side -f cluster/bootstrap.yaml
 ```
-## Tech Stack
+
+## 🍇 Cluster
+
+### Infrastructure Automation
+
+Host buildout is handled by [Ansible][ansible-uri] automation.  The main Kubernetes cluster playbook is `playbooks/cluster.yml`. (As a convention, all Ansible yaml files are suffixed `.yml` to allow VSCode to distinguish between those and all other yaml files.) The full task list can be found in the [infrastructure][./infrastructure/README.md] folder, but as an overview, it will:
+- Install system packages and any other necessary system related setup
+- Pull down cluster images and binaries
+- Install container runtime and start kubelet
+- Run `kubeadm` to setup to create cluster
+- Creates a separate user to continue setting up the cluster with to get away from using the admin credentials
+- Applies cni configuration
+- Generates Application files for every cluster app and drops them into `cluster/bootstrap` and Kustomization files into `cluster/apps` for the respective apps
+- Bootstraps the cluster by starting ArgoCD and then applying `cluster/bootstrap.yaml`
+
+### GitOps
+
+[Argo][argocd-uri] watches all subfolders under the [`cluster`](./cluster) folder (see Directories below) and makes the changes to my cluster based on the YAML manifests.
+
+The way Argo works for me here is (almost) every file in the [`cluster/bootstrap`](./cluster/bootstrap) directory will define an `argoproj.io/v1alpha1/Application` that points to a corresponding folder under [`cluster/apps`](./cluster/apps).  The `Application` will apply any manifest files it finds in that directory, in addition to any Helm Charts or Kustomizations [that may also be defined](https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/) within the `Application`'s spec. One or more Helm `values.yaml` files are in each directory and each helm definition in the `Application` refers to the specific values file to apply to that chart.
+
+
+### Directories
+
+This Git repository contains the following top level directories.
+
+```sh
+📁 cluster         # Kubernetes cluster defined in code
+├─📁 apps          # Apps deployed into my cluster grouped by namespace
+├─📁 argocd        # Main Argo configuration of repository
+└─📁 bootstrap     # Cluster initialization flies (Argo Applications) also grouped by namespace
+📁 infrastructure  # Ansible files
+├─📁 inventory     # Defines Host configurations and widest scoped variables
+├─📁 pki           # Self-signed CA and submordinate CA certs for whole house and cluster
+└─📁 roles         # Ansible roles that define the actual steps to accomplish these tasks - inspired by Kubespray
+📁 playbooks       # Ansible playbooks
+```
+
+## 🖥️ Tech Stack
 
 ### Infrastructure
 
 |Logo|Name|Description|
-|:----|:----|:----|
-|<img width="32" src="https://simpleicons.org/icons/ansible.svg">|[Ansible](https://www.ansible.com)|Automate bare metal provisioning and configuration|
-|<img width="32" src="https://cncf-branding.netlify.app/img/projects/argo/icon/color/argo-icon-color.svg">|[ArgoCD](https://argoproj.github.io/cd)|GitOps tool built to deploy applications to Kubernetes|
+|:----|:----|:--------|
+|<img width="32" src="https://simpleicons.org/icons/ansible.svg">|[Ansible][ansible-uri]|Automate bare metal provisioning and configuration|
+|<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/master/projects/argo/icon/color/argo-icon-color.svg">|[ArgoCD][argocd-uri]|GitOps tool built to deploy applications to Kubernetes|
 |<img width="32" src="https://github.com/jetstack/cert-manager/raw/master/logo/logo.png">|[cert-manager](https://cert-manager.io)|Cloud native certificate management|
-|<img width="32" src="https://avatars.githubusercontent.com/u/29074118?s=200&v=4">|[CRI-O](https://www.cri-o.io)|OCI - Container Runtime|
-|<img width="32" src="https://www.debian.org/logos/openlogo-nd.svg">|[Debian](https://debian.org)|Base OS for Kubernetes Control plane|
+|<img width="32" src="https://raw.github.com/cncf/artwork/master/projects/crio/icon/color/crio-icon-color.png">|[CRI-O](https://www.cri-o.io)|OCI - Container Runtime|
+|<img width="32" src="https://www.debian.org/logos/openlogo-nd.svg">|[Debian](https://debian.org)|Base OS for Kubernetes nodes|
 |<img width="32" src="https://raw.githubusercontent.com/flannel-io/flannel/master/logos/flannel-glyph-color.svg">|[Flannel](https://www.github.com/flannel-io/flannel)|Kubernetes Network Plugin|
-|<img width="32" src="https://cncf-branding.netlify.app/img/projects/helm/icon/color/helm-icon-color.svg">|[Helm](https://helm.sh)|The package manager for Kubernetes|
+|<img width="32" src="https://github.com/cncf/artwork/blob/master/projects/helm/icon/color/helm-icon-color.png?raw=true">|[Helm](https://helm.sh)|The package manager for Kubernetes|
 |<img width="32" src="https://docs.nginx.com/nginx-ingress-controller/images/icons/NGINX-Ingress-Controller-product-icon.svg">|[Ingress-nginx](https://kubernetes.github.io/ingress-nginx/)| Ingress controller for Kubernetes using NGINX as a reverse proxy and load balancer|
-|<img width="32" src="https://cncf-branding.netlify.app/img/projects/kubernetes/icon/color/kubernetes-icon-color.svg">|[Kubernetes](https://kubernetes.io)|Container Orchestration|
+|<img width="32" src="https://github.com/cncf/artwork/blob/master/projects/kubernetes/icon/color/kubernetes-icon-color.svg?raw=true">|[Kubernetes](https://kubernetes.io)|Container Orchestration|
 |<img width="32" src="https://avatars.githubusercontent.com/u/60239468?s=200&v=4">|[MetalLB](https://metallb.org)|Bare metal load-balancer for Kubernetes|
-|<img width="32" src="https://cncf-branding.netlify.app/img/projects/prometheus/icon/color/prometheus-icon-color.svg">|[Prometheus](https://prometheus.io)|Systems monitoring and alerting toolkit|
+|<img width="32" src="https://github.com/cncf/artwork/blob/aea0dcfe090b8f36d7ae1eb3d5fbe95cc77380d3/projects/prometheus/icon/color/prometheus-icon-color.png?raw=true">|[Prometheus](https://prometheus.io)|Systems monitoring and alerting toolkit|
+|<img width="32" src="https://github.com/cncf/artwork/blob/master/projects/rook/icon/color/rook-icon-color.png?raw=true">|[Rook](https://rook.io)|Cloud-native storage orchestrator for Ceph|
 |<img width="32" src="https://docs.zerotier.com/img/ZeroTierIcon.png">|[ZeroTier](https://zerotier.com)|Virtual Networking that just works|
 
 ### Applications
 
-| **Icon**|**Application**|**Category**|**Description**|**Deployment Status**|**Version**|
-|--------|----------------|------------|---------------|---------------------|-----------|
-|<img width="32" src="https://www.mysql.com/common/logos/logo-mysql-170x115.png">|[MySQL][mysql-uri]| `Database` | SQL Database | Deployed | [![][mysql-badge]][mysql-img]
+| **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
+|--------|----------------|------------|---------------|----------|--------------------------|
+|<img width="32" src="https://www.mysql.com/common/logos/logo-mysql-170x115.png">|[MySQL][mysql-uri]| `Database` | SQL Database | Deployed | [![][mysql-badge]][mysql-chart]
 |<img width="32" src="https://wiki.postgresql.org/images/a/a4/PostgreSQL_logo.3colors.svg">| [PostgreSQL][postgres-uri] | `Database` | via [Cloudnative-PG][cnpg-io] operator | Deployed | [![][cnpg-badge]][cnpg-chart]
-|<img width="32" src="https://redis.io/images/favicons/favicon-32x32.png">| [Redis][redis-uri] | `Database` | In-memory Key-Value store | Deployed | [![][redis-badge]][redis-img]
+|<img width="32" src="https://redis.io/images/favicons/favicon-32x32.png">| [Redis][redis-uri] | `Database` | In-memory Key-Value store | Deployed | [![][redis-badge]][redis-chart]
 |<img width="32" src="https://raw.githubusercontent.com/grocy/grocy/master/public/img/logo.svg">| [Grocy][grocy-uri] | `Services` | ERP Beyond your fridge | Deployed | [![][grocy-badge]][grocy-img] |
-|<img width="32" src="https://github.com/hay-kot/mealie/raw/mealie-next/docs/docs/assets/img/favicon.png">| [Mealie][mealie-url] | `Services` | Recipe Manager | | | 
-|<img width="32" src="https://github.com/MythTV/mythtv/raw/master/mythtv/html/images/icons/upnp_small_icon.png">|[MythTV][mythtv-url]| `Media` | Open Source Digital Video Recorder | Moved off-cluster | ![][mythtv-badge] |
+|<img width="32" src="https://github.com/hay-kot/mealie/raw/mealie-next/docs/docs/assets/img/favicon.png">| [Mealie][mealie-url] | `Services` | Recipe Manager | Deployed | [![][mealie-badge]][mealie-docker] | 
+|<img width="32" src="https://github.com/MythTV/mythtv/raw/master/mythtv/html/images/icons/upnp_small_icon.png">|[MythTV][mythtv-url]| `Media` | Digital Video Recorder | Running directly on node | [![][mythtv-badge]][mythtv-gh] |
 |<img width="32" src="https://photonix.org/static/images/logo.svg">|[Photonix][photonix-url]| `Media` | Photo Management | | |
-|<img width="32" src="https://nextcloud.com/wp-content/uploads/2022/10/nextcloud-logo-blue-transparent.svg">| [NextCloud][nextcloud-url] | `File Sharing` | File Hosting | | |
-|<img width="32" src="https://hajimari.io/assets/logo.png">|[Hajimari][hajimari-url] | `Dashboard` | Startpage with K8S application discovery | Deployed | ![][hajimari-badge] |
-|<img width="32" src="https://grafana.com/static/img/menu/grafana2.svg">|[Grafana](https://grafana.com)| `Dashboard` | Operational dashboards | Deployed | ![][grafana-badge] |
-|<img width="32" src="https://github.com/paperless-ngx/paperless-ngx/raw/dev/docs/assets/favicon.png">|[Paperless-ngx][paperless-uri] | `File Sharing` | Document Management System | Deployed| |
+|<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/appicon.png">|[Immich][immich-uri]| `Media` | Photo Management | | |
+|<img width="32" src="https://nextcloud.com/wp-content/uploads/2022/10/nextcloud-logo-blue-transparent.svg">| [NextCloud][nextcloud-url] | `File Sharing` | File Hosting | Deployed | [![][nextcloud-badge]][nextcloud-chart] |
+|<img width="32" src="https://hajimari.io/assets/logo.png">|[Hajimari][hajimari-url] | `Dashboard` | Startpage with K8S application discovery | Deployed | [![][hajimari-badge]][hajimari-url] |
+|<img width="32" src="https://grafana.com/static/img/menu/grafana2.svg">|[Grafana][grafana-uri]| `Dashboard` | Operational dashboards | Deployed | [![][grafana-badge]][grafana-chart] |
+|<img width="32" src="https://github.com/paperless-ngx/paperless-ngx/raw/dev/docs/assets/favicon.png">|[Paperless-ngx][paperless-uri] | `File Sharing` | Document Management System | Deployed| [![][paperless-badge]][paperless-img] |
 |<img width="32" src="https://github.com/kovidgoyal/calibre/raw/master/icons/calibre.png">|[Calibre][calibre-uri]| `Media` | e-book Manager | | |
-|<img width="32" src="https://avatars.githubusercontent.com/u/2131270?s=200&v=4">|[qBittorrent][qbittorrent-uri]| `Meida` | Torrent client | | | 
+|<img width="32" src="https://avatars.githubusercontent.com/u/2131270?s=200&v=4">|[qBittorrent][qbittorrent-uri]| `File Sharing` | Torrent client | | | 
 |<img width="32" src="https://avatars.githubusercontent.com/u/44905828?s=200&v=4">|[NetBox][netbox-uri]| `Services`| Full-scale network inventory | | |
 |<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">|[ListenBrainz][listenbrainz-uri]| `Media` | Open Source scrobbler | | | 
-|<img width="32" src="https://simpleicons.org/icons/vault.svg">|[Vault](https://www.vaultproject.io)| `Services` | Secrets and encryption management system| | |
+|<img width="32" src="https://simpleicons.org/icons/vault.svg">|[Vault][vault-uri]| `Services` | Secrets and encryption management| | |
 
-## Thank you!
+## 🤝 Thank you!
 - https://github.com/bjw-s/home-ops
 - https://github.com/onedr0p/home-ops
 - https://github.com/khuedoan/homelab
@@ -81,34 +135,65 @@ $ ansible-playbook infrastructure/cluster.yml
 <summary>Repository Stats</summary>
 <br/>
 
+## ⭐ Stargazers
+
+
+[![Star History Chart](https://api.star-history.com/svg?repos=clearlybaffled/homelab&type=Date)](https://star-history.com/#clearlybaffled/homelab&Date)
+
+## Repobeats
+
 ![Alt](https://repobeats.axiom.co/api/embed/d99fddfc840ac253fd4c4975137e1561dfaf128d.svg "Repobeats analytics image")
 
 </details>
 
+[ansible-uri]: https://www.ansible.com
+[argocd-uri]: https://argoproj.github.io/cd
+
+[mysql-uri]: https://www.mysql.com
+[mysql-badge]: https://img.shields.io/badge/bitnami/mysql-v8.0.33-blue?logo=helm
+[mysql-chart]: https://artifacthub.io/packages/helm/bitnami/mysql
+
+[postgres-uri]: https://www.postgresql.org
+[cnpg-io]:https://cloudnative-pg.io/
+[cnpg-badge]: https://img.shields.io/badge/cloudnative--pg-v1.20.0-blue?logo=helm
+[cnpg-chart]: https://artifacthub.io/packages/helm/cloudnative-pg/cloudnative-pg
+
+[redis-uri]: https://redis.io
+[redis-badge]: https://img.shields.io/badge/bitnami/redis-v7.0.11-blue?logo=helm
+[redis-chart]: https://artifacthub.io/packages/helm/bitnami/redis
+
 [grocy-uri]: https://github.com/grocy/grocy
 [grocy-img]: https://hub.docker.com/r/linuxserver/grocy
-[photonix-url]: https://photonix.org/
+[grocy-badge]: https://img.shields.io/badge/linuxserver/grocy-v3.3.2-blue?logo=docker
+
+[mealie-url]: https://mealie.io/
+[mealie-badge]: https://img.shields.io/badge/mealie-v1.0.0beta2-blue?logo=docker
+[mealie-docker]: https://hub.docker.com/r/hkotel/mealie
+
 [mythtv-url]: https://www.mythtv.org
+[mythtv-badge]: https://img.shields.io/badge/mythtv-v0.33-blue?logo=github
+[mythtv-gh]: https://github.com/MythTV/MythTV
+
+[photonix-url]: https://photonix.org/
+[immich-uri]: https://immich.app
+
 [nextcloud-url]: https://www.nextcloud.com
+[nextcloud-badge]: https://img.shields.io/badge/nextcloud-v27.0.0-blue?logo=helm
+[nextcloud-chart]: https://nextcloud.github.io/helm/
+
 [hajimari-url]:https://hajimari.io/
-[mealie-url]:https://mealie.io/
+[hajimari-badge]: https://img.shields.io/badge/hajimari-v2.0.2-blue?logo=helm
+
+[grafana-badge]: https://img.shields.io/badge/grafana-v9.5.2-blue?logo=helm
+[grafana-uri]: https://grafana.com
+[grafana-chart]: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+
 [paperless-uri]: https://docs.paperless-ngx.com/
+[paperless-badge]: https://img.shields.io/badge/paperless--ngx-v1.15.1-blue?logo=docker
+[paperless-img]: https://ghcr.io/paperless-ngx/paperless-ngx
+
 [calibre-uri]: https://calibre-ebook.com/
 [qbittorrent-uri]: https://www.qbittorrent.org/
 [netbox-uri]: https://netbox.dev
 [listenbrainz-uri]: https://listenbrainz.org
-[mysql-uri]: https://www.mysql.com
-[mysql-img]: https://hub.docker.com/r/bitnami/mysql
-[postgres-uri]: https://www.postgresql.org
-[cnpg-io]:https://cloudnative-pg.io/
-[redis-uri]: https://redis.io
-[redis-img]: https://hub.docker.com/r/bitnami/redis
-
-[grocy-badge]: https://img.shields.io/badge/linuxserver/grocy-v3.3.2-blue?logo=docker
-[mythtv-badge]: https://img.shields.io/badge/mythtv-v0.33-blue
-[hajimari-badge]: https://img.shields.io/badge/hajimari-v2.0.2-blue
-[grafana-badge]: https://img.shields.io/badge/grafana-v9.5.2-blue?logo=grafana
-[mysql-badge]: https://img.shields.io/badge/bitnami/mysql-v8.0.33-blue?logo=docker
-[cnpg-badge]: https://img.shields.io/badge/cloudnative--pg%2Fcloudnative--pg-v1.20.0-blue?logo=artifacthub
-[cnpg-chart]: https://artifacthub.io/packages/helm/cloudnative-pg/cloudnative-pg
-[redis-badge]: https://img.shields.io/badge/bitnami/redis-v7.0.11-blue?logo=docker
+[vault-uri]: https://www.vaultproject.io

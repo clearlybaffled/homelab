@@ -27,5 +27,6 @@
     },
     "ansible.python.interpreterPath": ".venv/bin/python",
     "ansible.ansible.path": ".venv/bin/ansible",
-    "ansible.ansibleNavigator.path": ".venv/bin/ansible-navigator"
+    "ansible.ansibleNavigator.path": ".venv/bin/ansible-navigator",
+    "discord.enabled": true
 }
