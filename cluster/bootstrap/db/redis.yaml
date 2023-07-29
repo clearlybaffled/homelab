@@ -1,10 +1,10 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
 # template: infrastructure/roles/cluster/templates/application.yaml.j2
-# date: 2023-07-18 17:02:06
+# date: 2023-07-29 00:26:25
 # user: clearlybaffled
-# host: parche
-# commit: 1917aa4
+# host: tirante
+# commit: b586499
 #
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -19,17 +19,17 @@ spec:
   project: default
   
   sources:
-    - chart: redis
-      repoURL: https://charts.bitnami.com/bitnami
-      targetRevision: 17.11.3
-      helm:
-        valueFiles:
-          - $repo/cluster/apps/db/redis/values.yaml
-
     - repoURL: https://github.com/clearlybaffled/homelab
       path: cluster/apps/db/redis
       targetRevision: development
       ref: repo
+
+    - repoURL: https://charts.bitnami.com/bitnami
+      chart: redis
+      targetRevision: 17.11.3
+      helm:
+        valueFiles:
+          - $repo/cluster/apps/db/redis/values.yaml
 
   destination:
     name: in-cluster

@@ -1,10 +1,10 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
 # template: infrastructure/roles/cluster/templates/application.yaml.j2
-# date: 2023-07-18 17:02:06
+# date: 2023-07-29 00:26:25
 # user: clearlybaffled
-# host: parche
-# commit: 1917aa4
+# host: tirante
+# commit: b586499
 #
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -19,17 +19,17 @@ spec:
   project: default
   
   sources:
-    - chart: nextcloud
-      repoURL: https://nextcloud.github.io/helm/
-      targetRevision: 3.5.19
-      helm:
-        valueFiles:
-          - $repo/cluster/apps/home/nextcloud/values.yaml
-
     - repoURL: https://github.com/clearlybaffled/homelab
       path: cluster/apps/home/nextcloud
       targetRevision: development
       ref: repo
+
+    - repoURL: https://nextcloud.github.io/helm/
+      chart: nextcloud
+      targetRevision: 3.5.19
+      helm:
+        valueFiles:
+          - $repo/cluster/apps/home/nextcloud/values.yaml
 
   destination:
     name: in-cluster
