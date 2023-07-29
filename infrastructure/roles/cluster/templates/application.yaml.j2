@@ -21,11 +21,27 @@ spec:
 {% set repo_dir = ('cluster', app.path | ternary('apps/'+app.path, ''), app.name) | path_join %}
 {% if 'sources' in app %}
   sources:
+{% else %}
+  source:
+{% endif %}
+{%- filter indent(4 if app.sources is defined else 2) %}
+    {% if app.sources is defined %}- {% endif %}repoURL: {{ app.repo_url | default(repo_url) }}
+  path: {{ repo_dir }}
+  targetRevision: {{ app.branch | default(branch) }}
+{% if app.sources is defined and (app.sources | map(attribute='chart')) %}
+  ref: repo
+{% endif %}
+{% if app.directory is defined %}
+  directory:
+    {{ app.directory | to_nice_yaml(indent=4)}}
+{% endif %}{% endfilter %}
+
+{% if 'sources' in app %}
 {% for source in app.sources %}
 {% if 'chart' in source %}
 {% set (helm_repo,chart_name) = source.chart.split('/') %}
-    - chart: {{ chart_name }}
-      repoURL: {{ helm_repositories[helm_repo] }}
+    - repoURL: {{ helm_repositories[helm_repo] }}
+      chart: {{ chart_name }}
       targetRevision: {{ source.version }}
 {% if 'skipCrds' in source or 'valueFiles' not in source or source.valueFiles %}
       helm:
@@ -51,22 +67,7 @@ spec:
 {% endif %}
 
 {% endfor %}
-{% else %}
-  source:
 {% endif %}
-
-{%- filter indent(4 if app.sources is defined else 2) %}
-    {% if app.sources is defined %}- {% endif %}repoURL: {{ app.repo_url | default(repo_url) }}
-  path: {{ repo_dir }}
-  targetRevision: {{ app.branch | default(branch) }}
-{% if app.sources is defined and (app.sources | map(attribute='chart')) %}
-  ref: repo
-{% endif %}
-{% if app.directory is defined %}
-  directory:
-    {{ app.directory | to_nice_yaml(indent=4)}}
-{% endif %}{% endfilter %}
-
   destination:
     name: in-cluster
     namespace: {{ namespace }}

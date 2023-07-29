@@ -15,7 +15,7 @@ Homelab
 
 [![WTFPL](https://img.shields.io/github/license/clearlybaffled/homelab?style=flat-square&color=darkred)](http://www.wtfpl.net/)&nbsp;&nbsp;&nbsp;
 [![Lint](https://github.com/clearlybaffled/homelab/actions/workflows/lint.yml/badge.svg)](https://github.com/clearlybaffled/homelab/actions/workflows/lint.yml)&nbsp;&nbsp;&nbsp;
-![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/clearlybaffled/homelab?style=flat-square)
+[![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/clearlybaffled/homelab?style=flat-square)](https://libraries.io/github/clearlybaffled/homelab)
 </div>
 <br/>
 
@@ -119,17 +119,19 @@ This Git repository contains the following top level directories.
 |<img width="32" src="https://avatars.githubusercontent.com/u/44905828?s=200&v=4">|[NetBox][netbox-uri]| `Services`| Full-scale network inventory | | |
 |<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">|[ListenBrainz][listenbrainz-uri]| `Media` | Open Source scrobbler | | | 
 |<img width="32" src="https://simpleicons.org/icons/vault.svg">|[Vault][vault-uri]| `Services` | Secrets and encryption management| | |
+|<img width="32" src="https://github.com/owntone/owntone-server/blob/master/docs/assets/logo.svg?raw=true">|[OwnTone][owntone-uri]| `Media` | DAAP Audio server| | |
+
 
 ## 🤝 Thank you!
-- https://github.com/bjw-s/home-ops
-- https://github.com/onedr0p/home-ops
-- https://github.com/khuedoan/homelab
-- https://github.com/gruberdev/homelab
-- https://github.com/RickCoxDev/home-cluster
-- https://github.com/billimek/k8s-gitops
-- https://github.com/blackjid/k8s-gitops
-- https://github.com/carpenike/k8s-gitops
-- [K8s-At-Home Project](https://k8s-at-home.com)  
+- [bjw-s/home-ops](https://github.com/bjw-s/home-ops)
+- [onedr0p/home-ops](https://github.com/onedr0p/home-ops)
+- [khuedoan/homelab](https://github.com/khuedoan/homelab)
+- [gruberdev/homelab](https://github.com/gruberdev/homelab)
+- [RickCoxDev/home-cluster](https://github.com/RickCoxDev/home-cluster)
+- [billimek/k8s-gitops](https://github.com/billimek/k8s-gitops)
+- [blackjid/k8s-gitops](https://github.com/blackjid/k8s-gitops)
+- [carpenike/k8s-gitops](https://github.com/carpenike/k8s-gitops)
+- [K8s-At-Home Project](https://k8s-at-home.com)
 
 <details>
 <summary>Repository Stats</summary>
@@ -167,7 +169,7 @@ This Git repository contains the following top level directories.
 [grocy-badge]: https://img.shields.io/badge/linuxserver/grocy-v3.3.2-blue?logo=docker
 
 [mealie-url]: https://mealie.io/
-[mealie-badge]: https://img.shields.io/badge/mealie-v1.0.0beta2-blue?logo=docker
+[mealie-badge]: https://img.shields.io/badge/mealie-v1.0.0beta5-blue?logo=docker
 [mealie-docker]: https://hub.docker.com/r/hkotel/mealie
 
 [mythtv-url]: https://www.mythtv.org
@@ -197,3 +199,5 @@ This Git repository contains the following top level directories.
 [netbox-uri]: https://netbox.dev
 [listenbrainz-uri]: https://listenbrainz.org
 [vault-uri]: https://www.vaultproject.io
+
+[owntone-uri]: https://owntone.github.io/owntone-server/
