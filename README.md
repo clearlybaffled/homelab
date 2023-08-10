@@ -169,7 +169,7 @@ This Git repository contains the following top level directories.
 [grocy-badge]: https://img.shields.io/badge/linuxserver/grocy-v3.3.2-blue?logo=docker
 
 [mealie-url]: https://mealie.io/
-[mealie-badge]: https://img.shields.io/badge/mealie-v1.0.0beta2-blue?logo=docker
+[mealie-badge]: https://img.shields.io/badge/mealie-v1.0.0beta5-blue?logo=docker
 [mealie-docker]: https://hub.docker.com/r/hkotel/mealie
 
 [mythtv-url]: https://www.mythtv.org
