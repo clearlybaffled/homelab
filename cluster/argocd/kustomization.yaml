@@ -13,7 +13,6 @@ namespace: argocd
 resources:
   - https://github.com/cert-manager/cert-manager/releases/download/v1.12.0/cert-manager.crds.yaml
   - ns.yaml
-  - parche-git-repo.yaml
 
 helmCharts:
   - name: argo-cd
