@@ -2,7 +2,7 @@ apiVersion: hajimari.io/v1alpha1
 kind: Application
 metadata:
   name: opnsense
-  namespace: apps
+  namespace: home
 spec:
   name: OpnSense 
   group: infrastructure
@@ -15,7 +15,7 @@ apiVersion: hajimari.io/v1alpha1
 kind: Application
 metadata:
   name: adguard
-  namespace: apps
+  namespace: home
 spec:
   name: AdGuard Home
   group: infrastructure
@@ -28,7 +28,7 @@ apiVersion: hajimari.io/v1alpha1
 kind: Application
 metadata:
   name: ntopng
-  namespace: apps
+  namespace: home
 spec:
   name: ntop-ng
   group: infrastructure
