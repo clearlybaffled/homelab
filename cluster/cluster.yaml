@@ -9,9 +9,9 @@ spec:
   project: default
   
   source:
-    repoURL: ssh://git@parche:/srv/homelab.git
+    repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/manifests
-    targetRevision: parche
+    targetRevision: main
     directory:
       recurse: true
 

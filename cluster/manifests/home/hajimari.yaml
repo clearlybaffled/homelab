@@ -1,10 +1,10 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
 # template: infrastructure/roles/cluster/templates/application.yaml.j2
-# date: 2023-08-27 23:40:33
+# date: 2023-08-28 11:33:13
 # user: clearlybaffled
 # host: tirante
-# commit: b586499
+# commit: c087a4b
 #
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -28,7 +28,7 @@ spec:
 
     - repoURL: https://github.com/clearlybaffled/homelab
       path: cluster/apps/home/hajimari
-      targetRevision: development
+      targetRevision: main
       ref: repo
 
   destination:
