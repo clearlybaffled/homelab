@@ -23,7 +23,7 @@ Welcome to my homelab! The repository is mostly focused on a modest kubernetes c
 
 ## 🤯 Features
 
-- [x] Kubernetes deployment using kubeadm
+- [x] Kubernetes cluster deployment using kubeadm
 - [x] Infrastructure Automation with Ansible to provision hosts, clusters, devices, etc.
 - [x] Offline Root CA / Scripted PKI management using `openssl(1)`
 - [x] Manage cluster state and apps using GitOps and ArgoCD
@@ -52,14 +52,14 @@ Host buildout is handled by [Ansible][ansible-uri] automation.  The main Kuberne
 - Run `kubeadm` to setup to create cluster
 - Creates a separate user to continue setting up the cluster with to get away from using the admin credentials
 - Applies cni configuration
-- Generates Application files for every cluster app and drops them into [`cluster/bootstrap`](./cluster/bootstrap) and Kustomization files into[ `cluster/apps`](./cluster/apps) for the respective apps
-- Bootstraps the cluster by starting ArgoCD and then applying [`cluster/cluster.yaml`](./cluster/cluster.yaml)
+- Generates Application files for every cluster app and drops them into [`cluster/manifests`](./cluster/manifests) and Kustomization files into[ `cluster/apps`](./cluster/apps) for the respective apps
+- Bootstraps the cluster by starting ArgoCD and then applying [`cluster/bootstrap.yaml`](./cluster/bootstrap.yaml)
 
 ### GitOps
 
 [Argo][argocd-uri] watches all subfolders under the [`cluster`](./cluster) folder (see Directories below) and makes the changes to my cluster based on the YAML manifests.
 
-The way Argo works for me here is (almost) every file in the [`cluster/bootstrap`](./cluster/bootstrap) directory will define an `argoproj.io/v1alpha1/Application` that points to a corresponding folder under [`cluster/apps`](./cluster/apps).  The `Application` will apply any manifest files it finds in that directory, in addition to any Helm Charts or Kustomizations [that may also be defined](https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/) within the `Application`'s spec. One or more Helm `values.yaml` files are in each directory and each helm definition in the `Application` refers to the specific values file to apply to that chart.
+The way Argo works for me here is (almost) every file in the [`cluster/manifests`](./cluster/manifests) directory will define an `argoproj.io/v1alpha1/Application` that points to a corresponding folder under [`cluster/apps`](./cluster/apps).  The `Application` will apply any manifest files it finds in that directory, in addition to any Helm Charts or Kustomizations [that may also be defined](https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/) within the `Application`'s spec. One or more Helm `values.yaml` files are in each directory and each helm definition in the `Application` refers to the specific values file to apply to that chart.
 
 
 ### Directories
@@ -70,7 +70,7 @@ This Git repository contains the following top level directories.
 📁 cluster         # Kubernetes cluster defined in code
 ├─📁 apps          # Apps deployed into my cluster grouped by namespace
 ├─📁 argocd        # Main Argo configuration of repository
-└─📁 bootstrap     # Cluster initialization flies (Argo Applications) also grouped by namespace
+└─📁 manifests     # Cluster initialization flies (Argo Applications) also grouped by namespace
 📁 infrastructure  # Ansible files
 ├─📁 inventory     # Defines Host configurations and widest scoped variables
 ├─📁 pki           # Self-signed CA and submordinate CA certs for whole house and cluster

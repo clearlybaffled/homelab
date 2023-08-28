@@ -1,30 +1,27 @@
 ---
-- name: Install Applications files
-  blockinfile:
-    block: "{{ lookup('template', 'application.yaml.j2', convert_data=false) }}"
-    dest: "{{ (root_dir,'cluster/bootstrap', app.path|default(''), app.name+'.yaml') | path_join }}"
-    mode: "0644"
-    create: true
-  register: applications
-  when: app.createApp is not defined or app.createApp
-  loop: "{{ apps |flatten(levels=1) }}"
-  loop_control:
-    loop_var: app
-  tags:
-    - applications
+- name: Cache DB credentials
+  set_fact:
+    mysql_secret: "{{ query('kubernetes.core.k8s', kind='Secret', namespace='db', resource_name='mysql')[0].data }}"
+    postgres_secret: "{{ query('kubernetes.core.k8s', kind='Secret', namespace='db', resource_name='cnpg-cluster-superuser')[0].data }}"
 
-- name: Install any Kustomization files
-  blockinfile:
-    block: "{{ lookup('template', 'kustomization.yaml.j2', convert_data=false) }}"
-    dest: "{{ (root_dir, 'cluster', app.path | ternary('apps/'+app.path, ''), app.name, 'kustomization.yaml') | path_join }}"
-    mode: "0644"
-    create: true
-  register: kustomziation
-  loop: "{{ apps |flatten(levels=1) | selectattr('kustomize','defined') }}"
+- name: Install Application manifest files
+  include_tasks: manifests.yml
+  when: item.value.createApp is not defined or item.value.createApp
+  loop: "{{ apps | dict2items(key_name='name') }}"
   loop_control:
-    loop_var: app
-  tags:
-    - kustomize
+    label: "{{ item.name }}"
+  tags: manifests
+  vars:
+    app: "{{ item.value | combine({'name': item.name}) }}"
+    app_dir: >-
+      {{ (
+          cluster_dir,
+          (item.name == 'argocd') | ternary('', 'apps'),
+          ('path' in item.value) | ternary(item.value.path, item.value.namespace),
+          item.name
+        ) | path_join
+      }}
+
 
 # - name: Commit changes to Kustomization files, if necessary # noqa no-handler
 #   lvrfrc87.git_acp.git_acp:

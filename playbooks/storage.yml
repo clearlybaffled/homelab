@@ -1,0 +1,8 @@
+---
+- name: Generate application manifest files
+  become: false
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  roles:
+    - containers/storage

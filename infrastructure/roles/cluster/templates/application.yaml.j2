@@ -1,9 +1,4 @@
 {{ ansible_managed | comment }}
-{% if app.namespace is defined and app.namespace != '' %}
-{% set namespace = app.namespace %}
-{% else %}
-{% set namespace = (app.path | default('default') | basename) %}
-{% endif %}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -18,30 +13,14 @@ metadata:
 spec:
   project: default
   
-{% set repo_dir = ('cluster', app.path | ternary('apps/'+app.path, ''), app.name) | path_join %}
+{% set repo_dir = app_dir | relpath(root_dir) %}
 {% if 'sources' in app %}
   sources:
-{% else %}
-  source:
-{% endif %}
-{%- filter indent(4 if app.sources is defined else 2) %}
-    {% if app.sources is defined %}- {% endif %}repoURL: {{ app.repo_url | default(repo_url) }}
-  path: {{ repo_dir }}
-  targetRevision: {{ app.branch | default(branch) }}
-{% if app.sources is defined and (app.sources | map(attribute='chart')) %}
-  ref: repo
-{% endif %}
-{% if app.directory is defined %}
-  directory:
-    {{ app.directory | to_nice_yaml(indent=4)}}
-{% endif %}{% endfilter %}
-
-{% if 'sources' in app %}
 {% for source in app.sources %}
 {% if 'chart' in source %}
 {% set (helm_repo,chart_name) = source.chart.split('/') %}
-    - repoURL: {{ helm_repositories[helm_repo] }}
-      chart: {{ chart_name }}
+    - chart: {{ chart_name }}
+      repoURL: {{ helm_repositories[helm_repo] }}
       targetRevision: {{ source.version }}
 {% if 'skipCrds' in source or 'valueFiles' not in source or source.valueFiles %}
       helm:
@@ -67,10 +46,25 @@ spec:
 {% endif %}
 
 {% endfor %}
+{% else %}
+  source:
 {% endif %}
+
+{%- filter indent(4 if app.sources is defined else 2) %}
+    {% if app.sources is defined %}- {% endif %}repoURL: {{ app.repo_url | default(repo_url) }}
+  path: {{ repo_dir }}
+  targetRevision: {{ app.branch | default(branch) }}
+{% if app.sources is defined and (app.sources | map(attribute='chart')) %}
+  ref: repo
+{% endif %}
+{% if app.directory is defined %}
+  directory:
+    {{ app.directory | to_nice_yaml(indent=4)}}
+{% endif %}{% endfilter %}
+
   destination:
     name: in-cluster
-    namespace: {{ namespace }}
+    namespace: {{ app.namespace }}
 
 {% if 'pv' in app and app.pv %}
   ignoreDifferences:

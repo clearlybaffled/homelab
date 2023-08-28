@@ -4,7 +4,7 @@ app_template: &app_template
   version: "{{ app_template_version }}"
 
 apps:
-  - name: argocd
+  argocd:
     namespace: argocd
     wave: 0
     path: ''
@@ -22,8 +22,8 @@ apps:
           version: "{{ prometheus_crds_chart_version }}"
           namespace: monitoring
 
-  - name: kube-prometheus-stack
-    path: monitoring
+  kube-prometheus-stack:
+    namespace: monitoring
     wave: 2
     sources:
       - chart: prometheus-community/kube-prometheus-stack
@@ -36,29 +36,29 @@ apps:
         valueFiles:
           - adapter.yaml
 
-  - name: hajimari
-    path: home
+  hajimari:
+    namespace: home
     wave: 4
     sources:
       - chart: hajimari/hajimari
         version: "{{ hajimari_version }}"
 
-  - name: cloudnative-pg
-    path: db
+  cloudnative-pg:
+    namespace: db
     wave: 3
     sources:
       - chart: cnpg/cloudnative-pg
         version: "{{ cnpg_chart_version }}"
 
-  - name: mysql
-    path: db
+  mysql:
+    namespace: db
     wave: 3
     pv: true
     sources:
       - chart: bitnami/mysql
         version: "{{ bitnami_mysql_chart_version }}"
 
-  - name: cert-manager
+  cert-manager:
     path: infrastructure
     namespace: cert-manager
     wave: 1
@@ -70,20 +70,19 @@ apps:
         version: "{{ trust_manager_version }}"
         valueFiles: []
 
-  - name: grocy
-    path: home
+  grocy:
+    namespace: home
     wave: 4
-    namespace: grocy
     pv: true
 
-  - name: ingress-nginx
-    path: infrastructure
+  ingress-nginx:
+    namespace: infrastructure
     wave: 1
     sources:
       - chart: ingress-nginx/ingress-nginx
         version: "{{ ingress_nginx_version }}"
 
-  - name: metallb
+  metallb:
     path: infrastructure
     namespace: metallb-system
     wave: 1
@@ -91,14 +90,14 @@ apps:
       - chart: metallb/metallb
         version: "{{ metallb_version[1:] }}"
 
-  - name: redis
-    path: db
+  redis:
+    namespace: db
     wave: 3
     sources:
       - chart: bitnami/redis
         version: "{{ bitnami_redis_chart_version }}"
 
-  - name: rook-ceph
+  rook-ceph:
     path: infrastructure
     namespace: rook-ceph
     wave: 2
@@ -112,48 +111,57 @@ apps:
         valueFiles:
           - ceph-cluster.yaml
 
-  - name: paperless-ngx
-    path: home
+  paperless-ngx:
+    namespace: home
     wave: 4
     sources:
       - <<: *app_template
         release: paperless-ngx
+    pvc:
+      - size: 30Gi
+        storageClass: ceph-filesystem
+        volumeName: paperless-ngx-library
 
-  - name: nextcloud
-    path: home
+  nextcloud:
+    namespace: home
     wave: 4
     sources:
       - chart: nextcloud/nextcloud
         version: "{{ nextcloud_chart_version }}"
 
-  - name: mealie
-    path: home
+  mealie:
+    namespace: home
     wave: 4
     sources:
       - chart: k8s-at-home/mealie
         version: 5.1.2
+    pvc:
+      - size: 10Gi
+        storageClass: ceph-block
+        volumeName: mealie-api-data
+        accessMode: ReadWriteOnce
 
-  - name: heimdall
-    path: home
+  heimdall:
+    namespace: home
     sources:
       - chart: k8s-at-home/heimdall
         version: 8.4.2
 
-  - name: vault
+  vault:
     path: infrastructure
     namespace: vault
     sources:
       - chart: hashicorp/vault
         version: "{{ vault_chart_version }}"
 
-  - name: qbittorrent
-    path: home
+  qbittorrent:
+    namespace: downloads
     sources:
       - <<: *app_template
-        release: qbitorrent
+        release: qbittorrent
 
-  - name: calibre
-    path: media
+  calibre:
+    namespace: media
     sources:
       - chart: k8s-at-home/calibre
         version: 5.4.2
@@ -162,62 +170,88 @@ apps:
         valueFiles:
           - values-web.yaml
 
-  - name: listen-brainz
-    path: media
+  listen-brainz:
+    namespace: media
 
-  - name: photonix
-    path: media
+  photonix:
+    namespace: media
 
-  - name: immich
-    path: media
+  immich:
+    namespace: media
     sources:
       - chart: immich/immich
         version: 0.1.2
 
-  - name: typesense
-    path: db
+  typesense:
+    namespace: db
     sources:
       - <<: *app_template
         release: typesense
 
-  - name: sonarr
-    path: media
+  sonarr:
+    namespace: downloads
     sources:
       - <<: *app_template
         release: sonarr
 
-  - name: radarr
-    path: media
+  radarr:
+    namespace: downloads
     sources:
       - <<: *app_template
         release: radarr
 
-  - name: readarr
-    path: media
+  readarr:
+    namespace: downloads
     sources:
       - <<: *app_template
         release: readarr
 
-  - name: prowlarr
-    path: media
+  prowlarr:
+    namespace: downloads
     sources:
       - <<: *app_template
         release: prowlarr
 
-  - name: overseerr
-    path: media
+  overseerr:
+    namespace: downloads
     sources:
       - <<: *app_template
         release: overseerr
 
-  - name: lidarr
-    path: media
+  lidarr:
+    namespace: downloads
     sources:
       - <<: *app_template
         release: lidarr
 
-  - name: netbox
-    path: infrastructure
+  netbox:
+    namespace: infrastructure
     sources:
       - chart: bootc/netbox
         version: 4.1.1
+
+  linkding:
+    namespace: home
+    sources:
+      - <<: *app_template
+        release: linkding
+
+  linkace:
+    namespace: home
+    sources:
+      - <<: *app_template
+        release: linkace
+    kustomize:
+      extras:
+        configMapGenerator:
+          - name: nginx-config
+            files:
+              - nginx.conf
+            options:
+              disableNameSuffixHash: true
+
+  linkwarden:
+    namespace: home
+    sources:
+      - <<: *app_template
+        release: linkwarden

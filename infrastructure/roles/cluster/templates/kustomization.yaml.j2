@@ -1,21 +1,16 @@
 {{ ansible_managed | comment }}
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-{% if app.namespace is defined and app.namespace != '' %}
-{% set namespace = app.namespace %}
-{% else %}
-{% set namespace = (app.path | basename) %}
-{% endif %}
-namespace: {{ namespace }}
-
+namespace: {{ app.namespace }}
 {% if app.kustomize.resources is defined %}
+
 resources:
 {% for resource in app.kustomize.resources %}
   - {{ resource }}
 {% endfor %}
 {% endif %}
-
 {% if app.kustomize.charts is defined %}
+
 helmCharts:
 {% for chart in app.kustomize.charts %}
 {% set (helm_repo,chart_name) = chart.chart.split('/') %}
@@ -33,9 +28,8 @@ helmCharts:
     includeCRDs: true
 {% endif %}
     releaseName: {{ chart.release | default(chart_name, true) }}
-    namespace: {{ chart.namespace | default(namespace) }}
+    namespace: {{ chart.namespace | default(app.namespace) }}
 
 {% endfor %}{% endif %}
 
-{{ (app.kustomize.extras | to_nice_yaml) if app.kustomize.extras is defined -}}
-
+{{ (app.kustomize.extras | to_nice_yaml(indent=2)) if 'extras' in app.kustomize }}
