@@ -1,0 +1,19 @@
+{{ ansible_managed | comment }}
+{% for pvc in app.pvc %}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ pvc.volumeName }}
+  namespace: {{ app.namespace }}
+  finalizers:
+    - kubernetes.io/pvc-protection
+spec:
+  accessModes:
+  - {{ pvc.accessMode | default("ReadWriteMany") }}
+  resources:
+    requests:
+      storage: {{ pvc.size }}
+{% if pvc.storageClass is defined %}
+  storageClassName: {{ pvc.storageClass }}
+{% endif%}{% endfor %}

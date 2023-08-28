@@ -1,0 +1,45 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: infrastructure/roles/cluster/templates/application.yaml.j2
+# date: 2023-08-27 23:40:33
+# user: clearlybaffled
+# host: tirante
+# commit: b586499
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: redis
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  project: default
+  
+  sources:
+    - chart: redis
+      repoURL: https://charts.bitnami.com/bitnami
+      targetRevision: 17.11.3
+      helm:
+        valueFiles:
+          - $repo/cluster/apps/db/redis/values.yaml
+
+    - repoURL: https://github.com/clearlybaffled/homelab
+      path: cluster/apps/db/redis
+      targetRevision: development
+      ref: repo
+
+  destination:
+    name: in-cluster
+    namespace: db
+
+  syncPolicy: 
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+# END ANSIBLE MANAGED BLOCK

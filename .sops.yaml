@@ -9,3 +9,5 @@ creation_rules:
     key_groups: *default_keys
   - path_regex: .*\.(crt|pem|key)
     key_groups: *default_keys
+  - path_regex: /dev/stdin
+    key_groups: *default_keys

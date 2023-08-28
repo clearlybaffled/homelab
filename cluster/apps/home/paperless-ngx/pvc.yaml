@@ -1,0 +1,24 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: infrastructure/roles/cluster/templates/pvc.yaml.j2
+# date: 2023-08-27 23:40:33
+# user: clearlybaffled
+# host: tirante
+# commit: 
+#
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-ngx-library
+  namespace: home
+  finalizers:
+    - kubernetes.io/pvc-protection
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 30Gi
+  storageClassName: ceph-filesystem
+# END ANSIBLE MANAGED BLOCK
