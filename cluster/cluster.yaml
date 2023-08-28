@@ -10,7 +10,7 @@ spec:
   
   source:
     repoURL: ssh://git@parche:/srv/homelab.git
-    path: cluster/bootstrap
+    path: cluster/manifests
     targetRevision: parche
     directory:
       recurse: true

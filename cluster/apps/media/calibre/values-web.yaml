@@ -3,8 +3,8 @@ image:
   tag: version-0.6.18
 
 env:
-  TZ: America/Santiago
-  PGID: 65539
+  TZ: America/New_York
+  PGID: 997
   DOCKER_MODS: "linuxserver/calibre-web:calibre"
 
 persistence:
@@ -24,18 +24,18 @@ ingress:
   main:
     enabled: true
     annotations:
-      kubernetes.io/ingress.class: "nginx"
-      external-dns.alpha.kubernetes.io/target: home.donoso.family
-      nginx.ingress.kubernetes.io/auth-url: https://auth.donoso.family/oauth2/auth
-      nginx.ingress.kubernetes.io/auth-signin: https://auth.donoso.family/oauth2/start
+      hajimari.io/icon: mdi:book
+      cert-manager.io/cluster-issuer: ca-issuer
+    ingressClass: nginx
     hosts:
-    - host: calibre-web.donoso.family
+    - host: &host calibre-web.gato.hermleigh.home
       paths:
       - path: /
         pathType: Prefix
     tls:
     - hosts:
-      - calibre-web.donoso.family
+      - *host
+      secretName: calibre-web-tls-ingress
 
 resources:
   requests:

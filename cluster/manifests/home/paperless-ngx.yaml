@@ -1,0 +1,46 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: infrastructure/roles/cluster/templates/application.yaml.j2
+# date: 2023-08-27 23:40:33
+# user: clearlybaffled
+# host: tirante
+# commit: b586499
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: paperless-ngx
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+spec:
+  project: default
+  
+  sources:
+    - chart: app-template
+      repoURL: https://bjw-s.github.io/helm-charts/
+      targetRevision: 1.5.1
+      helm:
+        releaseName: paperless-ngx
+        valueFiles:
+          - $repo/cluster/apps/home/paperless-ngx/values.yaml
+
+    - repoURL: https://github.com/clearlybaffled/homelab
+      path: cluster/apps/home/paperless-ngx
+      targetRevision: development
+      ref: repo
+
+  destination:
+    name: in-cluster
+    namespace: home
+
+  syncPolicy: 
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+# END ANSIBLE MANAGED BLOCK

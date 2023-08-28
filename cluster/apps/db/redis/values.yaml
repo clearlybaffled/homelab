@@ -1,4 +1,4 @@
-clusterDomain: gato
+clusterDomain: gato.hermleigh.home
 auth:
   enabled: true
   existingSecret: redis

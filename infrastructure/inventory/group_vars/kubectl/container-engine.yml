@@ -13,11 +13,10 @@ crun_enabled: false
 runc_enabled: true
 
 # Project versions
-crio_version: v1.26.3
+crio_version: v1.27.0
 crictl_version: v1.27.0
 crun_version: 1.8.5
 skopeo_version: v1.12.0
-runc_version: v1.1.7
 
 # CRI socket path
 cri_socket_path: /var/run/crio/crio.sock

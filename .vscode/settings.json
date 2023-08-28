@@ -8,7 +8,7 @@
     },
     "files.autoSave": "onFocusChange",
     "gitlens.currentLine.enabled": false,
-    "explorer.excludeGitIgnore": true,
+    "explorer.excludeGitIgnore": false,
     "python.terminal.activateEnvironment": false,
     "yaml.schemas": {
         "https://github.com/datreeio/CRDs-catalog/raw/main/traefik.io/ingressroute_v1alpha1.json": [
@@ -21,12 +21,18 @@
             "certificate.yaml"
         ],
         "https://github.com/datreeio/CRDs-catalog/raw/main/argoproj.io/application_v1alpha1.json": [
-            "cluster/bootstrap/*.yaml"
+            "cluster/manifest/*.yaml",
+            "cluster/cluster.yaml"
         ],
         "kubernetes": []
     },
     "ansible.python.interpreterPath": ".venv/bin/python",
     "ansible.ansible.path": ".venv/bin/ansible",
     "ansible.ansibleNavigator.path": ".venv/bin/ansible-navigator",
-    "discord.enabled": true
+    "vscord.app.name": "Visual Studio Code",
+    "vscord.status.state.text.editing": "Working on {folder_and_file}:{current_line}",
+    "vscord.status.state.text.viewing": "Viewing {folder_and_file}",
+    "vscord.behavoiur.prioritizeLanguagesOverExtensions": true,
+    "vscord.status.idle.disconnectOnIdle": true,
+    "vscord.status.idle.resetElapsedTime": true
 }

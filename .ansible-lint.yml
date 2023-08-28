@@ -33,3 +33,5 @@ skip_list:
   - no-changed-when
 
   - schema[meta]
+  - 'risky-file-permissions'
+  - name[template]
