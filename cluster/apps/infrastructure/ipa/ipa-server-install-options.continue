@@ -1,0 +1,8 @@
+--unattended
+-r HERMLEIGH.HOME
+-p DM_PASS
+-a ADMIN_PASS
+--external-cert-file=/data/ca.crt
+--external-cert-file=/data/ipa.crt
+--ca-subject="CN=IPA Intermediate CA,O=HERMLEIGH.HOME,C=US"
+--subject-base="O=HERMLEIGH.HOME,C=US"

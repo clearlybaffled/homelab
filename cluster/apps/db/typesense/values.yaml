@@ -11,3 +11,9 @@ persistence:
     accessMode: ReadWriteOnce
     size: 1Gi
     storageClass: ceph-block
+
+service:
+  main:
+    ports:
+      http:
+        port: 8108

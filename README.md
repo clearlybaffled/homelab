@@ -11,7 +11,7 @@ Homelab
 [![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60&style=flat-square&logo=discord)](https://discord.gg/DNCynrJ)&nbsp;&nbsp;&nbsp;
 [![k8s](https://img.shields.io/badge/k8s-v1.27.2-blue?style=flat-square&logo=kubernetes)](https://k8s.io/)&nbsp;&nbsp;&nbsp;
 [![debian](https://img.shields.io/badge/debian-bullseye-C70036?style=flat-square&logo=debian&logoColor=C70036)](https://debian.org)&nbsp;&nbsp;&nbsp;
-[![GitHub last commit](https://img.shields.io/github/last-commit/clearlybaffled/homelab/development?style=flat-square&logo=git&color=F05133)](https://github.com/clearlybaffled/homelab/commits/development)
+[![GitHub last commit](https://img.shields.io/github/last-commit/clearlybaffled/homelab/main?style=flat-square&logo=git&color=F05133)](https://github.com/clearlybaffled/homelab/commits/main)
 
 [![WTFPL](https://img.shields.io/github/license/clearlybaffled/homelab?style=flat-square&color=darkred)](http://www.wtfpl.net/)&nbsp;&nbsp;&nbsp;
 [![Lint](https://github.com/clearlybaffled/homelab/actions/workflows/lint.yml/badge.svg)](https://github.com/clearlybaffled/homelab/actions/workflows/lint.yml)&nbsp;&nbsp;&nbsp;
@@ -23,7 +23,7 @@ Welcome to my homelab! The repository is mostly focused on a modest kubernetes c
 
 ## 🤯 Features
 
-- [x] Kubernetes deployment using kubeadm
+- [x] Kubernetes cluster deployment using kubeadm
 - [x] Infrastructure Automation with Ansible to provision hosts, clusters, devices, etc.
 - [x] Offline Root CA / Scripted PKI management using `openssl(1)`
 - [x] Manage cluster state and apps using GitOps and ArgoCD
@@ -38,28 +38,28 @@ $ python3 -m venv .venv
 $ source .venv/bin/activate
 $ pip install -U -r requirements.txt
 $ ansible-playbook -K playbooks/cluster.yml
-$ kubectl apply --server-side -f cluster/bootstrap.yaml
+$ kubectl apply --server-side -f cluster/cluster.yaml
 ```
 
 ## 🍇 Cluster
 
 ### Infrastructure Automation
 
-Host buildout is handled by [Ansible][ansible-uri] automation.  The main Kubernetes cluster playbook is `playbooks/cluster.yml`. (As a convention, all Ansible yaml files are suffixed `.yml` to allow VSCode to distinguish between those and all other yaml files.) The full task list can be found in the [infrastructure][./infrastructure/README.md] folder, but as an overview, it will:
+Host buildout is handled by [Ansible][ansible-uri] automation.  The main Kubernetes cluster playbook is [`playbooks/cluster.yml`](./playbooks/cluster.yml). (As a convention, all Ansible yaml files are suffixed `.yml` to allow VSCode to distinguish between those and all other yaml files.) The full task list can be found in the [infrastructure](./infrastructure/README.md) folder, but as an overview, it will:
 - Install system packages and any other necessary system related setup
 - Pull down cluster images and binaries
 - Install container runtime and start kubelet
 - Run `kubeadm` to setup to create cluster
 - Creates a separate user to continue setting up the cluster with to get away from using the admin credentials
 - Applies cni configuration
-- Generates Application files for every cluster app and drops them into `cluster/bootstrap` and Kustomization files into `cluster/apps` for the respective apps
-- Bootstraps the cluster by starting ArgoCD and then applying `cluster/bootstrap.yaml`
+- Generates Application files for every cluster app and drops them into [`cluster/manifests`](./cluster/manifests) and Kustomization files into[ `cluster/apps`](./cluster/apps) for the respective apps
+- Bootstraps the cluster by starting ArgoCD and then applying [`cluster/bootstrap.yaml`](./cluster/bootstrap.yaml)
 
 ### GitOps
 
 [Argo][argocd-uri] watches all subfolders under the [`cluster`](./cluster) folder (see Directories below) and makes the changes to my cluster based on the YAML manifests.
 
-The way Argo works for me here is (almost) every file in the [`cluster/bootstrap`](./cluster/bootstrap) directory will define an `argoproj.io/v1alpha1/Application` that points to a corresponding folder under [`cluster/apps`](./cluster/apps).  The `Application` will apply any manifest files it finds in that directory, in addition to any Helm Charts or Kustomizations [that may also be defined](https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/) within the `Application`'s spec. One or more Helm `values.yaml` files are in each directory and each helm definition in the `Application` refers to the specific values file to apply to that chart.
+The way Argo works for me here is (almost) every file in the [`cluster/manifests`](./cluster/manifests) directory will define an `argoproj.io/v1alpha1/Application` that points to a corresponding folder under [`cluster/apps`](./cluster/apps).  The `Application` will apply any manifest files it finds in that directory, in addition to any Helm Charts or Kustomizations [that may also be defined](https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/) within the `Application`'s spec. One or more Helm `values.yaml` files are in each directory and each helm definition in the `Application` refers to the specific values file to apply to that chart.
 
 
 ### Directories
@@ -70,7 +70,7 @@ This Git repository contains the following top level directories.
 📁 cluster         # Kubernetes cluster defined in code
 ├─📁 apps          # Apps deployed into my cluster grouped by namespace
 ├─📁 argocd        # Main Argo configuration of repository
-└─📁 bootstrap     # Cluster initialization flies (Argo Applications) also grouped by namespace
+└─📁 manifests     # Cluster initialization flies (Argo Applications) also grouped by namespace
 📁 infrastructure  # Ansible files
 ├─📁 inventory     # Defines Host configurations and widest scoped variables
 ├─📁 pki           # Self-signed CA and submordinate CA certs for whole house and cluster

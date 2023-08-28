@@ -1,0 +1,65 @@
+image:
+  repository: linkace/linkace
+  tag: v1.12.2-php-nginx
+
+env:
+  APP_KEY: sC4Zj5PHEg4O1oP+dBVGC5hdninaEgDQ
+  DB_HOST: mysql.db
+  DB_DATABASE: linkacedb
+  DB_USERNAME: linkace
+  DB_PASSWORD: linkace
+  DB_CONNECTION: mysql
+  # REDIS_HOST: redis.db
+  # REDIS_PASSWORD: password
+  # REDIS_PORT: 6379
+  # SESSION_DRIVER: redis
+  # CACHE_DRIVER: redis
+
+ingress:
+  main:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: ca-issuer
+      hajimari.io/icon: link
+    hosts:
+      - host: &host "linkace.gato.hermleigh.home"
+        paths:
+          - path: /
+    tls:
+      - hosts:
+          - *host
+        secretName: linkace-ingress-cert
+
+service:
+  main:
+    ports:
+      http:
+        port: 80
+
+# persistence:
+#   nginx-conf:
+#     enabled: true
+#     type: configMap
+#     mountPath: /opt/nginx
+#     name: nginx-conf
+
+#   app:
+#     enabled: true
+#     type: pvc
+#     mountPath: /app
+#     storageClass: ceph-block
+#     accessMode: ReadWriteOnce
+#     size: 10Gi
+#     retain: true
+
+# sidecars:
+#   nginx:
+#     image: nginx:stable-alpine3.17
+#     ports:
+#       - name: http
+#         containerPort: 80
+#     volumeMounts:
+#       - name: nginx-conf
+#         mountPath: /opt/nginx
+#       - name: app
+#         mountPath: /app

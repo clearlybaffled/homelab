@@ -1,0 +1,44 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: infrastructure/roles/cluster/templates/application.yaml.j2
+# date: 2023-08-27 23:40:33
+# user: clearlybaffled
+# host: tirante
+# commit: b586499
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: netbox
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+spec:
+  project: default
+  
+  sources:
+    - chart: netbox
+      repoURL: https://charts.boo.tc
+      targetRevision: 4.1.1
+      helm:
+        valueFiles:
+          - $repo/cluster/apps/infrastructure/netbox/values.yaml
+
+    - repoURL: https://github.com/clearlybaffled/homelab
+      path: cluster/apps/infrastructure/netbox
+      targetRevision: development
+      ref: repo
+
+  destination:
+    name: in-cluster
+    namespace: infrastructure
+
+  syncPolicy: 
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+# END ANSIBLE MANAGED BLOCK

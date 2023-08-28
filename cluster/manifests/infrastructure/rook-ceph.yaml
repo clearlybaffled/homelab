@@ -1,0 +1,53 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: infrastructure/roles/cluster/templates/application.yaml.j2
+# date: 2023-08-27 23:40:33
+# user: clearlybaffled
+# host: tirante
+# commit: b586499
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rook-ceph
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  project: default
+  
+  sources:
+    - chart: rook-ceph
+      repoURL: https://charts.rook.io/release
+      targetRevision: v1.11.7
+      helm:
+        valueFiles:
+          - $repo/cluster/apps/infrastructure/rook-ceph/operator.yaml
+
+    - chart: rook-ceph-cluster
+      repoURL: https://charts.rook.io/release
+      targetRevision: v1.11.7
+      helm:
+        releaseName: rook-ceph-cluster
+        valueFiles:
+          - $repo/cluster/apps/infrastructure/rook-ceph/ceph-cluster.yaml
+
+    - repoURL: https://github.com/clearlybaffled/homelab
+      path: cluster/apps/infrastructure/rook-ceph
+      targetRevision: development
+      ref: repo
+
+  destination:
+    name: in-cluster
+    namespace: rook-ceph
+
+  syncPolicy: 
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+# END ANSIBLE MANAGED BLOCK

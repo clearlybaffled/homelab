@@ -1,0 +1,13 @@
+---
+- name: Generate application manifest files
+  become: false
+  hosts: localhost
+  gather_facts: true
+  tasks:
+    - name: Install Application manifest files
+      include_role: # noqa name
+        name: cluster
+        apply:
+          tags: manifests
+          vars:
+            cluster_dir: "{{ root_dir }}/cluster"

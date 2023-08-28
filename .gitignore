@@ -15,7 +15,7 @@ __pycache__/
 build/
 develop-eggs/
 dist/
-downloads/
+# downloads/
 eggs/
 .eggs/
 lib/
@@ -215,6 +215,7 @@ tags
 
 # End of https://www.toptal.com/developers/gitignore/api/python,vim,visualstudiocode
 
+.gitmodules
 references/
 
 infrastructure/roles/**/etcd*

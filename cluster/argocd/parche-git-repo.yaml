@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: homelab
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
+stringData:
+  type: git
+  url: ssh://git@parche:/srv/homelab.git
+  sshPrivateKey: |
+    -----BEGIN OPENSSH PRIVATE KEY-----
+    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
+    ghYmNtB7RIGwU/AAAACmdpdEBwYXJjaGU=
+    -----END OPENSSH PRIVATE KEY-----
