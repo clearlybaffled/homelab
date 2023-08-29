@@ -8,3 +8,6 @@ host_packages:
   - direnv
   - jc
   - zerotier-one
+
+pip_packages:
+  - pre-commit
