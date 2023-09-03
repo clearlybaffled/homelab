@@ -1,5 +1,5 @@
----
-- name: debian | Enable fstrim
-  systemd:
-    service: fstrim.timer
-    enabled: true
+# ---
+# - name: debian | Enable fstrim
+#   systemd:
+#     service: fstrim.timer
+#     enabled: true

@@ -1,10 +1,11 @@
 --unattended
+-h ipa.hermleigh.home
 --domain=hermleigh.home
 --realm=HERMLEIGH.HOME
 --ca-subject="CN=IPA Intermediate CA,O=HERMLEIGH.HOME,C=US"
 --subject-base="O=HERMLEIGH.HOME,C=US"
 --idstart=60001
---ds-password=DM_PASS
---admin-password=ADMIN_PASS
+--ds-password=$DS_PASS
+--admin-password=$ADMIN_PASS
 --no-ntp
 --external-ca

@@ -1,0 +1,25 @@
+---
+- name: Ensure the sub ca has a name
+  assert:
+    that: "ca_name is defined"
+
+- name: Check CSR if this is for a sub-CA or not
+  block:
+    - name: Read CSR
+      community.crypto.openssl_csr_info:
+        path: "{{ csr_path }}"
+      register: csr_info
+
+    - name: Parse CSR output
+      set_fact:
+        is_sub_ca: "{{ 'CA:TRUE' in csr_info.basic_constraints }}"
+
+
+- name: Sign CSR
+  command:
+    cmd: >-
+       openssl ca
+       -config {{ role_path }}/files/root-ca.conf
+       -in {{ csr_path }}
+       -out {{ (csr_path | dirname, (csr_path| splitext | first)+'.crt' ) | path_join}}
+       {{ is_sub_ca | ternary('-extensions sub_ca_ext','') }}

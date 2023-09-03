@@ -1,0 +1,87 @@
+---
+- name: FreeIPA | Generate Secrets
+  when:
+    - (app_dir+'/secret.sops.yaml') is not file
+    - query('kubernetes.core.k8s', kind='Secret', namespace='infrastructure', resource_name='ipa-secret') |length == 0
+  block:
+    - name: Generate DS Manager password
+      include_role:
+        name: common
+        tasks_from: generate_password
+      vars:
+        user: ds
+
+    - name: Generate Admin password
+      include_role:
+        name: common
+        tasks_from: generate_password
+      vars:
+        user: admin
+
+    - name: Store secret object
+      set_fact:
+        secret:
+          apiVersion: v1
+          kind: Secret
+          type: Opaque
+          metadata:
+            name: "{{ app.name }}-secret"
+            namespace: "{{ app.namespace }}"
+          data:
+            DS_PASS: "{{ ds_password | b64encode }}"
+            ADMIN_PASS: "{{ admin_password | b64encode }}"
+
+    - name: Create k8s secret file
+      community.sops.sops_encrypt:
+        path: "{{ (app_dir , 'secret.sops.yaml') | path_join }}"
+        encrypted_regex: "^(data|stringData)$"
+        content_yaml: "{{ secret }}"
+
+    - name: Apply secret to cluster
+      kubernetes.core.k8s:
+        definition: "{{ secret }}"
+
+- name: FreeIPA | Create ConfigMap for install first step
+  kubernetes.core.k8s:
+    definition: "{{ lookup('file', 'files/ipa-cm-external-ca.yaml') | from_yaml }}"
+
+- name: FreeIPA | Start container for first configuration run
+  kubernetes.core.k8s:
+    definition: "{{ lookup('file','files/ipa-pod.yaml') | from_yaml }}"
+    wait: true
+    wait_condition:
+      type: Ready
+      status: "True"
+
+- name: Copy the CSR out of the pod
+  kubernetes.core.k8s_cp:
+    namespace: infrastructure
+    pod: ipa
+    remote_path: /root/ipa.csr
+    state: from_pod
+    local_path: "files/ipa.csr"
+  register: csr
+  until: csr.rc == 0
+  retries: 30
+  delay: 5
+
+- name: Sign CSR from Root CA
+  ansible.builtin.include_role:
+    name: ca
+    tasks_from: sign-crt.yml
+  vars:
+    ca_name: root
+    csr_path: "{{ role_dir }}/files/ipa.csr"
+
+- name: Set configmap for second step
+  kubernetes.core.k8s:
+    definition: "{{ lookup('file', 'files/ipa-cm-continue.yaml') | from_yaml }}"
+    state: patched
+
+- name: Push the signed certificate back to the IPA /data dir
+  kubernetes.core.k8s_cp:
+    namespace: infrastructure
+    pod: ipa
+    remote_path: /data/ipa.crt
+    state: to_pod
+    local_path: "{{ role_dir }}/files/ipa.crt"

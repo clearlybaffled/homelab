@@ -8,11 +8,18 @@
 
 - name: Create Private Key and CSR
   command: >-
-    openssl req -new -config {{role_path}}/files/root-ca.conf -keyout {{home}}/private/root-ca.key
-  register: csr
+    openssl req
+    -new
+    -config {{role_path}}/files/root-ca.conf
+    -keyout {{home}}/private/root-ca.key
+    -out {{ home }}/root-ca.csr
 
 - name: Sign CSR
   command:
     cmd: >-
-      openssl ca -selfsign -config {{role_path}}/files/root-ca.conf -out {{home}}/root-ca.crt -extensions ca_ext
-    stdin: csr.stdout
+      openssl ca
+      -selfsign
+      -config {{role_path}}/files/root-ca.conf
+      -in {{ home }}/root-ca.csr
+      -out {{home}}/root-ca.crt
+      -extensions ca_ext

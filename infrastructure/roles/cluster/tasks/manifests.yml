@@ -26,11 +26,11 @@
   when: app.pvc is defined and app.pvc
   register: pvc
 
-# - name: "Additional configuration"
-#   include_tasks: "{{ taskfile }}"
-#   with_first_found:
-#     - files:
-#         - "{{ app.name }}.yml"
-#       skip: true
-#   loop_control:
-#     loop_var: taskfile
+- name: "Additional configuration"
+  include_tasks: "{{ taskfile }}"
+  with_first_found:
+    - files:
+        - "{{ app.name }}.yml"
+      skip: true
+  loop_control:
+    loop_var: taskfile

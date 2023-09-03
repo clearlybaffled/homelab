@@ -645,41 +645,41 @@ downloads:
     groups:
       - kube_node
 
-  local_volume_provisioner:
-    enabled: "{{ local_volume_provisioner_enabled }}"
-    container: true
-    repo: "{{ local_volume_provisioner_image_repo }}"
-    tag: "{{ local_volume_provisioner_image_tag }}"
-    sha256: "{{ local_volume_provisioner_digest_checksum|default(None) }}"
-    groups:
-      - kube_node
+  # local_volume_provisioner:
+  #   enabled: "{{ local_volume_provisioner_enabled }}"
+  #   container: true
+  #   repo: "{{ local_volume_provisioner_image_repo }}"
+  #   tag: "{{ local_volume_provisioner_image_tag }}"
+  #   sha256: "{{ local_volume_provisioner_digest_checksum|default(None) }}"
+  #   groups:
+  #     - kube_node
 
-  cephfs_provisioner:
-    enabled: "{{ cephfs_provisioner_enabled }}"
-    container: true
-    repo: "{{ cephfs_provisioner_image_repo }}"
-    tag: "{{ cephfs_provisioner_image_tag }}"
-    sha256: "{{ cephfs_provisioner_digest_checksum|default(None) }}"
-    groups:
-      - kube_node
+  # cephfs_provisioner:
+  #   enabled: "{{ cephfs_provisioner_enabled }}"
+  #   container: true
+  #   repo: "{{ cephfs_provisioner_image_repo }}"
+  #   tag: "{{ cephfs_provisioner_image_tag }}"
+  #   sha256: "{{ cephfs_provisioner_digest_checksum|default(None) }}"
+  #   groups:
+  #     - kube_node
 
-  rbd_provisioner:
-    enabled: "{{ rbd_provisioner_enabled }}"
-    container: true
-    repo: "{{ rbd_provisioner_image_repo }}"
-    tag: "{{ rbd_provisioner_image_tag }}"
-    sha256: "{{ rbd_provisioner_digest_checksum|default(None) }}"
-    groups:
-      - kube_node
+  # rbd_provisioner:
+  #   enabled: "{{ rbd_provisioner_enabled }}"
+  #   container: true
+  #   repo: "{{ rbd_provisioner_image_repo }}"
+  #   tag: "{{ rbd_provisioner_image_tag }}"
+  #   sha256: "{{ rbd_provisioner_digest_checksum|default(None) }}"
+  #   groups:
+  #     - kube_node
 
-  local_path_provisioner:
-    enabled: "{{ local_path_provisioner_enabled }}"
-    container: true
-    repo: "{{ local_path_provisioner_image_repo }}"
-    tag: "{{ local_path_provisioner_image_tag }}"
-    sha256: "{{ local_path_provisioner_digest_checksum|default(None) }}"
-    groups:
-      - kube_node
+  # local_path_provisioner:
+  #   enabled: "{{ local_path_provisioner_enabled }}"
+  #   container: true
+  #   repo: "{{ local_path_provisioner_image_repo }}"
+  #   tag: "{{ local_path_provisioner_image_tag }}"
+  #   sha256: "{{ local_path_provisioner_digest_checksum|default(None) }}"
+  #   groups:
+  #     - kube_node
 
   cert_manager_controller:
     enabled: "{{ cert_manager_enabled }}"

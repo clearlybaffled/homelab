@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ipa-server-install-options
+  namespace: infrastructure
+data:
+  ipa-server-install-options: |-
+    --unattended
+    -r HERMLEIGH.HOME
+    -p $DM_PASS
+    -a $ADMIN_PASS
+    --external-cert-file=/data/ca.crt
+    --external-cert-file=/data/ipa.crt
+    --ca-subject="CN=IPA Intermediate CA,O=HERMLEIGH.HOME,C=US"
+    --subject-base="O=HERMLEIGH.HOME,C=US"

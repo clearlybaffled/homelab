@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ipa-server-install-options
+  namespace: infrastructure
+data:
+  ipa-server-install-options: |-
+    --unattended
+    -h ipa.hermleigh.home
+    --domain=hermleigh.home
+    --realm=HERMLEIGH.HOME
+    --ca-subject="CN=IPA Intermediate CA,O=HERMLEIGH.HOME,C=US"
+    --subject-base="O=HERMLEIGH.HOME,C=US"
+    --idstart=60001
+    --ds-password=$DS_PASS
+    --admin-password=$ADMIN_PASS
+    --no-ntp
+    --external-ca

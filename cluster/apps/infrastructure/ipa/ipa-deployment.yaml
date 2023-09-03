@@ -4,7 +4,6 @@ metadata:
   annotations:
     kompose.cmd: kompose -f /srv/ipa/docker-compose.yml convert -n infrastructure
     kompose.version: 1.30.0 (9d8dcb518)
-  creationTimestamp: null
   labels:
     io.kompose.service: ipa
   name: ipa
@@ -21,7 +20,6 @@ spec:
       annotations:
         kompose.cmd: kompose -f /srv/ipa/docker-compose.yml convert -n infrastructure
         kompose.version: 1.30.0 (9d8dcb518)
-      creationTimestamp: null
       labels:
         io.kompose.network/ipanet: "true"
         io.kompose.service: ipa
@@ -54,7 +52,10 @@ spec:
             - containerPort: 464
               hostPort: 464
               protocol: UDP
-          resources: {}
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
           volumeMounts:
             - mountPath: /data
               name: ipa-data

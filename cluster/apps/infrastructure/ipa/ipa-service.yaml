@@ -4,7 +4,6 @@ metadata:
   annotations:
     kompose.cmd: kompose -f /srv/ipa/docker-compose.yml convert -n infrastructure
     kompose.version: 1.30.0 (9d8dcb518)
-  creationTimestamp: null
   labels:
     io.kompose.service: ipa
   name: ipa
@@ -39,5 +38,5 @@ spec:
       targetPort: 464
   selector:
     io.kompose.service: ipa
-status:
-  loadBalancer: {}
+  serviceType: LoadBalancer
+  loadBalancerIP: 172.16.1.36

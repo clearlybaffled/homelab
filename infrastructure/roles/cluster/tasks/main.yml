@@ -46,11 +46,13 @@
     server_side_apply:
       field_manager: ansible
   tags: argocd
+  when: query('kubernetes.core.k8s', kind='CustomResourceDefinition', resource_name='applications.argoproj.io') is []
 
 - name: Bootstrap cluster
   kubernetes.core.k8s:
-    src: "{{ (cluster_dir, 'bootstrap.yaml') | path_join }}"
+    src: "{{ (cluster_dir, 'cluster.yaml') | path_join }}"
     ca_cert: "{{ cluster_cacerts }}"
     server_side_apply:
       field_manager: ansible
   tags: bootstrap
+  when: query('kubernetes.core.k8s', kind='Applications', namespace='argocd', resource_name='cluster', api_version='argoproj.io/v1alpha1') is []

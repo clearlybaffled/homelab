@@ -3,18 +3,28 @@
   assert:
     that: "ca_name is defined"
 
+- name: Set Sub CA home
+  set_fact:
+    home: "{{ ('srv','pki', ca_name ) | path_join}}"
+
 - name: Setup directory
   include_tasks: directory.yml
-  vars:
-    home: "{{ ('srv','pki', ca_name ) | path_join}}"
 
 - name: Generate private key and CSR
   command:
     cmd: >-
-      openssl req -nodes -new -config {{ (pki_dir, 'sub-ca.conf') | path_join }} -out ca.csr -keyout private/ca.key
-  register: csr
+      openssl req
+      -nodes
+      -new
+      -config {{ role_path }}/files/sub-ca.conf
+      -out {{ home }}/{{ ca_name }}-ca.csr
+      -keyout {{ home }}/private/ca.key
 
 - name: Sign CSR with Root CA
   command:
     cmd: >-
-      openssl ca  -config {{(pki_dir, 'root-ca.conf') | path_join }} -in {{ csr.stdout }} -out {{(home, 'ca.crt')|path_join}} -extensions sub_ca_ext
+      openssl ca
+      -config {{ role_path }}/files/root-ca.conf
+      -in {{ home }}/{{ ca_name }}-ca.csr
+      -out {{ home }}/ca.crt
+      -extensions sub_ca_ext
