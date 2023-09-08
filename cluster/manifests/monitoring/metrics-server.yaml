@@ -1,0 +1,44 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: infrastructure/roles/cluster/templates/application.yaml.j2
+# date: 2023-09-08 06:10:56
+# user: clearlybaffled
+# host: tirante
+# commit: c6d7686
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metrics-server
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+spec:
+  project: default
+  
+  sources:
+    - chart: metrics-server
+      repoURL: https://kubernetes-sigs.github.io/metrics-server/
+      targetRevision: 3.11.0
+      helm:
+        valueFiles:
+          - $repo/cluster/apps/monitoring/metrics-server/values.yaml
+
+    - repoURL: https://github.com/clearlybaffled/homelab
+      path: cluster/apps/monitoring/metrics-server
+      targetRevision: main
+      ref: repo
+
+  destination:
+    name: in-cluster
+    namespace: monitoring
+
+  syncPolicy: 
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+# END ANSIBLE MANAGED BLOCK
