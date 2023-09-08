@@ -1,6 +1,6 @@
 ---
 # - name: paperless-ngx | Create postgres resources
-#   delegate_to: "{{ lookup('random_choice', hosts['kube_control_plane']) }}"
+#   delegate_to: "{{ lookup('random_choice', groups['kube_control_plane']) }}"
 #   block:
 #     - name: Create user
 #       community.postgresql.postgresql_user:
