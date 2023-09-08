@@ -1,17 +1,16 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
 # template: infrastructure/roles/cluster/templates/kustomization.yaml.j2
-# date: 2023-08-28 11:33:13
+# date: 2023-09-08 05:02:35
 # user: clearlybaffled
 # host: tirante
-# commit: c087a4b
+# commit: ce598c7
 #
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: argocd
 
 resources:
-  - https://github.com/cert-manager/cert-manager/releases/download/v1.12.0/cert-manager.crds.yaml
   - ns.yaml
   - parche-git-repo.yaml
 
@@ -24,13 +23,7 @@ helmCharts:
     releaseName: argocd
     namespace: argocd
 
-  - name: prometheus-operator-crds
-    repo: https://prometheus-community.github.io/helm-charts
-    version: 4.0.2
-    valuesFile: values.yaml
-    includeCRDs: true
-    releaseName: prometheus-operator-crds
-    namespace: monitoring
+
 
 
 # END ANSIBLE MANAGED BLOCK
