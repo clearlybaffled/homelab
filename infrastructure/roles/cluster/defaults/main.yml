@@ -11,7 +11,6 @@ apps:
     kustomize:
       resources:
         - ns.yaml
-        - parche-git-repo.yaml
       charts:
         - chart: argocd/argo-cd
           version: "{{ argocd_chart_version }}"
@@ -53,7 +52,7 @@ apps:
     charts:
       - chart: bitnami/mysql
         version: "{{ bitnami_mysql_chart_version }}"
-    secrets:
+    secrets: {}
 
   cert-manager:
     path: infrastructure
@@ -66,7 +65,7 @@ apps:
       - chart: jetstack/trust-manager
         version: "{{ trust_manager_version }}"
         valueFiles: []
-    secrets:
+    secrets: {}
 
   grocy:
     namespace: home
@@ -94,7 +93,7 @@ apps:
     charts:
       - chart: bitnami/redis
         version: "{{ bitnami_redis_chart_version }}"
-    secrets:
+    secrets: {}
 
   rook-ceph:
     path: infrastructure
@@ -120,17 +119,7 @@ apps:
       - size: 30Gi
         storageClass: ceph-filesystem
         volumeName: paperless-ngx-library
-    secrets:
-      secret:
-        data:
-          PAPERLESS_DBUSER: paperless
-          PAPERLESS_DBPASS:
-            type: password
-            name: db
-          PAPERLESS_ADMIN_USER: admin
-          PAPERLESS_ADMIN_PASSWORD:
-            type: password
-            name: admin
+    secrets: {}
 
   nextcloud:
     namespace: home
@@ -138,7 +127,7 @@ apps:
     charts:
       - chart: nextcloud/nextcloud
         version: "{{ nextcloud_chart_version }}"
-    secrets:
+    secrets: {}
 
   mealie:
     namespace: home
@@ -151,7 +140,7 @@ apps:
         storageClass: ceph-block
         volumeName: mealie-api-data
         accessMode: ReadWriteOnce
-    secrets:
+    secrets: {}
 
   linkding:
     namespace: home
