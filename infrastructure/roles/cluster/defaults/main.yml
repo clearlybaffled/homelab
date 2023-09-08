@@ -49,6 +49,7 @@ apps:
     namespace: db
     wave: 3
     pv: true
+    pvc: {}
     charts:
       - chart: bitnami/mysql
         version: "{{ bitnami_mysql_chart_version }}"

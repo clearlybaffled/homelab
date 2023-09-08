@@ -30,6 +30,14 @@
           item.0
         ) | path_join
       }}
+    manifest_file: >-
+      {{ (
+          cluster_dir,
+          'manifests',
+          ('path' in app) | ternary(app.path, app.namespace),
+          app.name+'.yaml'
+        ) | path_join
+      }}
 
 # - name: Install ArgoCD
 #   kubernetes.core.k8s:

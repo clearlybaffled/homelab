@@ -24,7 +24,7 @@
 - name: "ArgoCD application manifest"
   blockinfile:
     block: "{{ lookup('template', 'application.yaml.j2', convert_data=false) }}"
-    dest: "{{ (cluster_dir, 'manifests', ('path' in app) |ternary(app.path, app.namespace), app.name+'.yaml') | path_join }}"
+    dest: "{{ manifest_file }}"
     mode: "0644"
     create: true
   register: application
@@ -38,6 +38,8 @@
     create: true
   register: kustomization
   when: ('kustomize' in app) or ('secrets' in app)
+
+- debug: var=app
 
 - name: "Install PersistentVolumeClaim file"
   blockinfile:
@@ -58,19 +60,19 @@
     loop_var: taskfile
   register: app_tasks
 
-- name: Commit changes to app files
-  lvrfrc87.git_acp.git_acp:
-    path: "{{ root_dir }}"
-    comment: "[{{ app.name }}] Updated application manifest files"
-    add:
-      - "{{ app_dir }}"
-      - "{{ (root_dir, 'cluster', 'manifests', ('path' in app) |ternary(app.path, app.namespace), app.name+'.yaml') | path_join }}"
-    url: "{{ repo_url }}"
-    push: true
-    branch: "{{ branch }}"
-    ssh_params:
-      key_file: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
-  when: (application is changed) or
-        (ksops is changed) or
-        (kustomization is changed) or
-        (pvc is changed)
+# - name: Commit changes to app files
+#   lvrfrc87.git_acp.git_acp:
+#     path: "{{ root_dir }}"
+#     comment: "[{{ app.name }}] Updated application manifest files"
+#     add:
+#       - "{{ app_dir }}"
+#       - "{{ manifest_file }}"
+#     url: "{{ repo_url }}"
+#     push: false
+#     branch: "{{ branch }}"
+#     ssh_params:
+#       key_file: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+#   when: (application is changed) or
+#         (ksops is changed) or
+#         (kustomization is changed) or
+#         (pvc is changed)
