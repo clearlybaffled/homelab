@@ -1,56 +1,21 @@
 ---
-- name: paperless-ngx | Generate secrets
-  tags: secrets
-  block:
-    - name: Generate DB password
-      include_role:
-        name: common
-        tasks_from: generate_password
-      vars:
-        user: db
+# - name: paperless-ngx | Create postgres resources
+#   delegate_to: "{{ lookup('random_choice', hosts['kube_control_plane']) }}"
+#   block:
+#     - name: Create user
+#       community.postgresql.postgresql_user:
+#         name: paperless
+#         password: "{{ db_pass }}"
+#         state: present
+#         login_user: "{{ postgres_admin.username | b64decode }}"
+#         login_password: "{{ postgres_admin.password | b64decode }}"
+#         host: cnpg-cluster-rw.db
 
-    - name: Generate admin password
-      include_role:
-        name: common
-        tasks_from: generate_password
-      vars:
-        user: admin
-
-    - name: Create k8s secret file
-      community.sops.sops_encrypt:
-        path: "{{ (app_dir , 'secret.sops.yaml') | path_join }}"
-        encrypted_regex: "^(data|stringData)$"
-        content_yaml: "{{ secret }}"
-      vars:
-        secret:
-          apiVersion: v1
-          kind: Secret
-          type: Opaque
-          metadata:
-            name: "{{ app.name }}-secret"
-            namespace: "{{ app.namespace }}"
-          data:
-            PAPERLESS_DBUSER: "{{ 'paperless' | b64encode  }}"
-            PAPERLESS_DBPASS: "{{ db_password | b64encode }}"
-            PAPERLESS_ADMIN_PASSWORD: "{{ admin_password | b64encode }}"
-            PAPERLESS_ADMIN_USER: "{{ 'admin' | b64encode }}"
-
-- name: paperless-ngx | Create postgres resources
-  block:
-    - name: Create user
-      community.postgresql.postgresql_user:
-        name: paperless
-        password: "{{ db_pass }}"
-        state: present
-        login_user: "{{ postgres_secret.username | b64decode }}"
-        login_password: "{{ postgres_secret.password | b64decode }}"
-        host: cnpg-cluster-rw.db
-
-    - name: Create database
-      community.postgresql.postgresql_db:
-        name: paperless
-        owner: paperless
-        state: present
-        login_user: "{{ postgres_secret.username | b64decode }}"
-        login_password: "{{ postgres_secret.password | b64decode }}"
-        host: cnpg-cluster-rw.db
+#     - name: Create database
+#       community.postgresql.postgresql_db:
+#         name: paperless
+#         owner: paperless
+#         state: present
+#         login_user: "{{ postgres_admin.username | b64decode }}"
+#         login_password: "{{ postgres_admin.password | b64decode }}"
+#         host: cnpg-cluster-rw.db

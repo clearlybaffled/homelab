@@ -1,0 +1,20 @@
+---
+- name: NextCloud setup
+  block:
+    - name: Create Database
+      community.mysql.mysql_db:
+        name: nextcloud
+        collation: utf8mb4_general_ci
+        encoding: utf8mb4
+        login_user: root
+        login_password: "{{ mysql_secret.password | b64decode }}"
+        login_host: mysql.db
+
+    - name: Create user
+      community.mysql.mysql_user:
+        name: "'`{{ username }}`@`*`'"
+        password: "{{ (lookup('community.sops.sops', app_dir+'/secret.sops.yaml') | from_yaml).data['db-password'] | b64decode }}"
+        priv: "'{{ username }}.*:ALL'"
+        login_host: mysql.db
+      vars:
+        username: "{{ (lookup('community.sops.sops', app_dir+'/secret.sops.yaml')|from_yaml).data['db-username'] | b64decode }}"

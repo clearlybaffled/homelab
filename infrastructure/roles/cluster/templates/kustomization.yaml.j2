@@ -2,6 +2,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: {{ app.namespace }}
+{% if 'secrets' in app %}
+
+generators:
+    - ./secret-generator.yaml
+
+{% endif %}
+{% if 'kustomize' in app %}
 {% if app.kustomize.resources is defined %}
 
 resources:
@@ -30,6 +37,9 @@ helmCharts:
     releaseName: {{ chart.release | default(chart_name, true) }}
     namespace: {{ chart.namespace | default(app.namespace) }}
 
-{% endfor %}{% endif %}
+{% endfor %}
+
+{% endif %}
 
 {{ (app.kustomize.extras | to_nice_yaml(indent=2)) if 'extras' in app.kustomize }}
+{% endif %}

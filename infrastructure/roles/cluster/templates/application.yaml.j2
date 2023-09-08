@@ -14,33 +14,31 @@ spec:
   project: default
   
 {% set repo_dir = app_dir | relpath(root_dir) %}
-{% if 'sources' in app %}
+{% if 'charts' in app %}
   sources:
-{% for source in app.sources %}
-{% if 'chart' in source %}
-{% set (helm_repo,chart_name) = source.chart.split('/') %}
+{% for chart in app.charts %}
+{% set (helm_repo,chart_name) = chart.chart.split('/') %}
     - chart: {{ chart_name }}
       repoURL: {{ helm_repositories[helm_repo] }}
-      targetRevision: {{ source.version }}
-{% if 'skipCrds' in source or 'valueFiles' not in source or source.valueFiles %}
+      targetRevision: {{ chart.version }}
+{% if 'skipCrds' in chart or 'valueFiles' not in chart or chart.valueFiles %}
       helm:
-{% if 'skipCrds' in source %}
-        skipCrds: {{ source.skipCrds }}
+{% if 'skipCrds' in chart %}
+        skipCrds: {{ chart.skipCrds }}
 {% endif %}
-{% if 'release' in source %}
-        releaseName: {{ source.release }}
+{% if 'release' in chart %}
+        releaseName: {{ chart.release }}
 {% elif app.name != chart_name %}
         releaseName: {{ chart_name }}
 {% endif %}
-{% if 'valueFiles' not in source or source.valueFiles %}
+{% if 'valueFiles' not in chart or chart.valueFiles %}
         valueFiles:
-{% if 'valueFiles' not in source  %}
+{% if 'valueFiles' not in chart  %}
           - {{ ('$repo', repo_dir, 'values.yaml') | path_join }}
 {% else %}
-{% for file in source.valueFiles %}
+{% for file in chart.valueFiles %}
           - {{ ('$repo', repo_dir, file) | path_join }}
 {% endfor %}
-{% endif %}
 {% endif %}
 {% endif %}
 {% endif %}
@@ -50,11 +48,11 @@ spec:
   source:
 {% endif %}
 
-{%- filter indent(4 if app.sources is defined else 2) %}
-    {% if app.sources is defined %}- {% endif %}repoURL: {{ app.repo_url | default(repo_url) }}
+{%- filter indent(4 if app.charts is defined else 2) %}
+    {% if app.charts is defined %}- {% endif %}repoURL: {{ app.repo_url | default(repo_url) }}
   path: {{ repo_dir }}
   targetRevision: {{ app.branch | default(branch) }}
-{% if app.sources is defined and (app.sources | map(attribute='chart')) %}
+{% if 'charts' in app %}
   ref: repo
 {% endif %}
 {% if app.directory is defined %}
