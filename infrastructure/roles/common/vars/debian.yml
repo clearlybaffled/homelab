@@ -17,3 +17,10 @@ k8s_required_packages:
   - iptables
   - apparmor
   - libseccomp2
+
+kvm_packages:
+  - qemu-system
+  - libvirt-clients
+  - libvirt-daemon-system
+  - libvirt-dev
+  - virtinst

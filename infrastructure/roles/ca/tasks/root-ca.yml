@@ -1,18 +1,31 @@
 ---
 - name: Set CA home directory
   set_fact:
-    home: "{{ ('srv','pki', 'root-ca') | path_join }}"
+    ca_home: "{{( pki_home, 'root-ca') | path_join }}"
 
 - name: Set up Root CA data directories
   include_tasks: 'directory.yml'
 
 - name: Create Private Key and CSR
-  command: >-
-    openssl req -new -config {{role_path}}/files/root-ca.conf -keyout {{home}}/private/root-ca.key
-  register: csr
-
-- name: Sign CSR
+  environment:
+    CA_HOME: "{{ ca_home }}"
   command:
     cmd: >-
-      openssl ca -selfsign -config {{role_path}}/files/root-ca.conf -out {{home}}/root-ca.crt -extensions ca_ext
-    stdin: csr.stdout
+      openssl req
+      -new
+      -config {{ role_path }}/files/root-ca.conf
+      -keyout {{ ca_home }}/private/root-ca.key
+      -out {{ ca_home }}/root-ca.csr
+
+- name: Sign CSR
+  environment:
+    CA_HOME: "{{ ca_home }}"
+  command:
+    cmd: >-
+      openssl ca
+      -batch
+      -selfsign
+      -config {{ role_path }}/files/root-ca.conf
+      -in {{ ca_home }}/root-ca.csr
+      -out {{ ca_home }}/root-ca.crt
+      -extensions ca_ext

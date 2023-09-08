@@ -120,6 +120,7 @@ This Git repository contains the following top level directories.
 |<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">|[ListenBrainz][listenbrainz-uri]| `Media` | Open Source scrobbler | | | 
 |<img width="32" src="https://simpleicons.org/icons/vault.svg">|[Vault][vault-uri]| `Services` | Secrets and encryption management| | |
 |<img width="32" src="https://github.com/owntone/owntone-server/blob/master/docs/assets/logo.svg?raw=true">|[OwnTone][owntone-uri]| `Media` | DAAP Audio server| | |
+|<img width="32" src="https://avatars.githubusercontent.com/u/10979201?s=200&v=4">| [FreeIPA][freeipa-uri] | `Infrastructure`| Full IdAM solution + PKI | Deploying.. | [![][freeipa-badge]][freeipa-img] |
 
 
 ## 🤝 Thank you!
@@ -201,3 +202,7 @@ This Git repository contains the following top level directories.
 [vault-uri]: https://www.vaultproject.io
 
 [owntone-uri]: https://owntone.github.io/owntone-server/
+
+[freeipa-uri]: https://wwww.freeipa.org
+[freeipa-img]: https://quay.io/repository/freeipa/freeipa-server
+[freeipa-badge]: https://img.shields.io/badge/freeipa/freeipa--server-fedora--38-blue.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNTYiIGhlaWdodD0iMjM2IiB2aWV3Qm94PSIwIDAgMjU2IDIzNiI+PHBhdGggZmlsbD0iIzQwQjRFNSIgZD0ibTIwMC4xMzQgMGw1NS41NTUgMTE3LjUxNGwtNTUuNTU1IDExNy41MThoLTQ3LjI5NWw1NS41NTUtMTE3LjUxOEwxNTIuODQgMGg0Ny4yOTVaTTExMC4wOCA5OS44MzZsMjAuMDU2LTM4LjA5MmwtMi4yOS04Ljg2OEwxMDIuODQ3IDBINTUuNTUybDQ4LjY0NyAxMDIuODk4bDUuODgxLTMuMDYyWm0xNy43NjYgNzQuNDMzbC0xNy4zMzMtMzkuMDM0bC02LjMxNC0zLjEwMWwtNDguNjQ3IDEwMi44OThoNDcuMjk1bDI1LTUyLjg4di03Ljg4M1oiLz48cGF0aCBmaWxsPSIjMDAzNzY0IiBkPSJNMTUyLjg0MiAyMzUuMDMyTDk3LjI4NyAxMTcuNTE0TDE1Mi44NDIgMGg0Ny4yOTVsLTU1LjU1NSAxMTcuNTE0bDU1LjU1NSAxMTcuNTE4aC00Ny4yOTVabS05Ny4yODcgMEwwIDExNy41MTRMNTUuNTU1IDBoNDcuMjk2TDQ3LjI5NSAxMTcuNTE0bDU1LjU1NiAxMTcuNTE4SDU1LjU1NVoiLz48L3N2Zz4=

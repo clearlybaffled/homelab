@@ -1,20 +1,40 @@
 ---
-- name: Ensure the sub ca has a name
+- name: Ensure input vars are set
   assert:
-    that: "ca_name is defined"
+    that:
+      - "ca_name is defined"
+      - "common_name is defined"
+      - signing_ca is defined
 
-- name: Setup directory
-  include_tasks: directory.yml
+- name: Set ca_home
+  set_fact:
+    ca_home: "{{ (pki_home, ca_name) | path_join }}"
+
+- name: Create Intermediate Certificate Authority
+  environment:
+    CA_NAME: "{{ ca_name }}"
+    CN: "{{ common_name }}"
+    CA_HOME: "{{ ca_home }}"
   vars:
-    home: "{{ ('srv','pki', ca_name ) | path_join}}"
+    csr_path: "{{ ca_home }}/{{ ca_name }}.csr"
+  block:
+    - name: Set up Intermediate CA data directories
+      include_tasks: 'directory.yml'
 
-- name: Generate private key and CSR
-  command:
-    cmd: >-
-      openssl req -nodes -new -config {{ (pki_dir, 'sub-ca.conf') | path_join }} -out ca.csr -keyout private/ca.key
-  register: csr
+    - name: Generate private key and CSR
+      command:
+        cmd: >-
+          openssl req
+          -nodes
+          -new
+          -config {{ role_path }}/files/sub-ca.conf
+          -out {{ csr_path }}
+          -keyout {{ ca_home }}/private/ca.key
+      environment:
+        CA_NAME: "{{ ca_name }}"
+        CN: "{{ common_name }}"
 
-- name: Sign CSR with Root CA
-  command:
-    cmd: >-
-      openssl ca  -config {{(pki_dir, 'root-ca.conf') | path_join }} -in {{ csr.stdout }} -out {{(home, 'ca.crt')|path_join}} -extensions sub_ca_ext
+    - name: Sign CSR and issue certificate
+      include_tasks: issue-cert.yml
+      vars:
+        purpose: sub_ca

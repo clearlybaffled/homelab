@@ -108,3 +108,7 @@
 
 - name: Run package install
   include_tasks: packages.yml
+
+- name: Install KVM
+  include_tasks: kvm.yml
+  when: inventory_hostname in groups['kvm']

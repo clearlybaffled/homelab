@@ -1,13 +1,15 @@
 ---
 - name: Generate application manifest files
-  become: false
   hosts: localhost
-  gather_facts: true
+  gather_facts: false
   tasks:
     - name: Install Application manifest files
       include_role: # noqa name
         name: cluster
+        tasks_from: application
         apply:
           tags: manifests
           vars:
             cluster_dir: "{{ root_dir }}/cluster"
+            app: "{{ apps['paperless-ngx'] | combine({'name': 'paperless-ngx'}) }}"
+            app_dir: "{{ root_dir }}/cluster/apps/home/paperless-ngx"

@@ -19,6 +19,7 @@ helm_repositories:
   hashicorp: https://helm.releases.hashicorp.com
   immich: https://immich-app.github.io/immich-charts
   bootc: https://charts.boo.tc
+  metrics-server: https://kubernetes-sigs.github.io/metrics-server
 
 # Registry deployment
 registry_enabled: false

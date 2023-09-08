@@ -10,7 +10,6 @@ apps:
     path: ''
     kustomize:
       resources:
-        - "https://github.com/cert-manager/cert-manager/releases/download/{{ cert_manager_version }}/cert-manager.crds.yaml"
         - ns.yaml
         - parche-git-repo.yaml
       charts:
@@ -18,14 +17,11 @@ apps:
           version: "{{ argocd_chart_version }}"
           namespace: argocd
           release: argocd
-        - chart: prometheus-community/prometheus-operator-crds
-          version: "{{ prometheus_crds_chart_version }}"
-          namespace: monitoring
 
   kube-prometheus-stack:
     namespace: monitoring
     wave: 2
-    sources:
+    charts:
       - chart: prometheus-community/kube-prometheus-stack
         version: "{{ kube_prometheus_stack_chart_version }}"
         release: prometheus
@@ -39,14 +35,14 @@ apps:
   hajimari:
     namespace: home
     wave: 4
-    sources:
+    charts:
       - chart: hajimari/hajimari
         version: "{{ hajimari_version }}"
 
   cloudnative-pg:
     namespace: db
     wave: 3
-    sources:
+    charts:
       - chart: cnpg/cloudnative-pg
         version: "{{ cnpg_chart_version }}"
 
@@ -54,7 +50,7 @@ apps:
     namespace: db
     wave: 3
     pv: true
-    sources:
+    charts:
       - chart: bitnami/mysql
         version: "{{ bitnami_mysql_chart_version }}"
 
@@ -62,7 +58,7 @@ apps:
     path: infrastructure
     namespace: cert-manager
     wave: 1
-    sources:
+    charts:
       - chart: jetstack/cert-manager
         version: "{{ cert_manager_version }}"
         skipCrds: true
@@ -78,7 +74,7 @@ apps:
   ingress-nginx:
     namespace: infrastructure
     wave: 1
-    sources:
+    charts:
       - chart: ingress-nginx/ingress-nginx
         version: "{{ ingress_nginx_version }}"
 
@@ -86,14 +82,14 @@ apps:
     path: infrastructure
     namespace: metallb-system
     wave: 1
-    sources:
+    charts:
       - chart: metallb/metallb
         version: "{{ metallb_version[1:] }}"
 
   redis:
     namespace: db
     wave: 3
-    sources:
+    charts:
       - chart: bitnami/redis
         version: "{{ bitnami_redis_chart_version }}"
 
@@ -101,7 +97,7 @@ apps:
     path: infrastructure
     namespace: rook-ceph
     wave: 2
-    sources:
+    charts:
       - chart: rook/rook-ceph
         version: "{{ rook_ceph_version }}"
         valueFiles:
@@ -114,25 +110,36 @@ apps:
   paperless-ngx:
     namespace: home
     wave: 4
-    sources:
+    charts:
       - <<: *app_template
         release: paperless-ngx
     pvc:
       - size: 30Gi
         storageClass: ceph-filesystem
         volumeName: paperless-ngx-library
+    secrets:
+      secret:
+        data:
+          PAPERLESS_DBUSER: paperless
+          PAPERLESS_DBPASS:
+            type: password
+            name: db
+          PAPERLESS_ADMIN_USER: admin
+          PAPERLESS_ADMIN_PASSWORD:
+            type: password
+            name: admin
 
   nextcloud:
     namespace: home
     wave: 4
-    sources:
+    charts:
       - chart: nextcloud/nextcloud
         version: "{{ nextcloud_chart_version }}"
 
   mealie:
     namespace: home
     wave: 4
-    sources:
+    charts:
       - chart: k8s-at-home/mealie
         version: 5.1.2
     pvc:
@@ -140,105 +147,21 @@ apps:
         storageClass: ceph-block
         volumeName: mealie-api-data
         accessMode: ReadWriteOnce
-
-  heimdall:
-    namespace: home
-    sources:
-      - chart: k8s-at-home/heimdall
-        version: 8.4.2
-
-  vault:
-    path: infrastructure
-    namespace: vault
-    sources:
-      - chart: hashicorp/vault
-        version: "{{ vault_chart_version }}"
-
-  qbittorrent:
-    namespace: downloads
-    sources:
-      - <<: *app_template
-        release: qbittorrent
-
-  calibre:
-    namespace: media
-    sources:
-      - chart: k8s-at-home/calibre
-        version: 5.4.2
-      - chart: k8s-at-home/calibre-web
-        version: 8.4.2
-        valueFiles:
-          - values-web.yaml
-
-  listen-brainz:
-    namespace: media
-
-  photonix:
-    namespace: media
-
-  immich:
-    namespace: media
-    sources:
-      - chart: immich/immich
-        version: 0.1.2
-
-  typesense:
-    namespace: db
-    sources:
-      - <<: *app_template
-        release: typesense
-
-  sonarr:
-    namespace: downloads
-    sources:
-      - <<: *app_template
-        release: sonarr
-
-  radarr:
-    namespace: downloads
-    sources:
-      - <<: *app_template
-        release: radarr
-
-  readarr:
-    namespace: downloads
-    sources:
-      - <<: *app_template
-        release: readarr
-
-  prowlarr:
-    namespace: downloads
-    sources:
-      - <<: *app_template
-        release: prowlarr
-
-  overseerr:
-    namespace: downloads
-    sources:
-      - <<: *app_template
-        release: overseerr
-
-  lidarr:
-    namespace: downloads
-    sources:
-      - <<: *app_template
-        release: lidarr
-
-  netbox:
-    namespace: infrastructure
-    sources:
-      - chart: bootc/netbox
-        version: 4.1.1
+    secrets:
+      secret:
+        data:
+          POSTGRES_USER: mealie
+          POSTGRES_PASSWORD: mealie
 
   linkding:
     namespace: home
-    sources:
+    charts:
       - <<: *app_template
         release: linkding
 
   linkace:
     namespace: home
-    sources:
+    charts:
       - <<: *app_template
         release: linkace
     kustomize:
@@ -252,6 +175,12 @@ apps:
 
   linkwarden:
     namespace: home
-    sources:
+    charts:
       - <<: *app_template
         release: linkwarden
+
+  metrics-server:
+    namespace: monitoring
+    charts:
+      - chart: metrics-server/metrics-server
+        version: 3.11.0

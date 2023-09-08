@@ -1,8 +1,6 @@
 clusterDomain: gato.hermleigh.home
 auth:
-  enabled: true
-  existingSecret: redis
-  existingSecretPasswordKey: password
+  enabled: false
   sentinel: false
 master:
   persistence:
