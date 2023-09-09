@@ -21,4 +21,5 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: ceph-block
+  volumeName: pvc-ea675e74-cc24-479c-8b0e-6d4b7d6b58e9
 # END ANSIBLE MANAGED BLOCK
