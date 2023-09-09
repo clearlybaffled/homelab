@@ -16,4 +16,8 @@ spec:
       storage: {{ pvc.size }}
 {% if pvc.storageClass is defined %}
   storageClassName: {{ pvc.storageClass }}
-{% endif%}{% endfor %}
+{% endif%}
+{% if pvc.volumeName is defined %}
+  volumeName: {{ pvc.volumeName}}
+{% endif %}
+{% endfor %}
