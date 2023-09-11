@@ -1,3 +1,8 @@
 ---
 - name: execute os specific tasks
   include_tasks: "{{ ansible_os_family|lower }}.yml"
+
+- name: Install python packages
+  pip:
+    name: "{{ pip_packages }}"
+  when: pip_packages is defined

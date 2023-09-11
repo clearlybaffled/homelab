@@ -105,7 +105,7 @@ This Git repository contains the following top level directories.
 |<img width="32" src="https://www.mysql.com/common/logos/logo-mysql-170x115.png">|[MySQL][mysql-uri]| `Database` | SQL Database | Deployed | [![][mysql-badge]][mysql-chart]
 |<img width="32" src="https://wiki.postgresql.org/images/a/a4/PostgreSQL_logo.3colors.svg">| [PostgreSQL][postgres-uri] | `Database` | via [Cloudnative-PG][cnpg-io] operator | Deployed | [![][cnpg-badge]][cnpg-chart]
 |<img width="32" src="https://redis.io/images/favicons/favicon-32x32.png">| [Redis][redis-uri] | `Database` | In-memory Key-Value store | Deployed | [![][redis-badge]][redis-chart]
-|<img width="32" src="https://raw.githubusercontent.com/grocy/grocy/master/public/img/logo.svg">| [Grocy][grocy-uri] | `Services` | ERP Beyond your fridge | Deployed | [![][grocy-badge]][grocy-img] |
+|<img width="32" src="https://raw.githubusercontent.com/grocy/grocy/master/public/img/icon.svg">| [Grocy][grocy-uri] | `Services` | ERP Beyond your fridge | Deployed | [![][grocy-badge]][grocy-img] |
 |<img width="32" src="https://github.com/hay-kot/mealie/raw/mealie-next/docs/docs/assets/img/favicon.png">| [Mealie][mealie-url] | `Services` | Recipe Manager | Deployed | [![][mealie-badge]][mealie-docker] | 
 |<img width="32" src="https://github.com/MythTV/mythtv/raw/master/mythtv/html/images/icons/upnp_small_icon.png">|[MythTV][mythtv-url]| `Media` | Digital Video Recorder | Running directly on node | [![][mythtv-badge]][mythtv-gh] |
 |<img width="32" src="https://photonix.org/static/images/logo.svg">|[Photonix][photonix-url]| `Media` | Photo Management | | |

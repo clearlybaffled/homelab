@@ -1,8 +1,8 @@
 ---
 - name: Cache DB credentials
   set_fact:
-    mysql_secret: "{{ query('kubernetes.core.k8s', kind='Secret', namespace='db', resource_name='mysql')[0].data }}"
-    postgres_secret: "{{ query('kubernetes.core.k8s', kind='Secret', namespace='db', resource_name='cnpg-cluster-superuser')[0].data }}"
+    mysql_root: "{{ query('kubernetes.core.k8s', kind='Secret', namespace='db', resource_name='mysql')[0].data }}"
+    postgres_admin: "{{ query('kubernetes.core.k8s', kind='Secret', namespace='db', resource_name='cnpg-cluster-superuser')[0].data }}"
 
 - name: Install sops-age-key secret
   kubernetes.core.k8s:
@@ -28,6 +28,14 @@
           (item.0 == 'argocd') | ternary('', 'apps'),
           ('path' in item.1) | ternary(item.1.path, item.1.namespace),
           item.0
+        ) | path_join
+      }}
+    manifest_file: >-
+      {{ (
+          cluster_dir,
+          'manifests',
+          ('path' in app) | ternary(app.path, app.namespace),
+          app.name+'.yaml'
         ) | path_join
       }}
 

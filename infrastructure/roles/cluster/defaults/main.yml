@@ -11,7 +11,6 @@ apps:
     kustomize:
       resources:
         - ns.yaml
-        - parche-git-repo.yaml
       charts:
         - chart: argocd/argo-cd
           version: "{{ argocd_chart_version }}"
@@ -53,6 +52,7 @@ apps:
     charts:
       - chart: bitnami/mysql
         version: "{{ bitnami_mysql_chart_version }}"
+    secrets: {}
 
   cert-manager:
     path: infrastructure
@@ -65,6 +65,7 @@ apps:
       - chart: jetstack/trust-manager
         version: "{{ trust_manager_version }}"
         valueFiles: []
+    secrets: {}
 
   grocy:
     namespace: home
@@ -92,6 +93,7 @@ apps:
     charts:
       - chart: bitnami/redis
         version: "{{ bitnami_redis_chart_version }}"
+    secrets: {}
 
   rook-ceph:
     path: infrastructure
@@ -128,6 +130,9 @@ apps:
           PAPERLESS_ADMIN_PASSWORD:
             type: password
             name: admin
+    kustomize:
+      resources:
+        - ./pvc.yaml
 
   nextcloud:
     namespace: home
@@ -135,6 +140,7 @@ apps:
     charts:
       - chart: nextcloud/nextcloud
         version: "{{ nextcloud_chart_version }}"
+    secrets: {}
 
   mealie:
     namespace: home
@@ -152,6 +158,9 @@ apps:
         data:
           POSTGRES_USER: mealie
           POSTGRES_PASSWORD: mealie
+    kustomize:
+      resources:
+        - ./pvc.yaml
 
   linkding:
     namespace: home

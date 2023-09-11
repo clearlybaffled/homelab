@@ -80,3 +80,8 @@ prometheusOperator:
     tls:
       - secretName: prometheus-general-tls
         hosts: *prom-hosts          
+
+prometheus:
+  prometheusSpec:
+    podMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
