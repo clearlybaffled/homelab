@@ -62,9 +62,6 @@ apps:
       - chart: jetstack/cert-manager
         version: "{{ cert_manager_version }}"
         skipCrds: true
-      - chart: jetstack/trust-manager
-        version: "{{ trust_manager_version }}"
-        valueFiles: []
     secrets: {}
 
   grocy:
