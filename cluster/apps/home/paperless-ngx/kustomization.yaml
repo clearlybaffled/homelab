@@ -1,10 +1,10 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
 # template: infrastructure/roles/cluster/templates/kustomization.yaml.j2
-# date: 2023-09-08 06:10:56
+# date: 2023-09-11 00:35:37
 # user: clearlybaffled
 # host: tirante
-# commit: c6d7686
+# commit: 21a00f4
 #
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -12,5 +12,10 @@ namespace: home
 
 generators:
     - ./secret-generator.yaml
+
+
+resources:
+  - ./pvc.yaml
+
 
 # END ANSIBLE MANAGED BLOCK

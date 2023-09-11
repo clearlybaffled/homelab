@@ -8,9 +8,6 @@ generators:
     - ./secret-generator.yaml
 
 {% endif %}
-{% do (app | combine({'app':{'kustomize':{'resources':['./pvc.yaml']}}}, recursive=true, list_merge='append') ) if 'pvc' in app %}
-{% do (app | combine({'app':{'kustomize':{'resources':['./pv.yaml']}}}, recursive=true, list_merge='append') )  if 'pv' in app %}
-
 {% if 'kustomize' in app %}
 {% if app.kustomize.resources is defined %}
 

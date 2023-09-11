@@ -1,10 +1,10 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
 # template: infrastructure/roles/cluster/templates/application.yaml.j2
-# date: 2023-09-08 06:10:56
+# date: 2023-09-08 11:04:38
 # user: clearlybaffled
 # host: tirante
-# commit: c6d7686
+# commit: 37cbe6a
 #
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -26,10 +26,6 @@ spec:
         skipCrds: True
         valueFiles:
           - $repo/cluster/apps/infrastructure/cert-manager/values.yaml
-
-    - chart: trust-manager
-      repoURL: https://charts.jetstack.io
-      targetRevision: v0.5.0
 
     - repoURL: https://github.com/clearlybaffled/homelab
       path: cluster/apps/infrastructure/cert-manager

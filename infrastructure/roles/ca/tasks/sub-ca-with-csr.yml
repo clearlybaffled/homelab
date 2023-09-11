@@ -1,0 +1,24 @@
+---
+- name: Ensure input vars are set
+  assert:
+    that:
+      - csr_path is exists
+
+- name: Set ca_home
+  set_fact:
+    ca_home: "{{ (pki_home, 'root-ca') | path_join }}"
+
+- name: Sign Intermediate CA Cert with Root CA Cert
+  become: true
+  environment:
+    CA_HOME: "{{ ca_home }}"
+  command:
+    cmd: >-
+      openssl ca
+      -batch
+      -config {{ role_path }}/files/root-ca.conf
+      -in {{ csr_path }}
+      -out {{ (csr_path | dirname, (csr_path | splitext | first)+'.crt' ) | path_join}}
+      -extensions sub_ca_ext
+      -passin stdin
+    stdin: "{{ lookup('file',root_dir+'/infrastructure/pki/secret') }}"

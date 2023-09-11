@@ -1,32 +1,29 @@
 ---
-- name: Ensure root_dir is set
-  set_fact:
-    root_dir: "{{ home | default('/srv/pki/ca') }}"
-
 - name: Set up CA directory
   file:
-    path: "{{(root_dir, item)|path_join }}"
+    path: "{{(ca_home, item)|path_join }}"
     state: directory
-    mode: "{{ item == 'private' | ternary('0700','0755') }}"
+    mode: "{{ (item == 'private') | ternary('0700','0755') }}"
   with_items:
     - certs
     - db
     - private
 
 - name: Create empty index file
-  file:
-    path: "{{ (root_dir, 'db','index')|path_join }}"
-    state: present
+  copy:
+    dest: "{{ (ca_home, 'db','index')|path_join }}"
     mode: '0644'
+    content: ''
 
 - name: Set initial serial number
   copy:
-    dest: "{{ (root_dir, 'db','serial') | path_join }}"
+    dest: "{{ (ca_home, 'db','serial') | path_join }}"
     mode: '0644'
     content: "{{ lookup('pipe', 'openssl rand -hex 16') }}"
+    force: false
 
 - name: Set initial CRL number
   copy:
-    dest: "{{ (root_dir, 'db', 'crlnumber') | path_join }}"
+    dest: "{{ (ca_home, 'db', 'crlnumber') | path_join }}"
     mode: '0644'
     content: '1001'

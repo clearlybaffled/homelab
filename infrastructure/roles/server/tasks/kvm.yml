@@ -1,0 +1,7 @@
+---
+- name: packages | Install KVM required packages
+  apt:
+    name: "{{ kvm_packages }}"
+    install_recommends: false
+    state: present
+  when: ansible_os_family|lower == 'debian'

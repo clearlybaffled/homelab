@@ -9,6 +9,7 @@ netaddr
 pywinrm>=0.3.0
 cryptography>=1.3
 jsonpatch
-psycopg2
+psycopg2-binary
 PyMySQL
 mysqlclient
+libvirt-python

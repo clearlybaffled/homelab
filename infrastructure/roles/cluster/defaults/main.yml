@@ -49,7 +49,6 @@ apps:
     namespace: db
     wave: 3
     pv: true
-    pvc: {}
     charts:
       - chart: bitnami/mysql
         version: "{{ bitnami_mysql_chart_version }}"
@@ -63,9 +62,6 @@ apps:
       - chart: jetstack/cert-manager
         version: "{{ cert_manager_version }}"
         skipCrds: true
-      - chart: jetstack/trust-manager
-        version: "{{ trust_manager_version }}"
-        valueFiles: []
     secrets: {}
 
   grocy:
@@ -120,7 +116,20 @@ apps:
       - size: 30Gi
         storageClass: ceph-filesystem
         volumeName: paperless-ngx-library
-    secrets: {}
+    secrets:
+      secret:
+        data:
+          PAPERLESS_DBUSER: paperless
+          PAPERLESS_DBPASS:
+            type: password
+            name: db
+          PAPERLESS_ADMIN_USER: admin
+          PAPERLESS_ADMIN_PASSWORD:
+            type: password
+            name: admin
+    kustomize:
+      resources:
+        - ./pvc.yaml
 
   nextcloud:
     namespace: home
@@ -141,7 +150,14 @@ apps:
         storageClass: ceph-block
         volumeName: mealie-api-data
         accessMode: ReadWriteOnce
-    secrets: {}
+    secrets:
+      secret:
+        data:
+          POSTGRES_USER: mealie
+          POSTGRES_PASSWORD: mealie
+    kustomize:
+      resources:
+        - ./pvc.yaml
 
   linkding:
     namespace: home

@@ -9,29 +9,30 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: grocy
+  name: metrics-server
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "4"
 spec:
   project: default
   
-  source:
-    repoURL: https://github.com/clearlybaffled/homelab
-    path: cluster/apps/home/grocy
-    targetRevision: main
+  sources:
+    - chart: metrics-server
+      repoURL: https://kubernetes-sigs.github.io/metrics-server
+      targetRevision: 3.11.0
+      helm:
+        valueFiles:
+          - $repo/cluster/apps/monitoring/metrics-server/values.yaml
+
+    - repoURL: https://github.com/clearlybaffled/homelab
+      path: cluster/apps/monitoring/metrics-server
+      targetRevision: main
+      ref: repo
 
   destination:
     name: in-cluster
-    namespace: home
-
-  ignoreDifferences:
-    - kind: PersistentVolume
-      jsonPointers:
-        - /spec/claimRef/resourceVersion
-        - /spec/claimRef/uid
+    namespace: monitoring
 
   syncPolicy: 
     automated:
@@ -40,5 +41,4 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
-      - RespectIgnoreDifferences=true
 # END ANSIBLE MANAGED BLOCK

@@ -1,1 +1,3 @@
 *.sops.* diff=sopsdiffer
+cluster/manifests/* merge=ours
+infrastructure/roles/cluster/vars/main.yml merge=ours

@@ -39,8 +39,6 @@
   register: kustomization
   when: ('kustomize' in app) or ('secrets' in app)
 
-- debug: var=app
-
 - name: "Install PersistentVolumeClaim file"
   blockinfile:
     block: "{{ lookup('template', 'pvc.yaml.j2', convert_data=false) }}"

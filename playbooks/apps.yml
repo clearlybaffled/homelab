@@ -10,6 +10,9 @@
         apply:
           vars:
             cluster_dir: "{{ root_dir }}/cluster"
-            app: "{{ apps['mysql'] | combine({'name': 'mysql'}) }}"
-            app_dir: "{{ root_dir }}/cluster/apps/db/mysql"
-            manifest_file: "{{ root_dir }}/cluster/manifests/db/mysql.yaml"
+            app: "{{ apps['paperless-ngx'] | combine({'name': 'paperless-ngx'}) }}"
+            app_dir: "{{ root_dir }}/cluster/apps/home/paperless-ngx"
+            manifest_file: "{{ root_dir }}/cluster/manifests/home/paperless-ngx.yaml"
+            # app: "{{ apps['mysql'] | combine({'name': 'mysql'}) }}"
+            # app_dir: "{{ root_dir }}/cluster/apps/db/mysql"
+            # manifest_file: "{{ root_dir }}/cluster/manifests/db/mysql.yaml"
