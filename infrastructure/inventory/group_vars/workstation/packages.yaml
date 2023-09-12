@@ -1,0 +1,3 @@
+debian:
+  - postgresql
+  - libpq-dev
