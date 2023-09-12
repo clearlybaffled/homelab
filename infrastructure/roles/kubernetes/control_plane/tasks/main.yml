@@ -44,17 +44,23 @@
 
 - name: kubeadm | Initialize first master
   block:
-    - name: kubeadm | Install Kubernetes CA certs
+    - name: kubeadm | Install Kubernetes CA cert and key files
       copy:
-        dest: "{{ kube_cert_dir }}/{{ item.dest }}"
-        src: "/srv/pki/kubernetes-ca/{{ item.src }}"
+        dest: "{{ kube_cert_dir }}/ca.{{ item }}"
+        content: "{{ lookup('community.sops.sops', (pki_dir, 'kubernetes-ca', 'kubernetes-ca.'+item)|path_join) }}"
         owner: root
         group: root
         mode: preserve
-        remote_src: true
       with_items:
-        - { src: ca.pem, dest: ca.crt }
-        - { src: private/ca.key, dest: ca.key }
+        - crt
+        - key
+
+    - name: kubeadm | Create cacert file with full cert chain
+      copy:
+        dest: "{{ kube_cert_dir }}/cacerts.pem"
+        content: |-
+          {{ lookup('community.sops.sops', (pki_dir, 'kubernetes-ca','kubernetes-ca.crt')|path_join) }}
+          {{ lookup('community.sops.sops', pki_dir+'/root-ca.crt') }}
 
     - name: kubeadm | Init certs phase
       command: >-
@@ -63,12 +69,8 @@
         --config={{ kube_config_dir }}/kubeadm-config.yaml
 
     - name: kubeadm | Append ca cert to apiserver cert
-      blockinfile:
-        path: "{{ kube_cert_dir }}/apiserver.crt"
-        content: "{{ lookup('community.sops.sops', item) }}"
-        marker: ''
-      no_log: true
-      with_file: "{{ pki_dir }}/kubernetes-ca/ca.sops.pem"
+      shell: >-
+        cat {{ kube_cert_dir }}/ca.crt >> {{ kube_cert_dir }}/apiserver.crt
 
     - name: kubeadm | Finish kubeadm init
       command: >-

@@ -66,6 +66,7 @@ controllerManager:
     cluster-cidr: "{{ kube_pods_subnet }}"
     service-cluster-ip-range: "{{ kube_service_addresses }}"
     node-cidr-mask-size: "{{ kube_network_node_prefix }}"
+    root-ca-file: "{{ kube_cert_dir }}/cacerts.pem"
 {% if kube_controller_feature_gates or kube_feature_gates %}
     feature-gates: "{{ kube_controller_feature_gates | default(kube_feature_gates, true) | join(',') }}"
 {% endif %}
