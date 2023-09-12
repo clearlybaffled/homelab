@@ -6,9 +6,6 @@
   tags: always
   become: true
   gather_facts: true
-  tasks:
-    - set_fact:
-        cluster_dir: "{{ root_dir }}/cluster"
 
 - name: Kubernetes Node setup
   hosts: kube_node

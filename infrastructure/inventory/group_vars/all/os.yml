@@ -3,6 +3,7 @@
 bin_dir: /usr/local/bin
 
 root_dir: "{{ ansible_config_file | dirname }}"
+cluster_dir: "{{ root_dir }}/cluster"
 
 ## Ansible User setup
 created_ansible_user: ansible
@@ -11,7 +12,7 @@ ansible_group: sys
 ansible_home_dir: /var/local/ansible
 
 public_ssh_keys:
-  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDBzdxxsMCjpMxOip8d2v1jCww0Ax+8md+3oFtHb0eb jared@barb"
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDBzdxxsMCjpMxOip8d2v1jCww0Ax+8md+3oFtHb0eb"
 
 # (string) Timezone for the servers
 timezone: "America/New_York"
