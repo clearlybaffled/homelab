@@ -52,6 +52,10 @@ apps:
     charts:
       - chart: bitnami/mysql
         version: "{{ bitnami_mysql_chart_version }}"
+    kustomize:
+      resources:
+        - ./pvc.yaml
+        - ./pv.yaml
     secrets:
       secret:
 
@@ -63,6 +67,9 @@ apps:
       - chart: jetstack/cert-manager
         version: "{{ cert_manager_version }}"
         skipCrds: true
+    kustomize:
+      resources:
+        - ./cluster-issuer.yaml
     secrets:
       ca-keypair:
 

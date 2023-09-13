@@ -13,4 +13,9 @@ namespace: cert-manager
 generators:
     - ./secret-generator.yaml
 
+
+resources:
+  - ./cluster-issuer.yaml
+
+
 # END ANSIBLE MANAGED BLOCK

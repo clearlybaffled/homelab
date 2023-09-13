@@ -13,4 +13,10 @@ namespace: db
 generators:
     - ./secret-generator.yaml
 
+
+resources:
+  - ./pvc.yaml
+  - ./pv.yaml
+
+
 # END ANSIBLE MANAGED BLOCK
