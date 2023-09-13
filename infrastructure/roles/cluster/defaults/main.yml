@@ -113,9 +113,10 @@ apps:
       - <<: *app_template
         release: paperless-ngx
     pvc:
-      - size: 30Gi
+      - name: paperless-ngx-library
+        size: 30Gi
         storageClass: ceph-filesystem
-        volumeName: paperless-ngx-library
+        volumeName: pvc-650de951-6242-440d-96c7-d4f64836b4ce
     secrets:
       secret:
         data:
@@ -146,9 +147,10 @@ apps:
       - chart: k8s-at-home/mealie
         version: 5.1.2
     pvc:
-      - size: 10Gi
+      - name: mealie-api-data
+        size: 10Gi
         storageClass: ceph-block
-        volumeName: mealie-api-data
+        volumeName: pvc-ea675e74-cc24-479c-8b0e-6d4b7d6b58e9
         accessMode: ReadWriteOnce
     secrets:
       secret:
