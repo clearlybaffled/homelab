@@ -52,7 +52,8 @@ apps:
     charts:
       - chart: bitnami/mysql
         version: "{{ bitnami_mysql_chart_version }}"
-    secrets: {}
+    secrets:
+      secret:
 
   cert-manager:
     path: infrastructure
@@ -62,7 +63,8 @@ apps:
       - chart: jetstack/cert-manager
         version: "{{ cert_manager_version }}"
         skipCrds: true
-    secrets: {}
+    secrets:
+      ca-keypair:
 
   grocy:
     namespace: home
@@ -90,7 +92,6 @@ apps:
     charts:
       - chart: bitnami/redis
         version: "{{ bitnami_redis_chart_version }}"
-    secrets: {}
 
   rook-ceph:
     path: infrastructure
@@ -138,7 +139,8 @@ apps:
     charts:
       - chart: nextcloud/nextcloud
         version: "{{ nextcloud_chart_version }}"
-    secrets: {}
+    secrets:
+      secret:
 
   mealie:
     namespace: home
