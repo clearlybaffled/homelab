@@ -184,9 +184,3 @@ apps:
     charts:
       - <<: *app_template
         release: linkwarden
-
-  metrics-server:
-    namespace: monitoring
-    charts:
-      - chart: metrics-server/metrics-server
-        version: 3.11.0
