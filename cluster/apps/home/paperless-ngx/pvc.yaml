@@ -1,7 +1,7 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
 # template: infrastructure/roles/cluster/templates/pvc.yaml.j2
-# date: 2023-09-11 00:28:10
+# date: 2023-09-12 22:17:37
 # user: clearlybaffled
 # host: tirante
 # commit: 23455a5
@@ -21,5 +21,5 @@ spec:
     requests:
       storage: 30Gi
   storageClassName: ceph-filesystem
-  volumeName: paperless-ngx-library
+  volumeName: pvc-650de951-6242-440d-96c7-d4f64836b4ce
 # END ANSIBLE MANAGED BLOCK
