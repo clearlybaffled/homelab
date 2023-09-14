@@ -1,3 +1,4 @@
 debian:
   - postgresql
   - libpq-dev
+  - libvirt-clients

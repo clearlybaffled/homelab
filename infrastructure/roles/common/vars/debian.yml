@@ -19,8 +19,11 @@ k8s_required_packages:
   - libseccomp2
 
 kvm_packages:
-  - qemu-system
+  - "qemu-system{{ (host_architecture == 'amd64') | ternary('-x86', ( (host_architecture == 'arm64') | ternary('-arm', ''))) }}"
+  - qemu-utils
   - libvirt-clients
   - libvirt-daemon-system
+  - libvirt-daemon-system-systemd
   - libvirt-dev
   - virtinst
+  - bridge-utils
