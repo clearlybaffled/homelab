@@ -1,0 +1,12 @@
+---
+- name: Install Cert-manager certs
+  kubernetes.core.k8s:
+    api_version: v1
+    kind: Secret
+    name: ca-key-pair
+    namespace: Cert-manager
+    definition:
+      type: kubernetes.io/tls
+      data:
+        tls.crt: "{{ lookup('community.sops.sops', pki_dir+'/kubernetes-ca/kubernetes-ca.crt') | b64encode }}"
+        tls.key: "{{ lookup('community.sops.sops', pki_dir+'/kubernetes-ca/kubernetes-ca.key') | b64encode }}"
