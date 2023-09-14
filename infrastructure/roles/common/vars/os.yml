@@ -1,0 +1,21 @@
+---
+common_packages:
+  - curl
+  - git
+  - ca-certificates
+  - vim
+  - git
+  - wget
+  - policycoreutils-python-utils
+  - tree
+  - jq
+  - lshw
+  - htop
+  - hdparm
+  - gnupg-agent
+  - socat
+  - dos2unix
+  - smartmontools
+  - rsync
+  - unzip
+  - zstd

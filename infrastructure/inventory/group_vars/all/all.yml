@@ -4,42 +4,16 @@ bin_dir: /usr/local/bin
 
 root_dir: "{{ ansible_config_file | dirname }}"
 cluster_dir: "{{ root_dir }}/cluster"
+infra_dir: "{{ root_dir }}/infrastructure"
+pki_dir: "{{ infra_dir }}/pki"
 
 ## Ansible User setup
-created_ansible_user: ansible
-ansible_user: ansible
-ansible_group: sys
-ansible_home_dir: /var/local/ansible
-
-public_ssh_keys:
-  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDBzdxxsMCjpMxOip8d2v1jCww0Ax+8md+3oFtHb0eb"
+local_ansible_user: ansible
+local_ansible_group: sys
+local_ansible_homedir: /var/local/ansible
 
 # (string) Timezone for the servers
 timezone: "America/New_York"
-
-# (list) Additional ssh public keys to add to the nodes
-# ssh_authorized_keys:
-
-common_packages:
-  - curl
-  - git
-  - ca-certificates
-  - vim
-  - git
-  - wget
-  - policycoreutils-python-utils
-  - tree
-  - jq
-  - lshw
-  - htop
-  - hdparm
-  - gnupg-agent
-  - socat
-  - dos2unix
-  - smartmontools
-  - rsync
-  - unzip
-  - zstd
 
 _host_architecture_groups:
   x86_64: amd64

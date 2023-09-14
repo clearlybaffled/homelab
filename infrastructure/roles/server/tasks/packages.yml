@@ -43,8 +43,16 @@
     state: present
 
 - name: Install Mozilla SOPS
-  include_role:
-    name: community.sops.install
+  block:
+    - name: Check if SOPS is installed
+      command: which sops
+      register: sops_cmd
+      any_errors_fatal: false
+      changed_when: false
+    - name: Install Mozilla SOPS
+      include_role:
+        name: community.sops.install
+      when: sops_cmd.rc != 0
 
 - name: Install python packages
   pip:

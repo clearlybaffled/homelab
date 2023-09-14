@@ -1,4 +1,10 @@
 ---
+- name: Install KVM
+  include_tasks: kvm.yml
+  when: inventory_hostname in groups['kvm']
+
+- meta: "end_play"
+
 # Some Debian based distros ship without Python installed
 - name: Check if bootstrap is needed
   raw: which python3
@@ -42,18 +48,17 @@
   block:
     - name: User Configuration | Create a new regular user
       user:
-        name: "{{ created_ansible_user }}"
+        name: "{{ local_ansible_user }}"
         state: present
-        groups: "{{ ansible_group }}"
+        groups: "{{ local_ansible_group }}"
         append: true
         create_home: true
-        home: "{{ ansible_home_dir }}"
+        home: "{{ local_ansible_homedir }}"
         shell: /bin/bash
     - name: User Configuration | Add additional SSH public keys
       ansible.posix.authorized_key:
-        user: "{{ created_ansible_user }}"
-        key: "{{ item }}"
-      loop: "{{ public_ssh_keys | default([]) }}"
+        user: "{{ local_ansible_user }}"
+        key: "{{ lookup('community.sops.sops', 'ansible_user.pub') }}"
     - name: User Configuration | Setup passwordless sudo
       blockinfile:
         dest: /etc/sudoers.d/ansible
@@ -63,13 +68,13 @@
         create: true
         validate: '/usr/sbin/visudo -cf %s'
         block: |
-          %{{ ansible_group }}      ALL=(ALL) NOPASSWD: ALL
-          Defaults:%{{ ansible_group }}    !requiretty
+          %{{ local_ansible_group }}      ALL=(ALL) NOPASSWD: ALL
+          Defaults:%{{ local_ansible_group }}    !requiretty
     - name: User Configuration | Silence the login prompt
       file:
-        dest: "/var/local/{{ created_ansible_user }}/.hushlogin"
+        dest: "{{ local_ansible_homedir }}/.hushlogin"
         state: touch
-        owner: "{{ created_ansible_user }}"
+        owner: "{{ local_ansible_user }}"
         mode: "0775"
         modification_time: preserve
         access_time: preserve
@@ -109,6 +114,3 @@
 - name: Run package install
   include_tasks: packages.yml
 
-- name: Install KVM
-  include_tasks: kvm.yml
-  when: inventory_hostname in groups['kvm']

@@ -1,4 +1,7 @@
 ---
+- name: Include common os variables
+  include_vars: os.yml
+
 - name: gather os specific variable
   include_vars: "{{ item }}"
   with_first_found:

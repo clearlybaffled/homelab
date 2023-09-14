@@ -42,15 +42,20 @@
       ansible.windows.win_powershell: |
         if (!(Get-NetFirewallRule -Name "OpenSSH-Server-In-TCP" -ErrorAction SilentlyContinue | Select-Object Name, Enabled)) {
             Write-Output "Firewall Rule 'OpenSSH-Server-In-TCP' does not exist, creating it..."
+            netsh interface portproxy add v4tov4 listenaddress=0.0.0.0 listenport=2222 connectaddress=$WSL_ADDRESS connectport=22
             New-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
+            New-NetFirewallRule -Name 'OpenSSH-Server-Forward-to-WSL' -DisplayName 'OpenSSH Server (sshd) - WSL proxy' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 2222
         } else {
             Write-Output "Firewall rule 'OpenSSH-Server-In-TCP' has been created and exists."
         }
+        $wsl_ipaddress = wsl -d "Ubuntu" hostname -I
+        netsh interface portproxy delete v4tov4 listenaddress=0.0.0.0 listenport=2222
+        netsh interface portproxy add v4tov4 listenaddress=0.0.0.0 listenport=2222 connectaddress=$wsl_ipaddress connectport=22
 
     - name: windows | sshd | add my key to admin authorized keys
       ansible.windows.win_copy:
         dest: 'C:\ProgramData\ssh\administrator_authorized_keys'
-        content: "{{ jared_public_ssh_key }}"
+        src: "{{ lookup('env','HOME') }}/.ssh/id_rsa.pub"
 
     - name: windows | sshd | fix permissions on administrator_authorized_keys
       ansible.windows.win_powershell: |

@@ -2,6 +2,5 @@
 collections:
   - name: lvrfrc87.git_acp
     type: galaxy
-  - name: ansible_freeipa
+  - name: freeipa.ansible_freeipa
     type: galaxy
-    version: 1.11.1

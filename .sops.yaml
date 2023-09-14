@@ -4,10 +4,7 @@ keys_groups: &default_keys
     - &age age1e764qpphm5nlzp04qf6zcq8f400390d9wmzramq84hqp60k6qyvqsvgg45
 
 creation_rules:
-  - path_regex: .*\.sops\.ya?ml
+  - path_regex: .*\.sops\.yaml
     encrypted_regex: "^(data|stringData)$"
     key_groups: *default_keys
-  - path_regex: .*\.(crt|pem|key)
-    key_groups: *default_keys
-  - path_regex: /dev/stdin
-    key_groups: *default_keys
+  - key_groups: *default_keys
