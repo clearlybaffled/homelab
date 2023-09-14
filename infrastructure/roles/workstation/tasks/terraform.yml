@@ -1,0 +1,10 @@
+---
+- name: Install Terraform
+  apt:
+    package: terraform
+
+- name: Verify install
+  command: terraform -help
+
+- name: Install autocomplete
+  command: terraform -install-autocomplete

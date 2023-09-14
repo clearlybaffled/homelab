@@ -1,0 +1,65 @@
+#cloud-config
+
+hostname: tang
+fqdn: tang.hermleigh.home
+prefer_fqdn_over_hostname: true
+
+ssh_pwauth: false
+
+users:
+- name: ansible
+  gecos: Ansible User
+  groups: users,admin,wheel
+  sudo: ALL=(ALL) NOPASSWD:ALL
+  shell: /bin/bash
+  lock_passwd: true
+  ssh_authorized_keys:
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHDBzdxxsMCjpMxOip8d2v1jCww0Ax+8md+3oFtHb0eb
+
+package_update: true
+package_upgrade: true
+package_reboot_if_required: true
+
+packages:
+  - qemu-guest-agent
+
+ntp:
+  enabled: true
+  servers:
+    - 172.16.1.1 
+
+ca_certs:
+  trusted:
+    - |- 
+      -----BEGIN CERTIFICATE-----
+      MIIFjTCCA3WgAwIBAgIBATANBgkqhkiG9w0BAQsFADBHMQswCQYDVQQGEwJVUzEX
+      MBUGA1UEChMOSEVSTUxFSUdILkhPTUUxHzAdBgNVBAMTFkhlcm1sZWlnaCBIb21l
+      IFJvb3QgQ0EwHhcNMjMwNTE2MTYxMzI3WhcNMzMwNTEzMTYxMzI3WjBHMQswCQYD
+      VQQGEwJVUzEXMBUGA1UEChMOSEVSTUxFSUdILkhPTUUxHzAdBgNVBAMTFkhlcm1s
+      ZWlnaCBIb21lIFJvb3QgQ0EwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoIC
+      AQC9ia4885XjYc233h6dyr9TczPAmxcJHg7j84oDJ4vhyry5zbYkKlsnkuKAglvV
+      WhSwDYcfUwPRGEI54b7i2wx9TVu7N8S2rQTCDCnSZJLkhkFIYfpqbaJTx1qIRmns
+      Vb98EYoen3X6bYyVpSJEe8z8XB1/Tm81uqwTmQjy2ZOem6ejPmla7cFPBtAxassH
+      /V5CNae7oo0YioSX/6ywgiNeQfxKWsXBUFsudePPUCjfqW90yAr/bzMRIl1nUyK4
+      lkAGeuXBGzu7EEch9HFILGv1BEXEDEM8c6J12CbCUu6lfyEXnhrHazIKih6z3mTe
+      afNwF+ZdwsaGrbegdVTlb5nzHiHJJ+PNhCktPyXtdNogOJFK4Hbju6E2V3yDpVQf
+      1JcEZow8BhaEqjYv+QTuK7YoTVm3t2PE2N8bRjVsX4ptsdVOZnCukQepqEe45Bot
+      FbsBIczjttGQuI9yRH0keHvH7y2SYb130Ff6LgRBYruJc39Gx9Crw4tcX9nmrVjJ
+      O9nlvMPbY2Dh3YawWIOWPeExZLMHbOOBRIiamv2b1KeAV8V7PcnA24hKcZ5TjFdb
+      6U1qGUCqKISpfvgjP0bp7CvrKCJswUsAolBgeKLXV0vDy81Jj3n/7xylrppFQVUT
+      Mw0zTxwvqhg1E+3ActfUpwIpW+w0ASaEZZfB49enclqyKwIDAQABo4GDMIGAMA8G
+      A1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgGGMD4GA1UdJQEB/wQ0MDIGCCsG
+      AQUFBwMDBggrBgEFBQcDAgYIKwYBBQUHAwEGCCsGAQUFBwMEBggrBgEFBQcDCDAd
+      BgNVHQ4EFgQUvrwR8FIwxhUBYunRkUxjuFgHzM0wDQYJKoZIhvcNAQELBQADggIB
+      AG/viJu9m6BAAJmyiWF7BLtG+hRrVJjm51U8FXUL6ILcfUS/cBqGRHQD4x54rPJz
+      NIiXp1KTNwszVZt1+4nOdopLYXfHnrf5h6q9rj+Vp96w/cN75rjgIyFY8towPUEj
+      OuKlbxF914hYoXCygbGnqmp6T3N7LZmnfrs5RrADmORJdlc82WxoDVwUjIqagAWi
+      Yt3cAcK7N1CDZ6S+RYwC+dSQXJCcTZJHjwYD5DHDNeBjtT+fhh7MxOiXnI4D/M8J
+      nCKgcAQkU+siaosZ1Q+oKyvYIbS7VOyQKaTlIzR6WwTwxT7wVtD+TqaNR+HzR6eq
+      TX6fUYQCGcU5qR1lO33ErakTPa59b0f2VxoKX78ZrI2OqOYSJ4L2ScXn7K2MByQz
+      WFZwU/Dv1TWJfxgtdUCa1MrIwgEHHaK4p5cKaNmF7nI7f9kBzMmytTBooiqTUmeY
+      btJyn7hEQwFuSQLQ6oz9apsy2YOA5YV5JeLF7Hq/bSHNdaNhgA5mkTZBErb4+Z/A
+      Mnis9VsRPjLt2mVkjne7CrIL6jzGg7dV2YmtipQ+KqNnvw8X8/V4VWOCTPWsgSkO
+      rQSz0Y6iuk6Sa4gmhL9GoLhyaf4bSsFy51sWg0n9JfP90Q0hOtDeWVyTW5JlQvnP
+      rX8J13z+ArMcg5AkdoZ2YELK7/UeacJirqinTbPhDpH/
+      -----END CERTIFICATE-----
