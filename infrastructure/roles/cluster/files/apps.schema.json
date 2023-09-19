@@ -1,0 +1,162 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "apps",
+  "type": "object",
+  "patternProperties": {
+    "^[a-zA-Z0-9-]+$": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "title": "path",
+          "type": "string"
+        },
+        "charts": {
+          "title": "charts",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "valueFiles": {
+                "title": "valueFiles",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "skipCrds": {
+                "title": "skipCrds",
+                "type": "boolean"
+              },
+              "release": {
+                "title": "release",
+                "type": "string"
+              },
+              "chart": {
+                "title": "chart",
+                "type": "string"
+              },
+              "version": {
+                "title": "version",
+                "type": "string"
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "chart",
+              "version"
+            ]
+          }
+        },
+        "pv": {
+          "title": "pv",
+          "type": "boolean",
+          "description": "If there is a pv.yaml file in the application's manifest directory so that it gets included in the kustomize.yaml, if we need one." 
+        },
+        "namespace": {
+          "title": "namespace",
+          "type": "string",
+          "description": "The namespace to deploy this application to"
+        },
+        "kustomize": {
+          "title": "kustomize",
+          "type": "object",
+          "properties": {
+            "charts": {
+              "title": "charts",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "release": {
+                    "title": "release",
+                    "type": "string"
+                  },
+                  "namespace": {
+                    "title": "namespace",
+                    "type": "string"
+                  },
+                  "chart": {
+                    "title": "chart",
+                    "type": "string"
+                  },
+                  "version": {
+                    "title": "version",
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": true,
+                "required": [
+                  "release",
+                  "namespace",
+                  "chart",
+                  "version"
+                ]
+              }
+            },
+            "resources": {
+              "title": "resources",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "extras": {
+              "title": "extras",
+              "type": "object"
+            }
+          },
+          "additionalProperties": true
+        },
+        "pvc": {
+          "title": "pvc",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "storageClass": {
+                    "title": "storageClass",
+                    "type": "string"
+                  },
+                  "size": {
+                    "title": "size",
+                    "type": "string"
+                  },
+                  "volumeName": {
+                    "title": "volumeName",
+                    "type": "string"
+                  },
+                  "accessMode": {
+                    "title": "accessMode",
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": true,
+                "required": [
+                  "storageClass",
+                  "size",
+                  "volumeName"
+                ]
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": true
+            }
+          ]
+        },
+        "secrets": {
+          "title": "secrets",
+          "type": "object",
+          "additionalProperties": true
+        },
+        "wave": {
+          "title": "wave",
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

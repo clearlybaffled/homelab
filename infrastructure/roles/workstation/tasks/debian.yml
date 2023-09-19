@@ -1,0 +1,25 @@
+---
+- name: Add HashiCorp apt repository key
+  block:
+    - name: Download Hashicorp repo GPG key
+      get_url:
+        url: "{{ hashicorp_repo_key_url }}"
+        dest: /etc/apt/trusted.gpg.d/hashicorp.asc
+        mode: '0644'
+        force: true
+
+    - name: Get lsb_release
+      command: lsb_release -cs
+      register: lsb_release
+
+    - name: HashiCorp  | apt source
+      apt_repository:
+        repo: "deb [signed-by=/etc/apt/trusted.gpg.d/hashicorp.asc] https://apt.releases.hashicorp.com {{ lsb_release.stdout }} main"
+        state: present
+
+    - name: Update apt cache
+      apt:
+        update_cache: true
+
+- name: Setup up Terraform on Debian
+  include_tasks: terraform.yml

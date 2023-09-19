@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=../files/apps.schema.json
 ---
 app_template: &app_template
   chart: bjw-s/app-template
@@ -67,11 +68,6 @@ apps:
       - chart: jetstack/cert-manager
         version: "{{ cert_manager_version }}"
         skipCrds: true
-    kustomize:
-      resources:
-        - ./cluster-issuer.yaml
-    secrets:
-      ca-keypair:
 
   grocy:
     namespace: home

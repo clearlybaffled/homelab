@@ -1,0 +1,27 @@
+---
+- name: Provision FreeIPA virtual hosts using terraform
+  hosts: localhost
+  tasks:      
+    - name: Install cloud-init templates
+      template:
+        src: "{{infra_dir}}/terraform/templates/{{ item }}.j2"
+        dest: "{{ infra_dir }}/terraform/ipa/{{ item }}"
+      loop:
+        - ipa_cloud_init
+
+    - name: Provision KVM hosts with terraform
+      community.general.terraform:
+        project_path: "{{ infra_dir }}/terraform/ipa"
+    
+    - name: Refresh inventory
+      meta: "refresh_inventory"
+
+
+- name: Wait for vm
+  hosts: tang
+  gather_facts: false
+  tasks:
+    - name: Wait for host to be ready
+      wait_for_connection:
+        delay: 120
+        sleep: 10

@@ -60,7 +60,7 @@
         dest: "{{ kube_cert_dir }}/cacerts.pem"
         content: |-
           {{ lookup('community.sops.sops', (pki_dir, 'kubernetes-ca','kubernetes-ca.crt')|path_join) }}
-          {{ lookup('community.sops.sops', pki_dir+'/root-ca.crt') }}
+          {{ root-ca.crt }}
 
     - name: kubeadm | Init certs phase
       command: >-
@@ -95,14 +95,14 @@
 #     name: kubernetes/users
 #   vars:
 #     kube_user: ansible-admin
-#     username: "{{ ansible_user }}"
-#     groupname: "{{ ansible_group }}"
+#     username: "{{ local_ansible_user }}"
+#     groupname: "{{ local_ansible_group }}"
 
 # - name: Write kubeconfig
 #   copy:
-#     dest: "{{ ansible_home_dir }}/.kube/config"
+#     dest: "{{ local_ansible_homedir }}/.kube/config"
 #     content: "{{ kubeconfig }}"
-#     owner: "{{ ansible_user }}"
-#     group: "{{ ansible_group }}"
+#     owner: "{{ local_ansible_user }}"
+#     group: "{{ local_ansible_group }}"
 #     mode: "0600"
 #     force: true

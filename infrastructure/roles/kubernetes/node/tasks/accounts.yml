@@ -22,15 +22,15 @@
 
 - name: Add ansible_user to kube_group
   user:
-    name: "{{ ansible_user }}"
+    name: "{{ local_ansible_user }}"
     groups:
       - "{{ kube_group }}"
     append: true
 
 - name: Ensure ansible_user has a ~/.kube directory
   file:
-    path: "{{ ansible_home_dir }}/.kube"
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_group }}"
+    path: "{{ local_ansible_homedir }}/.kube"
+    owner: "{{ local_ansible_user }}"
+    group: "{{ local_ansible_group }}"
     state: directory
     mode: "0700"

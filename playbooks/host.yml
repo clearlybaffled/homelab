@@ -4,7 +4,6 @@
   gather_facts: true
   any_errors_fatal: true
   become: true
-  become_method: sudo
   tags: server
   roles:
     - server
@@ -13,6 +12,7 @@
 - name: Workstation Provisioning
   hosts: workstations
   gather_facts: true
+  become: true
   tags: workstation
   roles:
     - workstation

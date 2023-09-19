@@ -6,3 +6,7 @@
   pip:
     name: "{{ pip_packages }}"
   when: pip_packages is defined
+
+- name: Install Mozilla SOPS
+  include_role:
+    name: community.sops.install

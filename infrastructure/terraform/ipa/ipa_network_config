@@ -1,0 +1,24 @@
+# version: 2
+# ethernets:
+#   eth0:
+#     addresses:
+#       - 172.16.2.2/24
+#     gateway4: 172.16.2.1
+#     nameservers:
+#       search:
+#         - hermleigh.home
+#       addresses:
+#         - 172.16.1.1
+
+version: 1
+config:
+  - type: physical
+    name: eth0
+    subnets:
+      - type: static
+        address: 172.16.2.2/24
+        gateway: 172.16.2.1
+        dns_nameservers:
+          - 172.16.1.1
+        dns_search:
+          - hermleigh.home

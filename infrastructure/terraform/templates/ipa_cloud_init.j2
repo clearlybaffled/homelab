@@ -1,0 +1,34 @@
+#cloud-config
+
+hostname: tang
+fqdn: tang.hermleigh.home
+prefer_fqdn_over_hostname: true
+
+ssh_pwauth: false
+
+users:
+- name: {{ local_ansible_user }}
+  gecos: Ansible User
+  groups: users,admin,wheel
+  sudo: ALL=(ALL) NOPASSWD:ALL
+  shell: /bin/bash
+  lock_passwd: true
+  ssh_authorized_keys:
+    - {{ ansible_user_ssh_pubkey }}
+
+package_update: true
+package_upgrade: true
+package_reboot_if_required: true
+
+packages:
+  - qemu-guest-agent
+
+ntp:
+  enabled: true
+  servers:
+    - 172.16.1.1 
+
+ca_certs:
+  trusted:
+    - |- 
+      {{ root-ca.crt | indent(width=6) }}
