@@ -53,6 +53,12 @@ apps:
     charts:
       - chart: bitnami/mysql
         version: "{{ bitnami_mysql_chart_version }}"
+    kustomize:
+      resources:
+        - ./pvc.yaml
+        - ./pv.yaml
+    secrets:
+      secret:
 
   cert-manager:
     path: infrastructure
@@ -62,9 +68,6 @@ apps:
       - chart: jetstack/cert-manager
         version: "{{ cert_manager_version }}"
         skipCrds: true
-      - chart: jetstack/trust-manager
-        version: "{{ trust_manager_version }}"
-        valueFiles: []
 
   grocy:
     namespace: home
@@ -114,9 +117,10 @@ apps:
       - <<: *app_template
         release: paperless-ngx
     pvc:
-      - size: 30Gi
+      - name: paperless-ngx-library
+        size: 30Gi
         storageClass: ceph-filesystem
-        volumeName: paperless-ngx-library
+        volumeName: pvc-650de951-6242-440d-96c7-d4f64836b4ce
     secrets:
       secret:
         data:
@@ -128,6 +132,9 @@ apps:
           PAPERLESS_ADMIN_PASSWORD:
             type: password
             name: admin
+    kustomize:
+      resources:
+        - ./pvc.yaml
 
   nextcloud:
     namespace: home
@@ -135,6 +142,8 @@ apps:
     charts:
       - chart: nextcloud/nextcloud
         version: "{{ nextcloud_chart_version }}"
+    secrets:
+      secret:
 
   mealie:
     namespace: home
@@ -143,15 +152,19 @@ apps:
       - chart: k8s-at-home/mealie
         version: 5.1.2
     pvc:
-      - size: 10Gi
+      - name: mealie-api-data
+        size: 10Gi
         storageClass: ceph-block
-        volumeName: mealie-api-data
+        volumeName: pvc-ea675e74-cc24-479c-8b0e-6d4b7d6b58e9
         accessMode: ReadWriteOnce
     secrets:
       secret:
         data:
           POSTGRES_USER: mealie
           POSTGRES_PASSWORD: mealie
+    kustomize:
+      resources:
+        - ./pvc.yaml
 
   linkding:
     namespace: home
@@ -178,9 +191,3 @@ apps:
     charts:
       - <<: *app_template
         release: linkwarden
-
-  metrics-server:
-    namespace: monitoring
-    charts:
-      - chart: metrics-server/metrics-server
-        version: 3.11.0

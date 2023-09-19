@@ -1,10 +1,10 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
 # template: infrastructure/roles/cluster/templates/pvc.yaml.j2
-# date: 2023-09-10 20:06:09
+# date: 2023-09-19 07:27:09
 # user: clearlybaffled
 # host: tirante
-# commit: c087a4b
+# commit: 23455a5
 #
 ---
 apiVersion: v1
@@ -21,5 +21,5 @@ spec:
     requests:
       storage: 10Gi
   storageClassName: ceph-block
-  volumeName: mealie-api-data
+  volumeName: pvc-ea675e74-cc24-479c-8b0e-6d4b7d6b58e9
 # END ANSIBLE MANAGED BLOCK
