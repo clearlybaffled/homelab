@@ -37,7 +37,8 @@ Welcome to my homelab! The repository is mostly focused on a modest kubernetes c
 $ python3 -m venv .venv
 $ source .venv/bin/activate
 $ pip install -U -r requirements.txt
-$ ansible-playbook -K playbooks/cluster.yml
+$ ansible-galaxy collection install -U -r requirements.yaml
+$ ansible-playbook playbooks/cluster.yml
 $ kubectl apply --server-side -f cluster/cluster.yaml
 ```
 
@@ -92,10 +93,13 @@ This Git repository contains the following top level directories.
 |<img width="32" src="https://raw.githubusercontent.com/flannel-io/flannel/master/logos/flannel-glyph-color.svg">|[Flannel](https://www.github.com/flannel-io/flannel)|Kubernetes Network Plugin|
 |<img width="32" src="https://github.com/cncf/artwork/blob/master/projects/helm/icon/color/helm-icon-color.png?raw=true">|[Helm](https://helm.sh)|The package manager for Kubernetes|
 |<img width="32" src="https://docs.nginx.com/nginx-ingress-controller/images/icons/NGINX-Ingress-Controller-product-icon.svg">|[Ingress-nginx](https://kubernetes.github.io/ingress-nginx/)| Ingress controller for Kubernetes using NGINX as a reverse proxy and load balancer|
+|<img width="32" src="https://www.linux-kvm.org/kvmless/kvmbanner-logo3.png">|[KVM](https://www.linux-kvm.org)| Linux Kernel Virtual Machine Hypervisor |
 |<img width="32" src="https://github.com/cncf/artwork/blob/master/projects/kubernetes/icon/color/kubernetes-icon-color.svg?raw=true">|[Kubernetes](https://kubernetes.io)|Container Orchestration|
 |<img width="32" src="https://avatars.githubusercontent.com/u/60239468?s=200&v=4">|[MetalLB](https://metallb.org)|Bare metal load-balancer for Kubernetes|
 |<img width="32" src="https://github.com/cncf/artwork/blob/aea0dcfe090b8f36d7ae1eb3d5fbe95cc77380d3/projects/prometheus/icon/color/prometheus-icon-color.png?raw=true">|[Prometheus](https://prometheus.io)|Systems monitoring and alerting toolkit|
+|<img width="32" src="https://www.virt-tools.org/logo-qemu.png">|[QEMU](https://www.qemu.org)|Open source machine emulator and virtualizer|
 |<img width="32" src="https://github.com/cncf/artwork/blob/master/projects/rook/icon/color/rook-icon-color.png?raw=true">|[Rook](https://rook.io)|Cloud-native storage orchestrator for Ceph|
+|<img width="32" src="https://api.iconify.design/logos/terraform-icon.svg">|[Terraform](https://www.terraform.io/)|Infrastructure provisioning automation| 
 |<img width="32" src="https://docs.zerotier.com/img/ZeroTierIcon.png">|[ZeroTier](https://zerotier.com)|Virtual Networking that just works|
 
 ### Applications
@@ -135,7 +139,7 @@ This Git repository contains the following top level directories.
 - [K8s-At-Home Project](https://k8s-at-home.com)
 
 <details>
-<summary>Repository Stats</summary>
+<summary><h3>&nbsp;📈 Repository Stats</h3></summary>
 <br/>
 
 ## ⭐ Stargazers
@@ -143,7 +147,7 @@ This Git repository contains the following top level directories.
 
 [![Star History Chart](https://api.star-history.com/svg?repos=clearlybaffled/homelab&type=Date)](https://star-history.com/#clearlybaffled/homelab&Date)
 
-## Repobeats
+## 🎶 Repobeats
 
 ![Alt](https://repobeats.axiom.co/api/embed/d99fddfc840ac253fd4c4975137e1561dfaf128d.svg "Repobeats analytics image")
 
