@@ -18,6 +18,8 @@
     append: true
     groups:
       - libvirt
+      - libvirt-qemu
+      - kvm
 
 - name: Enable and start Libvirt daemon
   ansible.builtin.service:
@@ -52,7 +54,6 @@
       community.libvirt.virt_net:
         name: "{{ net_name }}"
         command: define
-        autostart: true
         xml: |-
           <network>
             <name>{{ net_name }}</name>
@@ -62,7 +63,11 @@
             <ip family='ipv4' address='{{ net_addr }}' prefix='{{ net_mask }}'/>
           </network>
 
+    - name: Autostart virtnet network
+      community.libvirt.virt_net:
+        name: "{{ net_name }}"
+        autostart: true
     - name: Start virtnet network
       community.libvirt.virt_net:
         name: "{{ net_name }}"
-        state: active
+        command: start

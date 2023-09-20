@@ -52,7 +52,7 @@
     - name: User Configuration | Add additional SSH public keys
       ansible.posix.authorized_key:
         user: "{{ local_ansible_user }}"
-        key: "{{ lookup('community.sops.sops', 'ansible_user.pub') }}"
+        key: "{{ ansible_user_ssh_pubkey }}"
     - name: User Configuration | Setup passwordless sudo
       blockinfile:
         dest: /etc/sudoers.d/ansible
@@ -107,7 +107,3 @@
 
 - name: Run package install
   include_tasks: packages.yml
-
-- name: Install KVM
-  include_tasks: kvm.yml
-  when: inventory_hostname in groups['kvm']
