@@ -29,12 +29,13 @@ env:
   PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
   PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
   PAPERLESS_URL: https://paperless.gato.hermleigh.home
+  PAPERLESS_REDIS: redis://redis.db:6379
   USERMAP_UID: 997
   USERMAP_GID: 997
   TZ: America/New_York
 envFrom:
   - secretRef:
-      name: paperless-secret
+      name: paperless-ngx-secret
 service:
   main:
     ports:

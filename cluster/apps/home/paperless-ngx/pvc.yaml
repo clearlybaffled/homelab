@@ -1,10 +1,10 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
 # template: infrastructure/roles/cluster/templates/pvc.yaml.j2
-# date: 2023-09-19 07:27:09
+# date: 2023-09-19 07:51:12
 # user: clearlybaffled
 # host: tirante
-# commit: 23455a5
+# commit: 59b6ead
 #
 ---
 apiVersion: v1
