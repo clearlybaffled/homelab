@@ -1,0 +1,8 @@
+---
+- name: Launch ArgoCD
+  kubernetes.core.k8s:
+    definition: "{{ lookup('kubernetes.core.kustomize', dir=app_dir, binary_path=root_dir+'/scripts/kustomize') }}"
+    server_side_apply:
+      field_manager: ansible
+  tags: argocd
+  when: not query('kubernetes.core.k8s', kind='Application', api_version='argoproj.io/v1alpha1', namespace='argocd', resource_name='argocd')

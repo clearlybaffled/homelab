@@ -4,7 +4,7 @@
     mysql_root: "{{ query('kubernetes.core.k8s', kind='Secret', namespace='db', resource_name='mysql')[0].data }}"
     postgres_admin: "{{ query('kubernetes.core.k8s', kind='Secret', namespace='db', resource_name='cnpg-cluster-superuser')[0].data }}"
 
-- name: Install sops-age-key secret
+- name: Install sops-age-key secret to ArgoCD Namespace for KSOPS
   kubernetes.core.k8s:
     api_version: v1
     kind: Secret
@@ -12,7 +12,7 @@
     name: sops-age-key
     definition:
       data:
-        keys.txt: "{{ lookup('file', (lookup('env','HOME'), '.config', 'sops', 'age', 'keys.txt')| path_join) | b64encode }}"
+        keys.txt: "{{ lookup('file', lookup('env','SOPS_AGE_KEY_FILE')) | b64encode }}"
 
 - name: Install Application specific configurations and files
   include_tasks: application.yml
@@ -39,20 +39,9 @@
         ) | path_join
       }}
 
-# - name: Install ArgoCD
-#   kubernetes.core.k8s:
-#     definition: "{{ lookup('kubernetes.core.kustomize', dir=((cluster_dir, 'argocd')|path_join), binary_path=root_dir+'/scripts/kustomize') }}"
-#     ca_cert: "{{ cluster_cacerts }}"
-#     server_side_apply:
-#       field_manager: ansible
-#   tags: argocd
-#   when: not query('kubernetes.core.k8s', kind='CustomResourceDefinition', resource_name='applications.argoproj.io')
-
 # - name: Bootstrap cluster
 #   kubernetes.core.k8s:
 #     src: "{{ (cluster_dir, 'cluster.yaml') | path_join }}"
-#     ca_cert: "{{ cluster_cacerts }}"
 #     server_side_apply:
 #       field_manager: ansible
 #   tags: bootstrap
-#   when: not query('kubernetes.core.k8s', kind='Application', namespace='argocd', resource_name='cluster', api_version='argoproj.io/v1alpha1')
