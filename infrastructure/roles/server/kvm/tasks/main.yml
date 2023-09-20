@@ -71,3 +71,8 @@
       community.libvirt.virt_net:
         name: "{{ net_name }}"
         command: start
+
+- name: Terraform KVM setup
+  community.general.terraform:
+    project_path: "{{ infra_dir }}/terraform/kvm"
+  delegate_to: localhost

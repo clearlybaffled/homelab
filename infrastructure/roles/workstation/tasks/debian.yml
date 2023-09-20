@@ -20,6 +20,3 @@
     - name: Update apt cache
       apt:
         update_cache: true
-
-- name: Setup up Terraform on Debian
-  include_tasks: terraform.yml

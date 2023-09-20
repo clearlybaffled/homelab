@@ -95,6 +95,7 @@ This Git repository contains the following top level directories.
 |<img width="32" src="https://docs.nginx.com/nginx-ingress-controller/images/icons/NGINX-Ingress-Controller-product-icon.svg">|[Ingress-nginx](https://kubernetes.github.io/ingress-nginx/)| Ingress controller for Kubernetes using NGINX as a reverse proxy and load balancer|
 |<img width="32" src="https://www.linux-kvm.org/kvmless/kvmbanner-logo3.png">|[KVM](https://www.linux-kvm.org)| Linux Kernel Virtual Machine Hypervisor |
 |<img width="32" src="https://github.com/cncf/artwork/blob/master/projects/kubernetes/icon/color/kubernetes-icon-color.svg?raw=true">|[Kubernetes](https://kubernetes.io)|Container Orchestration|
+|<img width="32" src="https://libvirt.org/logos/logo-square.svg">|[Libvirt](https://www.libvirt.org) | Virtualization API |
 |<img width="32" src="https://avatars.githubusercontent.com/u/60239468?s=200&v=4">|[MetalLB](https://metallb.org)|Bare metal load-balancer for Kubernetes|
 |<img width="32" src="https://github.com/cncf/artwork/blob/aea0dcfe090b8f36d7ae1eb3d5fbe95cc77380d3/projects/prometheus/icon/color/prometheus-icon-color.png?raw=true">|[Prometheus](https://prometheus.io)|Systems monitoring and alerting toolkit|
 |<img width="32" src="https://www.virt-tools.org/logo-qemu.png">|[QEMU](https://www.qemu.org)|Open source machine emulator and virtualizer|

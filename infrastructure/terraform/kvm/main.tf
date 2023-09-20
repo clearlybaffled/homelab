@@ -3,9 +3,9 @@ terraform {
     libvirt = {
       source = "dmacvicar/libvirt"
     }
-    sops = {
-      source = "carlpett/sops"
-      version = "1.0.0"
-    }
   }
+}
+
+provider "libvirt" {
+  uri   = "qemu+ssh://ansible@parche/system?keyfile=./ansible"
 }
