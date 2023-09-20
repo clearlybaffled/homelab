@@ -1,42 +1,43 @@
 {
+    "ansible.ansible.path": ".venv/bin/ansible",
+    "ansible.ansibleNavigator.path": ".venv/bin/ansible-navigator",
     "ansible.python.activationScript": ".venv/bin/activate",
-    "ansible.validation.lint.arguments": "-c .ansible-lint.yml",
+    "ansible.python.interpreterPath": "/home/jared/workspace/homelab/.venv/bin/python",
+    "ansible.validation.lint.path": ".venv/bin/ansible-lint",
+    "explorer.excludeGitIgnore": false,
     "files.associations": {
-        "*.yml": "ansible",
-        "*.j2": "ansible-jinja",
-        "config.js":"json"
+      "*.j2": "ansible-jinja",
+      "*.sops.yml": "yaml",
+      "*.yml": "ansible"
     },
     "files.autoSave": "onFocusChange",
     "gitlens.currentLine.enabled": false,
-    "explorer.excludeGitIgnore": false,
-    "python.terminal.activateEnvironment": false,
-    "yaml.schemas": {
-        "https://github.com/datreeio/CRDs-catalog/raw/main/traefik.io/ingressroute_v1alpha1.json": [
-            "ingress-route.yaml"
-        ],
-        "https://github.com/datreeio/CRDs-catalog/raw/main/traefik.io/ingressroutetcp_v1alpha1.json": [
-            "ingress-route-tcp.yaml"
-        ],
-        "https://github.com/datreeio/CRDs-catalog/raw/main/cert-manager.io/certificate_v1.json": [
-            "certificate.yaml"
-        ],
-        "https://github.com/datreeio/CRDs-catalog/raw/main/argoproj.io/application_v1alpha1.json": [
-            "cluster/manifest/*.yaml",
-            "cluster/cluster.yaml"
-        ],
-        "https://raw.githubusercontent.com/canonical/cloud-init/main/cloudinit/config/schemas/versions.schema.cloud-config.json": [
-            "*_cloud_init"
-        ],
-        "kubernetes": []
-    },
-    "ansible.python.interpreterPath": ".venv/bin/python",
-    "ansible.ansible.path": ".venv/bin/ansible",
-    "ansible.ansibleNavigator.path": ".venv/bin/ansible-navigator",
+    "python.terminal.activateEnvironment": true,
+    "sops.configPath": "./.sops.ysml",
     "vscord.app.name": "Visual Studio Code",
-    "vscord.status.state.text.editing": "Working on {folder_and_file}:{current_line}",
-    "vscord.status.state.text.viewing": "Viewing {folder_and_file}",
     "vscord.behavoiur.prioritizeLanguagesOverExtensions": true,
     "vscord.status.idle.disconnectOnIdle": true,
     "vscord.status.idle.resetElapsedTime": true,
-    "sops.configPath": "./.sops.ysml"
-}
+    "vscord.status.state.text.editing": "Working on {folder_and_file}:{current_line}",
+    "vscord.status.state.text.viewing": "Viewing {folder_and_file}",
+    "yaml.schemas": {
+      "https://github.com/datreeio/CRDs-catalog/raw/main/argoproj.io/application_v1alpha1.json": [
+        "cluster/manifest/*.yaml",
+        "cluster/cluster.yaml"
+      ],
+      "https://github.com/datreeio/CRDs-catalog/raw/main/cert-manager.io/certificate_v1.json": [
+        "certificate.yaml"
+      ],
+      "https://github.com/datreeio/CRDs-catalog/raw/main/traefik.io/ingressroute_v1alpha1.json": [
+        "ingress-route.yaml"
+      ],
+      "https://github.com/datreeio/CRDs-catalog/raw/main/traefik.io/ingressroutetcp_v1alpha1.json": [
+        "ingress-route-tcp.yaml"
+      ],
+      "https://raw.githubusercontent.com/canonical/cloud-init/main/cloudinit/config/schemas/versions.schema.cloud-config.json": [
+        "*_cloud_init"
+      ],
+      "kubernetes": []
+    }
+  }
+  

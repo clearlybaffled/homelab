@@ -25,4 +25,9 @@ rules:
     min-spaces-inside: 0
     max-spaces-inside: 0
 
-  indentation: enable
+  indentation:
+    indent-sequences: whatever
+    spaces: consistent
+
+  hyphens:
+    max-spaces-after: 1
