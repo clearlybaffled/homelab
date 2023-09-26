@@ -1,19 +1,79 @@
 ---
+- name: Generate IPA credentials
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Write out SOPS file to inventory
+      community.sops.sops_encrypt:
+        path: "{{ ipa_sops_file }}"
+        content_yaml: 
+          ipaadmin_password: "{{ lookup('password','/dev/null', length=30) }}"
+          ipads_password: "{{ lookup('password','/dev/null', length=30) }}"
+      when: ipa_sops_file not file
+      vars:
+        ipa_sops_file: "{{ (inventory, 'group_vars','ipaserver','credentials.sops.yml') | path_join }}"
+
 - name: Provision FreeIPA virtual hosts using terraform
   hosts: localhost
   tasks:
     - name: Provision KVM hosts with terraform
       community.general.terraform:
         project_path: "{{ infra_dir }}/terraform/ipa"
+      register: tf_ipa_out
 
     - name: Refresh inventory
       meta: "refresh_inventory"
 
+    - name: Add new host(s) to ipa host groups
+      add_host:
+        name: tf_ipa_out.hosts_created.value
+        group: ipaserver 
+
 - name: Wait for vm
-  hosts: tang
-  gather_facts: false
+  hosts: ipaserver
   tasks:
-    - name: Wait for host to be ready
+    - name: Wait for hosts to be ready
       wait_for_connection:
         delay: 10
         sleep: 30
+
+- name: IPA Server install - first stage
+  hosts: ipaserver
+  become: true
+  gather_facts: false
+  roles:
+    - name: ipaserver
+
+- name: Sign IPA Certificate Signing Request
+  hosts: localhost
+  gather_facts: false
+  vars:
+    ipa_csr_path: "/tmp/{{ groups.ipaserver[0] + '-ipa' }}.csr"
+  tasks:
+    - name: Copy CSR /root/ipa.csr from node to "{{ ipa_csr_path }}.csr"
+      fetch:
+        src: /root/ipa.csr
+        dest: "{{ ipa_csr_path }}.csr"
+        flat: yes
+    - name: Sign IPA CSR
+      ansible.builtin.include_role:
+        name: ca
+        tasks_from: issue-cert
+        apply:
+          vars:
+            signing_ca: root-ca
+            purpose: sub_ca
+            csr_path: "{{ ipa_csr_path }}.csr"
+
+    - name: Copy "{{ ip_csr_path }}.crt to /root/chain.crt on node"
+      copy:
+        src: "{{ ip_csr_path }}.crt"
+        dest: "/root/chain.crt"
+        force: yes
+
+- name: Continue IPA Setup with signed CA cert
+  hosts: ipaserver
+  become: true
+  gather_facts: false
+  roles:
+  - name: ipaserver
