@@ -21,22 +21,23 @@
   loop_control:
     label: "{{ item.0 }}"
   vars:
-    app: "{{ item.1 | combine({'name': item.0}) }}"
-    app_dir: >-
-      {{ (
-          cluster_dir,
-          (item.0 == 'argocd') | ternary('', 'apps'),
-          ('path' in item.1) | ternary(item.1.path, item.1.namespace),
-          item.0
-        ) | path_join
-      }}
-    manifest_file: >-
-      {{ (
-          cluster_dir,
-          'manifests',
-          ('path' in app) | ternary(app.path, app.namespace),
-          app.name+'.yaml'
-        ) | path_join
+    app: >-
+      {{ item.1 | combine({
+        'name': item.0,
+        'app_dir': (
+            cluster_dir,
+            (item.0 == 'argocd') | ternary('', 'apps'),
+            ('path' in item.1) | ternary(item.1.path, item.1.namespace),
+            item.0
+          ) | path_join,
+        'manifest_file':
+          (
+            cluster_dir,
+            'manifests',
+            ('path' in item.1) | ternary(item.1.path, item.1.namespace),
+            item.0+'.yaml'
+          ) | path_join
+        })
       }}
 
 # - name: Bootstrap cluster

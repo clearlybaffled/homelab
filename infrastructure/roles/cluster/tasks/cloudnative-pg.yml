@@ -1,0 +1,6 @@
+---
+- name: Start PostgreSQL cluster
+  kubernetes.core.k8s:
+    definition: "{{ app.manifest_file }}"
+    server_side_apply:
+      field_manager: ansible

@@ -58,7 +58,7 @@ apps:
         - ./pvc.yaml
         - ./pv.yaml
     secrets:
-      secret:
+      secret: {}
 
   cert-manager:
     path: infrastructure
@@ -143,7 +143,7 @@ apps:
       - chart: nextcloud/nextcloud
         version: "{{ nextcloud_chart_version }}"
     secrets:
-      secret:
+      secret: {}
 
   mealie:
     namespace: home
@@ -151,6 +151,7 @@ apps:
     charts:
       - chart: k8s-at-home/mealie
         version: 5.1.2
+    pv: true
     pvc:
       - name: mealie-api-data
         size: 10Gi

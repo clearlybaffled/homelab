@@ -1,7 +1,4 @@
 ---
-repo_url: 'https://github.com/clearlybaffled/homelab'
-branch: development
-
 prometheus_version: v0.65.2
 kube_prometheus_stack_chart_version: 46.8.0
 prometheus_adapter_chart_version: 4.0.2

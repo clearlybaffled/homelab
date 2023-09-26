@@ -13,7 +13,7 @@ metadata:
 spec:
   project: default
   
-{% set repo_dir = app_dir | relpath(root_dir) %}
+{% set repo_dir = app.app_dir | relpath(root_dir) %}
 {% if 'charts' in app %}
   sources:
 {% for chart in app.charts %}

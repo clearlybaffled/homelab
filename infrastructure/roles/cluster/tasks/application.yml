@@ -7,20 +7,22 @@
       loop: "{{ app.secrets | dict2items(key_name='name') }}"
       loop_control:
         loop_var: secret
-      when: sops_file is not file
+      when:
+        - sops_file is not file
+        - secret.value != {}
       vars:
-        sops_file: "{{ (app_dir, secret.name+'.sops.yaml')| path_join }}"
+        sops_file: "{{ (app.app_dir, secret.name+'.sops.yaml')| path_join }}"
 
     - name: Render KSOPS generator template | {{ app.name }}
       template:
         src: secret-generator.yaml.j2
-        dest: "{{ app_dir }}/secret-generator.yaml"
+        dest: "{{ app.app_dir }}/secret-generator.yaml"
       register: ksops
 
 - name: ArgoCD application manifest | {{ app.name }}
   blockinfile:
     block: "{{ lookup('template', 'application.yaml.j2', convert_data=false) }}"
-    dest: "{{ manifest_file }}"
+    dest: "{{ app.manifest_file }}"
     mode: "0644"
     create: true
   register: application
@@ -29,7 +31,7 @@
 - name: "Install Kustomization file | {{ app.name }}"
   blockinfile:
     block: "{{ lookup('template', 'kustomization.yaml.j2', convert_data=false) }}"
-    dest: "{{ app_dir }}/kustomization.yaml"
+    dest: "{{ app.app_dir }}/kustomization.yaml"
     mode: "0644"
     create: true
   register: kustomization
@@ -38,7 +40,7 @@
 - name: "Install PersistentVolumeClaim file | {{ app.name }}"
   blockinfile:
     block: "{{ lookup('template', 'pvc.yaml.j2', convert_data=false) }}"
-    dest: "{{ app_dir }}/pvc.yaml"
+    dest: "{{ app.app_dir }}/pvc.yaml"
     mode: "0644"
     create: true
   when: app.pvc is defined and app.pvc
@@ -59,12 +61,12 @@
     path: "{{ root_dir }}"
     comment: "[{{ app.name }}] Updated application config files"
     add:
-      - "{{ app_dir }}"
-      - "{{ manifest_file }}"
-    url: "{{ repo_url }}"
+      - "{{ app.app_dir }}"
+      - "{{ app.manifest_file }}"
+    url: "{{ git_repo_url }}"
     push: true
-    branch: "{{ branch }}"
+    branch: "{{ git_branch }}"
     ssh_params:
       key_file: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
-  when: lookup('pipe','git status --porcelain -- ' + (app_dir, manifest_file) | join(' '))
+  when: lookup('pipe','git status --porcelain -- ' + (app.app_dir, app.manifest_file) | join(' '))
   tags: commit
