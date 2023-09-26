@@ -10,7 +10,7 @@ Homelab
 
 [![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60&style=flat-square&logo=discord)](https://discord.gg/DNCynrJ)&nbsp;&nbsp;&nbsp;
 [![k8s](https://img.shields.io/badge/k8s-v1.27.2-blue?style=flat-square&logo=kubernetes)](https://k8s.io/)&nbsp;&nbsp;&nbsp;
-[![debian](https://img.shields.io/badge/debian-bullseye-C70036?style=flat-square&logo=debian&logoColor=C70036)](https://debian.org)&nbsp;&nbsp;&nbsp;
+[![debian](https://img.shields.io/badge/debian-bookworm-C70036?style=flat-square&logo=debian&logoColor=C70036)](https://debian.org)&nbsp;&nbsp;&nbsp;
 [![GitHub last commit](https://img.shields.io/github/last-commit/clearlybaffled/homelab/development?style=flat-square&logo=git&color=F05133)](https://github.com/clearlybaffled/homelab/commits/development)
 
 [![WTFPL](https://img.shields.io/github/license/clearlybaffled/homelab?style=flat-square&color=darkred)](http://www.wtfpl.net/)&nbsp;&nbsp;&nbsp;
@@ -42,9 +42,9 @@ $ ansible-playbook playbooks/cluster.yml
 $ kubectl apply --server-side -f cluster/cluster.yaml
 ```
 
-## 🍇 Cluster
+# 🍇 Cluster
 
-### Infrastructure Automation
+## Infrastructure Automation
 
 Host buildout is handled by [Ansible][ansible-uri] automation.  The main Kubernetes cluster playbook is [`playbooks/cluster.yml`](./playbooks/cluster.yml). (As a convention, all Ansible yaml files are suffixed `.yml` to allow VSCode to distinguish between those and all other yaml files.) The full task list can be found in the [infrastructure](./infrastructure/README.md) folder, but as an overview, it will:
 - Install system packages and any other necessary system related setup
@@ -56,14 +56,14 @@ Host buildout is handled by [Ansible][ansible-uri] automation.  The main Kuberne
 - Generates Application files for every cluster app and drops them into [`cluster/manifests`](./cluster/manifests) and Kustomization files into[ `cluster/apps`](./cluster/apps) for the respective apps
 - Bootstraps the cluster by starting ArgoCD and then applying [`cluster/bootstrap.yaml`](./cluster/bootstrap.yaml)
 
-### GitOps
+## GitOps
 
 [Argo][argocd-uri] watches all subfolders under the [`cluster`](./cluster) folder (see Directories below) and makes the changes to my cluster based on the YAML manifests.
 
 The way Argo works for me here is (almost) every file in the [`cluster/manifests`](./cluster/manifests) directory will define an `argoproj.io/v1alpha1/Application` that points to a corresponding folder under [`cluster/apps`](./cluster/apps).  The `Application` will apply any manifest files it finds in that directory, in addition to any Helm Charts or Kustomizations [that may also be defined](https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/) within the `Application`'s spec. One or more Helm `values.yaml` files are in each directory and each helm definition in the `Application` refers to the specific values file to apply to that chart.
 
 
-### Directories
+## Directories
 
 This Git repository contains the following top level directories.
 
@@ -79,9 +79,9 @@ This Git repository contains the following top level directories.
 📁 playbooks       # Ansible playbooks
 ```
 
-## 🖥️ Tech Stack
+# 🖥️ Tech Stack
 
-### Infrastructure
+## Infrastructure
 
 |Logo|Name|Description|
 |:----|:----|:--------|
@@ -103,29 +103,61 @@ This Git repository contains the following top level directories.
 |<img width="32" src="https://api.iconify.design/logos/terraform-icon.svg">|[Terraform](https://www.terraform.io/)|Infrastructure provisioning automation| 
 |<img width="32" src="https://docs.zerotier.com/img/ZeroTierIcon.png">|[ZeroTier](https://zerotier.com)|Virtual Networking that just works|
 
-### Applications
+## Applications (by namespace)
+
+### [DB](./cluster/apps/db/)
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
 |<img width="32" src="https://www.mysql.com/common/logos/logo-mysql-170x115.png">|[MySQL][mysql-uri]| `Database` | SQL Database | Deployed | [![][mysql-badge]][mysql-chart]
-|<img width="32" src="https://wiki.postgresql.org/images/a/a4/PostgreSQL_logo.3colors.svg">| [PostgreSQL][postgres-uri] | `Database` | via [Cloudnative-PG][cnpg-io] operator | Deployed | [![][cnpg-badge]][cnpg-chart]
+|<img width="32" src="https://cloudnative-pg.io/images/hero_image.svg">| [PostgreSQL][postgres-uri] | `Database` | via [Cloudnative-PG][cnpg-uri] operator | Deployed | [![][cnpg-badge]][cnpg-chart]
 |<img width="32" src="https://redis.io/images/favicons/favicon-32x32.png">| [Redis][redis-uri] | `Database` | In-memory Key-Value store | Deployed | [![][redis-badge]][redis-chart]
+
+### [Home](./cluster/apps/home/)
+
+| **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
+|--------|----------------|------------|---------------|----------|--------------------------|
 |<img width="32" src="https://raw.githubusercontent.com/grocy/grocy/master/public/img/icon.svg">| [Grocy][grocy-uri] | `Services` | ERP Beyond your fridge | Deployed | [![][grocy-badge]][grocy-img] |
 |<img width="32" src="https://github.com/hay-kot/mealie/raw/mealie-next/docs/docs/assets/img/favicon.png">| [Mealie][mealie-url] | `Services` | Recipe Manager | Deployed | [![][mealie-badge]][mealie-docker] | 
-|<img width="32" src="https://github.com/MythTV/mythtv/raw/master/mythtv/html/images/icons/upnp_small_icon.png">|[MythTV][mythtv-url]| `Media` | Digital Video Recorder | Running directly on node | [![][mythtv-badge]][mythtv-gh] |
-|<img width="32" src="https://photonix.org/static/images/logo.svg">|[Photonix][photonix-url]| `Media` | Photo Management | | |
-|<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/appicon.png">|[Immich][immich-uri]| `Media` | Photo Management | | |
 |<img width="32" src="https://nextcloud.com/wp-content/uploads/2022/10/nextcloud-logo-blue-transparent.svg">| [NextCloud][nextcloud-url] | `File Sharing` | File Hosting | Deployed | [![][nextcloud-badge]][nextcloud-chart] |
 |<img width="32" src="https://hajimari.io/assets/logo.png">|[Hajimari][hajimari-url] | `Dashboard` | Startpage with K8S application discovery | Deployed | [![][hajimari-badge]][hajimari-url] |
-|<img width="32" src="https://grafana.com/static/img/menu/grafana2.svg">|[Grafana][grafana-uri]| `Dashboard` | Operational dashboards | Deployed | [![][grafana-badge]][grafana-chart] |
 |<img width="32" src="https://github.com/paperless-ngx/paperless-ngx/raw/dev/docs/assets/favicon.png">|[Paperless-ngx][paperless-uri] | `File Sharing` | Document Management System | Deployed| [![][paperless-badge]][paperless-img] |
+
+### [Monitoring](./cluster/apps/monitoring/)
+
+| **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
+|--------|----------------|------------|---------------|----------|--------------------------|
+|<img width="32" src="https://grafana.com/static/img/menu/grafana2.svg">|[Grafana][grafana-uri]| `Dashboard` | Operational dashboards | Deployed | [![][grafana-badge]][grafana-chart] |
+
+
+### [Media](./cluster/apps/media/)
+| **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
+|--------|----------------|------------|---------------|----------|--------------------------|
+|<img width="32" src="https://photonix.org/static/images/logo.svg">|[Photonix][photonix-url]| `Media` | Photo Management | | |
+|<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/appicon.png">|[Immich][immich-uri]| `Media` | Photo Management | | |
 |<img width="32" src="https://github.com/kovidgoyal/calibre/raw/master/icons/calibre.png">|[Calibre][calibre-uri]| `Media` | e-book Manager | | |
+|<img width="32" src="https://github.com/owntone/owntone-server/blob/master/docs/assets/logo.svg?raw=true">|[OwnTone][owntone-uri]| `Media` | DAAP Audio server| | |
+
+### [Downloads](./cluster/apps/downloads/)
+| **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
+|--------|----------------|------------|---------------|----------|--------------------------|
 |<img width="32" src="https://avatars.githubusercontent.com/u/2131270?s=200&v=4">|[qBittorrent][qbittorrent-uri]| `File Sharing` | Torrent client | | | 
+
+### [Infrastructure Services](./cluster/apps/infrastructure)
+
+| **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
+|--------|----------------|------------|---------------|----------|--------------------------|
 |<img width="32" src="https://avatars.githubusercontent.com/u/44905828?s=200&v=4">|[NetBox][netbox-uri]| `Services`| Full-scale network inventory | | |
 |<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">|[ListenBrainz][listenbrainz-uri]| `Media` | Open Source scrobbler | | | 
 |<img width="32" src="https://simpleicons.org/icons/vault.svg">|[Vault][vault-uri]| `Services` | Secrets and encryption management| | |
-|<img width="32" src="https://github.com/owntone/owntone-server/blob/master/docs/assets/logo.svg?raw=true">|[OwnTone][owntone-uri]| `Media` | DAAP Audio server| | |
+
+
+### Virtualized (and other off cluster) Apps
+
+| **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
+|--------|----------------|------------|---------------|----------|--------------------------|
 |<img width="32" src="https://avatars.githubusercontent.com/u/10979201?s=200&v=4">| [FreeIPA][freeipa-uri] | `Infrastructure`| Full IdAM solution + PKI | Deploying.. | [![][freeipa-badge]][freeipa-img] |
+|<img width="32" src="https://github.com/MythTV/mythtv/raw/master/mythtv/html/images/icons/upnp_small_icon.png">|[MythTV][mythtv-url]| `Media` | Digital Video Recorder | Running directly on node | [![][mythtv-badge]][mythtv-gh] |
 
 
 ## 🤝 Thank you!
@@ -155,14 +187,14 @@ This Git repository contains the following top level directories.
 </details>
 
 [ansible-uri]: https://www.ansible.com
-[argocd-uri]: https://argoproj.github.io/cd
+[argocd-uri]: https://argoproj.github.io
 
 [mysql-uri]: https://www.mysql.com
 [mysql-badge]: https://img.shields.io/badge/bitnami/mysql-v8.0.33-blue?logo=helm
 [mysql-chart]: https://artifacthub.io/packages/helm/bitnami/mysql
 
 [postgres-uri]: https://www.postgresql.org
-[cnpg-io]:https://cloudnative-pg.io/
+[cnpg-uri]:https://cloudnative-pg.io/
 [cnpg-badge]: https://img.shields.io/badge/cloudnative--pg-v1.20.0-blue?logo=helm
 [cnpg-chart]: https://artifacthub.io/packages/helm/cloudnative-pg/cloudnative-pg
 
