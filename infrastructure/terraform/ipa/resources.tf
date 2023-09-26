@@ -18,11 +18,3 @@ resource "libvirt_volume" "ipa-root" {
   size = "10737418240"
   base_volume_name = "fedora38.qcow2"
 }
-
-data "sops_file" "ansible_ssh_key" {
-  source_file = "${path.module}/../../inventory/group_vars/all/ansible_user.sops.yml"
-}
-
-data "sops_file" "root_ca_crt" {
-  source_file = "${path.module}/../../inventory/group_vars/all/root-ca.crt.sops.yml"
-}
