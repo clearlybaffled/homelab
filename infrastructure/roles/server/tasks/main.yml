@@ -38,7 +38,6 @@
   when: item.use | default(true)
 
 - name: User Configuration
-  become: true
   block:
     - name: User Configuration | Create a new regular user
       user:
@@ -49,7 +48,49 @@
         create_home: true
         home: "{{ local_ansible_homedir }}"
         shell: /bin/bash
+    - name: SSH Keys
+      when:
+        - not ansible_user_ssh_key is defined
+        - not ansible_user_ssh_pubkey is defined
+      vars:
+        ssh_keyfile: "{{ local_ansible_homedir }}/id_ed25519"
+        ssh_sops_file: "{{ (inventory, 'group_vars','all','ansible_user.sops.yml') }}"
+      block:
+        - name: User Configuration | Generate ssh keys
+          community.crypto.openssh_keypair:
+            path: "{{ ssh_keyfile }}"
+            type: ed25519
+            mode: '0600'
+          register: sshkey
+
+        - name: User Configuration | Read private key
+          slurp:
+            src: "{{ ssh_keyfile }}"
+          register: ssh_private_key
+
+        - name: User Configuration | Save keys to sops file on controller
+          delegate_to: localhost
+          community.sops.sops_encrypt:
+            path: "{{ ssh_sops_file }}"
+            content_yaml:
+              ansible_user_ssh_pubkey: "{{ sshkey.public_key }}"
+              ansible_user_ssh_key: "{{ ssh_private_key.content }}"
+
+        - name: User Configuration | Commit ssh sops file
+          lvrfrc87.git_acp.git_acp:
+            path: "{{ root_dir }}"
+            add:
+              - "{{ ssh_sops_file }}"
+            url: "{{ git_repo_url }}"
+            push: true
+            branch: "{{ git_branch }}"
+            ssh_params:
+              key_file: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+
     - name: User Configuration | Deploy ssh key
+      when:
+        - ansible_user_ssh_key is defined
+        - ansible_user_ssh_pubkey is defined
       copy:
         dest: "{{ local_ansible_homedir }}/.ssh/{{ item.filename }}"
         content: "{{ lookup('vars', item.varname) }}"
@@ -112,7 +153,7 @@
     block: |
       CODESET="Uni3"
       FONTFACE="Terminus"
-      FONTSIZE="32x132x166"
+      FONTSIZE="32x16"
 
 - name: Run package install
   include_tasks: packages.yml
