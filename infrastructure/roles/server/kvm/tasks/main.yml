@@ -57,7 +57,7 @@
         xml: |-
           <network>
             <name>{{ net_name }}</name>
-            <forward mode='open'/>
+            <forward mode='route'/>
             <bridge name='virbr1' stp='on' delay='0'/>
             <domain name='{{ domain_name }}'/>
             <ip family='ipv4' address='{{ net_addr }}' prefix='{{ net_mask }}'/>

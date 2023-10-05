@@ -10,7 +10,7 @@
     - dvb
 
 - name: KVM setup
-  hosts: kvm
+  hosts: hypervisor
   become: true
   tags: kvm
   roles:

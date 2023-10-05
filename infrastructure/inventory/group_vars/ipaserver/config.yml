@@ -4,7 +4,7 @@
 # Base
 ipaserver_domain: hermleigh.home
 ipaserver_realm: HERMLEIGH.HOME
-ipaserver_hostname: ipa.hermleigh.home
+ipaserver_hostname: tang.hermleigh.home
 
 # Server
 ipaserver_no_host_dns: true
@@ -12,15 +12,8 @@ ipaserver_no_host_dns: true
 # SSL Certificate
 
 # Client
-ipaclient_ntp_servers:
-  - 172.16.1.1
 
 # Certificate System
-ipaserver_external_ca: true
-ipaserver_external_ca_type: generic
-ipaserver_external_cert_files:
-  - /root/ipa.crt
-  - /root/ca.crt
 ipaserver_subject_base: "O=HERMLEIGH.HOME,C=US"
 ipaserver_ca_subject: "CN=IPA Intermediate CA,O=HERMLEIGH.HOME,C=US"
 ipaserver_ca_signing_algorithm: SHA512withRSA
@@ -30,3 +23,5 @@ ipaserver_ca_signing_algorithm: SHA512withRSA
 # AD Trust
 
 # Special
+
+ipa_csr_path: "/tmp/{{ groups.ipaserver[0] + '-ipa' }}"
