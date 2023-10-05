@@ -1,43 +1,185 @@
 {
-    "ansible.ansible.path": ".venv/bin/ansible",
-    "ansible.ansibleNavigator.path": ".venv/bin/ansible-navigator",
-    "ansible.python.activationScript": ".venv/bin/activate",
-    "ansible.python.interpreterPath": "/home/jared/workspace/homelab/.venv/bin/python",
-    "ansible.validation.lint.path": ".venv/bin/ansible-lint",
-    "explorer.excludeGitIgnore": false,
-    "files.associations": {
-      "*.j2": "ansible-jinja",
-      "*.sops.yml": "yaml",
-      "*.yml": "ansible"
+  "ansible.ansible.useFullyQualifiedCollectionNames": false,
+  "ansible.python.interpreterPath": "/home/jared/workspace/homelab/.venv/bin/python",
+  "ansible.validation.lint.arguments": "-c .github/linters/.ansible-lint",
+  "explorer.excludeGitIgnore": false,
+  "files.associations": {
+    "*.j2": "ansible-jinja",
+    "*.sops.yml": "yaml",
+    "*.yml": "ansible",
+  },
+  "files.autoSave": "onFocusChange",
+  "gitlens.currentLine.enabled": false,
+  "python.terminal.activateEnvironment": true,
+  "sops.configPath": "./.sops.ysml",
+  "vscord.app.name": "Visual Studio Code",
+  "vscord.behavoiur.prioritizeLanguagesOverExtensions": true,
+  "vscord.status.idle.disconnectOnIdle": true,
+  "vscord.status.idle.resetElapsedTime": true,
+  "vscord.status.state.text.editing": "Working on {folder_and_file}:{current_line}",
+  "vscord.status.state.text.viewing": "Viewing {folder_and_file}",
+  "yaml.schemas": {
+    "https://github.com/datreeio/CRDs-catalog/raw/main/argoproj.io/application_v1alpha1.json": [
+      "cluster/manifest/*.yaml",
+      "cluster/cluster.yaml"
+    ],
+    "https://github.com/datreeio/CRDs-catalog/raw/main/cert-manager.io/certificate_v1.json": [
+      "certificate.yaml"
+    ],
+    "https://github.com/datreeio/CRDs-catalog/raw/main/traefik.io/ingressroute_v1alpha1.json": [
+      "ingress-route.yaml"
+    ],
+    "https://github.com/datreeio/CRDs-catalog/raw/main/traefik.io/ingressroutetcp_v1alpha1.json": [
+      "ingress-route-tcp.yaml"
+    ],
+    "https://raw.githubusercontent.com/canonical/cloud-init/main/cloudinit/config/schemas/versions.schema.cloud-config.json": [
+      "*_cloud_init*"
+    ],
+    "kubernetes": []
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "markdown.validate.enabled": true,
+  "linter.linters": {
+    "language-tool": {
+      "capabilities": [],
+      "command": [
+        "languagetool",
+        "--json",
+        "--autoDetect"
+      ],
+      "configFiles": [],
+      "enabled": true,
+      "languages": [
+        "markdown",
+        "html",
+        "plaintext"
+      ],
+      "name": "language-tool",
+      "url": "https://github.com/languagetool-org/languagetool"
     },
-    "files.autoSave": "onFocusChange",
-    "gitlens.currentLine.enabled": false,
-    "python.terminal.activateEnvironment": true,
-    "sops.configPath": "./.sops.ysml",
-    "vscord.app.name": "Visual Studio Code",
-    "vscord.behavoiur.prioritizeLanguagesOverExtensions": true,
-    "vscord.status.idle.disconnectOnIdle": true,
-    "vscord.status.idle.resetElapsedTime": true,
-    "vscord.status.state.text.editing": "Working on {folder_and_file}:{current_line}",
-    "vscord.status.state.text.viewing": "Viewing {folder_and_file}",
-    "yaml.schemas": {
-      "https://github.com/datreeio/CRDs-catalog/raw/main/argoproj.io/application_v1alpha1.json": [
-        "cluster/manifest/*.yaml",
-        "cluster/cluster.yaml"
+    "markdownlint": {
+      "capabilities": [
+        "fix-inline"
       ],
-      "https://github.com/datreeio/CRDs-catalog/raw/main/cert-manager.io/certificate_v1.json": [
-        "certificate.yaml"
+      "command": [
+        "markdownlint",
+        "--json",
+        [
+          "$fixAll",
+          "--fix"
+        ],
+        [
+          "$config",
+          "--config",
+          "$config"
+        ],
+        "--stdin"
       ],
-      "https://github.com/datreeio/CRDs-catalog/raw/main/traefik.io/ingressroute_v1alpha1.json": [
-        "ingress-route.yaml"
+      "configFiles": [
+        ".markdownlint.json",
+        ".markdownlint.yaml",
+        ".markdownlint.yml",
+        ".markdownlintrc"
       ],
-      "https://github.com/datreeio/CRDs-catalog/raw/main/traefik.io/ingressroutetcp_v1alpha1.json": [
-        "ingress-route-tcp.yaml"
+      "enabled": true,
+      "languages": [
+        "markdown"
       ],
-      "https://raw.githubusercontent.com/canonical/cloud-init/main/cloudinit/config/schemas/versions.schema.cloud-config.json": [
-        "*_cloud_init"
+      "name": "markdownlint",
+      "url": "https://github.com/DavidAnson/markdownlint"
+    },
+    "pylint": {
+      "capabilities": [
+        "ignore-file"
       ],
-      "kubernetes": []
+      "command": [
+        "pylint",
+        "--from-stdin",
+        "--output-format",
+        "json",
+        [
+          "$config",
+          "--rcfile",
+          "$config"
+        ],
+        "$file"
+      ],
+      "configFiles": [
+        ".pylintrc"
+      ],
+      "enabled": true,
+      "languages": [
+        "python"
+      ],
+      "name": "pylint",
+      "url": "https://www.pylint.org"
+    },
+    "textlint": {
+      "capabilities": [
+        "fix-inline"
+      ],
+      "command": [
+        "textlint",
+        "--format",
+        "json",
+        [
+          "$debug",
+          "--debug"
+        ],
+        [
+          "$config",
+          "--config",
+          "$config"
+        ],
+        "--stdin",
+        "--stdin-filename",
+        "$file"
+      ],
+      "configFiles": [
+        ".textlintrc",
+        ".textlintrc.js",
+        ".textlintrc.json",
+        ".textlintrc.yaml",
+        ".textlintrc.yml"
+      ],
+      "enabled": true,
+      "languages": [
+        "markdown",
+        "plaintext",
+        "html"
+      ],
+      "name": "textlint",
+      "url": "https://textlint.github.io"
+    },
+    "yamllint": {
+      "capabilities": [
+        "ignore-line"
+      ],
+      "command": [
+        "yamllint",
+        "--format",
+        "parsable",
+        [
+          "$config",
+          "--config-file",
+          "$config"
+        ],
+        "-"
+      ],
+      "configFiles": [
+        ".yamllint.yml",
+        ".yamllint.yaml",
+        ".yamllint",
+        ".github/linters/.yamllint"
+      ],
+      "enabled": true,
+      "languages": [
+        "yaml"
+      ],
+      "name": "yamllint",
+      "url": "https://github.com/adrienverge/yamllint"
     }
   }
-  
+}

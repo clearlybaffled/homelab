@@ -1,4 +1,4 @@
-ansible>=7.3.0
+ansible>=9.0.0a1
 ansible-core>=2.14.3
 ansible-lint>=6.14.3
 ansible-pylibssh>=1.1.0
@@ -13,3 +13,5 @@ psycopg2-binary
 PyMySQL
 mysqlclient
 libvirt-python
+pre-commit
+jc
