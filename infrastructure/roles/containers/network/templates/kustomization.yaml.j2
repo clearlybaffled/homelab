@@ -12,7 +12,7 @@ patches:
       metadata:
         name: kube-flannel-cfg
         namespace: kube-flannel
-      data:      
+      data:
         net-conf.json: |
           {
               "Network": "{{ kube_pods_subnet }}",
@@ -21,7 +21,7 @@ patches:
                 "Type": "{{ flannel_backend_type }}"{% if flannel_backend_type == "vxlan" %},
                 "VNI": {{ flannel_vxlan_vni }},
                 "Port": {{ flannel_vxlan_port }},
-                "DirectRouting": {{ flannel_vxlan_direct_routing | to_json }}{% endif %} 
+                "DirectRouting": {{ flannel_vxlan_direct_routing | to_json }}{% endif %}
               }
           }
   - patch: |-
@@ -68,4 +68,3 @@ patches:
       version: v1
       kind: DaemonSet
       name: kube-flannel-ds
-      

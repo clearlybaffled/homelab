@@ -54,7 +54,7 @@ hajimari:
   customApps:
     - group: infrastructure
       apps:
-        - name: OpnSense 
+        - name: OpnSense
           icon: simple-icons:opnsense
           url: https://growler.hermleigh.home
           info: OpnSense web portal
@@ -82,7 +82,7 @@ ingress:
       - host: wahoo.hermleigh.home
         paths:
           - path: /
-            pathType: Prefix 
+            pathType: Prefix
     tls:
       - hosts:
         - hajimari.gato.hermleigh.home

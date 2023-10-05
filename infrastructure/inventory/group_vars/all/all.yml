@@ -2,10 +2,12 @@
 ## Directory where the binaries will be installed
 bin_dir: /usr/local/bin
 
+## Directory convenience variables
 root_dir: "{{ ansible_config_file | dirname }}"
 cluster_dir: "{{ root_dir }}/cluster"
 infra_dir: "{{ root_dir }}/infrastructure"
 pki_dir: "{{ infra_dir }}/pki"
+
 
 ## Ansible User setup
 local_ansible_user: ansible

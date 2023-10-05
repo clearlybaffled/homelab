@@ -4,7 +4,7 @@ metadata:
   name: opnsense
   namespace: home
 spec:
-  name: OpnSense 
+  name: OpnSense
   group: infrastructure
   icon: simple-icons:opnsense
   url: https://growler.hermleigh.home

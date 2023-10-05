@@ -1,8 +1,8 @@
 resource "libvirt_domain" "ipa-server" {
-  name   = "tang"
-  memory = "2048"
-  vcpu   = 2
-  autostart = true
+  name       = "tang"
+  memory     = "2048"
+  vcpu       = 2
+  autostart  = true
   qemu_agent = true
 
 
@@ -11,14 +11,14 @@ resource "libvirt_domain" "ipa-server" {
   }
 
   disk {
-    volume_id = "${libvirt_volume.ipa-root.id}"
-    scsi = true
+    volume_id = libvirt_volume.ipa-root.id
+    scsi      = true
   }
 
-  cloudinit = "${libvirt_cloudinit_disk.ipa-cloud-init.id}"
+  cloudinit = libvirt_cloudinit_disk.ipa-cloud-init.id
 
   console {
-    type = "pty"
+    type        = "pty"
     target_type = "serial"
     target_port = "0"
   }

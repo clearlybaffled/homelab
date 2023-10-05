@@ -11,35 +11,35 @@ ingress:
   enabled: true
   className: nginx
   annotations:
-     cert-manager.io/cluster-issuer: ca-issuer
-     hajimari.io/icon: simple-icons:nextcloud
-     nginx.ingress.kubernetes.io/proxy-body-size: "10G"
-     nginx.ingress.kubernetes.io/proxy-buffering: "off"
-     nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
-     nginx.ingress.kubernetes.io/server-snippet: |-
-       server_tokens off;
-       proxy_hide_header X-Powered-By;
-       rewrite ^/.well-known/webfinger /index.php/.well-known/webfinger last;
-       rewrite ^/.well-known/nodeinfo /index.php/.well-known/nodeinfo last;
-       rewrite ^/.well-known/host-meta /public.php?service=host-meta last;
-       rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json;
-       location = /.well-known/carddav {
-         return 301 $scheme://$host/remote.php/dav;
-       }
-       location = /.well-known/caldav {
-         return 301 $scheme://$host/remote.php/dav;
-       }
-       location = /robots.txt {
-         allow all;
-         log_not_found off;
-         access_log off;
-       }
-       location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)/ {
-         deny all;
-       }
-       location ~ ^/(?:autotest|occ|issue|indie|db_|console) {
-         deny all;
-       }
+    cert-manager.io/cluster-issuer: ca-issuer
+    hajimari.io/icon: simple-icons:nextcloud
+    nginx.ingress.kubernetes.io/proxy-body-size: "10G"
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+    nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+    nginx.ingress.kubernetes.io/server-snippet: |-
+      server_tokens off;
+      proxy_hide_header X-Powered-By;
+      rewrite ^/.well-known/webfinger /index.php/.well-known/webfinger last;
+      rewrite ^/.well-known/nodeinfo /index.php/.well-known/nodeinfo last;
+      rewrite ^/.well-known/host-meta /public.php?service=host-meta last;
+      rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json;
+      location = /.well-known/carddav {
+        return 301 $scheme://$host/remote.php/dav;
+      }
+      location = /.well-known/caldav {
+        return 301 $scheme://$host/remote.php/dav;
+      }
+      location = /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+      }
+      location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)/ {
+        deny all;
+      }
+      location ~ ^/(?:autotest|occ|issue|indie|db_|console) {
+        deny all;
+      }
   tls:
     - secretName: nextcloud-tls
       hosts:
@@ -61,7 +61,7 @@ nextcloud:
   # Default config files
   # IMPORTANT: Will be used only if you put extra configs, otherwise default will come from nextcloud itself
   # Default confgurations can be found here: https://github.com/nextcloud/docker/tree/master/27/apache/config
-  defaultConfigs: 
+  defaultConfigs:
     # To protect /var/www/html/config
     .htaccess: true
     # Redis default configuration
@@ -79,7 +79,7 @@ nextcloud:
 
   # # Extra config files created in /var/www/html/config/
   # # ref: https://docs.nextcloud.com/server/15/admin_manual/configuration_server/config_sample_php_parameters.html#multiple-config-php-file
-  configs: 
+  configs:
     network.config.php: |-
       <?php
         $CONFIG = array (
@@ -113,7 +113,7 @@ nextcloud:
 
   # Extra mounts for the pods. Example shown is for connecting a legacy NFS volume
   # to NextCloud pods in Kubernetes. This can then be configured in External Storage
-  extraVolumes: 
+  extraVolumes:
   - name: shared
     persistentVolumeClaim:
       claimName: shared-files

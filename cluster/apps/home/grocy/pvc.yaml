@@ -25,4 +25,3 @@ spec:
       storage: 10Mi
   # volumeMode: Filesystem
   volumeName: barcode-buddy
-

@@ -201,7 +201,7 @@ d-i partman-lvm/confirm_nooverwrite boolean true
 #                      method{ swap } format{ }                \
 #              .
 
-{#  from https://secopsmonkey.com/custom-partioning-using-preseed.html 
+{#  from https://secopsmonkey.com/custom-partioning-using-preseed.html
 # Disk Partitioning
 # Use LVM, and wipe out anything that already exists
 d-i partman/choose_partition select finish
@@ -307,7 +307,7 @@ d-i partman/confirm_nooverwrite boolean true
 # so this will only work if the disks are the same size.
 #d-i partman-auto/disk string /dev/sda /dev/sdb
 
-# Next you need to specify the physical partitions that will be used. 
+# Next you need to specify the physical partitions that will be used.
 #d-i partman-auto/expert_recipe string \
 #      multiraid ::                                         \
 #              1000 5000 4000 raid                          \
@@ -516,4 +516,3 @@ d-i finish-install/reboot_in_progress note
 # directly, or use the apt-install and in-target commands to easily install
 # packages and run commands in the target system.
 #d-i preseed/late_command string apt-install zsh; in-target chsh -s /bin/zsh
-

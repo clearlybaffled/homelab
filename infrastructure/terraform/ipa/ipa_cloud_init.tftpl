@@ -7,6 +7,10 @@ prefer_fqdn_over_hostname: true
 
 ssh_pwauth: false
 
+runcmd:
+  - setenforce 0
+
+
 users:
 - name: ansible
   gecos: Ansible User
@@ -15,8 +19,18 @@ users:
   shell: /bin/bash
   lock_passwd: false
   plain_text_passwd: ansible
+  homedir: /var/local/ansible
   ssh_authorized_keys:
     - ${ssh_pubkey}
+
+write_files:
+  - path: /var/local/ansible/.ssh/id_ed25519
+    content: $(ssh_key)
+    owner: ansible:ansible
+    permissions: '0o600'
+    encoding: text/plain
+    append: false
+    defer: false
 
 package_update: true
 package_upgrade: true
@@ -27,9 +41,11 @@ packages:
 
 ntp:
   enabled: true
-  ntp_client: ntp
+  config:
+    service_name: chronyd
   servers:
-    - 172.16.1.1 
+    - 172.16.1.1
+
 
 ${yamlencode({
   "ca_certs": { 

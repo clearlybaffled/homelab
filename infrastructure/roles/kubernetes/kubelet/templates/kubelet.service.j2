@@ -31,7 +31,7 @@ ExecStart={{ bin_dir }}/kubelet \
 		$KUBELET_ADDRESS \
 		$KUBELET_PORT \
 		$KUBELET_HOSTNAME \
-		$KUBELET_ARGS 
+		$KUBELET_ARGS
 Restart=always
 RestartSec=10s
 {% if kubelet_systemd_hardening %}

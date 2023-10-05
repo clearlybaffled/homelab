@@ -156,7 +156,7 @@ speaker:
   # command: /speaker
   # -- Speaker log level. Must be one of: `all`, `debug`, `info`, `warn`, `error` or `none`
   logLevel: info
-  
+
   # frr contains configuration specific to the MetalLB FRR container,
   # for speaker running alongside FRR.
   frr:
@@ -169,4 +169,3 @@ speaker:
 crds:
   enabled: true
   validationFailurePolicy: Fail
-

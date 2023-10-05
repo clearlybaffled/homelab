@@ -7,5 +7,5 @@ data "sops_file" "root_ca_crt" {
 }
 
 output "hosts_created" {
-    value = libvirt_domain.ipa-server.name
+  value = [libvirt_domain.ipa-server.name]
 }

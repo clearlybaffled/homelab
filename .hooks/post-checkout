@@ -1,3 +1,4 @@
+#!/bin/bash
 # Need to run `git config --global core.hookspath .hooks` once per host before this works
 git config --local include.path ../.gitconfig
 # Reference: https://github.com/stefanhoelzl/share-git-hooks-and-config

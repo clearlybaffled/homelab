@@ -6,7 +6,7 @@ localAPIEndpoint:
 nodeRegistration:
   criSocket: {{ cri_socket }}
   imagePullPolicy: {{ k8s_image_pull_policy }}
-{% if kube_override_hostname|default('') %}  
+{% if kube_override_hostname|default('') %}
   name: {{ kube_override_hostname }}
 {% endif %}
   kubeletExtraArgs:
@@ -61,7 +61,7 @@ apiServer:
   - {{ san }}
 {% endfor %}
   timeoutForControlPlane: 5m0s
-controllerManager: 
+controllerManager:
  extraArgs:
     cluster-cidr: "{{ kube_pods_subnet }}"
     service-cluster-ip-range: "{{ kube_service_addresses }}"

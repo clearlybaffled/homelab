@@ -81,9 +81,9 @@ server:
 
     tls:
       - secretName: argocd-ingress-cert
-        hosts: 
+        hosts:
           - argocd.gato.hermleigh.home
-          - argocd.gato 
+          - argocd.gato
           - argocd.argocd.svc
           - argocd.argocd
           - argocd

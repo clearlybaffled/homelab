@@ -65,7 +65,7 @@ api:
   envFrom:
     - secretRef:
         name: mealie-secret
-  
+
   volumeMounts:
     - name: api-data
       mountPath: /app/data/
