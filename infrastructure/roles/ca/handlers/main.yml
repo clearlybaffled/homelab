@@ -1,0 +1,45 @@
+---
+- name: Open Root CA partition
+  block:
+    - name: Check required variables
+      assert:
+        that:
+          - var[item] is defined
+      loop:
+        - crypt_size
+        - crypt_offset
+        - crypt_name
+        - key_file
+        - key_offset
+        - key_size
+        - usb_device
+        - blocksize
+
+    - name: Map dm-crypt plain partition
+      command: >-
+        # https://wiki.archlinux.org/title/Dm-crypt/Device_encryption#Encryption_options_for_plain_mode
+        cryptsetup open
+        --type plain
+        --size={{ crypt_size * 1024 * 1024 / blocksize }}
+        --offset={{ crypt_offset }}
+        --key-file={{ key_file }}
+        --keyfile-offset={{ key_offset * blocksize }}
+        --keyfile-size={{ key_size * bs }}
+        {{ usb_device }}
+        {{ crypt_name }}
+
+    - name: Mount mapped volume
+      ansible.posix.mount:
+        path: "/srv/pki/root-ca"
+        state: mounted
+        src: "/dev/mapper/{{ crypt_name }}"
+
+- name: Close Root CA volume
+  block:
+    - name: Unmount volume
+      ansible.posix.mount:
+        path: "/dev/mapper/{{ crypt_name }}"
+        state: unmounted
+
+    - name: Close dm-crypt
+      command: "cryptsetup close {{ crypt_name }}"

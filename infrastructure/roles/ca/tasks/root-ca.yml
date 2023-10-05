@@ -1,56 +1,103 @@
 ---
-- name: Set CA name
+- name: Set facts
   set_fact:
     ca_name: root-ca
 
-- name: Set up Root CA data directories
+- name: Gather root-ca variables from controller
+  setup:
+  delegate_to: localhost
+  when: inventory_host != localhost
+
+- name: Open crypto container
+  notify:
+    - Open Root CA partition
+
+- name: Root CA initial setup
+  become: true
   include_tasks: 'directory.yml'
 
 - name: Create Root Certificate Authority
+  become: true
   environment:
     CA_HOME: "{{ ca_home }}"
-    CN: "{{ root_ca_cn }}"
+    CA_NAME: "{{ ca_name }}"
   block:
-    - name: Request passphrase for private key
+    - name: Ask for passphrase
       pause:
-        prompt: "Enter a passphrase for the Private Key: "
+        prompt: "Would you like to add a passphrase to the private key? ([Enter] to skip): "
         echo: false
-      when: pk_passphrase not defined or pk_passphrase == ''
       register: pk_passphrase
-      until: pk_passphrase.user_input != ''
+      when: pk_passphrase not defined
+
+    - name: Copy config files to remote
+      copy:
+        dest: "{{ ca_home }}"
+        src: "{{ item }}"
+      loop:
+        - ca.conf
+        - req.conf
 
     - name: Create Private Key and CSR
       command:
         cmd: >-
           openssl req
-          -batch
           -new
-          -config {{ role_path }}/files/ca.conf
+          -config req.conf
           -keyout {{ ca_private_keyfile }}
-          -out {{ ca_home }}/root-ca.csr
-          -extensions ca_ext
-          -passin stdin
-        stdin: "{{ pk_passphrase is string | ternary(pk_passphrase, pk_passphrase.user_input )}}"
+          -subj '/C=US/O=HERMLEIGH.HOME/CN={{ root_ca_cn }}'
+          -out root-ca.csr
+          -passout stdin
+        stdin: "{{ pk_passphrase }}"
         stdin_add_newline: false
+        chdir: "{{ ca_home }}"
+        creates: "{{ ca_private_keyfile }}"
+      register: req
 
-    - name: Sign CSR
+    - name: Sign CSR # noqa no-handler
       command:
         cmd: >-
           openssl ca
           -batch
           -selfsign
-          -config {{ role_path }}/files/ca.conf
-          -in {{ ca_home }}/root-ca.csr
-          -out {{ ca_home }}/root-ca.crt
+          -config ca.conf
+          -in root-ca.csr
+          -out root-ca.crt
           -extensions ca_ext
           -passin stdin
           -days 3650
           -crldays 365
-          -policy policy_c_o_match
-        stdin: "{{ pk_passphrase is string | ternary(pk_passphrase, pk_passphrase.user_input )}}"
+        stdin: "{{ pk_passphrase }}"
         stdin_add_newline: false
+        chdir: "{{ ca_home }}"
+        creates: root-ca.crt
+      when: req is changed
 
-  always:
-    - name: Undefine passphrase input
-      set_fact:
-        pk_passphrase:
+- name: Save Root CA Cert to repo in a sops file
+  block:
+    - name: Slurp CA cert file
+      slurp:
+        src: "{{ ca_home }}/root-ca.crt"
+      register: ca_crt_file
+
+    - name: Save SOPS file
+      community.sops.sops_encrypt:
+        path: "{{ pki_dir }}/root-ca.crt"
+        content_binary: "{{ ca_crt_file.content }}"
+      delegate_to: localhost
+
+    - name: Commit SOPS file to repo
+      lvrfrc87.git_acp.git_acp:
+        path: "{{ root_dir }}"
+        add:
+          - "{{ pki_dir }}/root-ca.crt"
+        comment: "Adding Root CA Certificate"
+        url: "{{ git_repo_url }}"
+        push: true
+        branch: "{{ git_branch }}"
+      delegate_to: localhost
+      tags:
+        - commit
+
+- name: Close crypto container
+  notify:
+    - Close Root CA volume
