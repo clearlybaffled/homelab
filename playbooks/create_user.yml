@@ -1,9 +1,12 @@
 ---
 - name: Create Cluster User
   become: true
-  include_tasks: roles/kubernetes/control_plane/tasks/user.yml
-  when:
-    - kube_user is defined
+  hosts: localhost
+  tasks:
+    - name: Create user
+      include_tasks: roles/kubernetes/control_plane/tasks/user.yml
+      when:
+        - kube_user is defined
   vars:
     username: "{{ username | default(ansible_env.USER) }}"
     groupname: "{{ groupname | default(omit) }}"

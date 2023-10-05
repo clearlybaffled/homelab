@@ -1,0 +1,20 @@
+---
+- name: Host initialization
+  import_playbook: playbooks/host.yml
+  tags:
+    - host
+
+- name: Kubernetes Cluster initialization
+  import_playbook: playbooks/cluster.yml
+  tags:
+    - cluster
+
+- name: Cluster Application bootstrap
+  import_playbook: playbooks/apps.yml
+  tags:
+    - apps
+
+- name: IPA Server startup
+  import_playbook: playbooks/freeipa.yml
+  tags:
+    - ipa
