@@ -1,14 +1,17 @@
-<p align="center">
+<h1><p align="center">
 <a href="https://wwww.ansible.com"><img height="250" src="https://simpleicons.org/icons/ansible.svg" ></a><br/>
 
-# Infrastructure Automation with Ansible
+Infrastructure Automation with Ansible
+</h1>
 
-Much of it shamelessly ripped from [kubernetes-sigs/kubespray](https://github.com/kubernetes-sigs/kubespray/), and other homelabbers listed below. In the process, I definitely learned a lot and was able to incrementally migrate existing configurations and improve the overall layout to meet my needs.  I refactored a couple of the kubespray roles (especially download) to be more specific to the components I intended to use and remove those I didn't.
+Much of it shamelessly ripped from [kubernetes-sigs/kubespray](https://github.com/kubernetes-sigs/kubespray/), and other homelabbers listed on the [README](../../README.md#-thank-you).
+In the process, I definitely learned a lot and was able to incrementally migrate existing configurations and improve the overall layout to meet my needs.
+I refactored a couple of the kubespray roles (especially download) to be more specific to the components I intended to use and remove those I didn't.
 
 ### Directory Structure
-
+<!-- markdownlint-disable MD013 -->
 ```shell
-$ tree -d --noreport -I "files|templates|tasks|defaults|vars|handlers|meta" infrastructure  ; tree --noreport playbooks 
+$ tree -d --noreport -I "files|templates|tasks|defaults|vars|handlers|meta" infrastructure  ; tree --noreport playbooks
 
 infrastructure
 ├── _shared
@@ -53,10 +56,9 @@ playbooks
 └── storage.yml
 ```
 
+## Playbook tasks
 
-## Playbook tasks 
-
-```
+```shell
 $ ansible-playbook --list-tasks playbooks/cluster.yml
 
 playbook: playbooks/cluster.yml

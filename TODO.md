@@ -2,7 +2,7 @@
   - [x] Deploy
   - [x] Configure
 - [x] External CA
-  - [ ] Fixes for apiserver ca cert to include kube-ca in chain 
+  - [ ] Fixes for apiserver ca cert to include kube-ca in chain
 - [x] block Storage setup
 - [x] Ingress+LB+DNS
   - [x] Traefik->Nginx-proxy
@@ -11,3 +11,5 @@
 - [ ] Vault
 - [ ] preload helm repos on argocd-app-controller using ansible kubectl connection
 - [ ] CoreDns standalone config (still doing this??)
+
+<!-- markdownlint-disable-file -->

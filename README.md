@@ -1,10 +1,11 @@
-<img src="https://camo.githubusercontent.com/5b298bf6b0596795602bd771c5bddbb963e83e0f/68747470733a2f2f692e696d6775722e636f6d2f7031527a586a512e706e67" width="144px" height="144px" align="left"/>
+<h1 tabindex="-1" dir="auto" style="bottom-border:none;"><img src="https://camo.githubusercontent.com/5b298bf6b0596795602bd771c5bddbb963e83e0f/68747470733a2f2f692e696d6775722e636f6d2f7031527a586a512e706e67" width="144px" height="144px" align="left"/>
 
-<h1 tabindex="-1" dir="auto" style="bottom-border:none;"><a id="user-content-homelab" class="anchor" aria-hidden="true" href="#homelab"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a>
+<!-- markdownlint-disable-next-line MD013 -->
+<a id="user-content-homelab" class="anchor" aria-hidden="true" href="#homelab"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a>
 Homelab
 </h1>
 
-> K8S cluster built with Ansible and managed using ArgoCD for GitOps 
+> K8S cluster built with Ansible and managed using ArgoCD for GitOps
 
 <div align="center">
 
@@ -19,7 +20,11 @@ Homelab
 </div>
 <br/>
 
-Welcome to my homelab! The repository is mostly focused on a modest kubernetes cluster with one control plane/node running all of my self hosted services and storage, but it also serves as the Infrastructure-as-Code (IaC) for my entire home network and devices, to include: an OpnSense gateway/firewall, a couple of workstations, wireless devices, and a Cisco switch.  Ultimately, this will include all applications for managing home IT systems.
+Welcome to my homelab!
+The repository is mostly focused on a modest kubernetes cluster with one control plane/node running all of my self hosted services and storage,
+but it also serves as the Infrastructure-as-Code (IaC) for my entire home network and devices, to include: an OpnSense gateway/firewall,
+a couple of workstations, wireless devices, and a Cisco switch.
+Ultimately, this will include all applications for managing home IT systems.
 
 ## 🤯 Features
 
@@ -34,39 +39,45 @@ Welcome to my homelab! The repository is mostly focused on a modest kubernetes c
 ## ⌨️ Getting Started
 
 ```console
-$ python3 -m venv .venv
-$ source .venv/bin/activate
-$ pip install -U -r requirements.txt
-$ ansible-galaxy collection install -U -r requirements.yaml
-$ ansible-playbook playbooks/cluster.yml
-$ kubectl apply --server-side -f cluster/cluster.yaml
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -U -r requirements.txt
+ansible-galaxy collection install -U -r requirements.yaml
+ansible-playbook playbooks/cluster.yml
+kubectl apply --server-side -f cluster/cluster.yaml
 ```
 
 # 🍇 Cluster
 
 ## Infrastructure Automation
 
-Host buildout is handled by [Ansible][ansible-uri] automation.  The main Kubernetes cluster playbook is [`playbooks/cluster.yml`](./playbooks/cluster.yml). (As a convention, all Ansible yaml files are suffixed `.yml` to allow VSCode to distinguish between those and all other yaml files.) The full task list can be found in the [infrastructure](./infrastructure/README.md) folder, but as an overview, it will:
+Host buildout is handled by [Ansible][ansible-uri] automation.
+The main Kubernetes cluster playbook is [`playbooks/cluster.yml`](./playbooks/cluster.yml).
+(As a convention, all Ansible yaml files are suffixed `.yml` to allow VSCode to distinguish between those and all other yaml files.)
+The full task list can be found in the [infrastructure](./infrastructure/README.md) folder, but as an overview, it will:
+
 - Install system packages and any other necessary system related setup
 - Pull down cluster images and binaries
 - Install container runtime and start kubelet
 - Run `kubeadm` to setup to create cluster
 - Creates a separate user to continue setting up the cluster with to get away from using the admin credentials
 - Applies cni configuration
-- Generates Application files for every cluster app and drops them into [`cluster/manifests`](./cluster/manifests) and Kustomization files into[ `cluster/apps`](./cluster/apps) for the respective apps
-- Bootstraps the cluster by starting ArgoCD and then applying [`cluster/bootstrap.yaml`](./cluster/bootstrap.yaml)
+- Generates Application files for every cluster app and drops them into [`cluster/manifests`](./cluster/manifests) and Kustomization files into[`cluster/apps`](./cluster/apps) for the respective apps
+- Bootstraps the cluster by starting ArgoCD and then applying [`cluster/cluster.yaml`](./cluster/cluster.yaml)
 
 ## GitOps
 
 [Argo][argocd-uri] watches all subfolders under the [`cluster`](./cluster) folder (see Directories below) and makes the changes to my cluster based on the YAML manifests.
 
-The way Argo works for me here is (almost) every file in the [`cluster/manifests`](./cluster/manifests) directory will define an `argoproj.io/v1alpha1/Application` that points to a corresponding folder under [`cluster/apps`](./cluster/apps).  The `Application` will apply any manifest files it finds in that directory, in addition to any Helm Charts or Kustomizations [that may also be defined](https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/) within the `Application`'s spec. One or more Helm `values.yaml` files are in each directory and each helm definition in the `Application` refers to the specific values file to apply to that chart.
-
+The way Argo works for me here is (almost) every file in the [`cluster/manifests`](./cluster/manifests) directory will define an `argoproj.io/v1alpha1/Application` that points to a corresponding folder under [`cluster/apps`](./cluster/apps).
+The `Application` will apply any manifest files it finds in that directory,
+in addition to any Helm Charts or Kustomizations [that may also be defined](https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/) within the `Application`'s spec.
+One or more Helm `values.yaml` files are in each directory and each helm definition in the `Application` refers to the specific values file to apply to that chart.
 
 ## Directories
 
 This Git repository contains the following top level directories.
-
+<!-- markdownlint-disable MD013 -->
 ```sh
 📁 cluster         # Kubernetes cluster defined in code
 ├─📁 apps          # Apps deployed into my cluster grouped by namespace
@@ -74,11 +85,12 @@ This Git repository contains the following top level directories.
 └─📁 manifests     # Cluster initialization flies (Argo Applications) also grouped by namespace
 📁 infrastructure  # Ansible files
 ├─📁 inventory     # Defines Host configurations and widest scoped variables
-├─📁 pki           # Self-signed CA and submordinate CA certs for whole house and cluster
-└─📁 roles         # Ansible roles that define the actual steps to accomplish these tasks - inspired by Kubespray
+├─📁 pki           # Self-signed CA and subordinate CA certs for whole house and cluster
+├─📁 roles         # Ansible roles that define the actual steps to accomplish these tasks
+└─📁 terraform     # Terraform config for building VM hosts
 📁 playbooks       # Ansible playbooks
 ```
-
+<!-- markdownlint-enable MD013 -->
 # 🖥️ Tech Stack
 
 ## Infrastructure
@@ -100,7 +112,7 @@ This Git repository contains the following top level directories.
 |<img width="32" src="https://github.com/cncf/artwork/blob/aea0dcfe090b8f36d7ae1eb3d5fbe95cc77380d3/projects/prometheus/icon/color/prometheus-icon-color.png?raw=true">|[Prometheus](https://prometheus.io)|Systems monitoring and alerting toolkit|
 |<img width="32" src="https://www.virt-tools.org/logo-qemu.png">|[QEMU](https://www.qemu.org)|Open source machine emulator and virtualizer|
 |<img width="32" src="https://github.com/cncf/artwork/blob/master/projects/rook/icon/color/rook-icon-color.png?raw=true">|[Rook](https://rook.io)|Cloud-native storage orchestrator for Ceph|
-|<img width="32" src="https://api.iconify.design/logos/terraform-icon.svg">|[Terraform](https://www.terraform.io/)|Infrastructure provisioning automation| 
+|<img width="32" src="https://api.iconify.design/logos/terraform-icon.svg">|[Terraform](https://www.terraform.io/)|Infrastructure provisioning automation|
 |<img width="32" src="https://docs.zerotier.com/img/ZeroTierIcon.png">|[ZeroTier](https://zerotier.com)|Virtual Networking that just works|
 
 ## Applications (by namespace)
@@ -118,7 +130,7 @@ This Git repository contains the following top level directories.
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
 |<img width="32" src="https://raw.githubusercontent.com/grocy/grocy/master/public/img/icon.svg">| [Grocy][grocy-uri] | `Services` | ERP Beyond your fridge | Deployed | [![][grocy-badge]][grocy-img] |
-|<img width="32" src="https://github.com/hay-kot/mealie/raw/mealie-next/docs/docs/assets/img/favicon.png">| [Mealie][mealie-url] | `Services` | Recipe Manager | Deployed | [![][mealie-badge]][mealie-docker] | 
+|<img width="32" src="https://github.com/hay-kot/mealie/raw/mealie-next/docs/docs/assets/img/favicon.png">| [Mealie][mealie-url] | `Services` | Recipe Manager | Deployed | [![][mealie-badge]][mealie-docker] |
 |<img width="32" src="https://nextcloud.com/wp-content/uploads/2022/10/nextcloud-logo-blue-transparent.svg">| [NextCloud][nextcloud-url] | `File Sharing` | File Hosting | Deployed | [![][nextcloud-badge]][nextcloud-chart] |
 |<img width="32" src="https://hajimari.io/assets/logo.png">|[Hajimari][hajimari-url] | `Dashboard` | Startpage with K8S application discovery | Deployed | [![][hajimari-badge]][hajimari-url] |
 |<img width="32" src="https://github.com/paperless-ngx/paperless-ngx/raw/dev/docs/assets/favicon.png">|[Paperless-ngx][paperless-uri] | `File Sharing` | Document Management System | Deployed| [![][paperless-badge]][paperless-img] |
@@ -129,8 +141,8 @@ This Git repository contains the following top level directories.
 |--------|----------------|------------|---------------|----------|--------------------------|
 |<img width="32" src="https://grafana.com/static/img/menu/grafana2.svg">|[Grafana][grafana-uri]| `Dashboard` | Operational dashboards | Deployed | [![][grafana-badge]][grafana-chart] |
 
-
 ### [Media](./cluster/apps/media/)
+
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
 |<img width="32" src="https://photonix.org/static/images/logo.svg">|[Photonix][photonix-url]| `Media` | Photo Management | | |
@@ -139,18 +151,18 @@ This Git repository contains the following top level directories.
 |<img width="32" src="https://github.com/owntone/owntone-server/blob/master/docs/assets/logo.svg?raw=true">|[OwnTone][owntone-uri]| `Media` | DAAP Audio server| | |
 
 ### [Downloads](./cluster/apps/downloads/)
+
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
-|<img width="32" src="https://avatars.githubusercontent.com/u/2131270?s=200&v=4">|[qBittorrent][qbittorrent-uri]| `File Sharing` | Torrent client | | | 
+|<img width="32" src="https://avatars.githubusercontent.com/u/2131270?s=200&v=4">|[qBittorrent][qbittorrent-uri]| `File Sharing` | Torrent client | | |
 
 ### [Infrastructure Services](./cluster/apps/infrastructure)
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
 |<img width="32" src="https://avatars.githubusercontent.com/u/44905828?s=200&v=4">|[NetBox][netbox-uri]| `Services`| Full-scale network inventory | | |
-|<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">|[ListenBrainz][listenbrainz-uri]| `Media` | Open Source scrobbler | | | 
+|<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">|[ListenBrainz][listenbrainz-uri]| `Media` | Open Source scrobbler | | |
 |<img width="32" src="https://simpleicons.org/icons/vault.svg">|[Vault][vault-uri]| `Services` | Secrets and encryption management| | |
-
 
 ### Virtualized (and other off cluster) Apps
 
@@ -159,8 +171,8 @@ This Git repository contains the following top level directories.
 |<img width="32" src="https://avatars.githubusercontent.com/u/10979201?s=200&v=4">| [FreeIPA][freeipa-uri] | `Infrastructure`| Full IdAM solution + PKI | Deploying.. | [![][freeipa-badge]][freeipa-img] |
 |<img width="32" src="https://github.com/MythTV/mythtv/raw/master/mythtv/html/images/icons/upnp_small_icon.png">|[MythTV][mythtv-url]| `Media` | Digital Video Recorder | Running directly on node | [![][mythtv-badge]][mythtv-gh] |
 
+## 🤝 Thank you
 
-## 🤝 Thank you!
 - [bjw-s/home-ops](https://github.com/bjw-s/home-ops)
 - [onedr0p/home-ops](https://github.com/onedr0p/home-ops)
 - [khuedoan/homelab](https://github.com/khuedoan/homelab)
@@ -176,7 +188,6 @@ This Git repository contains the following top level directories.
 <br/>
 
 ## ⭐ Stargazers
-
 
 [![Star History Chart](https://api.star-history.com/svg?repos=clearlybaffled/homelab&type=Date)](https://star-history.com/#clearlybaffled/homelab&Date)
 
