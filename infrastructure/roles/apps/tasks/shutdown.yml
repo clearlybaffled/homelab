@@ -1,0 +1,36 @@
+---
+- name: "{{ app_name }} | Remove autosync from argocd application"
+  kubernetes.core.k8s_json_patch:
+    api_version: argoproj.io/v1alpha1
+    kind: Application
+    name: "{{ app_name }}"
+    namespace: argocd
+    patch:
+      - op: remove
+        path: /spec/syncPolicy
+
+- name: "{{ app_name }} | Pull ArgoCD Application definition"
+  kubernetes.core.k8s_info:
+    api_version: argoproj.io/v1alpha1
+    kind: Application
+    name: "{{ app_name }}"
+    namespace: argocd
+  register: argocd_app
+
+- name: "{{ app_name }} | Run any app specific shutdown tasks"
+  include_tasks: "{{ item }}"
+  with_first_found:
+    files:
+      - "{{ app_name }}.yml"
+    paths:
+      - shutdown
+    skip: true
+
+- name: "{{ app_name }} | Scale down any running resources"
+  kubernetes.core.k8s_scale:
+    api_version: "{{ item.group }}/{{ item.version }}"
+    kind: "{{ item.kind }}"
+    namespace: "{{ argocd_app.resources[0].metadata.namespace }}"
+    name: "{{ argocd_app.resources[0].metadata.name }}"
+    replicas: 0
+  loop: "{{ argocd_app.resources[0].status.resources | selectattr('kind', 'in', ['Deployment','DaemonSet','StatefulSet']) }}"

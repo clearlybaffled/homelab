@@ -26,7 +26,6 @@
     mode: "0644"
     create: true
   register: application
-  when: app.createApp is not defined or app.createApp
 
 - name: "Install Kustomization file | {{ app.name }}"
   blockinfile:
@@ -55,6 +54,8 @@
   loop_control:
     loop_var: taskfile
   register: app_tasks
+  tags:
+    - app_tasks
 
 - name: Commit changes to app files | {{ app.name }}
   lvrfrc87.git_acp.git_acp:
@@ -70,3 +71,12 @@
       key_file: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
   when: lookup('pipe','git status --porcelain -- ' + (app.app_dir, app.manifest_file) | join(' '))
   tags: commit
+
+- name: Launch wave <= 3 applications now
+  kubernetes.core.k8s:
+    src: "{{ app.manifest_file }}"
+    server_side_apply:
+      field_manager: ansible
+  when:
+    - app.wave is defined
+    - app.wave <= 3

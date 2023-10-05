@@ -1,0 +1,9 @@
+---
+- name: Shutdown all apps
+  include_tasks: shutdown.yml
+  loop: "{{  (apps|items|rejectattr('1.wave','defined') + (apps | items | selectattr('1.wave','in',['3','4']) | sort(attribute='1.wave', reverse=True)) ) }}"
+  loop_control:
+    label: "{{ item.0 }}"
+  vars:
+    app_name: "{{ item.0 }}"
+    app: "{{ item.1 }}"

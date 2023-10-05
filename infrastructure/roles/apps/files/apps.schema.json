@@ -187,10 +187,13 @@
             },
             "wave": {
               "title": "wave",
-              "type": "integer"
+              "type": "string"
             }
           },
-          "additionalProperties": true
+          "additionalProperties": true,
+          "required":[
+            "namespace"
+          ]
         }
       }
     }

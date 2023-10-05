@@ -1,5 +1,5 @@
 ---
-- name: Cache DB credentials
+- name: Set facts
   set_fact:
     mysql_root: "{{ query('kubernetes.core.k8s', kind='Secret', namespace='db', resource_name='mysql')[0].data }}"
     postgres_admin: "{{ query('kubernetes.core.k8s', kind='Secret', namespace='db', resource_name='cnpg-cluster-superuser')[0].data }}"
@@ -26,7 +26,7 @@
         'name': item.0,
         'app_dir': (
             cluster_dir,
-            (item.0 == 'argocd') | ternary('', 'apps'),
+            item.1.path | default('apps'),
             ('path' in item.1) | ternary(item.1.path, item.1.namespace),
             item.0
           ) | path_join,
@@ -39,10 +39,3 @@
           ) | path_join
         })
       }}
-
-# - name: Bootstrap cluster
-#   kubernetes.core.k8s:
-#     src: "{{ (cluster_dir, 'cluster.yaml') | path_join }}"
-#     server_side_apply:
-#       field_manager: ansible
-#   tags: bootstrap

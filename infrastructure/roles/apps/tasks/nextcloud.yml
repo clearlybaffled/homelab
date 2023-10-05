@@ -1,5 +1,7 @@
 ---
 - name: NextCloud setup
+  vars:
+    secret: "{{ lookup('community.sops.sops', app.app_dir+'/secret.sops.yaml') }}"
   block:
     - name: Create Database
       community.mysql.mysql_db:
@@ -12,11 +14,9 @@
 
     - name: Create user
       community.mysql.mysql_user:
-        name: "`{{ username }}`@`*`"
-        password: "{{ (lookup('community.sops.sops', app.app_dir+'/secret.sops.yaml') | from_yaml).data['db-password'] | b64decode }}"
-        priv: "{{ username }}.*:ALL"
+        name: "`{{ secret.data['db-username'] | b64decode }}`@`*`"
+        password: "{{ ssecret.data['db-password'] | b64decode }}"
+        priv: "{{ secret.data['db-username'] | b64decode }}.*:ALL"
         login_host: 172.16.1.32
         login_user: root
         login_password: "{{ mysql_root['mysql-root-password'] | b64decode }}"
-      vars:
-        username: "{{ (lookup('community.sops.sops', app.app_dir+'/secret.sops.yaml')|from_yaml).data['db-username'] | b64decode }}"

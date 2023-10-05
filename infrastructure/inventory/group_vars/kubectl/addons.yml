@@ -20,6 +20,7 @@ helm_repositories:
   immich: https://immich-app.github.io/immich-charts
   bootc: https://charts.boo.tc
   metrics-server: https://kubernetes-sigs.github.io/metrics-server
+  mysql-operator: https://mysql.github.io/mysql-operator/
 
 # Registry deployment
 registry_enabled: false

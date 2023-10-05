@@ -7,20 +7,33 @@ app_template: &app_template
 apps:
   argocd:
     namespace: argocd
-    wave: 0
+    wave: "0"
     path: ''
     kustomize:
       resources:
-        - ns.yaml
+        - ./ns.yaml
       charts:
         - chart: argocd/argo-cd
           version: "{{ argocd_chart_version }}"
           namespace: argocd
           release: argocd
+      extras:
+        patches:
+          - patch: |-
+              - op: add
+                path: /spec/template/spec/containers/0/env/-
+                value: { name: ARGOCD_SYNC_WAVE_DELAY, value: '30' }
+            target:
+              version: v1
+              group: apps
+              kind: StatefulSet
+              name: argocd-application-controller
+              labelSelector: "app.kubernetes.io/name=argocd-application-controller"
+
 
   kube-prometheus-stack:
     namespace: monitoring
-    wave: 2
+    wave: "2"
     charts:
       - chart: prometheus-community/kube-prometheus-stack
         version: "{{ kube_prometheus_stack_chart_version }}"
@@ -31,24 +44,36 @@ apps:
         version: "{{ prometheus_adapter_chart_version }}"
         valueFiles:
           - adapter.yaml
+    kustomize:
+      resources:
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_probes.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_prometheusagents.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_scrapeconfigs.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml"
 
   hajimari:
     namespace: home
-    wave: 4
+    wave: "4"
     charts:
       - chart: hajimari/hajimari
         version: "{{ hajimari_version }}"
 
   cloudnative-pg:
     namespace: db
-    wave: 3
+    wave: "3"
     charts:
       - chart: cnpg/cloudnative-pg
         version: "{{ cnpg_chart_version }}"
 
   mysql:
     namespace: db
-    wave: 3
+    wave: "3"
     pv: true
     charts:
       - chart: bitnami/mysql
@@ -63,7 +88,7 @@ apps:
   cert-manager:
     path: infrastructure
     namespace: cert-manager
-    wave: 1
+    wave: "1"
     charts:
       - chart: jetstack/cert-manager
         version: "{{ cert_manager_version }}"
@@ -71,12 +96,12 @@ apps:
 
   grocy:
     namespace: home
-    wave: 4
+    wave: "4"
     pv: true
 
   ingress-nginx:
     namespace: infrastructure
-    wave: 1
+    wave: "1"
     charts:
       - chart: ingress-nginx/ingress-nginx
         version: "{{ ingress_nginx_version }}"
@@ -84,14 +109,14 @@ apps:
   metallb:
     path: infrastructure
     namespace: metallb-system
-    wave: 1
+    wave: "1"
     charts:
       - chart: metallb/metallb
         version: "{{ metallb_version[1:] }}"
 
   redis:
     namespace: db
-    wave: 3
+    wave: "3"
     charts:
       - chart: bitnami/redis
         version: "{{ bitnami_redis_chart_version }}"
@@ -99,7 +124,7 @@ apps:
   rook-ceph:
     path: infrastructure
     namespace: rook-ceph
-    wave: 2
+    wave: "2"
     charts:
       - chart: rook/rook-ceph
         version: "{{ rook_ceph_version }}"
@@ -112,7 +137,7 @@ apps:
 
   paperless-ngx:
     namespace: home
-    wave: 4
+    wave: "4"
     charts:
       - <<: *app_template
         release: paperless-ngx
@@ -138,7 +163,7 @@ apps:
 
   nextcloud:
     namespace: home
-    wave: 4
+    wave: "4"
     charts:
       - chart: nextcloud/nextcloud
         version: "{{ nextcloud_chart_version }}"
@@ -147,7 +172,7 @@ apps:
 
   mealie:
     namespace: home
-    wave: 4
+    wave: "4"
     charts:
       - chart: k8s-at-home/mealie
         version: 5.1.2

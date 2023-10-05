@@ -2,17 +2,13 @@
 - name: Generate application manifest files
   hosts: localhost
   gather_facts: false
+  roles:
+    - apps
   tasks:
-    - name: Install Application manifest files
-      include_role: # noqa name
-        name: cluster
-        tasks_from: application
-        apply:
-          vars:
-            cluster_dir: "{{ root_dir }}/cluster"
-            app: "{{ apps['paperless-ngx'] | combine({'name': 'paperless-ngx'}) }}"
-            app_dir: "{{ root_dir }}/cluster/apps/home/paperless-ngx"
-            manifest_file: "{{ root_dir }}/cluster/manifests/home/paperless-ngx.yaml"
-            # app: "{{ apps['mysql'] | combine({'name': 'mysql'}) }}"
-            # app_dir: "{{ root_dir }}/cluster/apps/db/mysql"
-            # manifest_file: "{{ root_dir }}/cluster/manifests/db/mysql.yaml"
+    - name: Bootstrap cluster
+      kubernetes.core.k8s:
+        src: "{{ (cluster_dir, 'cluster.yaml') | path_join }}"
+        server_side_apply:
+          field_manager: ansible
+      tags:
+        - bootstrap
