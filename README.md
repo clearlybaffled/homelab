@@ -43,8 +43,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -U -r requirements.txt
 ansible-galaxy collection install -U -r requirements.yaml
-ansible-playbook playbooks/cluster.yml
-kubectl apply --server-side -f cluster/cluster.yaml
+ansible-playbook homelab.yml
 ```
 
 # 🍇 Cluster
@@ -52,7 +51,7 @@ kubectl apply --server-side -f cluster/cluster.yaml
 ## Infrastructure Automation
 
 Host buildout is handled by [Ansible][ansible-uri] automation.
-The main Kubernetes cluster playbook is [`playbooks/cluster.yml`](./playbooks/cluster.yml).
+The whole lab is built out from a [top level playbook](./homelab.yml), with segment specific playbooks under the [`playbooks/`](./playbooks/) directory.
 (As a convention, all Ansible yaml files are suffixed `.yml` to allow VSCode to distinguish between those and all other yaml files.)
 The full task list can be found in the [infrastructure](./infrastructure/README.md) folder, but as an overview, it will:
 
@@ -61,13 +60,13 @@ The full task list can be found in the [infrastructure](./infrastructure/README.
 - Install container runtime and start kubelet
 - Run `kubeadm` to setup to create cluster
 - Creates a separate user to continue setting up the cluster with to get away from using the admin credentials
-- Applies cni configuration
+- Applies CNI configuration
 - Generates Application files for every cluster app and drops them into [`cluster/manifests`](./cluster/manifests) and Kustomization files into[`cluster/apps`](./cluster/apps) for the respective apps
 - Bootstraps the cluster by starting ArgoCD and then applying [`cluster/cluster.yaml`](./cluster/cluster.yaml)
 
 ## GitOps
 
-[Argo][argocd-uri] watches all subfolders under the [`cluster`](./cluster) folder (see Directories below) and makes the changes to my cluster based on the YAML manifests.
+[ArgoCD][argocd-uri] watches all subfolders under the [`cluster`](./cluster) folder (see Directories below) and makes the changes to my cluster based on the YAML manifests.
 
 The way Argo works for me here is (almost) every file in the [`cluster/manifests`](./cluster/manifests) directory will define an `argoproj.io/v1alpha1/Application` that points to a corresponding folder under [`cluster/apps`](./cluster/apps).
 The `Application` will apply any manifest files it finds in that directory,
@@ -148,6 +147,7 @@ This Git repository contains the following top level directories.
 |<img width="32" src="https://photonix.org/static/images/logo.svg">|[Photonix][photonix-url]| `Media` | Photo Management | | |
 |<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/appicon.png">|[Immich][immich-uri]| `Media` | Photo Management | | |
 |<img width="32" src="https://github.com/kovidgoyal/calibre/raw/master/icons/calibre.png">|[Calibre][calibre-uri]| `Media` | e-book Manager | | |
+|<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">|[ListenBrainz][listenbrainz-uri]| `Media` | Open Source scrobbler | | |
 |<img width="32" src="https://github.com/owntone/owntone-server/blob/master/docs/assets/logo.svg?raw=true">|[OwnTone][owntone-uri]| `Media` | DAAP Audio server| | |
 
 ### [Downloads](./cluster/apps/downloads/)
@@ -161,7 +161,6 @@ This Git repository contains the following top level directories.
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
 |<img width="32" src="https://avatars.githubusercontent.com/u/44905828?s=200&v=4">|[NetBox][netbox-uri]| `Services`| Full-scale network inventory | | |
-|<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">|[ListenBrainz][listenbrainz-uri]| `Media` | Open Source scrobbler | | |
 |<img width="32" src="https://simpleicons.org/icons/vault.svg">|[Vault][vault-uri]| `Services` | Secrets and encryption management| | |
 
 ### Virtualized (and other off cluster) Apps

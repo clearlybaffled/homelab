@@ -56,13 +56,14 @@ cluster
 └── cluster.yaml
 ```
 
-- `cluster.yaml` implements the ArgoCD app-of-apps pattern and applies everything under the `cluster/bootstrap`
-- `cluster/bootstrap` directory contains all of the ArgoCD Application YAML files, organized by namespace.
+- `cluster.yaml` implements the ArgoCD app-of-apps pattern and applies everything under the `cluster/manifests`
+- `cluster/manifests` directory contains all of the ArgoCD Application YAML files, organized by namespace.
 Each ArgoCD application points to the respective subdirectory in `cluster/apps/{namespace}/{app.name}` that ArgoCD needs to load files from and monitor for changes.
 - `cluster/apps` has all of the application specific configuration files, like `values.yaml`, `kustomization.yaml`, and other kubernetes yaml manifest and custom resource files.
 - `cluster/argocd` is the configuration for the ArgoCD gitops sub-system itself
 
 I tried getting rid of the `bootstrap` directory and putting all of the  `Application` files in each `cluster/apps/...` directory,
-but found that because of the finalizer on the Application object itself combined with the fact that each Application contained itself as a component, it created a deadlock in deletion.
+but found that because of the finalizer on the Application object itself combined with the fact that each Application contained itself as a component, it created a deadlock in deletion. So I renamed the `bootstrap` directory to `manifests` and continued on.
 
 ### Populating `cluster/manifests`
+
