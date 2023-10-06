@@ -5,5 +5,9 @@ metadata:
   namespace: db
 spec:
   instances: 1
+
   storage:
     size: 10Gi
+
+  monitoring:
+    enablePodMonitor: true

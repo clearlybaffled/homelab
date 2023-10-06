@@ -1,7 +1,7 @@
 ---
 - name: Generate application manifest files
   hosts: localhost
-  gather_facts: false
+  gather_facts: true
   roles:
     - apps
   tasks:

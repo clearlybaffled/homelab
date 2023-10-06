@@ -1,0 +1,56 @@
+image:
+  repository: ghcr.io/onedr0p/radarr
+  tag: 4.7.5.7809
+
+env:
+  TZ: "America/New_York"
+  RADARR__INSTANCE_NAME: Radarr
+  RADARR__APPLICATION_URL: 'https://movies.gato.hermleigh.home'
+  RADARR__LOG_LEVEL: info
+
+service:
+  main:
+    ports:
+      http:
+        port: 7878
+
+ingress:
+  main:
+    enabled: true
+    ingressClassName: 'nginx'
+    annotations:
+      cert-manager.io/cluster-issuer: ca-issuer
+      hajimari.io/icon: filmstrip
+    hosts:
+      - host: &host movies.gato.hermleigh.home
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+        - *host
+        secretName: radarr-tls-ingress
+
+persistence:
+  config:
+    enabled: true
+    storageClass: ceph-block
+    size: 50Mi
+  videos:
+    enabled: true
+    existingClaim: videos
+  shared:
+    enabled: true
+    existingClaim: shared-files
+
+podSecurityContext:
+  runAsUser: 997
+  runAsGroup: 997
+  fsGroup: 997
+
+resources:
+  requests:
+    memory: 350Mi
+    cpu: 25m
+  limits:
+    memory: 500Mi

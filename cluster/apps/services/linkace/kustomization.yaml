@@ -1,0 +1,18 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: {{ template_fullpath | relpath(root_dir) }}
+# date: 2023-10-05 19:51:18
+# user: {{ lookup('pipe', 'git config --get user.name') }}
+# host: tirante
+# commit: {{ lookup('pipe', 'git log --format="%h" -1 ' + template_fullpath|quote) }}
+#
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: services
+configMapGenerator:
+- name: nginx-config
+  files:
+  - nginx.conf
+  options:
+    disableNameSuffixHash: true
+# END ANSIBLE MANAGED BLOCK

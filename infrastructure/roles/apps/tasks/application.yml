@@ -79,4 +79,5 @@
       field_manager: ansible
   when:
     - app.wave is defined
-    - app.wave <= 3
+    - app.wave|int <= 3
+  tags: app_tasks

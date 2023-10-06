@@ -1,8 +1,8 @@
 ---
 - name: Set facts
   set_fact:
-    mysql_root: "{{ query('kubernetes.core.k8s', kind='Secret', namespace='db', resource_name='mysql')[0].data }}"
-    postgres_admin: "{{ query('kubernetes.core.k8s', kind='Secret', namespace='db', resource_name='cnpg-cluster-superuser')[0].data }}"
+    mysql_root: "{{ query('kubernetes.core.k8s', kind='Secret', namespace='db', resource_name='mysql')[0].data | default(omit) }}"
+    postgres_admin: "{{ query('kubernetes.core.k8s', kind='Secret', namespace='db', resource_name='cnpg-cluster-superuser')[0].data |default(omit) }}"
 
 - name: Install sops-age-key secret to ArgoCD Namespace for KSOPS
   kubernetes.core.k8s:

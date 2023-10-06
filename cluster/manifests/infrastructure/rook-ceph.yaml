@@ -1,10 +1,10 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
-# template: infrastructure/roles/cluster/templates/application.yaml.j2
-# date: 2023-09-08 11:04:38
-# user: clearlybaffled
+# template: {{ template_fullpath | relpath(root_dir) }}
+# date: 2023-10-05 19:51:18
+# user: {{ lookup('pipe', 'git config --get user.name') }}
 # host: tirante
-# commit: c5f9444
+# commit: {{ lookup('pipe', 'git log --format="%h" -1 ' + template_fullpath|quote) }}
 #
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -12,42 +12,28 @@ metadata:
   name: rook-ceph
   namespace: argocd
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: '2'
 spec:
   project: default
-  
   sources:
-    - chart: rook-ceph
-      repoURL: https://charts.rook.io/release
-      targetRevision: v1.11.7
-      helm:
-        valueFiles:
-          - $repo/cluster/apps/infrastructure/rook-ceph/operator.yaml
-
-    - chart: rook-ceph-cluster
-      repoURL: https://charts.rook.io/release
-      targetRevision: v1.11.7
-      helm:
-        releaseName: rook-ceph-cluster
-        valueFiles:
-          - $repo/cluster/apps/infrastructure/rook-ceph/ceph-cluster.yaml
-
-    - repoURL: https://github.com/clearlybaffled/homelab
-      path: cluster/apps/infrastructure/rook-ceph
-      targetRevision: development
-      ref: repo
-
+  - chart: rook-ceph
+    repoURL: https://charts.rook.io/release
+    targetRevision: v1.12.4
+  - chart: rook-ceph-cluster
+    repoURL: https://charts.rook.io/release
+    targetRevision: v1.12.4
+    helm:
+      releaseName: rook-ceph-cluster
   destination:
     name: in-cluster
     namespace: rook-ceph
-
-  syncPolicy: 
+  syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+    - CreateNamespace=true
+    - ServerSideApply=true
 # END ANSIBLE MANAGED BLOCK
