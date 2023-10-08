@@ -1,4 +1,4 @@
 [merge "ours"]
   driver = true
 [diff "sopsdiffer"]
-	textconv = sops -d
+  textconv = sops -d

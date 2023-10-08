@@ -68,18 +68,18 @@ def application(ctx, app):
         metadata["annotations"] = {"argocd.argoproj.io/sync-wave": app["wave"]}
 
     spec = {"project": "default"}
-    
+
     sources = []
-    
+
     repo_dir = os.path.relpath(app["app_dir"]) if os.path.exists(app["app_dir"]) else None
-    
+
     if repo_dir:
         repo_source = {
             "repoURL": app["repo_url"] if "repo_url" in app else ctx.get("git_repo_url"),
             "path": repo_dir,
             "targetRevision": ctx.get("git_branch"),
         }
-    
+
     if "charts" in app:
         for chart in helm_charts(app["charts"], app, ctx.get("helm_repositories")):
             source = {
@@ -90,14 +90,14 @@ def application(ctx, app):
             helm = {}
             if chart["skip_crds"]:
                 helm["skipCrds"] = chart["skip_crds"]
-            
+
             if 'value_files' in chart and repo_dir:
                 helm['valueFiles'] = [ os.path.join("$repo", repo_dir, file) for file in chart["value_files"] ]
                 repo_source["ref"] = "repo"
-            
+
             if 'release_name' in chart:
                 helm["releaseName"] = chart["release_name"]
-                
+
             if helm:
                 source['helm'] = helm
 
@@ -106,7 +106,7 @@ def application(ctx, app):
     if repo_dir:
         if "directory" in app:
             repo_source.update({"directory": app["directory"]})
-    
+
         sources.append(repo_source)
 
     if len(sources) > 1:
@@ -132,7 +132,7 @@ def application(ctx, app):
     spec["syncPolicy"] = {
                 "automated": {"prune": True, "selfHeal": True },
                 "syncOptions": ["CreateNamespace=true", "ServerSideApply=true"] }
-    
+
     if "pv" in app and app["pv"]:
         spec["syncPolicy"]["syncOptions"].append(
             "RespectIgnoreDifferences=true")
@@ -183,10 +183,10 @@ def kustomization(ctx, app):
                     "version": chart["version"],
                     "namespace": chart["namespace"],
                 }
-                
+
                 if 'release' in chart:
                     c["release_name"] = chart["release"]
-                
+
                 if chart["skip_crds"]:
                     c["includeCRDs"] = not chart["skip_crds"]
 

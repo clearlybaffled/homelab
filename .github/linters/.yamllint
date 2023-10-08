@@ -31,5 +31,5 @@ rules:
 
   hyphens:
     max-spaces-after: 1
-  
+
   document-start: disable

@@ -26,15 +26,3 @@ patches:
     name: argocd-application-controller
     labelSelector: app.kubernetes.io/name=argocd-application-controller
 # END ANSIBLE MANAGED BLOCK
-
-patches:
-  - patch: |-
-      - op: add
-        path: /spec/template/spec/containers/0/env/-
-        value: {name: ARGOCD_SYNC_WAVE_DELAY, value: "30"}
-    target:
-      version: v1
-      group: apps
-      kind: StatefulSet
-      name: argocd-application-controller
-      labelSelector: "app.kubernetes.io/name=argocd-application-controller"
