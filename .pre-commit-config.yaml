@@ -36,6 +36,7 @@ repos:
       - id: remove-crlf
       - id: remove-tabs
         args: [--whitespaces-count, '2']  # defaults to: 4
+
   - repo: https://github.com/sirosen/fix-smartquotes
     rev: 0.2.0
     hooks:
@@ -52,12 +53,13 @@ repos:
     hooks:
       - id: forbid-secrets
 
-  - repo: https://github.com/gruntwork-io/pre-commit
-    rev: v0.1.22
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.83.4
     hooks:
-      - id: terraform-fmt
-      - id: terraform-validate
-      - id: tflint
+      - id: terraform_fmt
+      - id: terraform_docs
+      - id: terraform_validate
+      - id: terraform_tflint
 
   - repo: https://github.com/ansible/ansible-lint
     rev: v6.20.1
@@ -75,7 +77,6 @@ repos:
           - --config
           - .github/linters/.markdownlint.yaml
         exclude: "^.git"
-
 
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.16.2

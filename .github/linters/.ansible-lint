@@ -3,6 +3,7 @@ parseable: true
 exclude_paths:
   - ./references/
 
+
 skip_list:
   # see https://docs.ansible.com/ansible-lint/rules/default_rules.html for a list of all default rules
 
@@ -22,13 +23,11 @@ skip_list:
   - 'var-naming'
   - 'var-spacing'
 
-  # [fqcn-builtins]
   - fqcn-builtins
 
-  # name[casing]
   - name[casing]
 
-  - yaml[line-length]
+  - yaml
 
   - no-changed-when
 
