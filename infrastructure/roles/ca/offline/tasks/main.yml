@@ -1,0 +1,59 @@
+---
+- name: Load crypt partition variables
+  community.sops.load_vars:
+    file: crypt-vars.sops.yml
+    name: ca_device
+    expressions: evaluate-on-load
+
+- name: Open Root CA partition
+  # Reference: https://wiki.archlinux.org/title/Dm-crypt/Device_encryption#Encryption_options_for_plain_mode    
+  command: 
+    cmd: >-
+      cryptsetup open
+      --type plain
+      --size={{ crypt_size * 1024 * 1024 / blocksize }}
+      --offset={{ crypt_offset }}
+      --key-file={{ key_file | default(usb_device) }}
+      --keyfile-offset={{ key_offset * blocksize }}
+      --keyfile-size={{ key_size * blocksize }}
+      {{ usb_device }}
+      {{ crypt_name }}
+    creates: "{{ mapping_file }}"
+  register: crypt_open
+
+- name: Mount or format volume
+  when: crypt_open is successful
+  block:
+    - name: Try mounting
+      ansible.posix.mount:
+        path: "/srv/pki/root-ca"
+        state: mounted
+        src: "{{ mapping_file }}"
+      any_errors_fatal: false
+      register: mount
+    
+    - name: Mount failed
+      when: mount.rc != 0
+      block:
+        - name: If mount fails, create new filesystem
+          community.general.filesystem:
+            dev: "{{ mapping_file }}"
+            fstype: ext4
+        - name: Try mount again
+          ansible.posix.mount:
+            path: "/srv/pki/root-ca"
+            state: mounted
+            src: "{{ mapping_file }}"
+
+- name: Close Root CA volume
+  when: crypt_open is skipped
+  block:
+    - name: Unmount volume
+      ansible.posix.mount:
+        path: "/dev/mapper/{{ crypt_name }}"
+        state: unmounted
+
+    - name: Close dm-crypt
+      command: 
+        cmd: "cryptsetup close {{ crypt_name }}"
+        removes: "{{ mapping_file }}"

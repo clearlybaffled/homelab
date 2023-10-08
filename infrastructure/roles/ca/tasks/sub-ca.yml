@@ -52,7 +52,7 @@
         pk_passphrase:
 
 - name: Issue Certificate
-  include_tasks: issue-cert
+  include_tasks: main.yml
   vars:
     purpose: ca
 

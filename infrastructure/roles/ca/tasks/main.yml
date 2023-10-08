@@ -6,9 +6,8 @@
       - "csr_path is exists"
       - purpose in ['ocsp','user','client','server','ca']
 
-- name: Mount offline root CA if needed
-  notify:
-    - Open Root CA partition
+- name: Mount offline root if necessary
+  include_role: ca/offline
   when: signing_ca == 'root-ca'
 
 - name: Check if private key of signing cert is password protected
@@ -63,7 +62,7 @@
       set_fact:
         pk_passphrase:
       when: pk_passphrase is defined
-    - name: Close root CA if needed
-      notify:
-        - Close Root CA volume
-      when: signing_ca == 'root-ca'
+
+- name: Unmount offline root CA
+  include_role: ca/offline
+  when: signing_ca == 'root-ca'

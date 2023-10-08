@@ -9,8 +9,7 @@
   when: inventory_host != localhost
 
 - name: Open crypto container
-  notify:
-    - Open Root CA partition
+  include_tasks: open-ca-device.yml
 
 - name: Root CA initial setup
   become: true

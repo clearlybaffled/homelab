@@ -43,7 +43,53 @@
 
 
 - name: kubeadm | Initialize first master
+  vars:
+    pki_keypath: "{{ (pki_dir, 'kubernetes-ca', 'kubernetes-ca.key') | path_join }}"
+    pki_certpath: "{{ (pki_dir, 'kubernetes-ca', 'kubernetes-ca.crt') | path_join }}"
+    csr_path: "{{ (pki_dir, 'kubernetes-ca', 'kubernetes-ca.csr') | path_join }}"
   block:
+    - name: kubeadm | Check for Kubernetes CA files
+      stat:
+        path: "{{ item }}"
+      register: kube_ca
+      with_items:
+        - pki_keypath
+        - pki_certpath
+
+    - name: kubeadm | Create Kubernetes CA if it doesn't exist
+      when: kube_ca.results | selectattr('stat.exists', 'false') | length > 0
+      block:
+        - name: kubeadm | Create CSR for Kubernetes CA
+          command: 
+            cmd: >-
+              openssl req
+              -new
+              -config {{ role_path }}/files/req.conf
+              -keyout {{ pki_dir }}/kubernetes-ca/kubernetes-ca.key
+              -subj '/C=US/O=HERMLEIGH.HOME/OU=Kubernetes Cluster Seawolf ICA-01/CN=kubernetes-ca'
+              -out {{ csr_path }}
+            creates: "{{ csr_path }}"
+
+        - name: Sign CSR
+          include_role:
+            name: ca
+            apply:
+              signing_ca: root-ca
+              purpose: ca
+
+        - name: Encrypt Kubernetes CA files
+          community.sops.sops_encrypt:
+            path: "{{ item }}"
+            content_binary: "{{ lookup('file', item, rstrip=false) | b64encode }}"
+          with_items:
+            - pki_keypath
+            - pki_certpath
+        
+        - name: Remove CSR
+          file:
+            path: "{{ csr_path }}"
+            state: absent
+
     - name: kubeadm | Install Kubernetes CA cert and key files
       copy:
         dest: "{{ kube_cert_dir }}/ca.{{ item }}"
@@ -59,7 +105,7 @@
       copy:
         dest: "{{ kube_cert_dir }}/cacerts.pem"
         content: |-
-          {{ lookup('community.sops.sops', (pki_dir, 'kubernetes-ca','kubernetes-ca.crt')|path_join) }}
+          {{ lookup('community.sops.sops', pki_certpath ) }}
           {{ root-ca.crt }}
 
     - name: kubeadm | Init certs phase
