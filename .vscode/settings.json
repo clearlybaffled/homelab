@@ -9,6 +9,7 @@
     "*.yml": "ansible",
   },
   "files.autoSave": "onFocusChange",
+  "git.enableCommitSigning": true,
   "gitlens.currentLine.enabled": false,
   "python.terminal.activateEnvironment": true,
   "sops.configPath": "./.sops.ysml",
