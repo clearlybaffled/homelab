@@ -124,7 +124,7 @@ This Git repository contains the following top level directories.
 |<img width="32" src="https://cloudnative-pg.io/images/hero_image.svg">| [PostgreSQL][postgres-uri] | `Database` | via [Cloudnative-PG][cnpg-uri] operator | Deployed | [![][cnpg-badge]][cnpg-chart]
 |<img width="32" src="https://redis.io/images/favicons/favicon-32x32.png">| [Redis][redis-uri] | `Database` | In-memory Key-Value store | Deployed | [![][redis-badge]][redis-chart]
 
-### [Home](./cluster/apps/home/)
+### [Services](./cluster/apps/services/)
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
