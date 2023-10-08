@@ -1,0 +1,41 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: {{ template_fullpath | relpath(root_dir) }}
+# date: 2023-10-08 19:05:48
+# user: {{ lookup('pipe', 'git config --get user.name') }}
+# host: tirante
+# commit: {{ lookup('pipe', 'git log --format="%h" -1 ' + template_fullpath|quote) }}
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nextcloud
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: '4'
+spec:
+  project: default
+  sources:
+  - chart: nextcloud
+    repoURL: https://nextcloud.github.io/helm/
+    targetRevision: 4.3.2
+    helm:
+      valueFiles:
+      - $repo/cluster/apps/services/nextcloud/values.yaml
+  - repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/apps/services/nextcloud
+    targetRevision: development
+    ref: repo
+  destination:
+    name: in-cluster
+    namespace: services
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
+# END ANSIBLE MANAGED BLOCK

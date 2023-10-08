@@ -81,7 +81,7 @@ This Git repository contains the following top level directories.
 📁 cluster         # Kubernetes cluster defined in code
 ├─📁 apps          # Apps deployed into my cluster grouped by namespace
 ├─📁 argocd        # Main Argo configuration of repository
-└─📁 manifests     # Cluster initialization flies (Argo Applications) also grouped by namespace
+└─📁 bootstrap     # Cluster initialization flies (Argo Applications) also grouped by namespace
 📁 infrastructure  # Ansible files
 ├─📁 inventory     # Defines Host configurations and widest scoped variables
 ├─📁 pki           # Self-signed CA and subordinate CA certs for whole house and cluster

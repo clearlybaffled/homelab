@@ -33,7 +33,7 @@
         'manifest_file':
           (
             cluster_dir,
-            'manifests',
+            'bootstrap',
             ('path' in item.1) | ternary(item.1.path, item.1.namespace),
             item.0+'.yaml'
           ) | path_join

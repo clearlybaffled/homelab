@@ -1,0 +1,49 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: {{ template_fullpath | relpath(root_dir) }}
+# date: 2023-10-08 19:05:48
+# user: {{ lookup('pipe', 'git config --get user.name') }}
+# host: tirante
+# commit: {{ lookup('pipe', 'git log --format="%h" -1 ' + template_fullpath|quote) }}
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: '2'
+spec:
+  project: default
+  sources:
+  - chart: kube-prometheus-stack
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 51.3.0
+    helm:
+      valueFiles:
+      - $repo/cluster/apps/monitoring/kube-prometheus-stack/operator.yaml
+      releaseName: prometheus
+  - chart: prometheus-adapter
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 4.7.0
+    helm:
+      valueFiles:
+      - $repo/cluster/apps/monitoring/kube-prometheus-stack/adapter.yaml
+      releaseName: prometheus-adapter
+  - repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/apps/monitoring/kube-prometheus-stack
+    targetRevision: development
+    ref: repo
+  destination:
+    name: in-cluster
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
+# END ANSIBLE MANAGED BLOCK
