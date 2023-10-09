@@ -75,6 +75,20 @@ apps:
         - ./cluster.yaml
         - https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/cnpg-prometheusrule.yaml
         - https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/grafana-configmap.yaml
+    secrets:
+      superuser:
+        type: basic-auth
+        data:
+          username: postgres
+          password:
+            name: admin
+            type: password
+      app-user:
+        type: basic-auth
+        data:
+          username: app
+          password:
+            type: password
 
   mysql:
     namespace: db
@@ -192,7 +206,9 @@ apps:
       secret:
         data:
           POSTGRES_USER: mealie
-          POSTGRES_PASSWORD: mealie
+          POSTGRES_PASSWORD:
+            type: password
+            name: db
     kustomize:
       resources:
         - ./pvc.yaml

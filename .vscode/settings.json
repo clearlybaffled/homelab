@@ -36,7 +36,8 @@
     "https://raw.githubusercontent.com/canonical/cloud-init/main/cloudinit/config/schemas/versions.schema.cloud-config.json": [
       "*_cloud_init*"
     ],
-    "kubernetes": []
+    "kubernetes": [],
+    "kubernetes://schema/postgresql.cnpg.io/v1@cluster": "cluster/apps/db/cloudnative-pg/cluster.yaml"
   },
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter"
