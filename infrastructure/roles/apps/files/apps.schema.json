@@ -115,7 +115,7 @@
               "patternProperties": {
                 "^[a-zA-Z0-9-]+$": {
                   "title": "secret name",
-                  "description": "Name of a secret to manage. Used to define the metadata name and file name.",
+                  "description": "Name of a secret to manage. Used to define the metadata name and file name in the format ${app_name}-${secret_name}.\n\nCan be completely overridden with the nameOverride option.",
                   "examples": [
                     "secret"
                   ],
@@ -123,6 +123,18 @@
                     {
                       "type": "object",
                       "properties": {
+                        "nameOverride": {
+                          "type": "string",
+                          "title": "nameOverride",
+                          "description": "Name the secret this, instead of using the naming convention."
+                        },
+                        "type": {
+                          "type": "string",
+                          "title": "The Kubernetes Secret type to define this object as",
+                          "enum": [
+                            "basic-auth"
+                          ]
+                        },
                         "data": {
                           "type": "object",
                           "title": "data",
@@ -173,7 +185,8 @@
                             }
                           }
                         }
-                      }
+                      },
+                      "additionalProperties": false
                     },
                     {
                       "type": "object",
