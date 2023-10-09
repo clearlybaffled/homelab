@@ -14,8 +14,8 @@ alertmanager:
       hajimari.io/icon: mdi:alert-decagram-outline
 
     hosts: &alert-mgr-hosts
-      - alertmanager.gato.hermleigh.home
-      - alertmanager.gato
+      - alertmanager.seawolf.hermleigh.home
+      - alertmanager.seawolf
 
     ## Paths to use for ingress rules - one path should match the alertmanagerSpec.routePrefix
     ##
@@ -42,12 +42,12 @@ grafana:
       hajimari.io/icon: "logos:grafana"
       cert-manager.io/cluster-issuer: ca-issuer
     hosts:
-      - grafana.gato.hermleigh.home
-      - grafana.gato
+      - grafana.seawolf.hermleigh.home
+      - grafana.seawolf
     tls:
       - hosts:
-        - grafana.gato.hermleigh.home
-        - grafana.gato
+        - grafana.seawolf.hermleigh.home
+        - grafana.seawolf
         secretName: grafana-ingress-cert
 
 ## Manages Prometheus and Alertmanager components
@@ -72,8 +72,8 @@ prometheusOperator:
       annotations:
         hajimari.io/icon: devicon:prometheus
     hosts: &prom-hosts
-      - prometheus.gato.hermleigh.home
-      - prometheus.gato
+      - prometheus.seawolf.hermleigh.home
+      - prometheus.seawolf
     paths:
       - /
     pathType: Prefix

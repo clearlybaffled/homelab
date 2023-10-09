@@ -28,7 +28,7 @@ env:
   PAPERLESS_TIKA_ENABLED: 1
   PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
   PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
-  PAPERLESS_URL: https://paperless.gato.hermleigh.home
+  PAPERLESS_URL: https://paperless.seawolf.hermleigh.home
   PAPERLESS_REDIS: redis://redis.db:6379
   USERMAP_UID: 997
   USERMAP_GID: 997
@@ -49,13 +49,13 @@ ingress:
       hajimari.io/icon: arcticons:paperless
       cert-manager.io/cluster-issuer: ca-issuer
     hosts:
-      - host: &host paperless.gato.hermleigh.home
+      - host: &host paperless.seawolf.hermleigh.home
         paths:
           - path: /
     tls:
       - hosts:
           - *host
-          - paperless.gato
+          - paperless.seawolf
           - paperless
           - paperless.apps
           - paperless.apps.svc

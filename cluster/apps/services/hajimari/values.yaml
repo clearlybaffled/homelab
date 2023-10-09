@@ -75,7 +75,7 @@ ingress:
       cert-manager.io/cluster-issuer: ca-issuer
       hajimari.io/enable: "false"
     hosts:
-      - host: hajimari.gato.hermleigh.home
+      - host: hajimari.seawolf.hermleigh.home
         paths:
           - path: /
             pathType: Prefix
@@ -85,7 +85,7 @@ ingress:
             pathType: Prefix
     tls:
       - hosts:
-        - hajimari.gato.hermleigh.home
+        - hajimari.seawolf.hermleigh.home
         - wahoo.hermleigh.home
         secretName: hajimari-ingress-cert
 persistence:

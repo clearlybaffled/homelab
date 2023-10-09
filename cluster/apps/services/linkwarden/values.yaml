@@ -14,7 +14,7 @@ ingress:
       cert-manager.io/cluster-issuer: ca-issuer
       hajimari.io/icon: link
     hosts:
-      - host: &host "linkwarden.gato.hermleigh.home"
+      - host: &host "linkwarden.seawolf.hermleigh.home"
         paths:
           - path: /
     tls:

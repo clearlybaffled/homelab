@@ -25,7 +25,7 @@ ingress:
       cert-manager.io/cluster-issuer: ca-issuer
       hajimari.io/icon: link
     hosts:
-      - host: &host "linkding.gato.hermleigh.home"
+      - host: &host "linkding.seawolf.hermleigh.home"
         paths:
           - path: /
     tls:

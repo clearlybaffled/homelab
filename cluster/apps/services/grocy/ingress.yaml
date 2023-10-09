@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: grocy.gato.hermleigh.home
+  - host: grocy.seawolf.hermleigh.home
     http:
       paths:
       - path: /
@@ -22,7 +22,7 @@ spec:
               number: 80
   tls:
     - hosts:
-      - grocy.gato.hermleigh.home
+      - grocy.seawolf.hermleigh.home
       secretName: grocy-ingress-cert
 ---
 apiVersion: networking.k8s.io/v1
@@ -36,7 +36,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: barcode-buddy.gato.hermleigh.home
+  - host: barcode-buddy.seawolf.hermleigh.home
     http:
       paths:
       - path: /
@@ -48,5 +48,5 @@ spec:
               number: 80
   tls:
     - hosts:
-      - barcode-buddy.gato.hermleigh.home
+      - barcode-buddy.seawolf.hermleigh.home
       secretName: barcode-buddy-ingress-cert

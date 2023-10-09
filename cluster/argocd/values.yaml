@@ -73,8 +73,8 @@ server:
       cert-manager.io/cluster-issuer: ca-issuer
     ingressClassName: nginx
     hosts:
-      - argocd.gato.hermleigh.home
-      - argocd.gato
+      - argocd.seawolf.hermleigh.home
+      - argocd.seawolf
     paths:
       - /
     pathType: Prefix
@@ -82,8 +82,8 @@ server:
     tls:
       - secretName: argocd-ingress-cert
         hosts:
-          - argocd.gato.hermleigh.home
-          - argocd.gato
+          - argocd.seawolf.hermleigh.home
+          - argocd.seawolf
           - argocd.argocd.svc
           - argocd.argocd
           - argocd

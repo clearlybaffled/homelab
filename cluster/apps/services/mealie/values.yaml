@@ -27,7 +27,7 @@ ingress:
       hajimari.io/icon: chef-hat
       cert-manager.io/cluster-issuer: ca-issuer
     hosts:
-      - host: &host mealie.gato.hermleigh.home
+      - host: &host mealie.seawolf.hermleigh.home
         paths:
           - path: /
             pathType: Prefix
@@ -37,7 +37,7 @@ ingress:
       - secretName: mealie-tls-ingress
         hosts:
           - *host
-          - mealie.gato
+          - mealie.seawolf
           - mealie
 
 persistence:
