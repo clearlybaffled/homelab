@@ -1,0 +1,27 @@
+---
+# Reference: https://github.com/freeipa/ansible-freeipa/blob/master/roles/ipaserver/README.md#variables
+
+# Base
+ipaserver_domain: hermleigh.home
+ipaserver_realm: HERMLEIGH.HOME
+ipaserver_hostname: tang.hermleigh.home
+
+# Server
+ipaserver_no_host_dns: true
+
+# SSL Certificate
+
+# Client
+
+# Certificate System
+ipaserver_subject_base: "O=HERMLEIGH.HOME,C=US"
+ipaserver_ca_subject: "CN=IPA Intermediate CA,O=HERMLEIGH.HOME,C=US"
+ipaserver_ca_signing_algorithm: SHA512withRSA
+
+# DNS
+
+# AD Trust
+
+# Special
+
+ipa_csr_path: "/tmp/{{ groups.ipaserver[0] + '-ipa' }}"

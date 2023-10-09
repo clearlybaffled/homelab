@@ -1,40 +1,28 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
-# template: infrastructure/roles/cluster/templates/kustomization.yaml.j2
-# date: 2023-09-12 02:27:53
-# user: clearlybaffled
+# template: {{ template_fullpath | relpath(root_dir) }}
+# date: 2023-10-08 20:57:16
+# user: {{ lookup('pipe', 'git config --get user.name') }}
 # host: tirante
-# commit: ab572be
+# commit: {{ lookup('pipe', 'git log --format="%h" -1 ' + template_fullpath|quote) }}
 #
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: argocd
-
 resources:
-  - ns.yaml
-
+- ./ns.yaml
 helmCharts:
-  - name: argo-cd
-    repo: https://argoproj.github.io/argo-helm
-    version: 5.36.2
-    valuesFile: values.yaml
-    includeCRDs: true
-    releaseName: argocd
-    namespace: argocd
-
-
-
-
-# END ANSIBLE MANAGED BLOCK
-
+- name: argo-cd
+  repo: https://argoproj.github.io/argo-helm
+  version: 5.46.7
+  namespace: argocd
 patches:
-  - patch: |-
-      - op: add
-        path: /spec/template/spec/containers/0/env/-
-        value: {name: ARGOCD_SYNC_WAVE_DELAY, value: "30"}
-    target:
-      version: v1
-      group: apps
-      kind: StatefulSet
-      name: argocd-application-controller
-      labelSelector: "app.kubernetes.io/name=argocd-application-controller"
+- patch: "- op: add\n  path: /spec/template/spec/containers/0/env/-\n  value: { name:
+    ARGOCD_SYNC_WAVE_DELAY, value: '30' }"
+  target:
+    version: v1
+    group: apps
+    kind: StatefulSet
+    name: argocd-application-controller
+    labelSelector: app.kubernetes.io/name=argocd-application-controller
+# END ANSIBLE MANAGED BLOCK

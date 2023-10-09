@@ -1,0 +1,49 @@
+all:
+  hosts:
+    parche:
+      ip: 172.16.1.10
+    barb:
+      ip: &barb_ip 172.16.1.108
+    growler:
+      ip: 172.16.1.1
+    tirante:
+      ansible_host: *barb_ip
+      ansible_port: 2222
+    localhost:
+      ansible_connection: local
+  vars:
+    domain_name: hermleigh.home
+    ansible_user: ansible
+    ansible_ssh_private_key_file: ~/.ssh/ansible
+
+kube_control_plane:
+  hosts:
+    parche:
+
+kube_node:
+  hosts:
+    parche:
+
+kubectl:
+  hosts:
+    parche:
+    localhost:
+
+k8s_cluster:
+  children:
+    kube_control_plane:
+    kube_node:
+
+servers:
+  hosts:
+    parche:
+    # growler:
+
+workstations:
+  hosts:
+    # barb:
+    localhost:
+
+hypervisor:
+  hosts:
+    parche:

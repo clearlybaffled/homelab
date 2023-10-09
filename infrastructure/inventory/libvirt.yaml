@@ -1,3 +1,5 @@
 # Connect to qemu
 plugin: community.libvirt.libvirt
 uri: 'qemu+ssh://ansible@parche/system?keyfile=~/.ssh/ansible'
+groups:
+  ipaserver: inventory_hostname.startswith('tang')

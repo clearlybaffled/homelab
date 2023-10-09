@@ -1,0 +1,23 @@
+---
+name: Kubeconform
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  kubeconform:
+    name: Kubernetes Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: login to Github Packages
+        run: echo "${{ github.token }}" | docker login https://ghcr.io -u ${GITHUB_ACTOR} --password-stdin
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Kubeconform
+        uses: docker://ghcr.io/yannh/kubeconform:master
+        with:
+          entrypoint: '/kubeconform'
+          args: "-summary -output json -schema-location default -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' cluster"

@@ -1,0 +1,45 @@
+image:
+  repository: localhost/linkwarden/linkwarden
+  tag: latest
+
+env:
+  NEXTAUTH_SECRET: very_sensitive_secret
+  DATABASE_URL: postgresql://linkwarden:linkwarden@cnpg-cluster-rw.db:5432/linkwarden
+  NEXTAUTH_URL: http://localhost:3000
+
+ingress:
+  main:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: ca-issuer
+      hajimari.io/icon: link
+    hosts:
+      - host: &host "linkwarden.seawolf.hermleigh.home"
+        paths:
+          - path: /
+    tls:
+      - hosts:
+          - *host
+        secretName: linkace-ingress-cert
+
+service:
+  main:
+    ports:
+      http:
+        port: 3000
+
+persistence:
+#   nginx-conf:
+#     enabled: true
+#     type: configMap
+#     mountPath: /opt/nginx
+#     name: nginx-conf
+
+  data:
+    enabled: true
+    type: pvc
+    mountPath: /data/data
+    storageClass: ceph-block
+    accessMode: ReadWriteOnce
+    size: 10Gi
+    retain: true

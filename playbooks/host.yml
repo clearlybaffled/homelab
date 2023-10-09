@@ -9,6 +9,13 @@
     - server
     - dvb
 
+- name: KVM setup
+  hosts: hypervisor
+  become: true
+  tags: kvm
+  roles:
+    - server/kvm
+
 - name: Workstation Provisioning
   hosts: workstations
   gather_facts: true

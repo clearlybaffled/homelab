@@ -1,6 +1,6 @@
 ---
 # Kubernetes cluster name, also will be used as DNS domain
-cluster_name: "gato"
+cluster_name: "seawolf"
 
 # Kubernetes configuration dirs and system namespace.
 # Those are where all the additional config stuff goes

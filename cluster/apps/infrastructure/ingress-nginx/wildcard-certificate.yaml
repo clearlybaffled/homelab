@@ -8,7 +8,7 @@ spec:
   issuerRef:
     kind: ClusterIssuer
     name: ca-issuer
-  commonName: "gato.hermleigh.home"
+  commonName: "seawolf.hermleigh.home"
   subject:
     organizations:
       - "HERMLEIGH.HOME"
@@ -17,9 +17,9 @@ spec:
     countries:
       - "US"
   dnsNames:
-    - "gato.hermleigh.home"
-    - "gato"
-    - "*.gato.hermleigh.home"
-    - "*.gato"
+    - "seawolf.hermleigh.home"
+    - "seawolf"
+    - "*.seawolf.hermleigh.home"
+    - "*.seawolf"
   ipAddresses:
     - "172.16.1.24"

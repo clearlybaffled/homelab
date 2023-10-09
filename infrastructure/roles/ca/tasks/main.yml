@@ -1,0 +1,70 @@
+---
+- name: Check inputs
+  assert:
+    that:
+      - "signing_ca is defined and ((pki_home, signing_ca)|path_join) is directory"
+      - "csr_path is exists"
+      - purpose in ['ocsp','user','client','server','ca']
+
+- name: Mount offline root if necessary
+  include_role:
+    name: ca/offline
+  when: signing_ca == 'root-ca'
+
+- name: Check if private key of signing cert is password protected
+  community.crypto.openssl_privatekey_info:
+    path: "{{ ca_private_keyfile }}"
+    passphrase: "{{ pk_passphrase | default(omit) }}"
+  register: privatekey_info
+  failed_when: false
+
+- name: Issue cert
+  block:
+    - name: Ask for passphrase if private key is protected
+      pause:
+        prompt: "Enter {{ signing_ca }} CA Private Key passphrase: "
+        echo: false
+      register: pk_passphrase
+      when:
+        - not (privatekey_info.can_load_key and privatekey_info.can_parse_key)
+      until: pk_passphrase.user_input != ''
+
+    - name: Set output file fact
+      set_fact:
+        outfile: "{{ (csr_path | dirname, (csr_path | splitext | first)+'.crt' ) | path_join}}"
+
+    - name: Issue Signed Certificate
+      become: true
+      become_user: root
+      command:
+        cmd: >-
+          openssl ca
+          -batch
+          -config {{ role_path }}/files/ca.conf
+          -in {{ csr_path }}
+          -out {{ outfile }}
+          -extensions {{ purpose }}_ext
+          {% if purpose != 'ca' %}
+          -extfile {{ role_path }}/files/extensions.conf
+          {% endif %}
+          {% if pk_passphrase is defined %}
+          -passin stdin
+          {% endif %}
+        stdin: "{{ pk_passphrase is string | ternary(pk_passphrase, pk_passphrase.user_input )}}"
+        stdin_add_newline: false
+        creates: "{{ outfile }}"
+      changed_when: outfile is exists
+      environment:
+        CA_NAME: "{{ signing_ca }}"
+        CA_HOME: "{{ ca_home }}"
+
+  always:
+    - name: Unset passphrase var
+      set_fact:
+        pk_passphrase:
+      when: pk_passphrase is defined
+
+- name: Unmount offline root CA
+  include_role:
+    name: ca/offline
+  when: signing_ca == 'root-ca'

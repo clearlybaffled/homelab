@@ -1,0 +1,6 @@
+---
+local_packages:
+  - mysql-common
+  - postgresql-client
+  - shellcheck
+  - shfmt

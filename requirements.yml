@@ -1,0 +1,14 @@
+---
+collections:
+  - name: lvrfrc87.git_acp
+    type: galaxy
+  - name: freeipa.ansible_freeipa
+    type: galaxy
+  - ansible.posix
+  - ansible.windows
+  - community.crypto
+  - community.general
+  - community.libvirt
+  - community.sops
+  - community.postgresql
+  - community.mysql

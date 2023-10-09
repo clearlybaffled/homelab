@@ -1,0 +1,39 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: {{ template_fullpath | relpath(root_dir) }}
+# date: 2023-10-08 20:57:16
+# user: {{ lookup('pipe', 'git config --get user.name') }}
+# host: tirante
+# commit: {{ lookup('pipe', 'git log --format="%h" -1 ' + template_fullpath|quote) }}
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rook-ceph
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: '2'
+spec:
+  project: default
+  sources:
+  - chart: rook-ceph
+    repoURL: https://charts.rook.io/release
+    targetRevision: v1.12.4
+  - chart: rook-ceph-cluster
+    repoURL: https://charts.rook.io/release
+    targetRevision: v1.12.4
+    helm:
+      releaseName: rook-ceph-cluster
+  destination:
+    name: in-cluster
+    namespace: rook-ceph
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
+# END ANSIBLE MANAGED BLOCK

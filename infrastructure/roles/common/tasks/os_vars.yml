@@ -12,6 +12,4 @@
         - "{{ ansible_distribution|lower }}.yml"
         - "{{ ansible_os_family|lower }}.yml"
         - defaults.yml
-      paths:
-        - ../vars
       skip: true

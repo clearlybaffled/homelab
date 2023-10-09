@@ -4,3 +4,6 @@ prometheus:
     enabled: true
     servicemonitor:
         enabled: true
+        prometheusInstance: kube-prometheus-stack
+        labels:
+            release: kube-prometheus-stack

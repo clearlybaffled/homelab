@@ -1,0 +1,56 @@
+#cloud-config
+timezone: America/New_York
+
+hostname: tang
+fqdn: tang.hermleigh.home
+prefer_fqdn_over_hostname: true
+
+ssh_pwauth: false
+
+runcmd:
+  - setenforce 0
+
+
+users:
+- name: ansible
+  gecos: Ansible User
+  groups: users,admin,wheel
+  sudo: ALL=(ALL) NOPASSWD:ALL
+  shell: /bin/bash
+  lock_passwd: false
+  plain_text_passwd: ansible
+  homedir: /var/local/ansible
+  ssh_authorized_keys:
+    - ${ssh_pubkey}
+
+write_files:
+  - path: /var/local/ansible/.ssh/id_ed25519
+    content: $(ssh_key)
+    owner: ansible:ansible
+    permissions: '0o600'
+    encoding: text/plain
+    append: false
+    defer: false
+
+package_update: true
+package_upgrade: true
+package_reboot_if_required: true
+
+packages:
+  - qemu-guest-agent
+
+ntp:
+  enabled: true
+  config:
+    service_name: chronyd
+  servers:
+    - 172.16.1.1
+
+
+${yamlencode({
+  "ca_certs": {
+    "trusted": [
+      "${root_ca_crt}"
+    ]
+  }
+})}

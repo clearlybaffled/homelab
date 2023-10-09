@@ -1,0 +1,78 @@
+---
+- name: packages | Install KVM required packages
+  apt:
+    name: "{{ kvm_packages }}"
+    install_recommends: false
+    state: present
+  register: apt_out
+  when: ansible_os_family|lower == 'debian'
+
+- name: Add vhost_net kernel module
+  community.general.modprobe:
+    name: vhost_net
+    persistent: present
+
+- name: Add ansible user to libvirt group
+  user:
+    name: "{{ local_ansible_user }}"
+    append: true
+    groups:
+      - libvirt
+      - libvirt-qemu
+      - kvm
+
+- name: Enable and start Libvirt daemon
+  ansible.builtin.service:
+    name: libvirtd
+    state: started
+    enabled: true
+
+- name: Set Up Storage Pool
+  vars:
+    pool_name: cluster
+    storage_dir: /srv/cluster/storage
+  block:
+    - name: Define storage pool
+      community.libvirt.virt_pool:
+        name: "{{ pool_name }}"
+        command: define
+        xml: "{{ lookup('template','libvirt_pool.xml.j2') }}"
+        autostart: true
+
+    - name: Activate storage pool
+      community.libvirt.virt_pool:
+        name: "{{ pool_name }}"
+        state: active
+
+- name: Set up virnet network
+  vars:
+    net_name: virtnet
+    net_addr: 172.16.2.1
+    net_mask: 24
+  block:
+    - name: Define network
+      community.libvirt.virt_net:
+        name: "{{ net_name }}"
+        command: define
+        xml: |-
+          <network>
+            <name>{{ net_name }}</name>
+            <forward mode='route'/>
+            <bridge name='virbr1' stp='on' delay='0'/>
+            <domain name='{{ domain_name }}'/>
+            <ip family='ipv4' address='{{ net_addr }}' prefix='{{ net_mask }}'/>
+          </network>
+
+    - name: Autostart virtnet network
+      community.libvirt.virt_net:
+        name: "{{ net_name }}"
+        autostart: true
+    - name: Start virtnet network
+      community.libvirt.virt_net:
+        name: "{{ net_name }}"
+        command: start
+
+- name: Terraform KVM setup
+  community.general.terraform:
+    project_path: "{{ infra_dir }}/terraform/kvm"
+  delegate_to: localhost

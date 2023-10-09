@@ -1,32 +1,50 @@
 ---
+- name: Define local-storage StorageClass
+  kubernetes.core.k8s:
+    server_side_apply:
+      field_manager: ansible
+    kind: StorageClass
+    api_version: v1
+    name: local-storage
+    definition:
+      provisioner: kubernetes.io/no-provisioner
+      volumeBindingMode: WaitForFirstConsumer
+
 - name: Define local-storage PersistentVolumes for cross-namespace access
-  block:
-    - name: Define PersistentVolumes
-      kubernetes.core.k8s:
-        ca_cert: "{{ cluster_cacerts }}"
-        server_side_apply:
-          field_manager: ansible
-        definition:
-          kind: PersistentVolume
-          api_version: v1
-          metadata:
-            name: "{{ item[1].name }}-{{ item[0] }}"
-          spec:
-            capacity:
-              storage: "{{ item[1].size }}"
-            volumeMode: Filesystem
-            accessModes:
-              - ReadWriteMany
-            persistentVolumeReclaimPolicy: Retain
-            storageClassName: local-storage
-            local:
-              path: "{{ item[1].path }}"
-            nodeAffinity:
-              required:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: kubernetes.io/hostname
-                        operator: In
-                        values:
-                          - parche
-      loop: "{{ storage.namespaces | product(storage.volumes) }}"
+  kubernetes.core.k8s:
+    server_side_apply:
+      field_manager: ansible
+    definition:
+      kind: PersistentVolume
+      api_version: v1
+      metadata:
+        name: "{{ item[1].name }}-{{ item[0] }}"
+        finalizers:
+          - kubernetes.io/pv-protection
+      spec:
+        capacity:
+          storage: "{{ item[1].size }}"
+        volumeMode: Filesystem
+        accessModes:
+          - ReadWriteMany
+        persistentVolumeReclaimPolicy: Retain
+        storageClassName: local-storage
+        local:
+          path: "{{ item[1].path }}"
+        nodeAffinity:
+          required:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - parche
+  loop: "{{ storage.namespaces | product(storage.volumes) }}"
+
+- name: Setup local path provisioner
+  include_role:
+    name: containers/storage/local_path_provisioner
+  vars:
+    local_path_provisioner_enabled: true
+    local_path_provisioner_claim_root: /srv/cluster/volumes
+    local_path_provisioner_is_default_storageclass: false

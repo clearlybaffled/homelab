@@ -43,11 +43,3 @@
   roles:
     - kubernetes/client
     - containers/network
-
-- name: Start up cluster
-  hosts: localhost
-  gather_facts: false
-  any_errors_fatal: true
-  tags: cluster
-  roles:
-    - cluster

@@ -14,6 +14,7 @@
     dest: "{{ (ca_home, 'db','index')|path_join }}"
     mode: '0644'
     content: ''
+    force: false
 
 - name: Set initial serial number
   copy:

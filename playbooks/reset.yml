@@ -1,5 +1,5 @@
 ---
-- name: Reset
+- name: Reset K8S cluster
   hosts: kube_control_plane
   any_errors_fatal: true
   gather_facts: true
@@ -10,7 +10,18 @@
         name: "{{ item }}"
         tasks_from: reset
       with_items:
-      #  - kubernetes/coredns
+        - cluser
         - kubernetes/control_plane
         - containers/network
-       # - containers/runtime
+        - containers/runtime
+
+- name: Tear down terraform stacks
+  hosts: localhost
+  tasks:
+    - name: Tear down {{ item }}
+      community.general.terraform:
+        project_path: "{{ (infra_dir, 'terraform', item) | path_join }}"
+        state: absent
+      when: item is directory
+      with_fileglob:
+        - "{{ infra_dir }}/terraform"

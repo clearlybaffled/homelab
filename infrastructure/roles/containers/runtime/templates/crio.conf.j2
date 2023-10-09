@@ -123,7 +123,7 @@ conmon_cgroup = "system.slice"
 # Environment variable list for the conmon process, used for passing necessary
 # environment variables to conmon or the runtime.
 conmon_env = [
-	"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+  "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
 ]
 
 # Additional environment variables to set for all the
@@ -154,17 +154,17 @@ cgroup_manager = "{{ crio_cgroup_manager }}"
 # only the capabilities defined in the containers json file by the user/kube
 # will be added.
 default_capabilities = [
-	"CHOWN",
-	"DAC_OVERRIDE",
-	"FSETID",
-	"FOWNER",
-	"NET_RAW",
-	"SETGID",
-	"SETUID",
-	"SETPCAP",
-	"NET_BIND_SERVICE",
-	"SYS_CHROOT",
-	"KILL",
+  "CHOWN",
+  "DAC_OVERRIDE",
+  "FSETID",
+  "FOWNER",
+  "NET_RAW",
+  "SETGID",
+  "SETUID",
+  "SETPCAP",
+  "NET_BIND_SERVICE",
+  "SYS_CHROOT",
+  "KILL",
 ]
 
 # List of default sysctls. If it is empty or commented out, only the sysctls
@@ -182,7 +182,7 @@ additional_devices = [
 # Path to OCI hooks directories for automatically executed hooks. If one of the
 # directories does not exist, then CRI-O will automatically skip them.
 hooks_dir = [
-	"/usr/share/containers/oci/hooks.d",
+  "/usr/share/containers/oci/hooks.d",
 ]
 
 # List of default mounts for each container. **Deprecated:** this option will
@@ -355,8 +355,8 @@ network_dir = "/etc/cni/net.d/"
 
 # Paths to directories where CNI plugin binaries are located.
 plugin_dirs = [
-	"/opt/cni/bin",
-	"/usr/libexec/cni",
+  "/opt/cni/bin",
+  "/usr/libexec/cni",
 ]
 
 # A necessary configuration for Prometheus based metrics retrieval

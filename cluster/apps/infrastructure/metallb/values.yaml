@@ -30,13 +30,13 @@ prometheus:
     # Scrape interval. If not set, the Prometheus default scrape interval is used.
     interval:
 
-    # 	metric relabel configs to apply to samples before ingestion.
+    #   metric relabel configs to apply to samples before ingestion.
     metricRelabelings: []
     # - action: keep
     #   regex: 'kube_(daemonset|deployment|pod|namespace|node|statefulset).+'
     #   sourceLabels: [__name__]
 
-    # 	relabel configs to apply to samples before ingestion.
+    #   relabel configs to apply to samples before ingestion.
     relabelings: []
     # - sourceLabels: [__meta_kubernetes_pod_node_name]
     #   separator: ;
@@ -77,13 +77,13 @@ prometheus:
     # Scrape interval. If not set, the Prometheus default scrape interval is used.
     interval:
 
-    # 	metric relabel configs to apply to samples before ingestion.
+    #   metric relabel configs to apply to samples before ingestion.
     metricRelabelings: []
     # - action: keep
     #   regex: 'kube_(daemonset|deployment|pod|namespace|node|statefulset).+'
     #   sourceLabels: [__name__]
 
-    # 	relabel configs to apply to samples before ingestion.
+    #   relabel configs to apply to samples before ingestion.
     relabelings: []
     # - sourceLabels: [__meta_kubernetes_pod_node_name]
     #   separator: ;
@@ -156,7 +156,7 @@ speaker:
   # command: /speaker
   # -- Speaker log level. Must be one of: `all`, `debug`, `info`, `warn`, `error` or `none`
   logLevel: info
-  
+
   # frr contains configuration specific to the MetalLB FRR container,
   # for speaker running alongside FRR.
   frr:
@@ -169,4 +169,3 @@ speaker:
 crds:
   enabled: true
   validationFailurePolicy: Fail
-

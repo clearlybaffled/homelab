@@ -20,7 +20,7 @@ controller:
     name: nginx
     enabled: true
     default: true
- 
+
   # -- Additional command line arguments to pass to Ingress-Nginx Controller
   # E.g. to specify the default SSL certificate you can use
   extraArgs:

@@ -5,5 +5,19 @@ metadata:
   namespace: db
 spec:
   instances: 1
+
+  superuserSecret:
+    name: cloudnative-pg-superuser
+
+  bootstrap:
+    initdb:
+      database: app
+      owner: app
+      secret:
+        name: cloudnative-pg-app-user
+
   storage:
     size: 10Gi
+
+  monitoring:
+    enablePodMonitor: true

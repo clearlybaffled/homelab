@@ -1,0 +1,29 @@
+apiVersion: v1
+data:
+    password: ENC[AES256_GCM,data:YM2XvhlsFRBywO7eni/1AWUuZuoLrLF87DJ4LAZ839r0fswOqwkINA==,iv:ZN6MBQfrpPVAdD96vq3c3JsRSg6tsJ+idAFrTbiTtWs=,tag:xBUkyqlTXdoneGAE/Ug9sw==,type:str]
+    username: ENC[AES256_GCM,data:wItJkg==,iv:0pUx6+Hz0Gf1zaGkLkJICJRLwoWmhSGh4r1PTQhuyWI=,tag:zDRhAqceKspWzi8JLNrZSQ==,type:str]
+kind: Secret
+metadata:
+    name: cloudnative-pg-app-user
+    namespace: db
+type: kubernetes.io/basic-auth
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1e764qpphm5nlzp04qf6zcq8f400390d9wmzramq84hqp60k6qyvqsvgg45
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBhc2lyc1c4aXJjSWplaHRn
+            MUNDT09neXNIaEFYR092SU9PQzlEQVFSYjI0CkVndHZOUmtTaVBzUGZFUjdxUFB5
+            elN3TTkzTUxDUDZQYks4cDlJdVpFYmsKLS0tIDJnT05HSUJ3OVZkblFzWkw1K3FX
+            MnE5cmEwc3lFS1FCQUcya05pUEhFazgKpXDfrnWqTorBw2RqseqXW1GYXhT5vVTA
+            ozqQUousDtCVi4tYAWXoqH3w36TdSrcIyMLnSeNDLpdc3Vd/qnfIPA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-10-09T00:58:48Z"
+    mac: ENC[AES256_GCM,data:YJzNzTTR+0eoXXpo0qGVqNNlsaJ/BMigUrCZ3KbED3RRjeIsnvUlONZkjb3pPljyB5KZ/fYr99B83IPeC9Os3f3muA4FtmZFh1ky2OV8Epv3+/vP+uiNOGwAhPylQyPKHyrcUaDCYiFNvu3hgrXg3Bj7ucaP7eRPGcOouvYTOBA=,iv:4+9cAC4+aNpwG+Gz8uL4mwH1BdlATohin/gTog1I/A8=,tag:VxyQgu6dN7esjJZXyH7bRQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.3

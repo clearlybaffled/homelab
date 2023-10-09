@@ -25,13 +25,13 @@ ExecStartPre=/bin/mkdir -p /sys/fs/cgroup/pids/{{ kube_reserved_cgroups_for_serv
 ExecStartPre=/bin/mkdir -p /sys/fs/cgroup/systemd/{{ kube_reserved_cgroups_for_service_slice }}
 {% endif %}
 ExecStart={{ bin_dir }}/kubelet \
-		$KUBE_LOGTOSTDERR \
-		$KUBE_LOG_LEVEL \
-		$KUBELET_API_SERVER \
-		$KUBELET_ADDRESS \
-		$KUBELET_PORT \
-		$KUBELET_HOSTNAME \
-		$KUBELET_ARGS 
+    $KUBE_LOGTOSTDERR \
+    $KUBE_LOG_LEVEL \
+    $KUBELET_API_SERVER \
+    $KUBELET_ADDRESS \
+    $KUBELET_PORT \
+    $KUBELET_HOSTNAME \
+    $KUBELET_ARGS
 Restart=always
 RestartSec=10s
 {% if kubelet_systemd_hardening %}

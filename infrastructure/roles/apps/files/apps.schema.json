@@ -1,0 +1,259 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Cluster Application",
+  "description": "Definitions used by ansible to generate K8S manifest files",
+  "type": "object",
+  "properties": {
+    "apps": {
+      "title": "apps",
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9-]+$": {
+          "type": "object",
+          "description": "Application Name. Used to build application path (cluster/$namespace/$app_name), generating names for secrets, PVCs, etc.",
+          "properties": {
+            "path": {
+              "title": "path",
+              "type": "string",
+              "description": "Path to the application directory cluster/, not include the app name itself.\n\nDefaults to value of $namespace in this app.\n\nExample: cluster/db/sql/mysql, path is db/sql"
+            },
+            "charts": {
+              "title": "charts",
+              "type": "array",
+              "description": "List of Helm Charts to deploy with this application.",
+              "items": {
+                "$ref": "#/$defs/HelmChart"
+              }
+            },
+            "pv": {
+              "title": "pv",
+              "type": "boolean",
+              "description": "If there is a pv.yaml file in the application's manifest directory so that it gets included in the kustomization.yaml, if we need one."
+            },
+            "namespace": {
+              "title": "namespace",
+              "type": "string",
+              "description": "The namespace to deploy this application to"
+            },
+            "kustomize": {
+              "title": "kustomize",
+              "type": "object",
+              "description": "Fields used to build a kustomization.yaml file in the application directory.",
+              "properties": {
+                "charts": {
+                  "title": "charts",
+                  "type": "array",
+                  "description": "Helm charts can also be included in Kustomization files, if preferred",
+                  "items": {
+                    "$ref": "#/$defs/HelmChart"
+                  }
+                },
+                "resources": {
+                  "title": "resources",
+                  "type": "array",
+                  "description": "List of files to be included by Kustomize when generating manifests.\n\nMust be relative paths, should be at or below application directory.",
+                  "examples": [
+                    "./namespace.yaml"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "extras": {
+                  "title": "extras",
+                  "type": "object",
+                  "description": "Any valid object definitions that can go into a Kustomization file.\n\nExtra fields can also be handled directly in the generated kustomization.yaml file below the ## ANSIBLE MANAGED block"
+                }
+              },
+              "additionalProperties": false
+            },
+            "pvc": {
+              "title": "pvc",
+              "description": "PersistentVolumeClaim definitions, mostly to track dynamically provisioned CSI volumes so that the app can be destroyed and redeployed without losing storage.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "title": "name",
+                    "type": "string",
+                    "description": "Name of the PersistentVolumeClaim"
+                  },
+                  "storageClass": {
+                    "title": "storageClass",
+                    "type": "string"
+                  },
+                  "size": {
+                    "title": "size",
+                    "type": "string"
+                  },
+                  "volumeName": {
+                    "title": "volumeName",
+                    "type": "string"
+                  },
+                  "accessMode": {
+                    "title": "accessMode",
+                    "type": "string",
+                    "enum": [
+                      "ReadWriteOnce",
+                      "ReadWriteMany"
+                    ]
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "name",
+                  "size",
+                  "volumeName"
+                ]
+              }
+            },
+            "secrets": {
+              "title": "secrets",
+              "type": "object",
+              "description": "Have ansible manage generating secrets for this application. The application task will:\n - Generate any number of secrets defined in the below object\n - Generate a SOPS encrypted k8s Secret Opaque manifest file in the application directory\n - Put a secret-generator.yaml file in the application directory to tell KSOPS to decrypt and load the Secrets into the cluster when ArgoCD picks up the application\n - Add the secret-generator.yaml file as a generator in the Kustomization file",
+              "patternProperties": {
+                "^[a-zA-Z0-9-]+$": {
+                  "title": "secret name",
+                  "description": "Name of a secret to manage. Used to define the metadata name and file name in the format ${app_name}-${secret_name}.\n\nCan be completely overridden with the nameOverride option.",
+                  "examples": [
+                    "secret"
+                  ],
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "nameOverride": {
+                          "type": "string",
+                          "title": "nameOverride",
+                          "description": "Name the secret this, instead of using the naming convention."
+                        },
+                        "type": {
+                          "type": "string",
+                          "title": "The Kubernetes Secret type to define this object as",
+                          "enum": [
+                            "basic-auth"
+                          ]
+                        },
+                        "data": {
+                          "type": "object",
+                          "title": "data",
+                          "description": "Fields to go into the \"data\" section of the Secret manifest",
+                          "patternProperties": {
+                            "^[a-zA-Z0-9-]+$": {
+                              "anyOf": [
+                                {
+                                  "title": "generated secret",
+                                  "description": "Ansible will generate a value for this individual secret",
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "title": "type",
+                                      "enum": [
+                                        "password"
+                                      ],
+                                      "description": "Type of secret to generate"
+                                    },
+                                    "name": {
+                                      "title": "name",
+                                      "type": "string",
+                                      "description": "Name of the secret to generate, used by ansible and Secret template",
+                                      "examples": [
+                                        "db",
+                                        "admin"
+                                      ]
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "string",
+                                  "title": "value",
+                                  "description": "Raw string value to place into this field"
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        "stringData": {
+                          "type": "object",
+                          "title": "stringData",
+                          "description": "Fields to go into the \"stringData\" section of a Secret",
+                          "patternProperties": {
+                            "^[a-zA-Z0-9-]+$": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "description": "There are already sops-encrypted secret file(s) in the application directory. Create the Kustomization file and secret-generator for KSOPS, but don't alter the secret files.",
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": true
+            },
+            "wave": {
+              "title": "wave",
+              "type": "string"
+            }
+          },
+          "additionalProperties": true,
+          "required":[
+            "namespace"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "HelmChart": {
+      "$id": "/HelmChart",
+      "type": "object",
+      "properties": {
+        "valueFiles": {
+          "title": "valueFiles",
+          "type": "array",
+          "description": "Array of filenames relative to the application directory to be applied to this chart as values files.\n\nAn empty array signifies no values file is used for this chart.",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "values.yaml"
+          ]
+        },
+        "skipCrds": {
+          "title": "skipCrds",
+          "type": "boolean"
+        },
+        "release": {
+          "title": "release",
+          "type": "string",
+          "description": "Specify a release name to be used instead of the one generated by helm"
+        },
+        "chart": {
+          "title": "chart",
+          "type": "string",
+          "description": "Chart identifier in $chart_repo/$chart_name format.\n\nThe chart repository must be defined in inventory/group_vars/kubectl/01-cluster.yml",
+          "examples": [
+            "bitnami/mysql"
+          ]
+        },
+        "version": {
+          "title": "version",
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "required": [
+        "chart",
+        "version"
+      ]
+    }
+  }
+}

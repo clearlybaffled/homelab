@@ -26,4 +26,3 @@ service:
   # and can not be configured
   name: cnpg-webhook-service
   port: 443
-

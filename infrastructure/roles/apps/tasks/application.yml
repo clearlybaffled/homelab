@@ -1,0 +1,84 @@
+---
+- name: Manage app secrets | {{ app.name }}
+  when: app.secrets is defined
+  block:
+    - name: Generate secrets | {{ app.name }}
+      include_tasks: generate_secret.yml
+      loop: "{{ app.secrets | dict2items(key_name='name') }}"
+      loop_control:
+        loop_var: secret
+      when:
+        - sops_file is not file
+        - secret.value != {}
+      vars:
+        sops_file: "{{ (app.app_dir, secret.name+'.sops.yaml')| path_join }}"
+
+    - name: Render KSOPS generator template | {{ app.name }}
+      template:
+        src: secret-generator.yaml.j2
+        dest: "{{ app.app_dir }}/secret-generator.yaml"
+      register: ksops
+
+- name: ArgoCD application manifest | {{ app.name }}
+  blockinfile:
+    block: "{{ lookup('template', 'application.yaml.j2', convert_data=false) }}"
+    dest: "{{ app.manifest_file }}"
+    mode: "0644"
+    create: true
+  register: application
+
+- name: "Install Kustomization file | {{ app.name }}"
+  blockinfile:
+    block: "{{ lookup('template', 'kustomization.yaml.j2', convert_data=false) }}"
+    dest: "{{ app.app_dir }}/kustomization.yaml"
+    mode: "0644"
+    create: true
+  register: kustomization
+  when: ('kustomize' in app) or ('secrets' in app)
+
+- name: "Install PersistentVolumeClaim file | {{ app.name }}"
+  blockinfile:
+    block: "{{ lookup('template', 'pvc.yaml.j2', convert_data=false) }}"
+    dest: "{{ app.app_dir }}/pvc.yaml"
+    mode: "0644"
+    create: true
+  when: app.pvc is defined and app.pvc
+  register: pvc
+
+- name: "Application specific startup configuration | {{ app.name }}"
+  include_tasks: "{{ taskfile }}"
+  with_first_found:
+    - files:
+        - "{{ app.name }}.yml"
+      skip: true
+      path: startup
+  loop_control:
+    loop_var: taskfile
+  register: app_tasks
+  tags:
+    - app_tasks
+
+- name: Commit changes to app files | {{ app.name }}
+  lvrfrc87.git_acp.git_acp:
+    path: "{{ root_dir }}"
+    comment: "[{{ app.name }}] Updated application config files"
+    add:
+      - "{{ app.app_dir }}"
+      - "{{ app.manifest_file }}"
+    url: "{{ git_repo_url }}"
+    push: true
+    branch: "{{ git_branch }}"
+    ssh_params:
+      key_file: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+  when: lookup('pipe','git status --porcelain -- ' + (app.app_dir, app.manifest_file) | join(' '))
+  tags: commit
+
+- name: Launch wave <= 3 applications now
+  kubernetes.core.k8s:
+    src: "{{ app.manifest_file }}"
+    server_side_apply:
+      field_manager: ansible
+  when:
+    - app.wave is defined
+    - app.wave|int <= 3
+  tags: app_tasks

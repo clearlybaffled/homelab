@@ -6,10 +6,6 @@
       - "common_name is defined"
       - signing_ca is defined
 
-- name: Set ca_home
-  set_fact:
-    ca_home: "{{ (pki_home, ca_name) | path_join }}"
-
 - name: Create Intermediate Certificate Authority
   environment:
     CA_NAME: "{{ ca_name }}"
@@ -21,20 +17,64 @@
     - name: Set up Intermediate CA data directories
       include_tasks: 'directory.yml'
 
-    - name: Generate private key and CSR
+    - name: Ask for passphrase
+      pause:
+        prompt: "Would you like to add a passphrase to the private key? ([Enter] to skip): "
+        echo: false
+      register: pk_passphrase
+      when: pk_passphrase not defined
+
+    - name: Generate private key and certificate signing request
       command:
         cmd: >-
           openssl req
-          -nodes
+          -batch
           -new
-          -config {{ role_path }}/files/sub-ca.conf
+          -config {{ role_path }}/files/ca.conf
           -out {{ csr_path }}
-          -keyout {{ ca_home }}/private/ca.key
-      environment:
-        CA_NAME: "{{ ca_name }}"
-        CN: "{{ common_name }}"
+          -keyout {{ ca_private_keyfile }}
+          -extensiosn ca_ext
+          -extensions sub_ca_ext
+          {% if signing_ca == 'root-ca' %}
+          -copy_extensions copy
+          {% endif %}
+          {% if pk_passphrase is defined -%}
+            -passin stdin
+          {% else -%}
+            -noenc
+          {% endif %}
+        stdin: "{{ pk_passphrase is string | ternary(pk_passphrase, pk_passphrase.user_input )}}"
+        stdin_add_newline: false
 
-    - name: Sign CSR and issue certificate
-      include_tasks: issue-cert.yml
-      vars:
-        purpose: sub_ca
+  always:
+    - name: Undefine passphrase input
+      set_fact:
+        pk_passphrase:
+
+- name: Issue Certificate
+  include_tasks: main.yml
+  vars:
+    purpose: ca
+
+- name: Save CA certificate as sops file in repo
+  vars:
+    sops_file: "{{ (pki_home, outfile | basename ) | path_join }}"
+  tags:
+    - sops
+  block:
+    - name: Make SOPS file
+      community.sops.sops_encrypt:
+        path: "{{ sops_file }}"
+        content_text: "{{ item }}"
+      with_file:
+        - "{{ outfile }}"
+
+    - name: Commit and push sops file
+      lvrfrc87.git_acp.git_acp:
+        path: "{{ root_dir }}"
+        add:
+          - "{{ sops_file }}"
+        comment: "Adding {{ ca_name }} Intermediate CA Certificate"
+        url: "{{ git_repo_url }}"
+        push: true
+        branch: "{{ git_branch }}"
