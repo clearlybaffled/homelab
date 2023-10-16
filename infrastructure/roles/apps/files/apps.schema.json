@@ -201,6 +201,11 @@
             "wave": {
               "title": "wave",
               "type": "string"
+            },
+            "createApp": {
+              "title": "createApp",
+              "type": "boolean",
+              "description": "Whether or not to actually create this application"
             }
           },
           "additionalProperties": true,

@@ -111,7 +111,6 @@ apps:
     charts:
       - chart: jetstack/cert-manager
         version: "{{ cert_manager_version }}"
-        skipCrds: true
 
   grocy:
     namespace: services
@@ -141,6 +140,7 @@ apps:
         version: "{{ bitnami_redis_chart_version }}"
 
   rook-ceph:
+    createApp: false
     path: infrastructure
     namespace: rook-ceph
     wave: "2"

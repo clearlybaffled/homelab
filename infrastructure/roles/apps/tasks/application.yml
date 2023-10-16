@@ -20,9 +20,9 @@
         sops_file: "{{ (app.app_dir, secret.name+'.sops.yaml')| path_join }}"
 
     - name: Render KSOPS generator template | {{ app.name }}
-      template:
-        src: secret-generator.yaml.j2
-        dest: "{{ app.app_dir }}/secret-generator.yaml"
+      blockinfile:
+        block: "{{ lookup('template', 'secret-generator.yaml.j2', convert_data=false) }}"
+        path: "{{ app.app_dir }}/secret-generator.yaml"
       register: ksops
 
 - name: ArgoCD application manifest | {{ app.name }}
@@ -51,25 +51,28 @@
   when: app.pvc is defined and app.pvc
   register: pvc
 
-- name: "Application specific startup configuration | {{ app.name }}"
+- name: "Application specific pre-start tasks | {{ app.name }}"
   include_tasks: "{{ taskfile }}"
   with_first_found:
     - files:
-        - "startup/{{ app.name }}.yml"
+        - "pre-start/{{ app.name }}.yml"
       skip: true
   loop_control:
     loop_var: taskfile
   register: app_tasks
   tags:
     - app_tasks
-
 - name: Commit changes to app files | {{ app.name }}
   lvrfrc87.git_acp.git_acp:
     path: "{{ root_dir }}"
     comment: "[{{ app.name }}] Updated application config files"
-    add:
-      - "{{ app.app_dir }}"
-      - "{{ app.manifest_file }}"
+    add: >-
+      {{
+        (
+         app.app_dir if lookup('pipe','git status --porcelain -- ' ~ app.app_dir),
+         app.manifest_file if lookup('pipe','git status --porcelain -- ' ~ app.manifest_file)
+        ) | select('true')
+      }}
     url: "{{ git_repo_url }}"
     push: true
     branch: "{{ git_branch }}"
@@ -78,12 +81,32 @@
   when: lookup('pipe','git status --porcelain -- ' + (app.app_dir, app.manifest_file) | join(' '))
   tags: commit
 
-- name: Launch wave <= 3 applications now
-  kubernetes.core.k8s:
-    src: "{{ app.manifest_file }}"
-    server_side_apply:
-      field_manager: ansible
+- name: Launch application when wave <= 3
   when:
     - app.wave is defined
     - app.wave|int <= 3
-  tags: app_tasks
+  block:
+    - name: Launch application now | {{ app.name }}
+      kubernetes.core.k8s:
+        src: "{{ app.manifest_file }}"
+        server_side_apply:
+          field_manager: ansible
+
+      tags: app_tasks
+
+    - name: "Application specific post-launch tasks | {{ app.name }}"
+      include_tasks: "{{ taskfile }}"
+      with_first_found:
+        - files:
+            - "post-launch/{{ app.name }}.yml"
+          skip: true
+      loop_control:
+        loop_var: taskfile
+      register: app_tasks
+      tags:
+        - app_tasks
+
+- name: Check before continuing to next app | {{ app.name }}
+  pause:
+    prompt: "Continue to {{ ansible_loop.nextitem.name }}"
+  when: not ansible_loop.last

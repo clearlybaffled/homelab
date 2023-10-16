@@ -1,31 +1,80 @@
 ---
-- name: Install Application specific configurations and files
-  include_tasks: application.yml
-  when: item.value.createApp is not defined or item.value.createApp
-  loop: "{{ (apps | items | selectattr('1.wave','defined') | sort(attribute='1.wave')) + (apps|items|rejectattr('1.wave','defined'))}}"
+- name: Build up app_list to include some conventions for file locations and sort by wave
+  set_fact:
+    app_list: >-
+      {{
+          app_list | default([]) +
+          [
+            item.1 | combine({
+              'name': item.0,
+              'app_dir': (
+                  cluster_dir,
+                  ('path' in item.1) |
+                    ternary(
+                      ('apps', item.1.path|default(omit)) if (item.1.path|default(omit)) != '' else '',
+                      ('apps', item.1.namespace)
+                    ),
+                  item.0
+                ) | flatten |  path_join,
+              'manifest_file':
+                (
+                  cluster_dir,
+                  'bootstrap',
+                  ('path' in item.1) | ternary(item.1.path, item.1.namespace),
+                  item.0+'.yaml'
+                ) | path_join
+            })
+          ]
+      }}
+  loop: >-
+      {{
+        (
+          (apps | items | selectattr('1.wave','defined') | sort(attribute='1.wave')) +
+          (apps | items | rejectattr('1.wave','defined'))
+        )
+      }}
   loop_control:
     label: "{{ item.0 }}"
+
+- name: Install Application specific configurations and files
+  include_tasks: application.yml
+  when:
+    - app.createApp | default(true)
+  loop: >-
+    {{
+      (app_deploy_list is defined or app_reject_list is defined)
+        | ternary(
+          app_list
+            | selectattr('name', 'in', app_deploy_list|default(omit))
+            | rejectattr('name', 'in', app_reject_list|default(omit)),
+          app_list
+        )
+    }}
+  loop_control:
+    loop_var: app
+    label: "{{ app.name }}"
     extended: true
+    extended_allitems: false
   vars:
-    app: >-
-      {{ item.1 | combine({
-        'name': item.0,
-        'app_dir': (
-            cluster_dir,
-            item.1.path | default('apps'),
-            ('path' in item.1) | ternary(item.1.path, item.1.namespace),
-            item.0
-          ) | path_join,
-        'manifest_file':
+    mysql_app: "{{ app_list | selectattr('name','eq','mysql') | first }}"
+    postgres_app: "{{ app_list | selectattr('name','eq','cloudnative-pg') | first }}"
+    mysql_secret: >-
+      {{
+        lookup(
+          'community.sops.sops',
           (
-            cluster_dir,
-            'bootstrap',
-            ('path' in item.1) | ternary(item.1.path, item.1.namespace),
-            item.0+'.yaml'
+            mysql_app.app_dir,
+            mysql_app.secrets.keys() | first ~ '.sops.yaml'
           ) | path_join
-        })
+        )
       }}
-    mysql_app: "{{ ansible_loop.allitems | selectattr('name','eq','mysql')|first }}"
-    mysql_secret: "{{ lookup('community.sops.sops', mysql_app.app_dir, mysql_app.secrets.keys[0] ~ '.sops.yaml') }}"
-    postgres_app: "{{ ansible_loop.allitems | selectattr('name','eq','cloudnative-pg')|first }}"
-    postgres_secret: "{{ lookup('community.sops.sops', postgres_app.app_dir, postgres_app.secrets.keys[0] ~ '.sops.yaml') }}"
+    postgres_secret: >-
+      {{
+        lookup(
+          'community.sops.sops',
+          (
+            postgres_app.app_dir,
+            (postgres_app.secrets | items | selectattr('1.data.username','eq', 'postgres') | first ).0 ~ '.sops.yaml'
+          ) | path_join
+        )
+      }}
