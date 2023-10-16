@@ -23,6 +23,7 @@
       blockinfile:
         block: "{{ lookup('template', 'secret-generator.yaml.j2', convert_data=false) }}"
         path: "{{ app.app_dir }}/secret-generator.yaml"
+        create: true
       register: ksops
 
 - name: ArgoCD application manifest | {{ app.name }}
