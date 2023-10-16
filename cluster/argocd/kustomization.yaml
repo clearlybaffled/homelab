@@ -16,6 +16,7 @@ helmCharts:
   repo: https://argoproj.github.io/argo-helm
   version: 5.46.7
   namespace: argocd
+  releaseName: argocd
 patches:
 - patch: "- op: add\n  path: /spec/template/spec/containers/0/env/-\n  value: { name:
     ARGOCD_SYNC_WAVE_DELAY, value: '30' }"
