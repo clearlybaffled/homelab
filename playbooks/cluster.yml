@@ -36,10 +36,23 @@
     - kubernetes/control_plane
 
 - name: Set up cluster infrastructure services
-  hosts: localhost
+  hosts: kube_control_plane
   gather_facts: false
   any_errors_fatal: true
   tags: infra
+  become: true
+  roles:
+    - containers/network
+    - containers/storage
+    - role: containers/storage/local_path_provisioner
+      vars:
+        local_path_provisioner_enabled: true
+        local_path_provisioner_claim_root: /srv/cluster/volumes
+        local_path_provisioner_is_default_storageclass: false
+
+- name: Set up client on ansible controller
+  hosts: localhost
+  gather_facts: false
+  tags: client
   roles:
     - kubernetes/client
-    - containers/network

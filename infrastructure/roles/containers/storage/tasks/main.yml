@@ -9,6 +9,7 @@
     definition:
       provisioner: kubernetes.io/no-provisioner
       volumeBindingMode: WaitForFirstConsumer
+      reclaimPolicy: Retain
 
 - name: Define local-storage PersistentVolumes for cross-namespace access
   kubernetes.core.k8s:
@@ -40,11 +41,3 @@
                     values:
                       - parche
   loop: "{{ storage.namespaces | product(storage.volumes) }}"
-
-- name: Setup local path provisioner
-  include_role:
-    name: containers/storage/local_path_provisioner
-  vars:
-    local_path_provisioner_enabled: true
-    local_path_provisioner_claim_root: /srv/cluster/volumes
-    local_path_provisioner_is_default_storageclass: false
