@@ -1,0 +1,87 @@
+---
+- name: Check inputs
+  assert:
+    that:
+      - signing_ca is defined 
+      - (pki_home, signing_ca)|path_join is directory
+      - csr_text is defined and csr_text != ''
+      - purpose in ['ocsp','user','client','server','ca']
+
+- name: Check if private key of signing cert is password protected
+  community.crypto.openssl_privatekey_info:
+    path: "{{ signing_ca_private_keyfile }}"
+    passphrase: "{{ pk_passphrase | default(omit) }}"
+  register: privatekey_info
+  failed_when: false
+
+- name: Issue cert
+  vars:
+    need_private_key: "{{ not (privatekey_info.can_load_key and privatekey_info.can_parse_key) }}"
+  block:
+    - name: Ask for passphrase if private key is protected
+      pause:
+        prompt: "Enter {{ signing_ca }} CA Private Key passphrase: "
+        echo: false
+      register: pk_passphrase_input
+      # no_log: true
+      when:
+        - need_private_key
+      until: pk_passphrase_input.user_input != ''
+
+    - name: Write CSR to temp file
+      block:
+      - name: Make tempfile for CSR
+        tempfile:
+          state: file
+          suffix: ".csr"
+        register: csr_file
+      - name: Write CSR to file
+        copy:
+          dest: "{{ csr_file.path }}"
+          content: "{{ csr_text }}"
+
+    - name: Issue Signed Certificate
+      vars:
+        privatekey: >-
+          {% if pk_passphrase is defined and pk_passphrase != '' %}
+          {{ pk_passphrase }}
+          {% elif 'user_input' in pk_passphrase_input and pk_passphrase_input.user_input != '' %}
+          {{ pk_passphrase_input.user_input }}
+          {% endif %}
+      environment:
+        CA_NAME: "{{ signing_ca }}"
+        PKI_HOME: "{{ pki_home }}"
+      command:
+        cmd: >-
+          openssl ca
+          -batch
+          -config {{ pki_home }}/ca.conf
+          -in {{ csr_file.path }}
+          -extensions {{ purpose }}_ext
+          -notext
+          {% if purpose != 'ca' %}
+          -extfile {{ pki_home }}/extensions.conf
+          {% endif %}
+          {% if need_private_key is defined %}
+          -passin stdin
+          {% endif %}
+        stdin: "{{ privatekey }}"
+        stdin_add_newline: false
+      register: certificate
+
+  always:
+    - name: Unset passphrase var
+      set_fact:
+        pk_passphrase:
+        pk_passphrase_input:
+    
+    - name: Remove CSR file if created
+      file:
+        path: "{{ csr_file.path }}"
+        state: absent
+
+- name: Return certificate text
+  set_fact:
+    certificate_text: "{{ certificate.stdout }}"
+  when: certificate is not failed
+

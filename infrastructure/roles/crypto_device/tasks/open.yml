@@ -1,0 +1,23 @@
+---
+- name: Open crypto partition
+  # Reference: https://wiki.archlinux.org/title/Dm-crypt/Device_encryption#Encryption_options_for_plain_mode
+  command:
+    cmd: >-
+      cryptsetup open
+      --type plain
+      --size={{ ((crypt.size | human_to_bytes(default_unit='M')) / crypt_device_blocksize|int)|int }}
+      --offset={{ crypt.offset }}
+      --key-file={{ crypt_key_file | default(crypt_device_file) }}
+      --keyfile-offset={{ crypt.key_offset * crypt_device_blocksize|int }}
+      --keyfile-size={{ ((crypt.key_size | human_to_bytes(default_unit='K')) / crypt_device_blocksize|int)|int }}
+      {{ crypt_device_file }}
+      {{ crypt_name }}
+    creates: "{{ crypt_mapping_file }}"
+  register: crypt_open
+
+- name: Mount crypto partition
+  ansible.posix.mount:
+    path: "{{ crypt_mount_path }}"
+    state: ephemeral
+    fstype: ext4
+    src: "{{ crypt_mapping_file }}"

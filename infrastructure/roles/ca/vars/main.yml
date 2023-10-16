@@ -1,8 +1,6 @@
 ---
-pki_home: /srv/pki
+ca_home: "{{ (pki_home, ca_name) | path_join }}"
 
-_ca_in_use: "{{ (ca_name is defined)|ternary(ca_name,signing_ca) }}"
-ca_home: "{{ (pki_home, _ca_in_use ) | path_join }}"
-ca_private_keyfile: "{{ ( ca_home, 'private', _ca_in_use+'.key') | path_join }}"
-
-root_ca_cn: Hermleigh Home Root CA
+ca_private_keyfile: "{{ ( ca_home, 'private', ca_name+'.key') | path_join }}"
+signing_ca_home: "{{ (pki_home, signing_ca)|path_join }}"
+signing_ca_private_keyfile: "{{ ( signing_ca_home, 'private', signing_ca+'.key') | path_join }}"

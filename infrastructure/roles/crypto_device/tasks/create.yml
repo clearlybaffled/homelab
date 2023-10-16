@@ -1,0 +1,57 @@
+---
+- name: Verify device file
+  pause:
+    prompt: "Is {{ crypt_device_file }} the correct device to provision?"
+  register: device
+  failed_when: device.user_input | lower != 'yes'
+
+- name: Generate random bits for crypt partition key
+  command: >-
+    dd
+      if=/dev/urandom
+      of={{ crypt_key_file | default(crypt_device_file) }}
+      bs={{ crypt_device_blocksize }}
+      seek={{ crypt.key_offset }}
+      count={{ ((crypt.key_size | human_to_bytes(default_unit='K')) / crypt_device_blocksize|int)|int }}
+      iflag=fullblock
+
+- name: Create data partition
+  community.general.parted:
+    device: "{{ crypt_device_file }}"
+    label: gpt
+    name: data
+    part_start: "{{ (crypt.offset + (((crypt.size + 1) | human_to_bytes(default_unit='M')) / crypt_device_blocksize|int)|int )}}s"
+    part_end: "{{ crypt.key_offset - 1 }}s"
+    state: present
+    fs_type: ext4
+    number: 1
+
+- name: Format data partition
+  community.general.filesystem:
+    dev: "{{ crypt_device_file }}1"
+    fstype: ext4
+    state: present
+
+- name: Open crypto partition
+  # Reference: https://wiki.archlinux.org/title/Dm-crypt/Device_encryption#Encryption_options_for_plain_mode
+  command:
+    cmd: >-
+      cryptsetup open
+      --type plain
+      --size={{ ((crypt.size | human_to_bytes(default_unit='M')) / crypt_device_blocksize|int)|int }}
+      --offset={{ crypt.offset }}
+      --key-file={{ crypt_key_file | default(crypt_device_file) }}
+      --keyfile-offset={{ crypt.key_offset * crypt_device_blocksize|int }}
+      --keyfile-size={{ ((crypt.key_size | human_to_bytes(default_unit='K')) / crypt_device_blocksize|int)|int }}
+      {{ crypt_device_file }}
+      {{ crypt_name }}
+
+- name: Create new filesystem
+  community.general.filesystem:
+    dev: "{{ crypt_mapping_file }}"
+    fstype: ext4
+
+- name: Close dm-crypt
+  command:
+    cmd: "cryptsetup close {{ crypt_name }}"
+    removes: "{{ crypt_mapping_file }}"

@@ -37,7 +37,8 @@
       "*_cloud_init*"
     ],
     "kubernetes": [],
-    "kubernetes://schema/postgresql.cnpg.io/v1@cluster": "cluster/apps/db/cloudnative-pg/cluster.yaml"
+    "kubernetes://schema/postgresql.cnpg.io/v1@cluster": "cluster/apps/db/cloudnative-pg/cluster.yaml",
+    "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/role-arg-spec.json": "*/meta/argument_specs.yaml"
   },
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter"

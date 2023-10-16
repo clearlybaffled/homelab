@@ -1,0 +1,42 @@
+---
+- name: Load crypt partition variables
+  community.sops.load_vars:
+    file: crypt-vars.sops.yml
+    name: crypt
+    expressions: evaluate-on-load
+  when: crypt is not defined
+
+- assert: # noqa name
+    that:
+      - cmd is defined
+      - cmd in ['create','open','close']
+
+- name: Get device data
+  command: 
+    cmd: "lsblk -d -b -o name,path,serial,size,log-sec {{ device_name | default('') }}"
+  register: lsblk
+  when: crypt_device_file is not defined
+
+- name: Get crypt device data
+  set_fact:
+    crypt_device_blocksize: "{{ crypt_device.log_sec }}"
+    crypt_device_file: "{{ crypt_device.path }}"
+  when: crypt_device_file is not defined
+  vars:
+    lsblk_parsed: "{{ lsblk.stdout | community.general.jc('lsblk') }}" # noqa jinja[invalid]
+    crypt_device: >-
+      {{
+        lsblk_parsed
+        | selectattr('serial', 'equalto', crypt.serial_no)
+        | first
+      }}
+
+- name: Verification check
+  pause:
+    prompt: Are you sure you want to provision a new crypto device?
+  register: accept
+  when: cmd == 'create'
+
+- include_tasks: # noqa name
+    file: "{{ cmd }}.yml"
+  when: accept is skipped or (accept.user_input | lower == 'yes')

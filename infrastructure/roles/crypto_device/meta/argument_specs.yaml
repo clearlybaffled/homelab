@@ -1,0 +1,51 @@
+---
+argument_specs:
+  create:
+    description: Provision an encrypted section of a storage device
+    options: &options
+      crypt_device_file:
+        description: File name of the storage device to use. Not required if C(serial_no) given.
+        required: false
+      crypt_key_file:
+        description: File name to use as the key file
+        required: true
+      crypt_offset:
+        description: Sector number to start the encrypted volume
+        required: true
+      crypt_size:
+        description: Size (MiB) of the encrypted volume
+        required: true
+      crypt_key_offset:
+        description: Sector number where the encryption key begins in the key file
+        required: true
+      key_size:
+        description: Size (KiB) of the encryption key
+        required: true
+      serial_no:
+        description: Serial number of the storage device to use for autodetection.
+        required: false
+      crypt_name: &crypt_name
+        description: Name used for the crypt
+        required: false
+        default: pki
+  open:
+    description: Opens an encrypted storage device
+    options: *options
+  close:
+    description: Closes an open encrypted storage device
+    options:
+      crypt_name: *crypt_name
+      mapping_file:
+        description: File created by C(cryptsetup open) in "/dev/mapper
+        required: false
+        default: /dev/mapper/{{ crypt_name }}
+  main:
+    description: Manage an encrypted storage device
+    options:
+      cmd:
+        required: true
+        description: Name of the task to execute
+        choices:
+          - create
+          - open
+          - close

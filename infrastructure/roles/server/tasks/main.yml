@@ -157,3 +157,10 @@
 
 - name: Run package install
   include_tasks: packages.yml
+
+- name: Load Root CA into system ca trust store
+  copy:
+    dest: "/usr/local/share/ca-certificates/{{ domain_name }}-root.crt"
+    content: "{{ root_ca.crt | b64decode }}"
+  notify:
+    - "update ca truststore"

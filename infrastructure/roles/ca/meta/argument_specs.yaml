@@ -1,0 +1,102 @@
+---
+argument_specs:
+  main:
+    short_description: Main role entrypoint
+    description:
+      - This is the main entrypoint for the C(ca) role.
+      - Based on C(purpose) input variable, determines which taskfile to load
+      - In my homelab setup, all CA management directories are stored on an offline crypto device, so the CA role will automatically manage opening and closing that device when performing operations
+    options:
+      purpose:
+        type: str
+        required: false
+        description:
+          - Used by main to determine which task file to run
+          - If not provided, runs the root-ca task
+          - Passes along C(purpose) along with other input values to subsequent tasks. See other entrypoints below for required inputs.
+        choices:
+          - ocsp
+          - user
+          - client
+          - ca
+          - server
+  sign:
+    short_description: Sign certificate request
+    description:
+      - This is generally the main task of a certificate authority, which is to issue signed certificates
+    options:
+      signing_ca:
+        type: str
+        required: true
+        description: Common Name of the certificate authority that will sign this certificate request
+      csr_text:
+        type: str
+        required: true
+        description: PEM-formatted certificate signing request
+      purpose:
+        type: str
+        required: true
+        description:
+          - What purpose will the signed certificate be serving?
+          - Used to determine which extensions to add when issuing the cert
+        choices:
+          - ocsp
+          - user
+          - client
+          - ca
+          - server
+      pki_home:
+        type: str
+        required: false
+        description: Top level directory where all CAs keep their home directories
+        default: /srv/pki
+  root-ca:
+    short_description: Manage Root Certificate Authority
+    description: Create directory structure and files for managing a "lightweight" root Certificate Authority using openssl
+    options:
+      root_ca_ou:
+        type: str
+        required: false
+        description: Organizational Unit for the Root CA
+        default: Hermleigh Home Root CA
+      root_ca_cn:
+        type: str
+        required: false
+        description: Common Name for the root CA
+        default: root-ca
+      pk_passphrase:
+        type: str
+        required: false
+        description: Passphrase for the private key
+        default: C(input required if not provided)
+      pki_home:
+        type: str
+        required: false
+        description: Top level directory where all CAs keep their home directories
+        default: /srv/pki
+  sub-ca:
+    short_description: Manage Intermediate (Subordinate) Certificate Authority
+    description: Create directory structure and files for managing a "lightweight" Certificate Authority, subordinate to another CA
+    options:
+      ca_name:
+        type: str
+        required: true
+        description: Common Name (CN) for the CA (also used in directory and other naming conventions)
+      orgnizational_unit_name:
+        type: str
+        required: true
+        description: Organizational Unit (OU) name for the CA
+      signing_ca:
+        type: str
+        required: true
+        description: Shortname of the certificate authority that will sign this certificate request
+      pk_passphrase:
+        type: str
+        required: false
+        description: Passphrase for the private key
+        default: C(input requested)
+      pki_home:
+        type: str
+        required: false
+        description: Top level directory where all CAs keep their home directories
+        default: /srv/pki
