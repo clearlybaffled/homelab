@@ -184,16 +184,16 @@ def kustomization(ctx, app):
                     "namespace": chart["namespace"],
                 }
 
-                if 'release' in chart:
-                    c["release_name"] = chart["release"]
+                if 'release_name' in chart:
+                    c["releaseName"] = chart["release_name"]
 
                 if chart["skip_crds"]:
                     c["includeCRDs"] = not chart["skip_crds"]
 
-                if "values_files" in chart:
-                    c["valuesFile"] = chart["values_files"][0]
-                    if len(chart["values_files"]) > 1:
-                        c["additionalValuesFiles"] = chart["values_files"][1:]
+                if "value_files" in chart:
+                    c["valuesFile"] = chart["value_files"][0]
+                    if len(chart["value_files"]) > 1:
+                        c["additionalValuesFiles"] = chart["value_files"][1:]
 
                 kustomize["helmCharts"].append(c)
 
