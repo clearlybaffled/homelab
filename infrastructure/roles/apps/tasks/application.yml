@@ -66,14 +66,10 @@
   lvrfrc87.git_acp.git_acp:
     path: "{{ root_dir }}"
     comment: "[{{ app.name }}] Updated application config files"
-    add: >-
-      {{
-        (
-         app.app_dir if lookup('pipe','git status --porcelain -- ' ~ app.app_dir),
-         app.manifest_file if lookup('pipe','git status --porcelain -- ' ~ app.manifest_file)
-        ) | select('true')
-      }}
-    url: "{{ git_repo_ssh_url }}"
+    add:
+      - "{{ app.app_dir }}"
+      - "{{ app.manifest_file }}"
+    url: "{{ git_repo_url }}"
     push: true
     branch: "{{ git_branch }}"
   when: lookup('pipe','git status --porcelain -- ' + (app.app_dir, app.manifest_file) | join(' '))
