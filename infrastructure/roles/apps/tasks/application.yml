@@ -73,11 +73,9 @@
          app.manifest_file if lookup('pipe','git status --porcelain -- ' ~ app.manifest_file)
         ) | select('true')
       }}
-    url: "{{ git_repo_url }}"
+    url: "{{ git_repo_ssh_url }}"
     push: true
     branch: "{{ git_branch }}"
-    ssh_params:
-      key_file: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
   when: lookup('pipe','git status --porcelain -- ' + (app.app_dir, app.manifest_file) | join(' '))
   tags: commit
 
