@@ -33,7 +33,7 @@ apps:
 
   kube-prometheus-stack:
     namespace: monitoring
-    wave: "2"
+    wave: "1"
     charts:
       - chart: prometheus-community/kube-prometheus-stack
         version: "{{ kube_prometheus_stack_chart_version }}"
@@ -44,18 +44,6 @@ apps:
         version: "{{ prometheus_adapter_chart_version }}"
         valueFiles:
           - adapter.yaml
-    kustomize:
-      resources:
-        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml"
-        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml"
-        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml"
-        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_probes.yaml"
-        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_prometheusagents.yaml"
-        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml"
-        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml"
-        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_scrapeconfigs.yaml"
-        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml"
-        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml"
 
   hajimari:
     namespace: services
