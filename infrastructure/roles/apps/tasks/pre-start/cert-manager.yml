@@ -10,5 +10,5 @@
     definition:
       type: kubernetes.io/tls
       data:
-        tls.crt: "{{ kubernetes_ca.crt | b64encode }}"
-        tls.key: "{{ kubernetes_ca.key | b64encode }}"
+        tls.crt: "{{ kubernetes_ca.crt }}"
+        tls.key: "{{ kubernetes_ca.key }}"

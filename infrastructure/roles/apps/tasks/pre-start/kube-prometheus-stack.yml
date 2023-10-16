@@ -3,7 +3,7 @@
   kubernetes.core.k8s:
     resource_definition: "{{ lookup('url', url, split_lines=false) }}"
   loop: 
-        - alertmanagerconfigs
+        # - alertmanagerconfigs
         - alertmanagers
         - podmonitors
         - probes

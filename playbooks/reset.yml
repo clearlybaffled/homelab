@@ -18,10 +18,10 @@
 - name: Tear down terraform stacks
   hosts: localhost
   tasks:
-    - name: Tear down {{ item }}
+    - name: Tear down terraform stack
       community.general.terraform:
         project_path: "{{ (infra_dir, 'terraform', item) | path_join }}"
         state: absent
       when: item is directory
       with_fileglob:
-        - "{{ infra_dir }}/terraform"
+        - "{{ infra_dir }}/terraform/*"
