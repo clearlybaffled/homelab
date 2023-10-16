@@ -69,7 +69,7 @@
     add:
       - "{{ app.app_dir }}"
       - "{{ app.manifest_file }}"
-    url: "{{ git_repo_url }}"
+    url: "{{ git_repo_ssh_url }}"
     push: true
     branch: "{{ git_branch }}"
   when: lookup('pipe','git status --porcelain -- ' + (app.app_dir, app.manifest_file) | join(' '))
@@ -85,7 +85,6 @@
         src: "{{ app.manifest_file }}"
         server_side_apply:
           field_manager: ansible
-
       tags: app_tasks
 
     - name: "Application specific post-launch tasks | {{ app.name }}"

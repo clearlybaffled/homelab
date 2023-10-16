@@ -8,7 +8,6 @@
     name: "{{ kube_user }}-csr"
     api_version: certificates.k8s.io/v1
     kubeconfig: "{{ kubeconfig_file }}"
-    ca_cert: "/etc/ssl/certs/ca-certificates.crt"
   register: user_status
 
 - name: Create User

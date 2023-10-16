@@ -6,4 +6,4 @@
 
 - name: kubeadm | Reset cluster
   command: "{{ bin_dir }}/kubeadm reset --force"
-  when: cluster_status is not failed
+  # when: cluster_status is not failed

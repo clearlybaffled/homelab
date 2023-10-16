@@ -61,7 +61,7 @@ apps:
     kustomize:
       resources:
         - ./cluster.yaml
-        - https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/cnpg-prometheusrule.yaml
+        - https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/prometheusrule.yaml
         - https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/grafana-configmap.yaml
     secrets:
       superuser:
@@ -128,7 +128,6 @@ apps:
         version: "{{ bitnami_redis_chart_version }}"
 
   rook-ceph:
-    createApp: false
     path: infrastructure
     namespace: rook-ceph
     wave: "2"

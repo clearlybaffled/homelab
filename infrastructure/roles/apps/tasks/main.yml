@@ -46,7 +46,7 @@
         | ternary(
           app_list
             | selectattr('name', 'in', app_deploy_list|default(omit))
-            | rejectattr('name', 'in', app_reject_list|default(omit)),
+            | rejectattr('name', 'in', app_skip_list|default(omit)),
           app_list
         )
     }}
