@@ -21,11 +21,20 @@ spec:
   - chart: rook-ceph
     repoURL: https://charts.rook.io/release
     targetRevision: v1.12.4
+    helm:
+      valueFiles:
+      - $repo/cluster/apps/infrastructure/rook-ceph/operator.yaml
   - chart: rook-ceph-cluster
     repoURL: https://charts.rook.io/release
     targetRevision: v1.12.4
     helm:
+      valueFiles:
+      - $repo/cluster/apps/infrastructure/rook-ceph/ceph-cluster.yaml
       releaseName: rook-ceph-cluster
+  - repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/apps/infrastructure/rook-ceph
+    targetRevision: main
+    ref: repo
   destination:
     name: in-cluster
     namespace: rook-ceph
