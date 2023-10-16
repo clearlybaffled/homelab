@@ -17,6 +17,7 @@ helmCharts:
   version: 5.46.7
   namespace: argocd
   releaseName: argocd
+  valuesFile: values.yaml
 patches:
 - patch: "- op: add\n  path: /spec/template/spec/containers/0/env/-\n  value: { name:
     ARGOCD_SYNC_WAVE_DELAY, value: '30' }"
