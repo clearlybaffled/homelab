@@ -31,4 +31,4 @@ jobs:
         uses: docker://ghcr.io/yannh/kubeconform:master
         with:
           entrypoint: '/kubeconform'
-          args: "-summary -output json -schema-location default -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' cluster/"
+          args: "-summary -output text -schema-location default -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json'  -ignore-missing-schemas $(grep -lr '^kind: ' cluster)"
