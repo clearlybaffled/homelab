@@ -92,5 +92,5 @@ prometheus_version: 2.47.0
 prometheus_operator_version: v0.68.0
 kube_prometheus_stack_chart_version: 51.3.0
 prometheus_adapter_chart_version: 4.7.0
-rook_ceph_version: v1.12.4
+rook_ceph_version: v1.12.5
 vault_chart_version: 0.25.0
