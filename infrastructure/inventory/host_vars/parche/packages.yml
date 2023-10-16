@@ -4,7 +4,6 @@ host_packages:
   - ntfs-3g
   - nmap
   - exfat-fuse
-  - exfat-utils
   - exuberant-ctags
   - hdparm
   - lm-sensors
