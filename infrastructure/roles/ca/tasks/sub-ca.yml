@@ -76,6 +76,7 @@
             {{ '-passin stdin' if need_private_key }}
           {% else %}
             -keyout {{ ca_private_keyfile }}
+            -newkey ec -pkeyopt ec_paramgen_curve:secp384r1
             {{ '-passin stdin' if privatekey else '-noenc' }}
           {% endif %}
         stdin: "{{ privatekey }}"

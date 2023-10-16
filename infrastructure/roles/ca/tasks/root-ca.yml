@@ -1,7 +1,7 @@
 ---
 - name: Set facts
   set_fact:
-    ca_name: "{{ root_ca_cn }}"
+    ca_name: root-ca
 
 - name: Create new crypto device for offline CA
   import_role:
@@ -64,7 +64,7 @@
             -passin stdin
           {% else %}
             -keyout {{ ca_private_keyfile }}
-            -newkey ed25519
+            -newkey ec -pkeyopt ec_paramgen_curve:secp384r1
           {% endif %}
         stdin: "{{ privatekey }}"
         stdin_add_newline: false
@@ -90,10 +90,22 @@
         creates: "{{ ca_home }}/ca.crt"
       when: req is success
 
-    # - name: Remove root-ca.csr
-    #   file:
-    #     path: root-ca.csr
-    #     state: absent
+    - name: Export pfx for Windows certs
+      command:
+        cmd: >-
+          openssl pkcs12 
+          -export 
+          -in {{ ca_home }}/ca.crt 
+          -name '{{ root_ca_cn }}'
+          -out {{ ca_home}}/ca.pfx
+          -passout pass:
+          -nokeys
+        creates: "{{ ca_home }}/ca.pfx"
+
+    - name: Remove root-ca.csr
+      file:
+        path: root-ca.csr
+        state: absent
 
 # - name: Save and commit cert
 #   when: commit_ca | default(false)

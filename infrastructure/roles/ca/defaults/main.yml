@@ -1,5 +1,5 @@
 ---
 pki_home: /srv/pki
 
-root_ca_ou: Hermleigh Home Root CA
-root_ca_cn: root-ca
+root_ca_ou: Hermleigh House Network
+root_ca_cn: Hermleigh Home Root CA
