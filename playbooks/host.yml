@@ -1,4 +1,12 @@
 ---
+- name: Workstation Provisioning
+  hosts: workstations
+  gather_facts: true
+  become: true
+  tags: workstation
+  roles:
+    - workstation
+
 - name: Server Provisioning
   hosts: servers
   gather_facts: true
@@ -15,11 +23,3 @@
   tags: kvm
   roles:
     - server/kvm
-
-- name: Workstation Provisioning
-  hosts: workstations
-  gather_facts: true
-  become: true
-  tags: workstation
-  roles:
-    - workstation

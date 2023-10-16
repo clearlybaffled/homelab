@@ -3,11 +3,10 @@
   when: ansible_os_family|lower in ["redhat","debian"]
   block:
     - name: binary | Copy {{ binary }} binary to ansible host # noqa name
-      copy:
+      fetch:
         src: "{{ bin_dir }}/{{ binary }}"
-        dest: "{{ bin_dir }}/{{ binary }}"
-        remote_src: true
-        mode: preserve
+        dest: "{{ bin_dir }}/"
+        flat: true
       register: copy_binary_result
       until: copy_binary_result is not failed
       run_once: true

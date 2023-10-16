@@ -149,7 +149,7 @@ kube_profiling: false
 kubelet_shutdown_grace_period: 60s
 kubelet_shutdown_grace_period_critical_pods: 20s
 
-kubeadm_certificate_key: "{{ lookup('password', credentials_dir + '/kubeadm_certificate_key.creds length=64 chars=hexdigits') | lower }}"
+# kubeadm_certificate_key: "{{ lookup('password', credentials_dir + '/kubeadm_certificate_key.creds length=64 chars=hexdigits') | lower }}"
 
 # K8s image pull policy (imagePullPolicy)
 k8s_image_pull_policy: IfNotPresent
@@ -304,8 +304,7 @@ auto_renew_certificates: false
 # First Monday of each month
 # auto_renew_certificates_systemd_calendar: "Mon *-*-1,2,3,4,5,6,7 03:{{ groups['kube_control_plane'].index(inventory_hostname) }}0:00"
 
-pki_dir: "{{ (root_dir, 'infrastructure', 'pki')|path_join }}"
-cluster_cacerts: "{{( pki_dir, 'cacerts.crt') | path_join}}"
+kube_cluster_cacerts: "{{( kube_cert_dir, 'cacerts.pem') | path_join}}"
 kube_apiserver_client_cert: "{{ kube_cert_dir }}/ca.crt"
 kube_apiserver_client_key: "{{ kube_cert_dir }}/ca.key"
 

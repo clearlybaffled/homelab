@@ -58,8 +58,8 @@ crio_registries:
     location: registry-1.docker.io ## REQUIRED
     unqualified: true
     mirrors:
-      - location: 172.20.100.52:5000
-        insecure: true
+      # - location: 172.20.100.52:5000
+      #   insecure: true
       - location: mirror.gcr.io
         insecure: false
   # - prefix: quay.io

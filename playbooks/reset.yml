@@ -10,7 +10,7 @@
         name: "{{ item }}"
         tasks_from: reset
       with_items:
-        - cluser
+        # - apps
         - kubernetes/control_plane
         - containers/network
         - containers/runtime

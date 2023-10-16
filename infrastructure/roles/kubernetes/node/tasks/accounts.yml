@@ -20,17 +20,18 @@
     system: true
     comment: "Kubernetes User"
 
-- name: Add ansible_user to kube_group
+- name: Add ansible_user to kube groups
   user:
-    name: "{{ local_ansible_user }}"
+    name: "{{ ansible_user }}"
     groups:
       - "{{ kube_group }}"
+      - "{{ kube_cert_group }}"
     append: true
 
 - name: Ensure ansible_user has a ~/.kube directory
   file:
-    path: "{{ local_ansible_homedir }}/.kube"
-    owner: "{{ local_ansible_user }}"
-    group: "{{ local_ansible_group }}"
+    path: "{{ ansible_homedir }}/.kube"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_group }}"
     state: directory
     mode: "0700"

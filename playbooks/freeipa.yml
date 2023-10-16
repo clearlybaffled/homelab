@@ -74,9 +74,8 @@
         src: "{{ ipa_csr_path }}.csr"
 
     - name: Sign IPA CSR
-      ansible.builtin.include_role:
+      include_role:
         name: ca
-        tasks_from: issue-cert
         apply:
           vars:
             signing_ca: root-ca

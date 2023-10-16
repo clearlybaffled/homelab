@@ -34,79 +34,54 @@
     sans_kube_service_ip: "{{ [ kube_service_addresses | ipaddr('net')|ipaddr(1)|ipaddr('address') ] }}"
   tags: facts
 
-- name: Install kubeadm.config file
+- name: kubeadm | Install kubeadm.config file
   template:
     src: kubeadm-config.yml.j2
     dest: "{{ kube_config_dir }}/kubeadm-config.yaml"
     owner: "{{ kube_owner }}"
     mode: "0640"
 
+- name: kubeadm | Get cert info if it does exist
+  community.crypto.x509_certificate_info:
+    content: "{{ kubernetes_ca.crt | b64decode }}"
+  register: cert_info
+  when: 
+    - kubernetes_ca is defined
+
+- name: Create cert
+  when: cert_info is skipped or ('expired' in cert_info and cert_info.expired)
+  block:
+    - name: kubeadm | Get signed certificate if there are no certs or if the current is expired
+      import_role:
+        name: ca
+      vars:
+        signing_ca: root-ca
+        ca_name:  kubernetes-ca
+        commit_ca: true
+        purpose: ca
+        ca_num: "{{ cert_info.organizationalUnitName | default('CA-01') | regex_search('CA-([0-9]{2})$','\\1') | first }}"
+        orgnizational_unit_name: "{{ kubernetes_ca_ou }}-{{ ca_num }}"
+      delegate_to: parche
+
+    - name: kubeadm | Reload kubernetes-ca var file
+      community.sops.load_vars:
+        file: "{{ pki_dir }}/kubernetes-ca.sops.yml"
 
 - name: kubeadm | Initialize first master
-  vars:
-    pki_keypath: "{{ (pki_dir, 'kubernetes-ca', 'kubernetes-ca.key') | path_join }}"
-    pki_certpath: "{{ (pki_dir, 'kubernetes-ca', 'kubernetes-ca.crt') | path_join }}"
-    csr_path: "{{ (pki_dir, 'kubernetes-ca', 'kubernetes-ca.csr') | path_join }}"
   block:
-    - name: kubeadm | Check for Kubernetes CA files
-      stat:
-        path: "{{ item }}"
-      register: kube_ca
-      with_items:
-        - pki_keypath
-        - pki_certpath
-
-    - name: kubeadm | Create Kubernetes CA if it doesn't exist
-      when: kube_ca.results | selectattr('stat.exists', 'false') | length > 0
-      block:
-        - name: kubeadm | Create CSR for Kubernetes CA
-          command: 
-            cmd: >-
-              openssl req
-              -new
-              -config {{ role_path }}/files/req.conf
-              -keyout {{ pki_dir }}/kubernetes-ca/kubernetes-ca.key
-              -subj '/C=US/O=HERMLEIGH.HOME/OU=Kubernetes Cluster Seawolf ICA-01/CN=kubernetes-ca'
-              -out {{ csr_path }}
-            creates: "{{ csr_path }}"
-
-        - name: Sign CSR
-          include_role:
-            name: ca
-            apply:
-              signing_ca: root-ca
-              purpose: ca
-
-        - name: Encrypt Kubernetes CA files
-          community.sops.sops_encrypt:
-            path: "{{ item }}"
-            content_binary: "{{ lookup('file', item, rstrip=false) | b64encode }}"
-          with_items:
-            - pki_keypath
-            - pki_certpath
-        
-        - name: Remove CSR
-          file:
-            path: "{{ csr_path }}"
-            state: absent
-
-    - name: kubeadm | Install Kubernetes CA cert and key files
+    - name: kubeadm | Write out Kube CA cert files
       copy:
         dest: "{{ kube_cert_dir }}/ca.{{ item }}"
-        content: "{{ lookup('community.sops.sops', (pki_dir, 'kubernetes-ca', 'kubernetes-ca.'+item)|path_join) }}"
-        owner: root
-        group: root
-        mode: preserve
-      with_items:
+        content: "{{ kubernetes_ca[item] | b64decode }}"
+      loop:
         - crt
         - key
-
     - name: kubeadm | Create cacert file with full cert chain
       copy:
-        dest: "{{ kube_cert_dir }}/cacerts.pem"
+        dest: "{{ kube_cluster_cacerts }}"
         content: |-
-          {{ lookup('community.sops.sops', pki_certpath ) }}
-          {{ root-ca.crt }}
+          {{ kubernetes_ca.crt | b64decode }}
+          {{ root_ca.crt | b64decode }}
 
     - name: kubeadm | Init certs phase
       command: >-

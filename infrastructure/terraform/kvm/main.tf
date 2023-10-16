@@ -9,5 +9,5 @@ terraform {
 }
 
 provider "libvirt" {
-  uri = "qemu+ssh://ansible@parche/system?keyfile=./.ssh/ansible"
+  uri = "qemu+ssh://ansible@parche/system?keyfile=$HOME/.ssh/ansible"
 }

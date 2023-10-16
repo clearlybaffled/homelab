@@ -11,7 +11,13 @@ nodeRegistration:
 {% endif %}
   kubeletExtraArgs:
     node-labels: "{{ node_labels | join(',') }}"
+{% if inventory_hostname in groups['kube_control_plane'] and inventory_hostname not in groups['kube_node'] %}
+  taints:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/control-plane
+{% else %}
   taints: []
+{% endif %}
 {% if kubeadm_init_phases_skip %}
 skipPhases:
 {{ kubeadm_init_phases_skip | to_yaml(indent=2) }}
