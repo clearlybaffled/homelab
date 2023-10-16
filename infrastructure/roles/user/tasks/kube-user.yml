@@ -16,8 +16,7 @@
   block:
     - name: user | Generate private key
       community.crypto.openssl_privatekey_pipe:
-        type: RSA
-        size: 4096
+        type: Ed25519
       register: private_key
 
     - name: user | Generate CSR
@@ -52,7 +51,7 @@
 
         - name: user | get kubernetes cluster ca file
           slurp:
-            src: "{{ kube_apiserver_client_cert }}"
+            src: "{{ kube_cluster_cacerts }}"
           register: ca_file_data
         - name: user | save ca data as fact
           set_fact:

@@ -1,0 +1,38 @@
+---
+argument_specs:
+  kube-user:
+    options:
+      kube-user:
+        type: str
+        required: true
+        description: Name of the kubernetes user to create
+      username:
+        type: str
+        required: true
+        description: Name of the local system user to apply the config to
+      groupname:
+        type: str
+        required: true
+        description: Name of the local system group
+  system-user:
+    options:
+      ansible_user:
+        type: str
+        required: true
+        description: ansible username
+      ansible_group:
+        type: str
+        required: true
+        description: ansible usergroup
+      ansible_homedir:
+        type: str
+        required: true
+        description: ansible home directory
+      ansible_user_ssh_key:
+        type: str
+        required: false
+        description: ssh private key for ansible user
+      ansible_user_ssh_pubkey:
+        type: str
+        required: false
+        description: ssh public key for ansible user

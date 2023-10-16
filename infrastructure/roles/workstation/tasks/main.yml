@@ -10,3 +10,8 @@
 - name: Install Mozilla SOPS
   include_role:
     name: community.sops.install
+
+- name: Create local ansible user
+  include_role:
+    name: user
+    tasks_from: system-user.yml
