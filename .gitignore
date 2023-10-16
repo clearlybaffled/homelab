@@ -257,3 +257,5 @@ references/
 
 infrastructure/roles/**/etcd*
 infrastructure/roles/containers/network/files/kustomization.yaml
+
+cluster/**/charts/
