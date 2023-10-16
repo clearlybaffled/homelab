@@ -9,7 +9,7 @@
         collation: utf8mb4_general_ci
         encoding: utf8mb4
         login_user: root
-        login_password: "{{ mysql_root }}"
+        login_password: "{{ mysql_secret.data['mysql-root-password'] | b64decode }}"
         login_host: 172.16.1.32
 
     - name: Create user
@@ -19,4 +19,4 @@
         priv: "{{ secret.data['db-username'] | b64decode }}.*:ALL"
         login_host: 172.16.1.32
         login_user: root
-        login_password: "{{ mysql_root }}"
+        login_password: "{{ mysql_root.data['mysql-root-password'] | b64decode }}"

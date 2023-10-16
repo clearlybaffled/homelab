@@ -149,7 +149,6 @@ ciliumcli_download_url: https://github.com/cilium/cilium-cli/releases/download/{
 crictl_download_url: https://github.com/kubernetes-sigs/cri-tools/releases/download/{{ crictl_version }}/crictl-{{ crictl_version }}-{{ ansible_system | lower }}-{{ image_arch }}.tar.gz
 crio_download_url: https://storage.googleapis.com/cri-o/artifacts/cri-o.{{ image_arch }}.{{ crio_version }}.tar.gz
 helm_download_url: https://get.helm.sh/helm-{{ helm_version }}-linux-{{ image_arch }}.tar.gz
-crun_download_url: https://github.com/containers/crun/releases/download/{{ crun_version }}/crun-{{ crun_version }}-linux-{{ image_arch }}
 krew_download_url: https://github.com/kubernetes-sigs/krew/releases/download/{{ krew_version }}/krew-{{ host_os }}_{{ image_arch }}.tar.gz
 skopeo_download_url: https://github.com/lework/skopeo-binary/releases/download/{{ skopeo_version }}/skopeo-linux-{{ image_arch }}
 argocd_download_url: https://github.com/argoproj/argo-cd/releases/download/{{ argocd_version }}/argocd-linux-{{ image_arch }}
@@ -342,19 +341,6 @@ downloads:
     sha256: "{{ crio_archive_checksum }}"
     url: "{{ crio_download_url }}"
     unarchive: true
-    mode: "0755"
-    groups:
-      - k8s_cluster
-
-  crun:
-    file: true
-    enabled: "{{ crun_enabled }}"
-    version: "{{ crun_version }}"
-    dest: "{{ download_cache_dir }}/crun"
-    install: "{{ bin_dir }}/crun"
-    sha256: "{{ crun_binary_checksum }}"
-    url: "{{ crun_download_url }}"
-    unarchive: false
     mode: "0755"
     groups:
       - k8s_cluster

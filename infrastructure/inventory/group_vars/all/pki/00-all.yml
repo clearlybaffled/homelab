@@ -1,0 +1,2 @@
+---
+pki_dir: "{{ (infra_dir, 'inventory','group_vars','all','pki') | path_join }}"

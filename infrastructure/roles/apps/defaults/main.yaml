@@ -102,14 +102,7 @@ apps:
         - ./pvc.yaml
         - ./pv.yaml
     secrets:
-      secret:
-        data:
-          mysql-root-password:
-            type: password
-          mysql-replication-password:
-            type: password
-          mysql-password:
-            type: password
+      secret: {}
 
   cert-manager:
     path: infrastructure

@@ -1,0 +1,12 @@
+---
+- name: Unmount {{ crypt_name }} volume
+  ansible.posix.mount:
+    path: "{{ crypt_mount_path }}"
+    state: unmounted
+  register: umount
+
+- name: Close dm-crypt
+  command:
+    cmd: "cryptsetup close {{ crypt_name }}"
+    removes: "{{ crypt_mapping_file }}"
+  when: umount is success

@@ -14,7 +14,7 @@
 
 - name: Add ansible user to libvirt group
   user:
-    name: "{{ local_ansible_user }}"
+    name: "{{ ansible_user }}"
     append: true
     groups:
       - libvirt
@@ -72,7 +72,8 @@
         name: "{{ net_name }}"
         command: start
 
-- name: Terraform KVM setup
-  community.general.terraform:
-    project_path: "{{ infra_dir }}/terraform/kvm"
-  delegate_to: localhost
+# TODO: Not working from controller? Can't dialup ssh config
+# - name: Terraform KVM setup
+#   community.general.terraform:
+#     project_path: "{{ infra_dir }}/terraform/kvm"
+#   delegate_to: localhost

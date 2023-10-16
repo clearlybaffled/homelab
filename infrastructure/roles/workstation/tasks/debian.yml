@@ -8,15 +8,18 @@
         mode: '0644'
         force: true
 
-    - name: Get lsb_release
-      command: lsb_release -cs
-      register: lsb_release
-
     - name: HashiCorp  | apt source
       apt_repository:
-        repo: "deb [signed-by=/etc/apt/trusted.gpg.d/hashicorp.asc] https://apt.releases.hashicorp.com {{ lsb_release.stdout }} main"
+        repo: "deb [signed-by=/etc/apt/trusted.gpg.d/hashicorp.asc] https://apt.releases.hashicorp.com {{ ansible_lsb.codename }} main"
         state: present
 
     - name: Update apt cache
       apt:
         update_cache: true
+
+- name: Load Root CA into system ca trust store
+  copy:
+    dest: "/usr/local/share/ca-certificates/{{ domain_name }}-root.crt"
+    content: "{{ root_ca.crt | b64decode }}"
+  notify:
+    - "update ca truststore"

@@ -10,5 +10,5 @@
     definition:
       type: kubernetes.io/tls
       data:
-        tls.crt: "{{ lookup('community.sops.sops', pki_dir+'/kubernetes-ca/kubernetes-ca.crt') | b64encode }}"
-        tls.key: "{{ lookup('community.sops.sops', pki_dir+'/kubernetes-ca/kubernetes-ca.key') | b64encode }}"
+        tls.crt: "{{ kubernetes_ca.crt | b64encode }}"
+        tls.key: "{{ kubernetes_ca.key | b64encode }}"

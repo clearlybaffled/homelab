@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.6.0"
+  required_version = ">= 1.5.7"
   required_providers {
     libvirt = {
       source  = "dmacvicar/libvirt"
@@ -9,5 +9,5 @@ terraform {
 }
 
 provider "libvirt" {
-  uri = "qemu+ssh://ansible@parche/system?keyfile=./.ssh/ansible"
+  uri = "qemu+ssh://ansible@parche/system?keyfile=$HOME/.ssh/ansible"
 }

@@ -1,0 +1,97 @@
+---
+- name: User Configuration | Create a new regular user
+  user:
+    name: "{{ ansible_user }}"
+    state: present
+    # group: "{{ ansible_group }}"
+    groups: "{{ ansible_groups }}"
+    append: true
+    create_home: true
+    home: "{{ ansible_homedir }}"
+    shell: /bin/bash
+    system: true
+    password_lock: true
+
+- name: SSH Keys
+  when:
+    - not ansible_user_ssh_key is defined
+    - not ansible_user_ssh_pubkey is defined
+  vars:
+    ssh_keyfile: "{{ ansible_homedir }}/.ssh/id_ed25519"
+    ssh_sops_file: "{{ (infra_dir, 'inventory', 'group_vars','all','ansible_user.sops.yml') | path_join }}"
+  block:
+    - name: User Configuration | Ensure $HOME/.ssh dir exists
+      file:
+        path: "{{ ssh_keyfile | dirname }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_group }}"
+        mode: "0755"
+
+    - name: User Configuration | Generate ssh keys
+      community.crypto.openssh_keypair:
+        path: "{{ ssh_keyfile }}"
+        type: ed25519
+        mode: '0600'
+      register: sshkey
+
+    - name: User Configuration | Read private key
+      slurp:
+        src: "{{ ssh_keyfile }}"
+      register: ssh_private_key
+
+    - name: User Configuration | Save keys to sops file on controller
+      delegate_to: localhost
+      community.sops.sops_encrypt:
+        path: "{{ ssh_sops_file }}"
+        owner: "{{ lookup('pipe','id -u') }}"
+        group: "{{ lookup('pipe','id -g') }}"
+        content_yaml:
+          ansible_user_ssh_pubkey: "{{ sshkey.public_key | b64encode }}"
+          ansible_user_ssh_key: "{{ ssh_private_key.content }}"
+      vars:
+        git_commit_comment: Adding ansible user ssh keys
+        git_add_file_list:
+          - "{{ ssh_sops_file }}"
+        git_push: false
+
+    - name: Reload variables
+      meta: refresh_inventory
+
+- name: User Configuration | Deploy ssh key
+  when:
+    - ansible_user_ssh_key is defined
+    - ansible_user_ssh_pubkey is defined
+  copy:
+    dest: "{{ ansible_homedir }}/.ssh/{{ item.filename }}"
+    content: "{{ lookup('vars', item.varname) | b64decode }}"
+    mode: '0600'
+  with_items:
+    - filename: id_ed25519
+      varname: ansible_user_ssh_key
+    - filename: id_ed25519.pub
+      varname: ansible_user_ssh_pubkey
+    - filename: authorized_keys
+      varname: ansible_user_ssh_pubkey
+
+- name: User Configuration | Setup passwordless sudo
+  blockinfile:
+    dest: "{{ '/usr/local/' if ansible_system|lower == 'freebsd' }}/etc/sudoers.d/ansible"
+    owner: root
+    group: root
+    mode: '0440'
+    create: true
+    validate: '/usr/sbin/visudo -cf %s'
+    block: |
+      %{{ ansible_group }}      ALL=(ALL) NOPASSWD: ALL
+      Defaults:%{{ ansible_group }}    !requiretty
+  when: ansible_system|lower in ['linux', 'freebsd']
+
+- name: User Configuration | Silence the login prompt
+  file:
+    dest: "{{ ansible_homedir }}/.hushlogin"
+    state: touch
+    owner: "{{ ansible_user }}"
+    mode: "0644"
+    modification_time: preserve
+    access_time: preserve

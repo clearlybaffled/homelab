@@ -20,8 +20,10 @@
   when: ansible_os_family|lower == "windows"
 
 - name: Create cluster user for local controller user
-  include_role:
-    name: kubernetes/users
+  delegate_to: "{{ groups.kube_control_plane | random }}"
+  import_role:
+    name: user
+    tasks_from: kube-user.yml
   vars:
     kube_user: "{{ local_user }}"
     username: "{{ local_user }}"
@@ -44,6 +46,7 @@
     - kubectl
     - helm
     - argocd
+    - krew
 
 - name: Prefetch helm repositories
   kubernetes.core.helm_repository:
@@ -54,9 +57,3 @@
 
 - name: Update helm repository cache
   command: "helm repo update"
-
-- name: Decrypt root-ca cert on disk for cacerts param to k8s module
-  copy:
-    dest: "{{ cluster_cacerts }}"
-    content: "{{ lookup('community.sops.sops', (pki_dir, 'root-ca','ca.crt')|path_join) }}"
-    mode: "0644"

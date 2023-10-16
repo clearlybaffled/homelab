@@ -8,8 +8,8 @@
         name: "{{ secret.data['PAPERLESS_DBUSER'] | b64decode  }}"
         password: "{{ secret.data['PAPERLESS_DBPASS'] | b64decode }}"
         state: present
-        login_user: "{{ postgres_admin.username | b64decode }}"
-        login_password: "{{ postgres_admin.password | b64decode }}"
+        login_user: "{{ postgres_secret.data.username | b64decode }}"
+        login_password: "{{ postgres_secret.data.password | b64decode }}"
         host: cnpg-cluster-rw.db
 
     - name: Create database
@@ -17,6 +17,6 @@
         name: paperless
         owner: "{{ secret.data['PAPERLESS_DBUSER'] | b64decode  }}"
         state: present
-        login_user: "{{ postgres_admin.username | b64decode }}"
-        login_password: "{{ postgres_admin.password | b64decode }}"
+        login_user: "{{ postgres_secret.data.username | b64decode }}"
+        login_password: "{{ postgres_secret.data.password | b64decode }}"
         host: cnpg-cluster-rw.db

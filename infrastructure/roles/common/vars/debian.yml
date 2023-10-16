@@ -10,7 +10,7 @@ k8s_required_packages:
   - python3-yaml
   - python3-kubernetes
   - python3-apt
-  - age/bullseye-backports
+  - age
   - apt-transport-https
   - software-properties-common
   - conntrack

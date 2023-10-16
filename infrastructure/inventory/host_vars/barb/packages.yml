@@ -92,3 +92,7 @@ winget_packages:
     Name: "VLC media player"
     Id: "VideoLAN.VLC"
     source: winget
+  powertoys:
+    Name: PowerToys (Preview) x64
+    Id: XP89DCGQ3K6VLD
+    source: winget

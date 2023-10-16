@@ -33,3 +33,21 @@
   systemd:
     name: kubelet
     state: started
+
+- name: git | commit
+  lvrfrc87.git_acp.git_acp:
+    path: "{{ root_dir }}"
+    add: "{{ git_add_file_list | default (['.']) }}"
+    comment: "{{ git_commit_comment | default('Update from ansible role: ' + role_name) }}"
+    url: "{{ git_repo_url }}"
+    push: "{{ git_push | default(true) }}"
+    branch: "{{ git_branch }}"
+  when: lookup('pipe','git status --porcelain -- ' + (git_add_file_list | default(['.'])) | join(' '))
+  delegate_to: localhost
+
+- name: update ca truststore
+  command:
+    cmd: >-
+      {% if ansible_os_family|lower == 'debian' %}
+      update-ca-certificates
+      {% endif %}

@@ -12,7 +12,7 @@
 dns_mode: coredns
 
 # CoreDNS
-coredns_version: 'v1.10.1'
+coredns_version: 'v1.11.1'
 
 # Enable k8s_external plugin for CoreDNS
 enable_coredns_k8s_external: true

@@ -1,80 +1,144 @@
 ---
+- name: Open Crypto Device
+  include_role:
+    name: crypto_device
+  vars:
+    cmd: open
+
 - name: Ensure input vars are set
   assert:
     that:
-      - "ca_name is defined"
-      - "common_name is defined"
+      - (ca_name is defined and orgnizational_unit_name is defined) or csr_text_input is defined
       - signing_ca is defined
 
-- name: Create Intermediate Certificate Authority
-  environment:
-    CA_NAME: "{{ ca_name }}"
-    CN: "{{ common_name }}"
-    CA_HOME: "{{ ca_home }}"
-  vars:
-    csr_path: "{{ ca_home }}/{{ ca_name }}.csr"
-  block:
-    - name: Set up Intermediate CA data directories
-      include_tasks: 'directory.yml'
+- name: Get facts from csr input text if provided
+  set_fact:
+    ca_name: "{{ (csr_text_input | community.crypto.openssl_csr_info).subject['commonName'] }}" # noqa jinja[invalid]
+    orgnizational_unit_name: "{{ (csr_text_input | community.crypto.openssl_csr_info).subject['orgnizationalUnitName'] }}" # noqa jinja[invalid]
+  when: csr_text_input is defined
 
+- name: Set up Intermediate CA data directories
+  include_tasks: 'directory.yml'
+
+- name: Check if private key already exists
+  stat:
+    path: "{{ ca_private_keyfile }}"
+  register: pk_file_stat
+
+- name: Read existing private key of cert is password protected
+  community.crypto.openssl_privatekey_info:
+    path: "{{ ca_private_keyfile }}"
+    passphrase: "{{ pk_passphrase | default(omit) }}"
+  when: pk_file_stat.stat.exists
+  register: privatekey_info
+  failed_when: false
+
+- name: Manage Intermediate Certificate Authority
+  vars:
+    need_private_key: "{{ privatekey_info is not skipped and not (privatekey_info.can_load_key and privatekey_info.can_parse_key) }}"
+  block:
     - name: Ask for passphrase
       pause:
-        prompt: "Would you like to add a passphrase to the private key? ([Enter] to skip): "
+        prompt: "Passphrase for the private key?"
         echo: false
-      register: pk_passphrase
-      when: pk_passphrase not defined
+      register: pk_passphrase_input
+      # no_log: true
+      when: pk_passphrase is not defined
+      failed_when:
+        - need_private_key
+        - not pk_passphrase|default(omit) or pk_passphrase_input is skipped or pk_passphrase_input.user_input == ''
 
     - name: Generate private key and certificate signing request
+      vars:
+        privatekey: >-
+          {% if pk_passphrase is defined and pk_passphrase != '' %}
+          {{ pk_passphrase }}
+          {% elif 'user_input' in pk_passphrase_input and pk_passphrase_input.user_input != '' %}
+          {{ pk_passphrase_input.user_input }}
+          {% endif %}
+      environment:
+        CA_NAME: "{{ ca_name }}"
+        PKI_HOME: "{{ pki_home }}"
       command:
         cmd: >-
           openssl req
           -batch
           -new
-          -config {{ role_path }}/files/ca.conf
-          -out {{ csr_path }}
-          -keyout {{ ca_private_keyfile }}
-          -extensiosn ca_ext
-          -extensions sub_ca_ext
+          -config {{ pki_home }}/ca.conf
+          -config {{ pki_home }}/req.conf
+          -subj '/C=US/O=HERMLEIGH.HOME/OU={{ orgnizational_unit_name }}/CN={{ ca_name }}'
+          -outform PEM
           {% if signing_ca == 'root-ca' %}
           -copy_extensions copy
           {% endif %}
-          {% if pk_passphrase is defined -%}
-            -passin stdin
-          {% else -%}
-            -noenc
+          {% if ca_private_keyfile is exists %}
+            -key {{ ca_private_keyfile }}
+            {{ '-passin stdin' if need_private_key }}
+          {% else %}
+            -keyout {{ ca_private_keyfile }}
+            {{ '-passin stdin' if privatekey else '-noenc' }}
           {% endif %}
-        stdin: "{{ pk_passphrase is string | ternary(pk_passphrase, pk_passphrase.user_input )}}"
+        stdin: "{{ privatekey }}"
         stdin_add_newline: false
+      register: csr
+      when: csr_text_input is not defined
 
   always:
     - name: Undefine passphrase input
       set_fact:
+        pk_passphrase_input:
+    - name: Undefine passphrase input
+      set_fact:
         pk_passphrase:
+      when: pk_passphrase is defined
 
 - name: Issue Certificate
-  include_tasks: main.yml
+  include_tasks: sign.yml
   vars:
     purpose: ca
+    csr_text: "{{ (csr is success) | ternary(csr.stdout, csr_text_input) }}"
 
-- name: Save CA certificate as sops file in repo
+- name: Open crypto device
+  include_role:
+    name: crypto_device
   vars:
-    sops_file: "{{ (pki_home, outfile | basename ) | path_join }}"
-  tags:
-    - sops
+    cmd: open
+
+- name: Save certificate to crypto storage
+  copy:
+    dest: "{{ ca_home }}/ca.crt"
+    content: "{{ certificate_text }}"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Save and commit cert
+  when: commit_ca | default(false)
   block:
-    - name: Make SOPS file
+    - name: Pull cert and key files
+      slurp:
+        src: "{{ item }}"
+      loop:
+        - "{{ (ca_home, 'ca.crt') | path_join }}"
+        - "{{ ca_private_keyfile }}"
+      register: slurps
+      no_log: true
+
+    - name: Write and commit SOPS file
+      delegate_to: localhost
+      become: false
+      vars:
+        sops_file: "{{ pki_dir }}/{{ ca_name }}.sops.yml"
+        git_commit_comment: "Adding {{ ca_name }} CA Certificate files"
+        git_add_file_list:
+          - "{{ sops_file }}"
+        git_push: false
       community.sops.sops_encrypt:
         path: "{{ sops_file }}"
-        content_text: "{{ item }}"
-      with_file:
-        - "{{ outfile }}"
-
-    - name: Commit and push sops file
-      lvrfrc87.git_acp.git_acp:
-        path: "{{ root_dir }}"
-        add:
-          - "{{ sops_file }}"
-        comment: "Adding {{ ca_name }} Intermediate CA Certificate"
-        url: "{{ git_repo_url }}"
-        push: true
-        branch: "{{ git_branch }}"
+        content_yaml: >-
+          {
+            "{{ ca_name | regex_replace('-','_') }}": {
+              "crt": "{{ slurps.results[0].content }}",
+              "key": "{{ slurps.results[1].content }}"
+            }
+          }

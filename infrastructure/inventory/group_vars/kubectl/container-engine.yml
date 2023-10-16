@@ -13,10 +13,10 @@ crun_enabled: false
 runc_enabled: true
 
 # Project versions
-crio_version: v1.27.0
-crictl_version: v1.27.0
-crun_version: 1.8.5
-skopeo_version: v1.12.0
+crio_version: v1.28.1
+crictl_version: v1.28.0
+runc_version: v1.1.9
+skopeo_version: v1.13.3
 
 # CRI socket path
 cri_socket_path: /var/run/crio/crio.sock
@@ -58,8 +58,8 @@ crio_registries:
     location: registry-1.docker.io ## REQUIRED
     unqualified: true
     mirrors:
-      - location: 172.20.100.52:5000
-        insecure: true
+      # - location: 172.20.100.52:5000
+      #   insecure: true
       - location: mirror.gcr.io
         insecure: false
   # - prefix: quay.io

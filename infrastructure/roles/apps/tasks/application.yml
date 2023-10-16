@@ -1,4 +1,10 @@
 ---
+- name: Ensure namespace exists | {{ app.namespace }}
+  kubernetes.core.k8s:
+    api_version: v1
+    kind: Namespace
+    name: "{{ app.namespace }}"
+
 - name: Manage app secrets | {{ app.name }}
   when: app.secrets is defined
   block:
@@ -49,9 +55,8 @@
   include_tasks: "{{ taskfile }}"
   with_first_found:
     - files:
-        - "{{ app.name }}.yml"
+        - "startup/{{ app.name }}.yml"
       skip: true
-      path: startup
   loop_control:
     loop_var: taskfile
   register: app_tasks

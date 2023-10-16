@@ -1,0 +1,4 @@
+---
+crypt_name: pki
+crypt_mount_path: "{{ ('/srv', crypt_name)| path_join }}"
+crypt_mapping_file: "{{ ('/dev','mapper', crypt_name) | path_join }}"

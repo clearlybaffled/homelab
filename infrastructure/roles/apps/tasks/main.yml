@@ -1,36 +1,11 @@
 ---
-- name: Set facts
-  set_fact:
-    mysql_root: >-
-      {{
-        lookup('community.sops.sops', (cluster_dir, 'apps','db','mysql','secret.sops.yaml')|path_join)
-        | from_yaml['data']['mysql-root-password']
-        | b64decode
-        | default(omit)
-      }}
-    postgres_admin: >-
-      {{
-        lookup('community.sops.sops', (cluster_dir, 'apps','db','cloudnative-pg','superuser.sops.yaml')|path_join)
-        | from_yaml['data']
-        |default(omit)
-      }}
-
-- name: Install sops-age-key secret to ArgoCD Namespace for KSOPS
-  kubernetes.core.k8s:
-    api_version: v1
-    kind: Secret
-    namespace: argocd
-    name: sops-age-key
-    definition:
-      data:
-        keys.txt: "{{ lookup('file', lookup('env','SOPS_AGE_KEY_FILE')) | b64encode }}"
-
 - name: Install Application specific configurations and files
   include_tasks: application.yml
   when: item.value.createApp is not defined or item.value.createApp
   loop: "{{ (apps | items | selectattr('1.wave','defined') | sort(attribute='1.wave')) + (apps|items|rejectattr('1.wave','defined'))}}"
   loop_control:
     label: "{{ item.0 }}"
+    extended: true
   vars:
     app: >-
       {{ item.1 | combine({
@@ -50,3 +25,7 @@
           ) | path_join
         })
       }}
+    mysql_app: "{{ ansible_loop.allitems | selectattr('name','eq','mysql')|first }}"
+    mysql_secret: "{{ lookup('community.sops.sops', mysql_app.app_dir, mysql_app.secrets.keys[0] ~ '.sops.yaml') }}"
+    postgres_app: "{{ ansible_loop.allitems | selectattr('name','eq','cloudnative-pg')|first }}"
+    postgres_secret: "{{ lookup('community.sops.sops', postgres_app.app_dir, postgres_app.secrets.keys[0] ~ '.sops.yaml') }}"

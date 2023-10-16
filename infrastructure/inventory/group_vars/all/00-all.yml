@@ -6,13 +6,14 @@ bin_dir: /usr/local/bin
 root_dir: "{{ ansible_config_file | dirname }}"
 cluster_dir: "{{ root_dir }}/cluster"
 infra_dir: "{{ root_dir }}/infrastructure"
-pki_dir: "{{ infra_dir }}/pki"
-
 
 ## Ansible User setup
-local_ansible_user: ansible
-local_ansible_group: sys
-local_ansible_homedir: /var/local/ansible
+ansible_user: ansible
+ansible_group: ansible
+ansible_groups:
+  - sys
+  - adm
+ansible_homedir: /var/local/ansible
 
 # (string) Timezone for the servers
 timezone: "America/New_York"
@@ -36,5 +37,5 @@ host_os: >-
   {%- if ansible_system in _host_os_groups -%}
   {{ _host_os_groups[ansible_system] }}
   {%- else -%}
-  {{ ansible_system }}
+  {{ ansible_system|lower }}
   {%- endif -%}
