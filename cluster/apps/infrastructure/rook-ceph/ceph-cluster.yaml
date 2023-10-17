@@ -99,7 +99,6 @@ cephClusterSpec:
     nodes:
       - name: "parche"
         devices:
-          - name: "/dev/disk/by-id/ata-WDC_WD40EFRX-68WT0N0_WD-WCC4E7LC3T9S"
           - name: "/dev/disk/by-id/ata-WDC_WD40EFRX-68WT0N0_WD-WCC4E6ZHVFSP"
 
   disruptionManagement:
