@@ -20,13 +20,13 @@ spec:
   sources:
   - chart: rook-ceph
     repoURL: https://charts.rook.io/release
-    targetRevision: v1.12.4
+    targetRevision: v1.12.5
     helm:
       valueFiles:
       - $repo/cluster/apps/infrastructure/rook-ceph/operator.yaml
   - chart: rook-ceph-cluster
     repoURL: https://charts.rook.io/release
-    targetRevision: v1.12.4
+    targetRevision: v1.12.5
     helm:
       valueFiles:
       - $repo/cluster/apps/infrastructure/rook-ceph/ceph-cluster.yaml
