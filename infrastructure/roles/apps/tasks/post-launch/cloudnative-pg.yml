@@ -1,0 +1,14 @@
+---
+- name: Wait for PostgreSQL cluster to be healthy
+  kubernetes.core.k8s_info:
+    kind: Cluster
+    api_version: postgresql.cnpg.io/v1
+    namespace: db
+    name: cnpg-cluster
+    wait: true
+    wait_sleep: 60
+    wait_timeout: 360
+    wait_condition:
+      type: Ready
+      reason: ClusterIsReady
+      status: 'True'

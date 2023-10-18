@@ -66,15 +66,25 @@
 - name: Commit changes to app files | {{ app.name }}
   lvrfrc87.git_acp.git_acp:
     path: "{{ root_dir }}"
-    comment: "[{{ app.name }}] Updated application config files"
-    add:
-      - "{{ app.app_dir }}"
-      - "{{ app.manifest_file }}"
+    comment: "[{{ app.name }}] Updated application config files\n\n{{ files | to_nice_yaml }}"
+    add: "{{  files  }}"
     url: "{{ git_repo_ssh_url }}"
-    push: true
+    push: false
     branch: "{{ git_branch }}"
-  when: lookup('pipe','git status --porcelain -- ' + (app.app_dir, app.manifest_file) | join(' '))
+  when: files | length > 0
+  register: git_commit
   tags: commit
+  vars:
+    files: |-
+      {{ [ 
+          lookup('pipe','git status --porcelain -- ' ~ app.app_dir).split(' ') | last,
+          lookup('pipe','git status --porcelain -- ' ~ app.manifest_file).split(' ') | last
+      ] |flatten }}
+
+- name: Wait a minute for the commit to land in Github
+  pause:
+    minutes: 1
+  when: git_commit is success
 
 - name: Launch application when wave <= 3
   when:
@@ -103,4 +113,6 @@
 - name: Check before continuing to next app | {{ app.name }}
   pause:
     prompt: "Continue to {{ ansible_loop.nextitem.name }}"
-  when: not ansible_loop.last
+  when: 
+    - not ansible_loop.last
+    - not app_no_loop_pause|default(false)

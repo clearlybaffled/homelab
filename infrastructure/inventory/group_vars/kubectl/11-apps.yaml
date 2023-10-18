@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=../files/apps.schema.json
+# yaml-language-server: $schema=../../../../schemas/apps.schema.json
 ---
 app_template: &app_template
   chart: bjw-s/app-template

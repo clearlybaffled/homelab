@@ -11,7 +11,7 @@
                   cluster_dir,
                   ('path' in item.1) |
                     ternary(
-                      ('apps', item.1.path|default(omit)) if (item.1.path|default(omit)) != '' else '',
+                      item.1.path|default(omit) if (item.1.path|default(omit) == '') else ('apps', item.1.path|default(omit)),
                       ('apps', item.1.namespace)
                     ),
                   item.0
@@ -35,26 +35,24 @@
       }}
   loop_control:
     label: "{{ item.0 }}"
+  when:
+    # Don't include if app.createApp is false
+    - item.1.createApp | default(true)
+    # Start deploying when argument app_start_wave is app.wave 
+    - item.1.wave|default(10)|int >= app_start_wave|default(omit)|int
+    # If there's an argument called app_deploy_list, only include the app if its present
+    - item.0 in app_deploy_list|default(apps.keys())
+    # If there's an argument called app_reject_list, don't include this app if its present
+    - item.0 not in app_reject_list|default(omit)
 
 - name: Install Application specific configurations and files
   include_tasks: application.yml
-  when:
-    - app.createApp | default(true)
-  loop: >-
-    {{
-      (app_deploy_list is defined or app_reject_list is defined)
-        | ternary(
-          app_list
-            | selectattr('name', 'in', app_deploy_list|default(omit))
-            | rejectattr('name', 'in', app_skip_list|default(omit)),
-          app_list
-        )
-    }}
+  loop: "{{ app_list }}"
   loop_control:
     loop_var: app
     label: "{{ app.name }}"
     extended: true
-    extended_allitems: false
+    # extended_allitems: false
   vars:
     mysql_app: "{{ app_list | selectattr('name','eq','mysql') | first }}"
     postgres_app: "{{ app_list | selectattr('name','eq','cloudnative-pg') | first }}"
@@ -63,8 +61,8 @@
         lookup(
           'community.sops.sops',
           (
-            mysql_app.app_dir,
-            mysql_app.secrets.keys() | first ~ '.sops.yaml'
+            mysql_item.1.app_dir,
+            mysql_item.1.secrets.keys() | first ~ '.sops.yaml'
           ) | path_join
         )
       }}
@@ -73,8 +71,8 @@
         lookup(
           'community.sops.sops',
           (
-            postgres_app.app_dir,
-            (postgres_app.secrets | items | selectattr('1.data.username','eq', 'postgres') | first ).0 ~ '.sops.yaml'
+            postgres_item.1.app_dir,
+            (postgres_item.1.secrets | items | selectattr('1.data.username','eq', 'postgres') | first ).0 ~ '.sops.yaml'
           ) | path_join
         )
       }}
