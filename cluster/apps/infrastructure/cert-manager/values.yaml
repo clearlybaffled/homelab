@@ -1,9 +1,12 @@
 installCRDs: true
 
+extraArgs:
+  - --default-issuer-name string kube-ca-issuer
+
 prometheus:
+  enabled: true
+  servicemonitor:
     enabled: true
-    servicemonitor:
-        enabled: true
-        prometheusInstance: kube-prometheus-stack
-        labels:
-            release: kube-prometheus-stack
+    prometheusInstance: kube-prometheus-stack
+    labels:
+      release: kube-prometheus-stack

@@ -49,7 +49,6 @@ grafana:
     ingressClassName: nginx
     annotations:
       hajimari.io/icon: "logos:grafana"
-      cert-manager.io/cluster-issuer: ca-issuer
     hosts:
       - grafana.seawolf.hermleigh.home
       - grafana.seawolf
@@ -88,7 +87,7 @@ prometheusOperator:
     certManager:
       enabled: true
       issuerRef:
-        name: "ca-issuer"
+        name: "kube-ca-issuer"
         kind: "ClusterIssuer"
 
   service:

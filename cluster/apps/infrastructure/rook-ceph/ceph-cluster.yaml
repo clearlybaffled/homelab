@@ -115,7 +115,6 @@ ingress:
   dashboard:
     annotations:
       hajimari.io/icon: simple-icons:ceph
-      cert-manager.io/cluster-issuer: 'ca-issuer'
     host:
       name: ceph-dashboard.seawolf.hermleigh.home
       path: /
@@ -218,7 +217,6 @@ cephObjectStores:
       # Enable an ingress for the ceph-objectstore
       enabled: true
       annotations:
-        cert-manager.io/cluster-issuer: 'ca-issuer'
       host:
         name: s3.seawolf.hermleigh.home
         path: /

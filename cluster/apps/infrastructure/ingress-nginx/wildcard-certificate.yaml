@@ -7,7 +7,7 @@ spec:
   secretName: wildcard-certificate
   issuerRef:
     kind: ClusterIssuer
-    name: ca-issuer
+    name: kube-ca-issuer
   commonName: "seawolf.hermleigh.home"
   subject:
     organizations:

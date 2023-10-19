@@ -41,11 +41,11 @@ controller:
     certManager:
       enabled: true
       issuerRef:
-        name: "ca-issuer"
+        name: "kube-ca-issuer"
         kind: "ClusterIssuer"
       admissionCert:
         issuerRef:
-          name: "ca-issuer"
+          name: "kube-ca-issuer"
           kind: "ClusterIssuer"
   metrics:
     port: 10254

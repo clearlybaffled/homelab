@@ -6,7 +6,6 @@ metadata:
   annotations:
     hajimari.io/icon: "cart-variant"
     hajimari.io/appName: "Grocy"
-    cert-manager.io/cluster-issuer: ca-issuer
 spec:
   ingressClassName: nginx
   rules:
@@ -32,7 +31,6 @@ metadata:
   namespace: services
   annotations:
     hajimari.io/icon: ph:barcode
-    cert-manager.io/cluster-issuer: ca-issuer
 spec:
   ingressClassName: nginx
   rules:

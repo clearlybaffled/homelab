@@ -22,7 +22,6 @@ ingress:
   main:
     enabled: true
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
       hajimari.io/icon: link
     hosts:
       - host: &host "linkding.seawolf.hermleigh.home"

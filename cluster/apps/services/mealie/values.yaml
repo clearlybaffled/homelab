@@ -25,7 +25,6 @@ ingress:
     ingressClassName: nginx
     annotations:
       hajimari.io/icon: chef-hat
-      cert-manager.io/cluster-issuer: ca-issuer
     hosts:
       - host: &host mealie.seawolf.hermleigh.home
         paths:
