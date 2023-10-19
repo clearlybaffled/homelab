@@ -65,8 +65,8 @@
             ca_name: kubernetes-ca
             commit_ca: true
             purpose: ca
-            ca_num: "{{ cert_info.organizationalUnitName | default('CA-01') | regex_search('CA-([0-9]{2})$','\\1') | first }}"
-            orgnizational_unit_name: "{{ kubernetes_ca_ou }}-{{ ca_num }}"
+            ca_num: "{{ cert_info.subject.commonName | default('CA-01') | regex_search('CA-([0-9]{2})$','\\1') | first }}"
+            common_name: "{{ kubernetes_ca_cn }}-CA{{ '{:02d}'.format(ca_num|int + 1) }}"
   
         - name: kubeadm | Reload kubernetes-ca var file
           community.sops.load_vars:

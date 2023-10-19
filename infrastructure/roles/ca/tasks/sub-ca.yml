@@ -8,13 +8,13 @@
 - name: Ensure input vars are set
   assert:
     that:
-      - (ca_name is defined and orgnizational_unit_name is defined) or csr_text_input is defined
+      - ca_name is defined 
+      - common_name is defined or csr_text_input is defined
       - signing_ca is defined
 
 - name: Get facts from csr input text if provided
   set_fact:
-    ca_name: "{{ (csr_text_input | community.crypto.openssl_csr_info).subject['commonName'] }}" # noqa jinja[invalid]
-    orgnizational_unit_name: "{{ (csr_text_input | community.crypto.openssl_csr_info).subject['orgnizationalUnitName'] }}" # noqa jinja[invalid]
+    common_name: "{{ (csr_text_input | community.crypto.openssl_csr_info).subject['commonName'] }}" # noqa jinja[invalid]
   when: csr_text_input is defined
 
 - name: Set up Intermediate CA data directories
@@ -66,7 +66,7 @@
           -new
           -config {{ pki_home }}/ca.conf
           -config {{ pki_home }}/req.conf
-          -subj '/C=US/O=HERMLEIGH.HOME/OU={{ orgnizational_unit_name }}/CN={{ ca_name }}'
+          -subj '/C={{ dn.country }}/O={{ dn.organization }}/OU={{ dn.organizational_unit }}/CN={{ common_name }}'
           -outform PEM
           {% if signing_ca == 'root-ca' %}
           -copy_extensions copy

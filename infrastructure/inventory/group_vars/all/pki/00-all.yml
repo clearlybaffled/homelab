@@ -4,4 +4,4 @@ pki_dir: "{{ (infra_dir, 'inventory','group_vars','all','pki') | path_join }}"
 dn:
   country: US
   organization: HERMLEIGH.HOME
-  organization_unit: Hermleigh House Network
+  organizational_unit: Hermleigh House Network

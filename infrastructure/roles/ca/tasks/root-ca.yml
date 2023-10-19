@@ -57,7 +57,7 @@
           -config {{ pki_home }}/req.conf
           -addext basicConstraints=critical,CA:true
           -out {{ ca_home }}/root-ca.csr
-          -subj '/C=US/O=HERMLEIGH.HOME/OU={{ root_ca_ou }}/CN={{ root_ca_cn }}'
+          -subj '/C={{ dn.country }}/O={{ dn.organization }}/OU={{ dn.organizational_unit }}/CN={{ root_ca_cn }}'
           -passout stdin
           {% if ca_private_keyfile is exists %}
             -key {{ ca_private_keyfile }}
