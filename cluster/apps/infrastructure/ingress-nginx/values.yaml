@@ -24,7 +24,7 @@ controller:
   # -- Additional command line arguments to pass to Ingress-Nginx Controller
   # E.g. to specify the default SSL certificate you can use
   extraArgs:
-    default-ssl-certificate: "infrastructure/wildcard-certificate"
+    default-ssl-certificate: "${POD_NAMESPACE}/wildcard-certificate"
 
 
   # -- The update strategy to apply to the Deployment or DaemonSet
@@ -40,6 +40,9 @@ controller:
     # Use certmanager to generate webhook certs
     certManager:
       enabled: true
+      issuerRef:
+        name: "ca-issuer"
+        kind: "ClusterIssuer"
       admissionCert:
         issuerRef:
           name: "ca-issuer"
