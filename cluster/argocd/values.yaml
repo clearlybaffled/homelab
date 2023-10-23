@@ -78,9 +78,6 @@ server:
         hosts:
           - argocd.seawolf.hermleigh.home
           - argocd.seawolf
-          - argocd.argocd.svc
-          - argocd.argocd
-          - argocd
 
 repoServer:
   metrics:

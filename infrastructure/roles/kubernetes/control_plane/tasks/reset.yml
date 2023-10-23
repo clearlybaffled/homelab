@@ -1,6 +1,7 @@
 ---
 - name: Check if cluster is still up
   kubernetes.core.k8s_cluster_info:
+    ssl_ca_cert: "{{ kube_cluster_cacerts }}" 
   register: cluster_status
   ignore_errors: true
 

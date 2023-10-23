@@ -10,10 +10,17 @@
         state: latest
         update_cache: true
     ## TODO: VERiFY
-    - name: packages | Add bullseye backports source
-      lineinfile:
+    - name: packages | Add bullseye backports source and non-free-firmware
+      blockinfile:
         path: /etc/apt/sources.list
-        line: "deb http://deb.debian.org/debian bullseye-backports main"
+        block: |-
+          deb http://deb.debian.org/debian bookworm-backports main
+          deb http://deb.debian.org/debian bullseye-backports main
+
+          # Non free firmware for realtek nic
+          deb http://ftp.de.debian.org/debian bookworm main non-free non-free-firmware
+          deb-src  http://ftp.de.debian.org/debian bookworm main non-free non-free-firmware
+          
     - name: packages | Update apt repo and cache on all Debian/Ubuntu machines
       package:
         update_cache: true

@@ -94,9 +94,13 @@
             gateway 172.16.1.1
             dns-domain hermleigh.home
             dns-nameservers 172.16.1.1
-          iface enp0s31f6 inet static
+          
+          # Kubernetes control plane interface
+          auto enp9s0
+          iface enp9s0 inet static
             address 172.16.1.11
             netmask 255.255.255.0
+            gateway 172.16.1.1
       register: iface_cfg
 
     - name: restart services # noqa no-handler

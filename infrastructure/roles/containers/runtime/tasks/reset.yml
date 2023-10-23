@@ -1,13 +1,14 @@
 ---
-- name: CRI-O | Remove crictl
-  file:
-    name: "{{ item }}"
-    state: absent
-  loop:
-    - /etc/crictl.yaml
-    - "{{ bin_dir }}/crictl"
-  tags:
-    - reset_crio
+#  WHY??
+# - name: CRI-O | Remove crictl
+#   file:
+#     name: "{{ item }}"
+#     state: absent
+#   loop:
+#     - /etc/crictl.yaml
+#     - "{{ bin_dir }}/crictl"
+#   tags:
+#     - reset_crio
 
 - name: CRI-O | Stop crio service
   service:
@@ -19,13 +20,14 @@
   tags:
     - reset_crio
 
-- name: CRI-O | Remove CRI-O configuration files
-  file:
-    name: "{{ item }}"
-    state: absent
-  loop:
-    - /etc/crio
-    - /etc/containers
-    - /etc/systemd/system/crio.service.d
-  tags:
-    - reset_crio
+#   Also, why??
+# - name: CRI-O | Remove CRI-O configuration files
+#   file:
+#     name: "{{ item }}"
+#     state: absent
+#   loop:
+#     - /etc/crio
+#     - /etc/containers
+#     - /etc/systemd/system/crio.service.d
+#   tags:
+#     - reset_crio

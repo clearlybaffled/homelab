@@ -2,7 +2,7 @@
 
 - name: kubeadm | Check if kubeadm has already run
   stat:
-    path: "/var/lib/kubelet/config.yaml"
+    path: "/etc/kubernetes/admin.config"
     get_attributes: false
     get_checksum: false
     get_mime: false

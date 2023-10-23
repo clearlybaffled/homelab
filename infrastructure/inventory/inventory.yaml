@@ -12,6 +12,7 @@ all:
     seawolf:
       ip: 172.16.1.11
       ansible_host: parche
+      ansible_fqdn: seawolf.hermleigh.home
     localhost:
       ansible_connection: local
   vars:

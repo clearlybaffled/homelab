@@ -151,7 +151,7 @@ cephBlockPools:
         csi.storage.k8s.io/fstype: ext4
 
 cephFileSystems:
-  - name: kubernetes-fs
+  - name: k8s-hdd-fs
     spec:
       metadataPool:
         replicated:
@@ -190,6 +190,7 @@ cephFileSystems:
 
 cephBlockPoolsVolumeSnapshotClass:
   enabled: false
+
 cephObjectStores:
   - name: s3
     spec:

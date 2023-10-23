@@ -10,3 +10,4 @@ host_packages:
   - nfs-common
   - nvme-cli
   - zerotier-one
+  - firmware-realtek
