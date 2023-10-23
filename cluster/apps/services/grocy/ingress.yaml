@@ -6,11 +6,13 @@ metadata:
   annotations:
     hajimari.io/icon: "cart-variant"
     hajimari.io/appName: "Grocy"
+  labels:
+    app.kubernetes.io/name: grocy
 spec:
   ingressClassName: nginx
   rules:
   - host: grocy.seawolf.hermleigh.home
-    http:
+    http: &rule
       paths:
       - path: /
         pathType: Prefix
@@ -18,33 +20,18 @@ spec:
           service:
             name: grocy
             port:
-              number: 80
-  tls:
-    - hosts:
-      - grocy.seawolf.hermleigh.home
-      secretName: grocy-ingress-cert
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: barcode-buddy
-  namespace: services
-  annotations:
-    hajimari.io/icon: ph:barcode
-spec:
-  ingressClassName: nginx
-  rules:
-  - host: barcode-buddy.seawolf.hermleigh.home
-    http:
-      paths:
-      - path: /
+              number: 8080
+      - path: /barcode-buddy
         pathType: Prefix
         backend:
           service:
-            name: barcode-buddy
+            name: grocy
             port:
-              number: 80
+              number: 443
+  - host: grocy.seawolf
+    http: *rule
   tls:
     - hosts:
-      - barcode-buddy.seawolf.hermleigh.home
-      secretName: barcode-buddy-ingress-cert
+      - grocy.seawolf.hermleigh.home
+      - grocy.seawolf
+      secretName: grocy-ingress-cert

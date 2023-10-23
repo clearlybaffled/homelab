@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -8,20 +9,18 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
-  # volumeMode: Filesystem
+      storage: 100Mi
   volumeName: grocy
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: bbuddy
+  name: barcode-buddy
   namespace: services
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 10Mi
-  # volumeMode: Filesystem
+      storage: 100Mi
   volumeName: barcode-buddy
