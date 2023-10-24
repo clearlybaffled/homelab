@@ -10,7 +10,6 @@ spec:
   resources:
     requests:
       storage: 100Mi
-  volumeName: grocy
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -23,4 +22,3 @@ spec:
   resources:
     requests:
       storage: 100Mi
-  volumeName: barcode-buddy
