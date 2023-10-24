@@ -97,7 +97,7 @@ cephClusterSpec:
     config:
       osdsPerDevice: "1"
     nodes:
-      - name: "parche"
+      - name: "seawolf"
         devices:
           - name: "/dev/disk/by-id/ata-WDC_WD40EFRX-68WT0N0_WD-WCC4E6ZHVFSP"
 
@@ -174,7 +174,7 @@ cephFileSystems:
     storageClass:
       enabled: true
       isDefault: true
-      name: ceph-filesystem
+      name: ceph-fs-hdd
       pool: data0
       reclaimPolicy: Retain
       allowVolumeExpansion: true
