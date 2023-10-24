@@ -1,7 +1,7 @@
 installCRDs: true
 
 extraArgs:
-  - --default-issuer-name string kube-ca-issuer
+  - '--default-issuer-name=kube-ca-issuer'
 
 prometheus:
   enabled: true
