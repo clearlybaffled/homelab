@@ -49,31 +49,30 @@ grafana:
     ingressClassName: nginx
     annotations:
       hajimari.io/icon: "logos:grafana"
-    hosts:
+    hosts: &grafana-hosts
       - grafana.seawolf.hermleigh.home
       - grafana.seawolf
     tls:
-      - hosts:
-        - grafana.seawolf.hermleigh.home
-        - grafana.seawolf
+      - hosts: *grafana-hosts
         secretName: grafana-ingress-cert
   dashboardProviders:
     dashboardproviders.yaml:
       apiVersion: 1
       providers:
-      - name: 'default'
-        orgId: 1
-        folder: ''
-        type: file
-        disableDeletion: false
-        editable: true
-        options:
-          path: /var/lib/grafana/dashboards/default
+        - name: default
+          orgId: 1
+          folder: ''
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/default
+
   dashboards:
     default:
       ceph-cluster:
-        gnetId: 2842
-        revision: 17
+        gnetId: '2842'
+        revision: '17'
         datasource: Prometheus
 
 ## Manages Prometheus and Alertmanager components
