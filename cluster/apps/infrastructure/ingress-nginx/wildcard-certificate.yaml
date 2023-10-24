@@ -8,12 +8,12 @@ spec:
   issuerRef:
     kind: ClusterIssuer
     name: kube-ca-issuer
-  commonName: "seawolf.hermleigh.home"
+  commonName: "Cluster Seawolf Wildcard"
   subject:
     organizations:
       - "HERMLEIGH.HOME"
     organizationalUnits:
-      - "Kubernetes Cluster - Gato"
+      - "Hermleigh House Network"
     countries:
       - "US"
   dnsNames:

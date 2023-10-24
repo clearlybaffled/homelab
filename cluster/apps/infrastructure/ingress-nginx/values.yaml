@@ -16,6 +16,7 @@ controller:
     proxy-body-size: 0
     proxy-buffer-size: 16k
     ssl-protocols: "TLSv1.3 TLSv1.2"
+
   ingressClassResource:
     name: nginx
     enabled: true
@@ -24,13 +25,14 @@ controller:
   # -- Additional command line arguments to pass to Ingress-Nginx Controller
   # E.g. to specify the default SSL certificate you can use
   extraArgs:
-    default-ssl-certificate: "${POD_NAMESPACE}/wildcard-certificate"
+    default-ssl-certificate: "infrastructure/wildcard-certificate"
 
 
   # -- The update strategy to apply to the Deployment or DaemonSet
   ##
   updateStrategy:
     type: RollingUpdate
+
   service:
     annotations:
       metallb.universe.tf/address-pool: ingress-pool
