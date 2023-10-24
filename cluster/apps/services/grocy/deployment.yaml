@@ -94,7 +94,7 @@ spec:
               cpu: 220m
               memory: 512Mi
           volumeMounts:
-            - name: bbuddy
+            - name: barcode-buddy
               mountPath: /config/barcodebuddy
       volumes:
         - name: grocy
@@ -103,3 +103,9 @@ spec:
         - name: barcode-buddy
           persistentVolumeClaim:
             claimName: barcode-buddy
+        - name: grocy-tmpfs0
+          emptyDir: &tempfs
+            medium: Memory
+            sizeLimit: 128Mi
+        - name: grocy-tmpfs1
+          emptyDir: *tempfs
