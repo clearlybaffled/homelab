@@ -68,13 +68,6 @@ grafana:
           options:
             path: /var/lib/grafana/dashboards/default
 
-  dashboards:
-    default:
-      ceph-cluster:
-        gnetId: '2842'
-        revision: '17'
-        datasource: Prometheus
-
 ## Manages Prometheus and Alertmanager components
 ##
 prometheusOperator:
