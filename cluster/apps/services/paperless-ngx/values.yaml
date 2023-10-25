@@ -6,7 +6,7 @@ controller:
 
 image:
   repository: ghcr.io/paperless-ngx/paperless-ngx
-  tag: 1.15.1
+  tag: 1.17.4
 env:
   PAPERLESS_CONSUMER_POLLING: 60
   PAPERLESS_CONSUMER_RECURSIVE: "true"
@@ -64,9 +64,7 @@ persistence:
   library:
     enabled: true
     type: persistentVolumeClaim
-    retain: true
     mountPath: /library
-    storageClass: ceph-filesystem
     accessMode: ReadWriteMany
     size: 30Gi
 
