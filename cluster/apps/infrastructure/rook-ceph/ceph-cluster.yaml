@@ -168,9 +168,9 @@ cephFileSystems:
         resources:
           requests:
             cpu: "35m"
-            memory: "64M"
+            memory: "128M"
           limits:
-            memory: "144M"
+            memory: "512M"
     storageClass:
       enabled: true
       isDefault: true
