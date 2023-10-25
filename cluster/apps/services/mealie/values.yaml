@@ -45,7 +45,7 @@ persistence:
     mountPath: /app/data/
     accessMode: ReadWriteOnce
     size: 10Gi
-    storageClass: ceph-filesystem
+    storageClass: ceph-fs-hdd
     retain: true
 
 api:
