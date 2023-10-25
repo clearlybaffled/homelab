@@ -41,3 +41,25 @@
                     values:
                       - parche
   loop: "{{ storage.namespaces | product(storage.volumes) }}"
+
+- name: Define local-storage PersistentVolumeClaims for cross-namespace access
+  kubernetes.core.k8s:
+    server_side_apply:
+      field_manager: ansible
+    definition:
+      kind: PersistentVolumeClaim
+      api_version: v1
+      metadata:
+        name: "{{ item[1].name }}"
+        namespace: "{{ item[0] }}"
+        finalizers:
+          - kubernetes.io/pvc-protection
+      spec:
+        volumeMode: Filesystem
+        accessModes:
+          - ReadWriteMany
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: "{{ item[1].size }}"
+  loop: "{{ storage.namespaces | product(storage.volumes) }}"

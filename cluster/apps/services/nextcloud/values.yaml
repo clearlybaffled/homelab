@@ -115,10 +115,10 @@ nextcloud:
   extraVolumes:
   - name: shared
     persistentVolumeClaim:
-      claimName: shared-files-services
+      claimName: shared-files
   - name: videos
     persistentVolumeClaim:
-      claimName: videos-services
+      claimName: videos
   extraVolumeMounts:
   - name: shared
     mountPath: "/shared"

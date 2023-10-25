@@ -1,9 +1,9 @@
 ---
 storage:
   namespaces:
-    - home
+    - services
     - media
-    - downloads
+    # - downloads
   volumes:
     - name: shared-files
       path: /shared
