@@ -2,7 +2,8 @@ installCRDs: true
 
 extraArgs:
   - '--default-issuer-name=kube-ca-issuer'
-
+  - "--default-issuer-group=cert-manager.io"                    Group of the Issuer to use when the tls is requested but issuer group is not specified on the ingress resource. (default "cert-manager.io")
+  - "--default-issuer-kind=ClusterIssuer"
 prometheus:
   enabled: true
   servicemonitor:
