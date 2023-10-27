@@ -111,4 +111,5 @@ spec:
           emptyDir: *tempfs
       hostAliases:
         - ip: 127.0.0.1
-          hostname: backend
+          hostnames:
+            - backend
