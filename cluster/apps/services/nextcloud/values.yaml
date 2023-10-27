@@ -11,6 +11,7 @@ ingress:
   enabled: true
   className: nginx
   annotations:
+    cert-manager.io/cluster-issuer: ca-issuer
     hajimari.io/icon: simple-icons:nextcloud
     nginx.ingress.kubernetes.io/proxy-body-size: "10G"
     nginx.ingress.kubernetes.io/proxy-buffering: "off"

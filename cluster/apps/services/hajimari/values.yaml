@@ -72,6 +72,7 @@ ingress:
     enabled: true
     annotations:
       hajimari.io/enabled: "false"
+      cert-manager.io/cluster-issuer: ca-issuer
       hajimari.io/enable: "false"
     hosts:
       - host: hajimari.seawolf.hermleigh.home

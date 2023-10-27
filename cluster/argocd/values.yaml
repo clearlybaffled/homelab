@@ -29,6 +29,11 @@ configs:
   params:
     server.insecure: "true"
     server.disable.auth: "true"
+  ssh:
+    extraHosts: |
+      parche ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCS+wNspim6FJ0/IUbOKqXhiFBQjHcAnVHGGgk9dCepnvQ2EcqJoyRTs8doVVqttM+vEGziTis3e9pEg8N9ij4o=
+      parche ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDRuyv4HK9ZjnXo4RxZcnV/a4tySL7XfxzxlGuC7aVWqtDGFYkbagndzvl/oz8m3I/87Hd2qwQVlAonjrgRSkpKEI+OZ6tZML6cPCb4eKCIwpJXgxMpGrlgXV1I572UY/WxibL3amlYLxv0e54QMxFs7cKN44+T/B93Pdu2PXgTZ6BIDGp8tnW2nBM4DsH0Fuxmw9U8TR8fjNhsbDafzT6NrUTjqYTnBlY2MtNp2r/D63e17D5fp9++OeJ9zo8B7imLZIIVrZsPl5T8mEefDlG4jblUYkRrwwyASipZGMIoCGfhPaIYKez7jfxrK9F9AhEeMDN+StNNZq3rMM/cFceN8h4jgD3Nrdtb7vPwJnr7cyW0XuLVwkbrhosXKZ+9gmJHy1AsQGGxcOT95fD3YGfxtidW4pLqwDYn1Uj4YmQwk0QXFZl9RxcUZo/B+6sUqB1GxRL6qhMcm5V0+a4y/ZMtMOqWzQcP6NNfg5TLeimAF0N+JtayLB8WuEFeUSaiAqU=
+      parche ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMcNbj3FqmFJ6B4gSmjO0OKuwr9JW6E4rqhChxFf1owu
 
 controller:
   ## Application controller metrics configuration
@@ -65,6 +70,7 @@ server:
     annotations:
       hajimari.io/icon: devicon:argocd
       hajimari.io/appName: ArgoCD
+      cert-manager.io/cluster-issuer: ca-issuer
     ingressClassName: nginx
     hosts:
       - argocd.seawolf.hermleigh.home

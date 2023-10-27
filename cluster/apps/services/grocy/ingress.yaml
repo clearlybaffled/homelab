@@ -6,13 +6,14 @@ metadata:
   annotations:
     hajimari.io/icon: "cart-variant"
     hajimari.io/appName: "Grocy"
+    cert-manager.io/cluster-issuer: ca-issuer
   labels:
     app.kubernetes.io/name: grocy
 spec:
   ingressClassName: nginx
   rules:
   - host: grocy.seawolf.hermleigh.home
-    http: &rule
+    http:
       paths:
       - path: /
         pathType: Prefix
@@ -27,9 +28,7 @@ spec:
           service:
             name: grocy
             port:
-              number: 443
-  - host: grocy.seawolf
-    http: *rule
+              number: 80
   tls:
     - hosts:
       - grocy.seawolf.hermleigh.home

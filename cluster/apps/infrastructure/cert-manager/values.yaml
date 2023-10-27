@@ -1,13 +1,9 @@
 installCRDs: true
 
-extraArgs:
-  - '--default-issuer-name=kube-ca-issuer'
-  - "--default-issuer-group=cert-manager.io"
-  - "--default-issuer-kind=ClusterIssuer"
 prometheus:
-  enabled: true
-  servicemonitor:
     enabled: true
-    prometheusInstance: kube-prometheus-stack
-    labels:
-      release: kube-prometheus-stack
+    servicemonitor:
+        enabled: true
+        prometheusInstance: kube-prometheus-stack
+        labels:
+            release: kube-prometheus-stack

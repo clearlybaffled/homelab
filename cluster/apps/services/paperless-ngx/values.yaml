@@ -47,6 +47,7 @@ ingress:
     ingressClassName: nginx
     annotations:
       hajimari.io/icon: arcticons:paperless
+      cert-manager.io/cluster-issuer: ca-issuer
     hosts:
       - host: &host paperless.seawolf.hermleigh.home
         paths:
