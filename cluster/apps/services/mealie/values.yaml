@@ -12,7 +12,7 @@ service:
         primary: true
   api:
     ports:
-      http:
+      api:
         port: 9000
 
 env:
