@@ -8,7 +8,7 @@
 - name: Ensure input vars are set
   assert:
     that:
-      - ca_name is defined 
+      - ca_name is defined
       - common_name is defined or csr_text_input is defined
       - signing_ca is defined
 

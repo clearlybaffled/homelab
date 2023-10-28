@@ -20,7 +20,7 @@
           # Non free firmware for realtek nic
           deb http://ftp.de.debian.org/debian bookworm main non-free non-free-firmware
           deb-src  http://ftp.de.debian.org/debian bookworm main non-free non-free-firmware
-          
+
     - name: packages | Update apt repo and cache on all Debian/Ubuntu machines
       package:
         update_cache: true

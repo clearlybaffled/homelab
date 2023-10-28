@@ -14,7 +14,7 @@ resource "libvirt_cloudinit_disk" "ipa-cloud-init" {
 
 resource "libvirt_volume" "ipa-root" {
   name             = "ipa-root.qcow2"
-  pool             = "seawolf-rbd"
+  pool             = "cluster"
   format           = "qcow2"
   size             = "10737418240"
   base_volume_name = "fedora38.qcow2"

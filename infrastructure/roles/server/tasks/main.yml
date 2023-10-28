@@ -94,7 +94,7 @@
             gateway 172.16.1.1
             dns-domain hermleigh.home
             dns-nameservers 172.16.1.1
-          
+
           # Kubernetes control plane interface
           auto enp9s0
           iface enp9s0 inet static

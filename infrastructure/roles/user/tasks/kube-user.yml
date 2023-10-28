@@ -49,14 +49,6 @@
           retries: 10
           delay: 5
 
-        - name: user | get kubernetes cluster ca file
-          slurp:
-            src: "{{ kube_cluster_cacerts }}"
-          register: ca_file_data
-        - name: user | save ca data as fact
-          set_fact:
-            cluster_ca_data: "{{ ca_file_data.content  | replace('\n','') }}"
-
     - name: user | Create kubeconfig file
       set_fact:
         kubeconfig_str: "{{ lookup('ansible.builtin.template', 'kubeconfig.yml.j2') }}"

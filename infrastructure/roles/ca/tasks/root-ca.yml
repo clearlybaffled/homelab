@@ -93,9 +93,9 @@
     - name: Export pfx for Windows certs
       command:
         cmd: >-
-          openssl pkcs12 
-          -export 
-          -in {{ ca_home }}/ca.crt 
+          openssl pkcs12
+          -export
+          -in {{ ca_home }}/ca.crt
           -name '{{ root_ca_cn }}'
           -out {{ ca_home}}/ca.pfx
           -passout pass:

@@ -13,7 +13,7 @@
     - name: Create PostgreSQL user | {{ app.name }}
       community.postgresql.postgresql_user:
         name: "{{ secret.data[db_user_var] | b64decode  }}"
-        password: "{{ secret.data[db_pass_var] | b64decode }}" 
+        password: "{{ secret.data[db_pass_var] | b64decode }}"
         state: present
         login_user: "{{ postgres_secret.data.username | b64decode }}"
         login_password: "{{ postgres_secret.data.password | b64decode }}"

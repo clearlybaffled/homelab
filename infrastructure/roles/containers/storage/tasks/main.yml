@@ -27,7 +27,7 @@
           storage: "{{ item[1].size }}"
         volumeMode: Filesystem
         accessModes:
-          - ReadWriteMany
+          - ReadWriteOnce
         persistentVolumeReclaimPolicy: Retain
         storageClassName: local-storage
         local:
@@ -39,7 +39,7 @@
                   - key: kubernetes.io/hostname
                     operator: In
                     values:
-                      - parche
+                      - seawolf
   loop: "{{ storage.namespaces | product(storage.volumes) }}"
 
 - name: Define local-storage PersistentVolumeClaims for cross-namespace access
@@ -57,8 +57,9 @@
       spec:
         volumeMode: Filesystem
         accessModes:
-          - ReadWriteMany
-        storageClassName: local-path
+          - ReadWriteOnce
+        storageClassName: local-storage
+        volumeName: "{{ item[1].name }}-{{ item[0] }}"
         resources:
           requests:
             storage: "{{ item[1].size }}"
