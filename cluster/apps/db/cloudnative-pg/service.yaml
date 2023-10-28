@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: cloudnative-pg
   namespace: db
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 172.16.1.33
 spec:
   selector:
     cnpg.io/cluster: cnpg-cluster
