@@ -30,7 +30,6 @@ apps:
               name: argocd-application-controller
               labelSelector: "app.kubernetes.io/name=argocd-application-controller"
 
-
   kube-prometheus-stack:
     namespace: monitoring
     wave: "1"
@@ -77,6 +76,13 @@ apps:
           username: app
           password:
             type: password
+
+  traefik:
+    namespace: infrastructure
+    wave: "1"
+    charts:
+      - chart: traefik/traefik
+        version: "{{ traefik_chart_version }}"
 
   mysql:
     namespace: db
@@ -166,7 +172,16 @@ apps:
       - chart: nextcloud/nextcloud
         version: "{{ nextcloud_chart_version }}"
     secrets:
-      secret: {}
+      secret:
+        data:
+          nextcloud-username: admin
+          nextcloud-password:
+            type: password
+            name: admin
+          db-username: nextcloud
+          db-password:
+            type: password
+            name: db
 
   mealie:
     namespace: services
@@ -188,6 +203,17 @@ apps:
     charts:
       - <<: *app_template
         release: linkding
+    secrets:
+      secret:
+        data:
+          LD_DB_USER: linkding
+          LD_DB_PASSWORD:
+            type: password
+            name: db
+          LD_SUPERUSER_NAME: admin
+          LD_SUPERUSER_PASSWORD:
+            type: password
+            name: admin
 
   linkace:
     namespace: services
@@ -202,9 +228,27 @@ apps:
               - nginx.conf
             options:
               disableNameSuffixHash: true
+    secrets:
+      secret:
+        data:
+          DB_USERNAME: linkace
+          DB_PASSWORD:
+            type: password
+            name: db
 
   linkwarden:
     namespace: services
     charts:
       - <<: *app_template
         release: linkwarden
+    secrets:
+      secret:
+        data:
+          DB_USER: linkwarden
+          DB_PASS:
+            type: password
+            name: db
+          NEXTAUTH_SECRET:
+            type: password
+            name: nextauth
+      db_url: {}

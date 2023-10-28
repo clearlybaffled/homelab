@@ -76,7 +76,7 @@ metallb_enabled: true
 metallb_speaker_enabled: "{{ metallb_enabled }}"
 metallb_version: v0.13.11
 
-app_template_version: 2.0.2
+app_template_version: 1.5.1
 
 netbox_chart_version: 4.1.1
 hajimari_version: 2.0.2
@@ -93,4 +93,5 @@ prometheus_operator_version: v0.68.0
 kube_prometheus_stack_chart_version: 51.3.0
 prometheus_adapter_chart_version: 4.7.0
 rook_ceph_version: v1.12.5
+traefik_chart_version: 25.0.0
 vault_chart_version: 0.25.0

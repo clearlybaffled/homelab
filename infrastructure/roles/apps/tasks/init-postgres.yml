@@ -1,0 +1,29 @@
+---
+- name: Check inputs | {{ app.name }}
+  assert:
+    that:
+      - db_user_var is defined and db_user_var != ""
+      - db_pass_var is defined and db_pass_var != ""
+      - db_name is defined and db_name != ""
+
+- name: Do it
+  vars:
+    secret: "{{ lookup('community.sops.sops', app.app_dir+'/secret.sops.yaml') | from_yaml }}"
+  block:
+    - name: Create PostgreSQL user | {{ app.name }}
+      community.postgresql.postgresql_user:
+        name: "{{ secret.data[db_user_var] | b64decode  }}"
+        password: "{{ secret.data[db_pass_var] | b64decode }}" 
+        state: present
+        login_user: "{{ postgres_secret.data.username | b64decode }}"
+        login_password: "{{ postgres_secret.data.password | b64decode }}"
+        host: 172.16.1.33
+
+    - name: Create PostgreSQL database | {{ app.name }}
+      community.postgresql.postgresql_db:
+        name: "{{ db_name }}"
+        owner: "{{ secret.data[db_user_var] | b64decode  }}"
+        state: present
+        login_user: "{{ postgres_secret.data.username | b64decode }}"
+        login_password: "{{ postgres_secret.data.password | b64decode }}"
+        host: 172.16.1.33

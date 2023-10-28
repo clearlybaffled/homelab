@@ -1,0 +1,30 @@
+---
+- name: Check inputs | {{ app.name }}
+  assert:
+    that:
+      - db_user_var is defined and db_user_var != ""
+      - db_pass_var is defined and db_pass_var != ""
+      - db_name is defined and db_name != ""
+
+- name: Do it
+  vars:
+    secret: "{{ lookup('community.sops.sops', app.app_dir+'/secret.sops.yaml') | from_yaml }}"
+  block:
+    - name: Create MySQL Database | {{ app.name }}
+      community.mysql.mysql_db:
+        name: "{{ db_name }}"
+        collation: utf8mb4_general_ci
+        encoding: utf8mb4
+        login_user: root
+        login_password: "{{ mysql_secret.data['mysql-root-password'] | b64decode }}"
+        login_host: 172.16.1.32
+
+    - name: Create MySQL user | {{ app.name }}
+      community.mysql.mysql_user:
+        name: "{{ secret.data[db_user_var] | b64decode }}"
+        host: "%"
+        password: "{{ secret.data[db_pass_var] | b64decode }}"
+        priv: "{{ db_name }}.*:ALL"
+        login_host: 172.16.1.32
+        login_user: root
+        login_password: "{{ mysql_secret.data['mysql-root-password'] | b64decode }}"

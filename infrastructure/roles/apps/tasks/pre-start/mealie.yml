@@ -1,22 +1,8 @@
 ---
-- name: Create postgres resources | {{ app.name }}
-  vars:
-    secret: "{{ lookup('community.sops.sops', app.app_dir+'/secret.sops.yaml') | from_yaml }}"
-  block:
-    - name: Create user
-      community.postgresql.postgresql_user:
-        name: "{{ secret.data['POSTGRES_USER'] | b64decode  }}"
-        password: "{{ secret.data['POSTGRES_PASSWORD'] | b64decode }}" 
-        state: present
-        login_user: "{{ postgres_secret.data.username | b64decode }}"
-        login_password: "{{ postgres_secret.data.password | b64decode }}"
-        host: 172.16.1.33
-
-    - name: Create database
-      community.postgresql.postgresql_db:
-        name: paperless
-        owner: "{{ secret.data['POSTGRES_USER'] | b64decode  }}"
-        state: present
-        login_user: "{{ postgres_secret.data.username | b64decode }}"
-        login_password: "{{ postgres_secret.data.password | b64decode }}"
-        host: 172.16.1.33
+- include_tasks: # noqa name
+    file: ../init-postgres.yml
+    apply:
+      vars:
+        db_user_var: POSTGRES_USER
+        db_pass_var: POSTGRES_PASSWORD
+        db_name: mealie
