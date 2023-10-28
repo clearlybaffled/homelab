@@ -39,7 +39,7 @@ persistence:
     enabled: true
     type: pvc
     mountPath: /data/data
-    storageClass: ceph-block
+    storageClass: ceph-fs-hdd
     accessMode: ReadWriteOnce
     size: 10Gi
     retain: true
