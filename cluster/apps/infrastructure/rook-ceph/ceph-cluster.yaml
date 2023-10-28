@@ -100,6 +100,7 @@ cephClusterSpec:
       - name: "seawolf"
         devices:
           - name: "/dev/disk/by-id/ata-WDC_WD40EFRX-68WT0N0_WD-WCC4E6ZHVFSP"
+          - name: "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_250GB_S2R5NB0HA05691Y"
 
   disruptionManagement:
     managePodBudgets: true
@@ -150,6 +151,14 @@ cephBlockPools:
         csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
         csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
         csi.storage.k8s.io/fstype: ext4
+  - name: libvirt-pool
+    spec:
+      failureDomain: osd
+      replicated:
+        size: 1
+      deviceClass: ssd
+    storageClass:
+      enabled: false
 
 cephFileSystems:
   - name: k8s-hdd-fs
@@ -157,12 +166,14 @@ cephFileSystems:
       metadataPool:
         replicated:
           size: 1
+        deviceClass: ssd
       dataPools:
         - name: data0
           failureDomain: osd
           replicated:
             size: 1
             requireSafeReplicaSize: false
+          deviceClass: hdd
       metadataServer:
         activeCount: 1
         activeStandby: true
@@ -177,6 +188,44 @@ cephFileSystems:
       isDefault: true
       name: ceph-fs-hdd
       pool: data0
+      reclaimPolicy: Retain
+      allowVolumeExpansion: true
+      mountOptions: []
+      parameters:
+        csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
+        csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
+        csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
+        csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
+        csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
+        csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
+        csi.storage.k8s.io/fstype: ext4
+  - name: ssd-fs
+    spec:
+      metadataPool:
+        replicated:
+          size: 1
+        deviceClass: ssd
+      dataPools:
+        - name: data1
+          failureDomain: osd
+          replicated:
+            size: 1
+            requireSafeReplicaSize: false
+          deviceClass: ssd
+      metadataServer:
+        activeCount: 1
+        activeStandby: true
+        resources:
+          requests:
+            cpu: "35m"
+            memory: "128M"
+          limits:
+            memory: "512M"
+    storageClass:
+      enabled: true
+      isDefault: true
+      name: ceph-fs-ssd
+      pool: data1
       reclaimPolicy: Retain
       allowVolumeExpansion: true
       mountOptions: []

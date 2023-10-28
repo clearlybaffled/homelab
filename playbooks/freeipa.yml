@@ -13,6 +13,14 @@
       vars:
         ipa_sops_file: "{{ (inventory_dir, 'group_vars','ipaserver','credentials.sops.yml') | path_join }}"
 
+- name: Create RBD image pool
+  hosts: localhost
+  tasks:
+    - name: Run task
+      include_role:
+        name: server/kvm
+        tasks_from: rbd-pool
+
 - name: Provision FreeIPA virtual hosts using terraform
   hosts: localhost
   tasks:

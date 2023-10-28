@@ -24,6 +24,7 @@ kvm_packages:
   - libvirt-clients
   - libvirt-daemon-system
   - libvirt-daemon-system-systemd
+  - libvirt-daemon-driver-storage-rbd
   - libvirt-dev
   - virtinst
   - bridge-utils

@@ -1,0 +1,10 @@
+<pool type="rbd">
+    <name>{{ pool_name }}</name>
+    <source>
+        <name>rbdpool</name>
+        <host name='{{ ceph_mon_host }}' />
+        <auth username='{{ ceph_name }}' type='ceph'>
+            <secret uuid='{{ secret_uuid }}' />
+        </auth>
+    </source>
+</pool>
