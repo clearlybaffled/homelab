@@ -8,6 +8,8 @@ env:
 envFrom:
   - secretRef:
       name: linkwarden-secret
+  - secretRef:
+      name: linkwarden-db-url
 
 ingress:
   main:
