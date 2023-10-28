@@ -3,8 +3,7 @@ image:
   tag: latest
 
 env:
-  NEXTAUTH_SECRET: very_sensitive_secret
-  DATABASE_URL: postgresql://{$DB_USER}:{$DB_PASS}@cnpg-cluster-rw.db:5432/linkwarden
+  DATABASE_URL: postgresql://${DB_USER}:${DB_PASS}@cnpg-cluster-rw.db:5432/linkwarden
   NEXTAUTH_URL: http://localhost:3000
 envFrom:
   - secretRef:
