@@ -25,7 +25,7 @@
     path: "{{ ca_private_keyfile }}"
   register: pk_file_stat
 
-- name: Read existing private key of cert is password protected
+- name: Read existing private key if cert is password protected
   community.crypto.openssl_privatekey_info:
     path: "{{ ca_private_keyfile }}"
     passphrase: "{{ pk_passphrase | default(omit) }}"

@@ -19,18 +19,18 @@ users:
   shell: /bin/bash
   lock_passwd: false
   plain_text_passwd: ansible
-  homedir: /var/local/ansible
+  homedir: /var/lib/ansible
   ssh_authorized_keys:
-    - ${ssh_pubkey}
+    - "${base64decode(ssh_pubkey)}"
 
 write_files:
   - path: /var/local/ansible/.ssh/id_ed25519
-    content: $(ssh_key)
     owner: ansible:ansible
     permissions: '0o600'
-    encoding: text/plain
+    encoding: base64
     append: false
-    defer: false
+    defer: true
+    content: ${ssh_key}
 
 package_update: true
 package_upgrade: true

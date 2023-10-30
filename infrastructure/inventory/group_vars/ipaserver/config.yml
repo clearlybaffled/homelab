@@ -13,9 +13,11 @@ ipaserver_no_host_dns: true
 
 # Client
 
+ipaclient_no_ntp: true
+
 # Certificate System
-ipaserver_subject_base: "O=HERMLEIGH.HOME,C=US"
-ipaserver_ca_subject: "CN=IPA Intermediate CA,O=HERMLEIGH.HOME,C=US"
+ipaserver_subject_base: "OU=Hermleigh House Network,O=HERMLEIGH.HOME,C=US"
+ipaserver_ca_subject: "CN=IPA Intermediate CA,OU=Hermleigh House Network,O=HERMLEIGH.HOME,C=US"
 ipaserver_ca_signing_algorithm: SHA512withRSA
 
 # DNS

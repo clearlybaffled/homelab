@@ -14,7 +14,7 @@
         task: |-
           {%- if purpose is not defined -%}
           root-ca
-          {%- elif purpose == 'ca' -%}
+          {%- elif purpose == 'sub-ca' -%}
           sub-ca
           {%- else -%}
           sign
