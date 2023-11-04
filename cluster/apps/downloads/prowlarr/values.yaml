@@ -53,12 +53,6 @@ ingress:
           - *host
         secretName: prowlarr-tls-ingress
 
-podSecurityContext:
-  runAsUser: 997
-  runAsGroup: 997
-  fsGroup: 997
-  fsGroupChangePolicy: OnRootMismatch
-
 persistence:
   config:
     enabled: true
@@ -71,3 +65,9 @@ resources:
     memory: 100Mi
   limits:
     memory: 500Mi
+
+podSecurityContext:
+  runAsUser: 568
+  runAsGroup: 568
+  fsGroup: 568
+  fsGroupChangePolicy: "OnRootMismatch"
