@@ -19,7 +19,7 @@ persistence:
   config:
     enabled: true
     type: pvc
-    size: 100MB
+    size: 100Mi
   media:
     enabled: true
     existingClaim: shared-files
