@@ -1,0 +1,12 @@
+---
+- include_tasks: # noqa name
+    file: ../init-postgres.yml
+    apply:
+      vars:
+        db_user_var: PROWLARR__POSTGRES_USER
+        db_pass_var: PROWLARR__POSTGRES_PASSWORD
+        db_names:
+          - "{{ secret.data.PROWLARR__POSTGRES_MAIN_DB | b64decode }}"
+          - "{{ secret.data.PROWLARR__POSTGRES_LOG_DB | b64decode }}"
+  vars:
+    secret: "{{ lookup('community.sops.sops', app.app_dir+'/secret.sops.yaml') | from_yaml }}"

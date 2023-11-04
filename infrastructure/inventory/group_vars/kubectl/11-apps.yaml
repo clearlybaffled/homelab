@@ -325,6 +325,18 @@ apps:
     charts:
       - <<: *app_template
         release: prowlarr
+    secrets:
+      secret:
+        data:
+          PROWLARR__API_KEY:
+            type: password
+            name: api
+          PROWLARR__POSTGRES_USER: prowlarr
+          PROWLARR__POSTGRES_PASSWORD:
+            type: password
+            name: pgpass
+          PROWLARR__POSTGRES_MAIN_DB: prowlarr_main
+          PROWLARR__POSTGRES_LOG_DB: prowlarr_log
 
   overseerr:
     namespace: downloads
