@@ -2,7 +2,7 @@
 - name: Check inputs
   assert:
     that:
-      - signing_ca is defined 
+      - signing_ca is defined
       - (pki_home, signing_ca)|path_join is directory
       - csr_text is defined and csr_text != ''
       - purpose in ['ocsp','user','client','server','ca']
@@ -74,7 +74,7 @@
       set_fact:
         pk_passphrase:
         pk_passphrase_input:
-    
+
     - name: Remove CSR file if created
       file:
         path: "{{ csr_file.path }}"
@@ -84,4 +84,3 @@
   set_fact:
     certificate_text: "{{ certificate.stdout }}"
   when: certificate is not failed
-

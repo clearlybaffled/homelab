@@ -1,5 +1,12 @@
 ## Provide a name to substitute for the full names of resources
 ##
+fullnameOverride: kube-prometheus
+cleanPrometheusOperatorObjectNames: true
+
+## Install Prometheus Operator CRDs
+##
+crds:
+  enabled: false
 
 alertmanager:
   ingress:
@@ -35,20 +42,32 @@ alertmanager:
 
 grafana:
   defaultDashboardsTimezone: America/New_York
+  persistence:
+    enabled: true
   ingress:
     enabled: true
     ingressClassName: nginx
     annotations:
       hajimari.io/icon: "logos:grafana"
       cert-manager.io/cluster-issuer: ca-issuer
-    hosts:
+    hosts: &grafana-hosts
       - grafana.seawolf.hermleigh.home
       - grafana.seawolf
     tls:
-      - hosts:
-        - grafana.seawolf.hermleigh.home
-        - grafana.seawolf
+      - hosts: *grafana-hosts
         secretName: grafana-ingress-cert
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: default
+          orgId: 1
+          folder: ''
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/default
 
 ## Manages Prometheus and Alertmanager components
 ##
@@ -57,14 +76,14 @@ prometheusOperator:
   ## Admission webhook support for PrometheusRules resources added in Prometheus Operator 0.30 can be enabled to prevent incorrectly formatted
   ## rules from making their way into prometheus and potentially preventing the container from starting
   admissionWebhooks:
-      # Use certmanager to generate webhook certs
+    # Use certmanager to generate webhook certs
     certManager:
       enabled: true
       issuerRef:
         name: "ca-issuer"
         kind: "ClusterIssuer"
-  service:
 
+  service:
     ingress:
       enabled: true
       ingressClassName: nginx

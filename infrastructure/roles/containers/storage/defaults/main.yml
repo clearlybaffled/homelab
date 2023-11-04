@@ -1,12 +1,12 @@
 ---
 storage:
   namespaces:
-    - home
+    - services
     - media
     - downloads
   volumes:
     - name: shared-files
-      path: /shared
+      path: /share
       size: 5.5Ti
     - name: videos
       path: /videos

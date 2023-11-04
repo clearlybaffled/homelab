@@ -24,6 +24,6 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - parche
+          - seawolf
   persistentVolumeReclaimPolicy: Retain
   volumeMode: Filesystem

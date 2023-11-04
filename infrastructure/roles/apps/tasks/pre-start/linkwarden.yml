@@ -1,0 +1,24 @@
+---
+- include_tasks: # noqa name
+    file: ../init-postgres.yml
+    apply:
+      vars:
+        db_user_var: DB_USER
+        db_pass_var: DB_PASS
+        db_name: linkwarden
+
+- name: Create secret for db url
+  community.sops.sops_encrypt:
+    path: "{{ app.app_dir }}/db_url.sops.yaml"
+    encrypted_regex: "^(data|stringData)$"
+    content_yaml:
+      apiVersion: v1
+      kind: Secret
+      type: Opaque
+      metadata:
+        name: linkwarden-db-url
+        namespace: "{{ app.namespace }}"
+      data:
+        DATABASE_URL: "{{ ('postgres://' ~ secret.data.DB_USER | b64decode ~ ':' ~  secret.data.DB_PASS | b64decode ~ '@cnpg-cluster-rw.db:5432/linkwarden' ) | b64encode }}"
+  vars:
+    secret: "{{ lookup('community.sops.sops', app.app_dir+'/secret.sops.yaml') | from_yaml }}"

@@ -1,7 +1,7 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
 # template: {{ template_fullpath | relpath(root_dir) }}
-# date: 2023-10-08 19:05:48
+# date: 2023-10-08 20:57:16
 # user: {{ lookup('pipe', 'git config --get user.name') }}
 # host: tirante
 # commit: {{ lookup('pipe', 'git log --format="%h" -1 ' + template_fullpath|quote) }}
@@ -15,10 +15,18 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
-    repoURL: https://github.com/clearlybaffled/homelab
+  sources:
+  - chart: app-template
+    repoURL: https://bjw-s.github.io/helm-charts/
+    targetRevision: 1.5.1
+    helm:
+      valueFiles:
+      - $repo/cluster/apps/downloads/sonarr/values.yaml
+      releaseName: sonarr
+  - repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/downloads/sonarr
     targetRevision: development
+    ref: repo
   destination:
     name: in-cluster
     namespace: downloads

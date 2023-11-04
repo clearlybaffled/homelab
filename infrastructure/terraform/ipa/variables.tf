@@ -3,7 +3,7 @@ data "sops_file" "ansible_ssh_key" {
 }
 
 data "sops_file" "root_ca_crt" {
-  source_file = "${path.module}/../../inventory/group_vars/all/root-ca.crt.sops.yml"
+  source_file = "${path.module}/../../inventory/group_vars/all/pki/root-ca.sops.yml"
 }
 
 output "hosts_created" {

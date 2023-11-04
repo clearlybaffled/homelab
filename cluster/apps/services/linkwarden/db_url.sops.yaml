@@ -1,0 +1,28 @@
+apiVersion: v1
+data:
+    DATABASE_URL: ENC[AES256_GCM,data:9e2/o+rokRo7yEVFJTEyCIrb0Njz71K/kw/Tir6rz7Mdt7cAckfE/T7mnIp/OyzZBWdJl55ZSi/tKjc7JwKn3NzrHorbRbIMg2wA2ZZq9uSOPXKScw+lbcDd7AP3MV2FvlDQ5lkwahmxJ3+3KHySxxqom/I=,iv:L19iLPvS2aB+oWwvEvPRs6VHwpdMfN5uDntpc4sZp/Q=,tag:Ad3TvRjVexatiABrRZSzFQ==,type:str]
+kind: Secret
+metadata:
+    name: linkwarden-db-url
+    namespace: services
+type: Opaque
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1e764qpphm5nlzp04qf6zcq8f400390d9wmzramq84hqp60k6qyvqsvgg45
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA0OUp6T2dQcFFVdHdZaG9x
+            ZmpTbDVPNVpXNndLZFdpd0ZqZXhFSDBpeGtZClBVOFJocjZUeFJMQk1wZE5Mb1hE
+            WXlBd3c1QnNPTXU5aWErZWZteWQvRncKLS0tIExWaldKZkFEeVB1c2hnQ3ZNdEhM
+            cFVtQ0M1Rm5EWnA5WDZTcEl5WXNhVkUKPxaEPfqvBotUkOE8VPanuWLghSVkO/gw
+            KxdzcH4SXF5lgYcr1WlK9+7vmvP7AOyX2dhWf3Ymolxr9bYH+u0tZA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-10-28T20:07:03Z"
+    mac: ENC[AES256_GCM,data:rBfycWEP37U2WI95QSQjaaFq9N+Vp6bWxsOVr5QUqMdSUW84VF6aGgITv//55QM2AeW2uup6bZmSu1JKoJ1CU5LUJNQoBF890xaPiYAJjtXWg4dzo/tpL4zSGSQUvMk8Pkw1W/j0wDr6D/vo9hlSksMxEd6NXgLOo6NuCSS0GZ8=,iv:ZMnJW4pxlMx97MdtguU0vX7CzB8qZ8WipPpEQs7lPXw=,tag:iBSrBJOgdBM/B6r/YZGfIg==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1

@@ -1,0 +1,18 @@
+---
+#### Reference: https://vermaden.wordpress.com/2023/03/29/connect-freebsd-13-2-to-freeipa-idm/
+
+- name: Add host
+  delegate_to: "{{ groups.ipaserver[0] }}"
+  community.general.ipa_host:
+    fqdn: "{{ inventory_hostname }}"
+    ipa_host: localhost
+    ipa_pass: "{{ ipaadmin_password }}"
+    ipa_user: admin
+    mac_address: >-
+      {{
+        ansible_facts.ansible_interfaces 
+        | rejectattr("regexp_search('^veth')", none)
+        | map('regex_replace','(.*)','ansible_\\1')
+        | map('extract',ansible_facts, 'macaddress') 
+      }}
+    ip_address: "{{ ansible_facts.ansible_default_ipv4.address }}"

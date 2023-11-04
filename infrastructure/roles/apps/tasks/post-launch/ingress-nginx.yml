@@ -1,0 +1,11 @@
+---
+- name: ingress-nginx | Wait for SSL Certificate Generation Jobs to complete
+  kubernetes.core.k8s_info:
+    namespace: infrastructure
+    kind: Pod
+    wait: true
+    wait_timeout: 120
+    label_selectors:
+      - app.kubernetes.io/component=controller
+    wait_condition:
+      type: Ready

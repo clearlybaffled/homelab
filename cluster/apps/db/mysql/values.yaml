@@ -14,4 +14,6 @@ primary:
     runAsUser: 997
     runAsNonRoot: true
   service:
+    annotations:
+      metallb.universe.tf/loadBalancerIPs: 172.16.1.32
     type: LoadBalancer

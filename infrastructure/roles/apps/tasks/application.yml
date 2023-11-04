@@ -1,4 +1,10 @@
 ---
+- name: Ensure namespace exists | {{ app.namespace }}
+  kubernetes.core.k8s:
+    api_version: v1
+    kind: Namespace
+    name: "{{ app.namespace }}"
+
 - name: Manage app secrets | {{ app.name }}
   when: app.secrets is defined
   block:
@@ -14,9 +20,10 @@
         sops_file: "{{ (app.app_dir, secret.name+'.sops.yaml')| path_join }}"
 
     - name: Render KSOPS generator template | {{ app.name }}
-      template:
-        src: secret-generator.yaml.j2
-        dest: "{{ app.app_dir }}/secret-generator.yaml"
+      blockinfile:
+        block: "{{ lookup('template', 'secret-generator.yaml.j2', convert_data=false) }}"
+        path: "{{ app.app_dir }}/secret-generator.yaml"
+        create: true
       register: ksops
 
 - name: ArgoCD application manifest | {{ app.name }}
@@ -26,6 +33,7 @@
     mode: "0644"
     create: true
   register: application
+  tags: manifest
 
 - name: "Install Kustomization file | {{ app.name }}"
   blockinfile:
@@ -45,13 +53,12 @@
   when: app.pvc is defined and app.pvc
   register: pvc
 
-- name: "Application specific startup configuration | {{ app.name }}"
+- name: "Application specific pre-start tasks | {{ app.name }}"
   include_tasks: "{{ taskfile }}"
   with_first_found:
     - files:
-        - "{{ app.name }}.yml"
+        - "pre-start/{{ app.name }}.yml"
       skip: true
-      path: startup
   loop_control:
     loop_var: taskfile
   register: app_tasks
@@ -61,24 +68,64 @@
 - name: Commit changes to app files | {{ app.name }}
   lvrfrc87.git_acp.git_acp:
     path: "{{ root_dir }}"
-    comment: "[{{ app.name }}] Updated application config files"
-    add:
-      - "{{ app.app_dir }}"
-      - "{{ app.manifest_file }}"
-    url: "{{ git_repo_url }}"
-    push: true
+    comment: "[{{ app.name }}] Updated application config files\n\n{{ files | to_nice_yaml }}"
+    add: "{{  files  }}"
+    url: "{{ git_repo_ssh_url }}"
+    push: "{{ git_push | default(true) }}"
     branch: "{{ git_branch }}"
-    ssh_params:
-      key_file: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
-  when: lookup('pipe','git status --porcelain -- ' + (app.app_dir, app.manifest_file) | join(' '))
+  when: files | length > 0
+  register: git_commit
   tags: commit
+  vars:
+    files: |-
+      {{ [
+          lookup('pipe','git status --porcelain -- ' ~ app.app_dir).splitlines()
+            | map('split',' ')
+            | map('last'),
 
-- name: Launch wave <= 3 applications now
-  kubernetes.core.k8s:
-    src: "{{ app.manifest_file }}"
-    server_side_apply:
-      field_manager: ansible
+          lookup('pipe','git status --porcelain -- ' ~ app.manifest_file).split(' ')
+            | last,
+
+          lookup('pipe','git status --porcelain').splitlines()
+            | map('list')
+            | rejectattr('0','eq', ' ')
+            | rejectattr('0', 'eq', '?')
+            | map('join')
+            | map('split', ' ')
+            | map('last')
+      ]  | reject('eq', '') | flatten}}
+
+- name: Wait a minute for the commit to land in Github
+  pause:
+    minutes: 1
+  when: git_commit is not skipped
+
+- name: Launch application when wave is defined
   when:
     - app.wave is defined
-    - app.wave|int <= 3
-  tags: app_tasks
+  block:
+    - name: Launch application now | {{ app.name }}
+      kubernetes.core.k8s:
+        src: "{{ app.manifest_file }}"
+        server_side_apply:
+          field_manager: ansible
+      tags: app_tasks
+
+    - name: "Application specific post-launch tasks | {{ app.name }}"
+      include_tasks: "{{ taskfile }}"
+      with_first_found:
+        - files:
+            - "post-launch/{{ app.name }}.yml"
+          skip: true
+      loop_control:
+        loop_var: taskfile
+      register: app_tasks
+      tags:
+        - app_tasks
+
+- name: Check before continuing to next app | {{ app.name }}
+  pause:
+    prompt: "Continue to {{ ansible_loop.nextitem.name }}"
+  when:
+    - not ansible_loop.last
+    - not app_no_loop_pause|default(false)

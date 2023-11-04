@@ -6,14 +6,16 @@ env:
   APP_KEY: sC4Zj5PHEg4O1oP+dBVGC5hdninaEgDQ
   DB_HOST: mysql.db
   DB_DATABASE: linkacedb
-  DB_USERNAME: linkace
-  DB_PASSWORD: linkace
   DB_CONNECTION: mysql
-  # REDIS_HOST: redis.db
+  REDIS_HOST: redis.db
   # REDIS_PASSWORD: password
   # REDIS_PORT: 6379
   # SESSION_DRIVER: redis
   # CACHE_DRIVER: redis
+
+envFrom:
+  - secretRef:
+      name: linkace-secret
 
 ingress:
   main:

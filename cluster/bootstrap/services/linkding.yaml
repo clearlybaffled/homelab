@@ -1,7 +1,7 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
 # template: {{ template_fullpath | relpath(root_dir) }}
-# date: 2023-10-08 19:05:48
+# date: 2023-10-08 20:57:16
 # user: {{ lookup('pipe', 'git config --get user.name') }}
 # host: tirante
 # commit: {{ lookup('pipe', 'git log --format="%h" -1 ' + template_fullpath|quote) }}
@@ -18,7 +18,7 @@ spec:
   sources:
   - chart: app-template
     repoURL: https://bjw-s.github.io/helm-charts/
-    targetRevision: 2.0.2
+    targetRevision: 1.5.1
     helm:
       valueFiles:
       - $repo/cluster/apps/services/linkding/values.yaml

@@ -1,4 +1,4 @@
-clusterDomain: seawolf.hermleigh.home
+clusterDomain: seawolf
 auth:
   enabled: false
   sentinel: false

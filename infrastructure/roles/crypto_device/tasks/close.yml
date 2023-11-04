@@ -4,7 +4,7 @@
     path: "{{ crypt_mount_path }}"
     state: unmounted
   register: umount
-  
+
 - name: Close dm-crypt
   command:
     cmd: "cryptsetup close {{ crypt_name }}"

@@ -22,7 +22,7 @@
   block:
     - name: User Configuration | Ensure $HOME/.ssh dir exists
       file:
-        path:  "{{ ssh_keyfile | dirname }}"
+        path: "{{ ssh_keyfile | dirname }}"
         state: directory
         owner: "{{ ansible_user }}"
         group: "{{ ansible_group }}"
@@ -49,12 +49,12 @@
         content_yaml:
           ansible_user_ssh_pubkey: "{{ sshkey.public_key | b64encode }}"
           ansible_user_ssh_key: "{{ ssh_private_key.content }}"
-      vars: 
+      vars:
         git_commit_comment: Adding ansible user ssh keys
         git_add_file_list:
           - "{{ ssh_sops_file }}"
         git_push: false
-    
+
     - name: Reload variables
       meta: refresh_inventory
 

@@ -10,7 +10,7 @@ spec:
 
   source:
     repoURL: https://github.com/clearlybaffled/homelab
-    path: cluster/manifests
+    path: cluster/bootstrap
     targetRevision: main
     directory:
       recurse: true

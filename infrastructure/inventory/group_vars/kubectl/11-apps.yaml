@@ -1,0 +1,339 @@
+# yaml-language-server: $schema=../../../../schemas/apps.schema.json
+---
+app_template: &app_template
+  chart: bjw-s/app-template
+  version: "{{ app_template_version }}"
+
+apps:
+  argocd:
+    namespace: argocd
+    wave: "0"
+    path: ''
+    kustomize:
+      resources:
+        - ./ns.yaml
+      charts:
+        - chart: argocd/argo-cd
+          version: "{{ argocd_chart_version }}"
+          namespace: argocd
+          release: argocd
+      extras:
+        patches:
+          - patch: |-
+              - op: add
+                path: /spec/template/spec/containers/0/env/-
+                value: { name: ARGOCD_SYNC_WAVE_DELAY, value: '30' }
+            target:
+              version: v1
+              group: apps
+              kind: StatefulSet
+              name: argocd-application-controller
+              labelSelector: "app.kubernetes.io/name=argocd-application-controller"
+
+  kube-prometheus-stack:
+    namespace: monitoring
+    wave: "1"
+    charts:
+      - chart: prometheus-community/kube-prometheus-stack
+        version: "{{ kube_prometheus_stack_chart_version }}"
+        release: prometheus
+        valueFiles:
+          - operator.yaml
+      - chart: prometheus-community/prometheus-adapter
+        version: "{{ prometheus_adapter_chart_version }}"
+        valueFiles:
+          - adapter.yaml
+
+  hajimari:
+    namespace: services
+    wave: "4"
+    charts:
+      - chart: hajimari/hajimari
+        version: "{{ hajimari_version }}"
+
+  cloudnative-pg:
+    namespace: db
+    wave: "3"
+    charts:
+      - chart: cnpg/cloudnative-pg
+        version: "{{ cnpg_chart_version }}"
+    kustomize:
+      resources:
+        - ./cluster.yaml
+        - https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/prometheusrule.yaml
+        - https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/grafana-configmap.yaml
+    secrets:
+      superuser:
+        type: basic-auth
+        data:
+          username: postgres
+          password:
+            name: admin
+            type: password
+      app-user:
+        type: basic-auth
+        data:
+          username: app
+          password:
+            type: password
+
+  traefik:
+    namespace: infrastructure
+    wave: "1"
+    charts:
+      - chart: traefik/traefik
+        version: "{{ traefik_chart_version }}"
+
+  mysql:
+    namespace: db
+    wave: "3"
+    pv: true
+    charts:
+      - chart: bitnami/mysql
+        version: "{{ bitnami_mysql_chart_version }}"
+    kustomize:
+      resources:
+        - ./pvc.yaml
+        - ./pv.yaml
+    secrets:
+      secret: {}
+
+  cert-manager:
+    path: infrastructure
+    namespace: cert-manager
+    wave: "1"
+    charts:
+      - chart: jetstack/cert-manager
+        version: "{{ cert_manager_version }}"
+
+  grocy:
+    namespace: services
+    wave: "4"
+    pv: true
+
+  ingress-nginx:
+    namespace: infrastructure
+    wave: "1"
+    charts:
+      - chart: ingress-nginx/ingress-nginx
+        version: "{{ ingress_nginx_version }}"
+
+  metallb:
+    path: infrastructure
+    namespace: metallb-system
+    wave: "1"
+    charts:
+      - chart: metallb/metallb
+        version: "{{ metallb_version[1:] }}"
+
+  redis:
+    namespace: db
+    wave: "3"
+    charts:
+      - chart: bitnami/redis
+        version: "{{ bitnami_redis_chart_version }}"
+
+  rook-ceph:
+    path: infrastructure
+    namespace: rook-ceph
+    wave: "2"
+    charts:
+      - chart: rook/rook-ceph
+        version: "{{ rook_ceph_version }}"
+        valueFiles:
+          - operator.yaml
+      - chart: rook/rook-ceph-cluster
+        version: "{{ rook_ceph_version }}"
+        valueFiles:
+          - ceph-cluster.yaml
+
+  paperless-ngx:
+    namespace: services
+    wave: "4"
+    charts:
+      - <<: *app_template
+        release: paperless-ngx
+    secrets:
+      secret:
+        data:
+          PAPERLESS_DBUSER: paperless
+          PAPERLESS_DBPASS:
+            type: password
+            name: db
+          PAPERLESS_ADMIN_USER: admin
+          PAPERLESS_ADMIN_PASSWORD:
+            type: password
+            name: admin
+
+  nextcloud:
+    namespace: services
+    wave: "4"
+    charts:
+      - chart: nextcloud/nextcloud
+        version: "{{ nextcloud_chart_version }}"
+    secrets:
+      secret:
+        data:
+          nextcloud-username: admin
+          nextcloud-password:
+            type: password
+            name: admin
+          db-username: nextcloud
+          db-password:
+            type: password
+            name: db
+
+  mealie:
+    namespace: services
+    wave: "4"
+    charts:
+      - <<: *app_template
+        release: mealie
+    secrets:
+      secret:
+        data:
+          POSTGRES_USER: mealie
+          POSTGRES_PASSWORD:
+            type: password
+            name: db
+
+
+  linkding:
+    namespace: services
+    charts:
+      - <<: *app_template
+        release: linkding
+    secrets:
+      secret:
+        data:
+          LD_DB_USER: linkding
+          LD_DB_PASSWORD:
+            type: password
+            name: db
+          LD_SUPERUSER_NAME: admin
+          LD_SUPERUSER_PASSWORD:
+            type: password
+            name: admin
+
+  linkace:
+    namespace: services
+    charts:
+      - <<: *app_template
+        release: linkace
+    kustomize:
+      extras:
+        configMapGenerator:
+          - name: nginx-config
+            files:
+              - nginx.conf
+            options:
+              disableNameSuffixHash: true
+    secrets:
+      secret:
+        data:
+          DB_USERNAME: linkace
+          DB_PASSWORD:
+            type: password
+            name: db
+
+  linkwarden:
+    namespace: services
+    charts:
+      - <<: *app_template
+        release: linkwarden
+    secrets:
+      secret:
+        data:
+          DB_USER: linkwarden
+          DB_PASS:
+            type: password
+            name: db
+          NEXTAUTH_SECRET:
+            type: password
+            name: nextauth
+      db_url: {}
+
+  calibre:
+    namespace: media
+    charts:
+      - <<: *app_template
+        release: calibre
+      - <<: *app_template
+        release: calibre-web
+        valueFiles:
+          - values-web.yaml
+
+  heimdall:
+    namespace: services
+    charts:
+      - <<: *app_template
+        release: heimdall
+
+  vault:
+    namespace: infrastructure
+    charts:
+      - chart: hashicorp/vault
+        version: "{{ vault_chart_version }}"
+
+  qbittorrent:
+    namespace: downloads
+    charts:
+      - <<: *app_template
+        release: qbittorrent
+
+  listen-brainz:
+    namespace: media
+
+  immich:
+    namespace: media
+    charts:
+      - chart: immich/immich
+        version: "{{ immich_chart_version }}"
+
+  typesense:
+    namespace: db
+    charts:
+      - <<: *app_template
+        release: typesense
+
+  sonarr:
+    namespace: downloads
+    charts:
+      - <<: *app_template
+        release: sonarr
+
+  radarr:
+    namespace: downloads
+    charts:
+      - <<: *app_template
+        release: radarr
+
+  readarr:
+    namespace: downloads
+    charts:
+      - <<: *app_template
+        release: readarr
+
+  prowlarr:
+    namespace: downloads
+    charts:
+      - <<: *app_template
+        release: prowlarr
+
+  overseerr:
+    namespace: downloads
+    charts:
+      - <<: *app_template
+        release: overseerr
+
+  lidarr:
+    namespace: downloads
+    charts:
+      - <<: *app_template
+        release: lidarr
+
+  netbox:
+    namespace: infrastructure
+    charts:
+      - chart: bootc/netbox
+        version: "{{ netbox_chart_version }}"

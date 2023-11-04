@@ -12,7 +12,7 @@ service:
         primary: true
   api:
     ports:
-      http:
+      api:
         port: 9000
 
 env:
@@ -46,7 +46,8 @@ persistence:
     mountPath: /app/data/
     accessMode: ReadWriteOnce
     size: 10Gi
-    existingClaim: mealie-api-data
+    storageClass: ceph-fs-hdd
+    retain: true
 
 api:
   image:

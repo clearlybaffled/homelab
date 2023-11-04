@@ -1,8 +1,10 @@
+<!-- markdownlint-disable MD040 MD024 MD046 -->
 # USER    (infrastructure/roles/user)
 
 ## ENTRY POINT: kube-user
 
-### OPTIONS (= is mandatory):
+### OPTIONS (= is mandatory)
+
 ```
 = groupname
         Name of the local system group
@@ -19,7 +21,8 @@
 
 ## ENTRY POINT: system-user
 
-### OPTIONS (= is mandatory):
+### OPTIONS (= is mandatory)
+
 ```
 = ansible_group
         ansible usergroup

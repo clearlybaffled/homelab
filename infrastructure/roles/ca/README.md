@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD040 MD024 MD046 -->
 # CA    (infrastructure/roles/ca)
 
 ## ENTRY POINT: main - Main role entrypoint
@@ -9,7 +10,8 @@
         manage opening and closing that device when performing
         operations
 
-### OPTIONS (= is mandatory):
+### OPTIONS (= is mandatory)
+
 ```
 - purpose
         Used by main to determine which task file to run
@@ -27,7 +29,8 @@
         This is generally the main task of a certificate authority,
         which is to issue signed certificates
 
-### OPTIONS (= is mandatory):
+### OPTIONS (= is mandatory)
+
 ```
 = csr_text
         PEM-formatted certificate signing request
@@ -56,7 +59,8 @@
         Create directory structure and files for managing a
         "lightweight" root Certificate Authority using openssl
 
-### OPTIONS (= is mandatory):
+### OPTIONS (= is mandatory)
+
 ```
 - pk_passphrase
         Passphrase for the private key
@@ -90,7 +94,8 @@ ansible $DEVICE_HOST -b -m include_role -a name=ca
         Create directory structure and files for managing a
         "lightweight" Certificate Authority, subordinate to another CA
 
-### OPTIONS (= is mandatory):
+### OPTIONS (= is mandatory)
+
 ```
 = ca_name
         Common Name (CN) for the CA (also used in directory and other

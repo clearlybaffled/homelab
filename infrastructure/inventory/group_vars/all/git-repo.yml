@@ -1,3 +1,4 @@
 ---
-git_repo_url: 'https://github.com/clearlybaffled/homelab'
+git_repo_url: https://github.com/clearlybaffled/homelab
 git_branch: development
+git_repo_ssh_url: git@github.com:clearlybaffled/homelab.git

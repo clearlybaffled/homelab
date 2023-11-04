@@ -1,0 +1,18 @@
+---
+argument_specs:
+  main:
+    options:
+      app_deploy_list:
+        type: list
+        description: A list of applications to deploy instead of the entire list
+        required: false
+        default: []
+      app_skip_list:
+        type: list
+        description: A list of applications to not deploy out of the entire list
+        required: false
+        default: []
+      start_at:
+        type: str
+        description: Name of the app to start deploying from
+        required: false

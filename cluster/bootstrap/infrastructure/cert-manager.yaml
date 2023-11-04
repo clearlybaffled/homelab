@@ -1,7 +1,7 @@
 # BEGIN ANSIBLE MANAGED BLOCK
 #
 # template: {{ template_fullpath | relpath(root_dir) }}
-# date: 2023-10-08 19:05:48
+# date: 2023-10-08 20:57:16
 # user: {{ lookup('pipe', 'git config --get user.name') }}
 # host: tirante
 # commit: {{ lookup('pipe', 'git log --format="%h" -1 ' + template_fullpath|quote) }}
@@ -17,12 +17,17 @@ metadata:
     argocd.argoproj.io/sync-wave: '1'
 spec:
   project: default
-  source:
-    chart: cert-manager
+  sources:
+  - chart: cert-manager
     repoURL: https://charts.jetstack.io
     targetRevision: v1.13.1
     helm:
-      skipCrds: true
+      valueFiles:
+      - $repo/cluster/apps/infrastructure/cert-manager/values.yaml
+  - repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/apps/infrastructure/cert-manager
+    targetRevision: development
+    ref: repo
   destination:
     name: in-cluster
     namespace: cert-manager

@@ -13,102 +13,14 @@
       vars:
         ipa_sops_file: "{{ (inventory_dir, 'group_vars','ipaserver','credentials.sops.yml') | path_join }}"
 
-- name: Provision FreeIPA virtual hosts using terraform
-  hosts: localhost
-  tasks:
-    - name: Provision KVM hosts with terraform
-      community.general.terraform:
-        project_path: "{{ infra_dir }}/terraform/ipa"
-      register: tf_ipa_out
-
-    - name: Wait for qemu-agent to start
-      pause:
-        seconds: 15
-
-    - name: Refresh inventory
-      meta: "refresh_inventory"
-
-- name: Wait for host to be ready
-  hosts: ipaserver
-  gather_facts: false
-  tasks:
-    - name: Wait for host to be ready
-      pause:
-        minutes: 3
-
-    - name: Check for selinux status
-      command: getenforce
-      register: getenforce
-      until: getenforce.stdout == "Permissive"
-      retries: 10
-      delay: 30
-
-- name: IPA Server install - first stage
-  hosts: ipaserver
-  become: true
-  vars:
-    ipaserver_external_ca: true
-  # roles:
-  #   - freeipa.ansible_freeipa.ipaserver
-  tasks:
-    - name: Define local CSR path
-      set_fact:
-        ipa_csr_path: "/tmp/{{ groups.ipaserver[0] + '-ipa' }}"
-    - name: Copy CSR /root/ipa.csr from node to "{{ ipa_csr_path }}.csr"
-      fetch:
-        src: /root/ipa.csr
-        dest: "{{ ipa_csr_path }}.csr"
-        flat: true
-
-- name: Sign IPA Certificate Signing Request
-  hosts: parche
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Set fact
-      set_fact:
-        ipa_csr_path: "/tmp/{{ groups.ipaserver[0] + '-ipa' }}"
-    - name: Copy CSR to parche
-      copy:
-        dest: "{{ ipa_csr_path }}.csr"
-        src: "{{ ipa_csr_path }}.csr"
-
-    - name: Sign IPA CSR
-      include_role:
-        name: ca
-        apply:
-          vars:
-            signing_ca: root-ca
-            purpose: ca
-            csr_path: "{{ ipa_csr_path  }}.csr"
-
-    - name: Copy "{{ ips_csr_path }}.crt to /root/chain.crt on node"
-      ansible.posix.synchronize:
-        src: "{{ ipa_csr_path }}.crt"
-        dest: "/root/ipa.crt"
-        mode: pull
-      delegate_to: tang
-
-- name: Continue IPA Setup with signed CA cert
-  hosts: ipaserver
-  become: true
-  gather_facts: false
-  vars:
-    ipaserver_external_cert_files:
-      - /root/ipa.crt
-      - /root/ca.crt
+          #- name: Create RBD image pool
+          #hosts: localhost
+          #tasks:
+          #- name: Run task
+          #include_role:
+          #name: server/kvm
+          #tasks_from: rbd-pool
+- name: Create FreeIPA master
   roles:
-    - freeipa.ansible_freeipa.ipaserver
-  pre_tasks:
-    - name: Drop CA cert file into /root
-      copy:
-        dest: /root/ca.crt
-        content: "{{ root_ca_crt }}"
+    - freeipa
 
-- name: Clean up Host
-  hosts: ipaserver
-  gather_facts: false
-  tasks:
-    - name: Restore SE linux to enforcing
-      ansible.posix.selinux:
-        state: enforcing

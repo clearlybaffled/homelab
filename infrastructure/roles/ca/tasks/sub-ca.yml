@@ -8,13 +8,13 @@
 - name: Ensure input vars are set
   assert:
     that:
-      - (ca_name is defined and orgnizational_unit_name is defined) or csr_text_input is defined
+      - ca_name is defined
+      - common_name is defined or csr_text_input is defined
       - signing_ca is defined
 
 - name: Get facts from csr input text if provided
   set_fact:
-    ca_name: "{{ (csr_text_input | community.crypto.openssl_csr_info).subject['commonName'] }}" # noqa jinja[invalid]
-    orgnizational_unit_name: "{{ (csr_text_input | community.crypto.openssl_csr_info).subject['orgnizationalUnitName'] }}" # noqa jinja[invalid]
+    common_name: "{{ (csr_text_input | community.crypto.openssl_csr_info).subject['commonName'] }}" # noqa jinja[invalid]
   when: csr_text_input is defined
 
 - name: Set up Intermediate CA data directories
@@ -25,7 +25,7 @@
     path: "{{ ca_private_keyfile }}"
   register: pk_file_stat
 
-- name: Read existing private key of cert is password protected
+- name: Read existing private key if cert is password protected
   community.crypto.openssl_privatekey_info:
     path: "{{ ca_private_keyfile }}"
     passphrase: "{{ pk_passphrase | default(omit) }}"
@@ -66,7 +66,7 @@
           -new
           -config {{ pki_home }}/ca.conf
           -config {{ pki_home }}/req.conf
-          -subj '/C=US/O=HERMLEIGH.HOME/OU={{ orgnizational_unit_name }}/CN={{ ca_name }}'
+          -subj '/C={{ dn.country }}/O={{ dn.organization }}/OU={{ dn.organizational_unit }}/CN={{ common_name }}'
           -outform PEM
           {% if signing_ca == 'root-ca' %}
           -copy_extensions copy
@@ -76,6 +76,7 @@
             {{ '-passin stdin' if need_private_key }}
           {% else %}
             -keyout {{ ca_private_keyfile }}
+            -newkey ec -pkeyopt ec_paramgen_curve:secp384r1
             {{ '-passin stdin' if privatekey else '-noenc' }}
           {% endif %}
         stdin: "{{ privatekey }}"
@@ -130,12 +131,12 @@
       vars:
         sops_file: "{{ pki_dir }}/{{ ca_name }}.sops.yml"
         git_commit_comment: "Adding {{ ca_name }} CA Certificate files"
-        git_add_file_list: 
+        git_add_file_list:
           - "{{ sops_file }}"
         git_push: false
       community.sops.sops_encrypt:
         path: "{{ sops_file }}"
-        content_yaml:  >-
+        content_yaml: >-
           {
             "{{ ca_name | regex_replace('-','_') }}": {
               "crt": "{{ slurps.results[0].content }}",

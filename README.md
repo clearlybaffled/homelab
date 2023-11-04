@@ -10,12 +10,12 @@ Homelab
 <div align="center">
 
 [![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60&style=flat-square&logo=discord)](https://discord.gg/DNCynrJ)&nbsp;&nbsp;&nbsp;
-[![k8s](https://img.shields.io/badge/k8s-v1.27.2-blue?style=flat-square&logo=kubernetes)](https://k8s.io/)&nbsp;&nbsp;&nbsp;
+[![k8s](https://img.shields.io/badge/k8s-v1.28.2-blue?style=flat-square&logo=kubernetes)](https://k8s.io/)&nbsp;&nbsp;&nbsp;
 [![debian](https://img.shields.io/badge/debian-bookworm-C70036?style=flat-square&logo=debian&logoColor=C70036)](https://debian.org)&nbsp;&nbsp;&nbsp;
-[![GitHub last commit](https://img.shields.io/github/last-commit/clearlybaffled/homelab/development?style=flat-square&logo=git&color=F05133)](https://github.com/clearlybaffled/homelab/commits/development)
+[![GitHub last commit](https://img.shields.io/github/last-commit/clearlybaffled/homelab/main?style=flat-square&logo=git&color=F05133)](https://github.com/clearlybaffled/homelab/commits/main)
 
 [![WTFPL](https://img.shields.io/github/license/clearlybaffled/homelab?style=flat-square&color=darkred)](http://www.wtfpl.net/)&nbsp;&nbsp;&nbsp;
-[![Lint](https://github.com/clearlybaffled/homelab/actions/workflows/lint.yml/badge.svg)](https://github.com/clearlybaffled/homelab/actions/workflows/lint.yml)&nbsp;&nbsp;&nbsp;
+[![Linters](https://github.com/clearlybaffled/homelab/actions/workflows/linters.yaml/badge.svg)](https://github.com/clearlybaffled/homelab/actions/workflows/linters.yaml)&nbsp;&nbsp;&nbsp;
 [![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/clearlybaffled/homelab?style=flat-square)](https://libraries.io/github/clearlybaffled/homelab)
 </div>
 <br/>
@@ -61,14 +61,14 @@ The full task list can be found in the [infrastructure](./infrastructure/README.
 - Run `kubeadm` to setup to create cluster
 - Creates a separate user to continue setting up the cluster with to get away from using the admin credentials
 - Applies CNI configuration
-- Generates Application files for every cluster app and drops them into [`cluster/manifests`](./cluster/manifests) and Kustomization files into[`cluster/apps`](./cluster/apps) for the respective apps
+- Generates Application files for every cluster app and drops them into [`cluster/bootstrap`](./cluster/bootstrap) and Kustomization files into[`cluster/apps`](./cluster/apps) for the respective apps
 - Bootstraps the cluster by starting ArgoCD and then applying [`cluster/cluster.yaml`](./cluster/cluster.yaml)
 
 ## GitOps
 
 [ArgoCD][argocd-uri] watches all subfolders under the [`cluster`](./cluster) folder (see Directories below) and makes the changes to my cluster based on the YAML manifests.
 
-The way Argo works for me here is (almost) every file in the [`cluster/manifests`](./cluster/manifests) directory will define an `argoproj.io/v1alpha1/Application` that points to a corresponding folder under [`cluster/apps`](./cluster/apps).
+The way Argo works for me here is (almost) every file in the [`cluster/bootstrap`](./cluster/bootstrap) directory will define an `argoproj.io/v1alpha1/Application` that points to a corresponding folder under [`cluster/apps`](./cluster/apps).
 The `Application` will apply any manifest files it finds in that directory,
 in addition to any Helm Charts or Kustomizations [that may also be defined](https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/) within the `Application`'s spec.
 One or more Helm `values.yaml` files are in each directory and each helm definition in the `Application` refers to the specific values file to apply to that chart.
@@ -140,22 +140,6 @@ This Git repository contains the following top level directories.
 |--------|----------------|------------|---------------|----------|--------------------------|
 |<img width="32" src="https://grafana.com/static/img/menu/grafana2.svg">|[Grafana][grafana-uri]| `Dashboard` | Operational dashboards | Deployed | [![][grafana-badge]][grafana-chart] |
 
-### [Media](./cluster/apps/media/)
-
-| **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
-|--------|----------------|------------|---------------|----------|--------------------------|
-|<img width="32" src="https://photonix.org/static/images/logo.svg">|[Photonix][photonix-url]| `Media` | Photo Management | | |
-|<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/appicon.png">|[Immich][immich-uri]| `Media` | Photo Management | | |
-|<img width="32" src="https://github.com/kovidgoyal/calibre/raw/master/icons/calibre.png">|[Calibre][calibre-uri]| `Media` | e-book Manager | | |
-|<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">|[ListenBrainz][listenbrainz-uri]| `Media` | Open Source scrobbler | | |
-|<img width="32" src="https://github.com/owntone/owntone-server/blob/master/docs/assets/logo.svg?raw=true">|[OwnTone][owntone-uri]| `Media` | DAAP Audio server| | |
-
-### [Downloads](./cluster/apps/downloads/)
-
-| **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
-|--------|----------------|------------|---------------|----------|--------------------------|
-|<img width="32" src="https://avatars.githubusercontent.com/u/2131270?s=200&v=4">|[qBittorrent][qbittorrent-uri]| `File Sharing` | Torrent client | | |
-
 ### [Infrastructure Services](./cluster/apps/infrastructure)
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
@@ -224,9 +208,6 @@ This Git repository contains the following top level directories.
 [mythtv-badge]: https://img.shields.io/badge/mythtv-v0.33-blue?logo=github
 [mythtv-gh]: https://github.com/MythTV/MythTV
 
-[photonix-url]: https://photonix.org/
-[immich-uri]: https://immich.app
-
 [nextcloud-url]: https://www.nextcloud.com
 [nextcloud-badge]: https://img.shields.io/badge/nextcloud-v27.0.0-blue?logo=helm
 [nextcloud-chart]: https://nextcloud.github.io/helm/
@@ -242,13 +223,8 @@ This Git repository contains the following top level directories.
 [paperless-badge]: https://img.shields.io/badge/paperless--ngx-v1.15.1-blue?logo=docker
 [paperless-img]: https://ghcr.io/paperless-ngx/paperless-ngx
 
-[calibre-uri]: https://calibre-ebook.com/
-[qbittorrent-uri]: https://www.qbittorrent.org/
 [netbox-uri]: https://netbox.dev
-[listenbrainz-uri]: https://listenbrainz.org
 [vault-uri]: https://www.vaultproject.io
-
-[owntone-uri]: https://owntone.github.io/owntone-server/
 
 [freeipa-uri]: https://wwww.freeipa.org
 [freeipa-img]: https://quay.io/repository/freeipa/freeipa-server

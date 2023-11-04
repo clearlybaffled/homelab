@@ -1,29 +1,34 @@
 image:
   repository: ghcr.io/linuxserver/calibre
-  tag: version-v5.41.0
+  tag: version-v6.29.0
 
 env:
   TZ: America/New_York
-  PUID: 997
   PGID: 997
 
 persistence:
   config:
     enabled: true
-    existingClaim: calibre-config-0
+    type: pvc
+    size: 100MB
   media:
     enabled: true
-    type: custom
-    volumeSpec:
-      nfs:
-        server: 10.2.1.50
-        path: /volume1/media
+    existingClaim: shared-files
     mountPath: /media
 
 service:
+  main:
+    ports:
+      http:
+        port: 8080
   webserver:
     enabled: true
-
+    ports:
+      webserver:
+        enabled: true
+        port: 8081
+        protocol: TCP
+        targetPort: 8081
 ingress:
   main:
     enabled: true
@@ -32,7 +37,7 @@ ingress:
       cert-manager.io/cluster-issuer: ca-issuer
     ingressClass: nginx
     hosts:
-    - host: &host calibre.gato.hermleigh.home
+    - host: &host calibre.seawolf.hermleigh.home
       paths:
       - path: /
         pathType: Prefix

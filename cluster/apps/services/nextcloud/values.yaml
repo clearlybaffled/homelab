@@ -155,7 +155,7 @@ redis:
 persistence:
   # Nextcloud Data (/var/www/html)
   enabled: true
-  storageClass: "ceph-block"
+  storageClass: ceph-fs-hdd
   accessMode: ReadWriteOnce
   size: 8Gi
 
@@ -163,7 +163,7 @@ persistence:
   ## Useful to store data on a different storageClass (e.g. on slower disks)
   nextcloudData:
     enabled: true
-    storageClass: "ceph-filesystem"
+    storageClass: ceph-fs-hdd
     accessMode: ReadWriteMany
     size: 50Gi
 

@@ -17,7 +17,6 @@
   set_fact:
     kubeletConfig_api_version: v1beta1
 
-# TODO: Fix kubelet configuration #############################
 - name: create kubelet.service.d
   file:
     path: /etc/systemd/system/kubelet.service.d
@@ -26,9 +25,6 @@
     owner: root
 
 - name: Write kubelet environment config file (kubeadm)
-  # template:
-  #   src: "kubelet.env.{{ kubeletConfig_api_version }}.j2"
-  #   dest: "{{ kube_config_dir }}/kubelet.env"
   copy:
     src: 10-kubeadm.conf
     dest: "/etc/systemd/system/kubelet.service.d/"
@@ -44,14 +40,11 @@
   notify: Kubelet | restart kubelet
 
 - name: Write kubelet systemd init file
-  # template:
-  #   src: "kubelet.service.j2"
   copy:
     src: kubelet.service
     dest: "/etc/systemd/system/kubelet.service"
     mode: "0644"
   notify: Node | restart kubelet
-########################
 
 - name: flush_handlers and reload-systemd
   meta: flush_handlers

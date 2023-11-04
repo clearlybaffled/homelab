@@ -12,3 +12,4 @@ collections:
   - community.sops
   - community.postgresql
   - community.mysql
+  - kubernetes.core

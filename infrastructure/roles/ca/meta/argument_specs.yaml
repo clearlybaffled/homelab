@@ -20,6 +20,23 @@ argument_specs:
           - client
           - ca
           - server
+      dn:
+        type: dict
+        required: false
+        description: Some values for use as the Distinguished Name or subject
+        options:
+          country:
+            type: str
+            description: Country (C) originating the cert
+            default: US
+          organization_name:
+            type: str
+            description: Organization (O) - top level or domain name
+            default: HERMLEIGH.HOME
+          organization_unit_name:
+            type: str
+            description: Organization Unit (OU) - a department or subordinate unit to the Organization
+            default: Hermleigh House Network
   sign:
     short_description: Sign certificate request
     description:
@@ -54,15 +71,14 @@ argument_specs:
     short_description: Manage Root Certificate Authority
     description: Create directory structure and files for managing a "lightweight" root Certificate Authority using openssl
     options:
-      root_ca_ou:
+      ca_name:
+        type: str
+        required: true
+        description: A short name for the CA used in directory and other naming conventions
+      common_name:
         type: str
         required: false
-        description: Organizational Unit for the Root CA
-        default: Hermleigh Home Root CA
-      root_ca_cn:
-        type: str
-        required: false
-        description: Common Name for the root CA
+        description: Common Name for the CA
         default: root-ca
       pk_passphrase:
         type: str
@@ -81,11 +97,19 @@ argument_specs:
       ca_name:
         type: str
         required: true
-        description: Common Name (CN) for the CA (also used in directory and other naming conventions)
-      orgnizational_unit_name:
+        description: A short name for the CA used in directory and other naming conventions
+      common_name:
         type: str
-        required: true
-        description: Organizational Unit (OU) name for the CA
+        description: Common Name (CN) for the CA subject
+        required_one_of:
+          - common_name
+          - csr_text
+      csr_text:
+        type: str
+        description: PEM-encoded Certificate Signing Request
+        required_one_of:
+          - common_name
+          - csr_text
       signing_ca:
         type: str
         required: true

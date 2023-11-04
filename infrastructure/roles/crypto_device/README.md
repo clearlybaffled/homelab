@@ -1,10 +1,12 @@
+<!-- markdownlint-disable MD040 MD024 MD046 -->
 # CRYPTO_DEVICE    (infrastructure/roles/crypto_device)
 
 ## ENTRY POINT: create
 
         Provision an encrypted section of a storage device
 
-### OPTIONS (= is mandatory):
+### OPTIONS (= is mandatory)
+
 ```
 - crypt_device_file
         File name of the storage device to use. Not required if
@@ -39,7 +41,8 @@
 
         Opens an encrypted storage device
 
-### OPTIONS (= is mandatory):
+### OPTIONS (= is mandatory)
+
 ```
 - crypt_device_file
         File name of the storage device to use. Not required if
@@ -80,7 +83,8 @@ ansible $DEVICE_HOST -b -m include_role -a name=crypto_device -e cmd=open
 
         Closes an open encrypted storage device
 
-### OPTIONS (= is mandatory):
+### OPTIONS (= is mandatory)
+
 ```
 - crypt_name
         Name used for the crypt
@@ -101,7 +105,8 @@ ansible $DEVICE_HOST -b -m include_role -a name=crypto_device -e cmd=close
 
         Manage an encrypted storage device
 
-### OPTIONS (= is mandatory):
+### OPTIONS (= is mandatory)
+
 ```
 = cmd
         Name of the task to execute

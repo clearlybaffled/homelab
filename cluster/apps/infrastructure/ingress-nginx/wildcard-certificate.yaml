@@ -7,13 +7,13 @@ spec:
   secretName: wildcard-certificate
   issuerRef:
     kind: ClusterIssuer
-    name: ca-issuer
-  commonName: "seawolf.hermleigh.home"
+    name: kube-ca-issuer
+  commonName: "Cluster Seawolf Wildcard"
   subject:
     organizations:
       - "HERMLEIGH.HOME"
     organizationalUnits:
-      - "Kubernetes Cluster - Gato"
+      - "Hermleigh House Network"
     countries:
       - "US"
   dnsNames:

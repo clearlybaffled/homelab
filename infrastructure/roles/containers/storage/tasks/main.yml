@@ -9,6 +9,7 @@
     definition:
       provisioner: kubernetes.io/no-provisioner
       volumeBindingMode: WaitForFirstConsumer
+      reclaimPolicy: Retain
 
 - name: Define local-storage PersistentVolumes for cross-namespace access
   kubernetes.core.k8s:
@@ -26,7 +27,7 @@
           storage: "{{ item[1].size }}"
         volumeMode: Filesystem
         accessModes:
-          - ReadWriteMany
+          - ReadWriteOnce
         persistentVolumeReclaimPolicy: Retain
         storageClassName: local-storage
         local:
@@ -38,13 +39,28 @@
                   - key: kubernetes.io/hostname
                     operator: In
                     values:
-                      - parche
+                      - seawolf
   loop: "{{ storage.namespaces | product(storage.volumes) }}"
 
-- name: Setup local path provisioner
-  include_role:
-    name: containers/storage/local_path_provisioner
-  vars:
-    local_path_provisioner_enabled: true
-    local_path_provisioner_claim_root: /srv/cluster/volumes
-    local_path_provisioner_is_default_storageclass: false
+- name: Define local-storage PersistentVolumeClaims for cross-namespace access
+  kubernetes.core.k8s:
+    server_side_apply:
+      field_manager: ansible
+    definition:
+      kind: PersistentVolumeClaim
+      api_version: v1
+      metadata:
+        name: "{{ item[1].name }}"
+        namespace: "{{ item[0] }}"
+        finalizers:
+          - kubernetes.io/pvc-protection
+      spec:
+        volumeMode: Filesystem
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: local-storage
+        volumeName: "{{ item[1].name }}-{{ item[0] }}"
+        resources:
+          requests:
+            storage: "{{ item[1].size }}"
+  loop: "{{ storage.namespaces | product(storage.volumes) }}"

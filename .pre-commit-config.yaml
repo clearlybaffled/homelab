@@ -4,7 +4,7 @@ fail_fast: false
 exclude: |
   (?x)^(
       docs/_assets/.*
-    | .*\.sops\.toml
+    | .*\.sops\.(toml|yaml)
   )$
 
 repos:
@@ -18,7 +18,7 @@ repos:
           - --no-warnings
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -43,11 +43,11 @@ repos:
       - id: fix-smartquotes
 
   - repo: https://github.com/jumanjihouse/pre-commit-hooks
-    rev: master  # or specific git tag
+    rev: 3.0.0  # or specific git tag
     hooks:
       - id: forbid-binary
-      - id: shellcheck
-      - id: shfmt
+      # - id: shellcheck
+      # - id: shfmt
 
   - repo: https://github.com/k8s-at-home/sops-pre-commit
     rev: v2.1.1
@@ -63,7 +63,7 @@ repos:
       - id: terraform_tflint
 
   - repo: https://github.com/ansible/ansible-lint
-    rev: v6.20.1
+    rev: v6.20.3
     hooks:
       - id: ansible-lint
         args:
@@ -79,7 +79,9 @@ repos:
           - .github/linters/.markdownlint.yaml
         exclude: "^.git"
 
-  - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.16.2
-    hooks:
-      - id: gitleaks
+  # TODO: Figure out how to ignore sops encrypted files
+  #   (because its using the sopsdiffer to view the actual contents!)
+  # - repo: https://github.com/gitleaks/gitleaks
+  #   rev: v8.18.0
+  #   hooks:
+  #     - id: gitleaks

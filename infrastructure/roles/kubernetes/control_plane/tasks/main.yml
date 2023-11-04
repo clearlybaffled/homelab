@@ -9,66 +9,70 @@
   register: kubeadm_already_run
   any_errors_fatal: false
 
-- name: kubeadm | aggregate all SANs
-  set_fact:
-    apiserver_sans: "{{ (sans_base + groups['kube_control_plane'] + sans_lb + sans_lb_ip + sans_supp + sans_access_ip + sans_ip + sans_address + sans_override + sans_hostname + sans_fqdn + sans_kube_vip_address + sans_kube_service_ip) | unique }}"
-  vars:
-    sans_base:
-      - "kubernetes"
-      - "kubernetes.default"
-      - "kubernetes.default.svc"
-      - "kubernetes.default.svc.{{ dns_domain }}"
-      - "{{ kube_apiserver_ip }}"
-      - "localhost"
-      - "127.0.0.1"
-    sans_lb: "{{ [apiserver_loadbalancer_domain_name] if apiserver_loadbalancer_domain_name is defined else [] }}"
-    sans_lb_ip: "{{ [loadbalancer_apiserver.address] if loadbalancer_apiserver is defined and loadbalancer_apiserver.address is defined else [] }}"
-    sans_supp: "{{ supplementary_addresses_in_ssl_keys if supplementary_addresses_in_ssl_keys is defined else [] }}"
-    sans_access_ip: "{{ groups['kube_control_plane'] | map('extract', hostvars, 'access_ip') | list | select('defined') | list }}"
-    sans_ip: "{{ groups['kube_control_plane'] | map('extract', hostvars, 'ip') | list | select('defined') | list }}"
-    sans_address: "{{ groups['kube_control_plane'] | map('extract', hostvars, ['ansible_default_ipv4', 'address']) | list | select('defined') | list }}"
-    sans_override: "{{ [kube_override_hostname] if kube_override_hostname else [] }}"
-    sans_hostname: "{{ groups['kube_control_plane'] | map('extract', hostvars, ['ansible_hostname']) | list | select('defined') | list }}"
-    sans_fqdn: "{{ groups['kube_control_plane'] | map('extract', hostvars, ['ansible_fqdn']) | list | select('defined') | list }}"
-    sans_kube_vip_address: "{{ [kube_vip_address] if kube_vip_address is defined and kube_vip_address else [] }}"
-    sans_kube_service_ip: "{{ [ kube_service_addresses | ipaddr('net')|ipaddr(1)|ipaddr('address') ] }}"
-  tags: facts
-
-- name: kubeadm | Install kubeadm.config file
-  template:
-    src: kubeadm-config.yml.j2
-    dest: "{{ kube_config_dir }}/kubeadm-config.yaml"
-    owner: "{{ kube_owner }}"
-    mode: "0640"
-
-- name: kubeadm | Get cert info if it does exist
-  community.crypto.x509_certificate_info:
-    content: "{{ kubernetes_ca.crt | b64decode }}"
-  register: cert_info
-  when: 
-    - kubernetes_ca is defined
-
-- name: Create cert
-  when: cert_info is skipped or ('expired' in cert_info and cert_info.expired)
-  block:
-    - name: kubeadm | Get signed certificate if there are no certs or if the current is expired
-      import_role:
-        name: ca
-      vars:
-        signing_ca: root-ca
-        ca_name:  kubernetes-ca
-        commit_ca: true
-        purpose: ca
-        ca_num: "{{ cert_info.organizationalUnitName | default('CA-01') | regex_search('CA-([0-9]{2})$','\\1') | first }}"
-        orgnizational_unit_name: "{{ kubernetes_ca_ou }}-{{ ca_num }}"
-      delegate_to: parche
-
-    - name: kubeadm | Reload kubernetes-ca var file
-      community.sops.load_vars:
-        file: "{{ pki_dir }}/kubernetes-ca.sops.yml"
-
 - name: kubeadm | Initialize first master
+  when: not kubeadm_already_run.stat.exists
   block:
+    - name: kubeadm | aggregate all SANs
+      set_fact:
+        apiserver_sans: "{{ (sans_base + groups['kube_control_plane'] + sans_lb + sans_lb_ip + sans_supp + sans_access_ip + sans_ip + sans_address + sans_override + sans_hostname + sans_fqdn + sans_kube_vip_address + sans_kube_service_ip) | unique }}"
+      vars:
+        sans_base:
+          - "kubernetes"
+          - "kubernetes.default"
+          - "kubernetes.default.svc"
+          - "kubernetes.default.svc.{{ dns_domain }}"
+          - "{{ kube_apiserver_ip }}"
+          - "localhost"
+          - "127.0.0.1"
+        sans_lb: "{{ [apiserver_loadbalancer_domain_name] if apiserver_loadbalancer_domain_name is defined else [] }}"
+        sans_lb_ip: "{{ [loadbalancer_apiserver.address] if loadbalancer_apiserver is defined and loadbalancer_apiserver.address is defined else [] }}"
+        sans_supp: "{{ supplementary_addresses_in_ssl_keys if supplementary_addresses_in_ssl_keys is defined else [] }}"
+        sans_access_ip: "{{ groups['kube_control_plane'] | map('extract', hostvars, 'access_ip') | list | select('defined') | list }}"
+        sans_ip: "{{ groups['kube_control_plane'] | map('extract', hostvars, 'ip') | list | select('defined') | list }}"
+        sans_address: "{{ groups['kube_control_plane'] | map('extract', hostvars, ['ansible_default_ipv4', 'address']) | list | select('defined') | list }}"
+        sans_override: "{{ [kube_override_hostname] if kube_override_hostname else [] }}"
+        sans_hostname: "{{ groups['kube_control_plane'] | map('extract', hostvars, ['ansible_hostname']) | list | select('defined') | list }}"
+        sans_fqdn: "{{ groups['kube_control_plane'] | map('extract', hostvars, ['ansible_fqdn']) | list | select('defined') | list }}"
+        sans_kube_vip_address: "{{ [kube_vip_address] if kube_vip_address is defined and kube_vip_address else [] }}"
+        sans_kube_service_ip: "{{ [ kube_service_addresses | ipaddr('net')|ipaddr(1)|ipaddr('address') ] }}"
+      tags: facts
+
+    - name: kubeadm | Install kubeadm.config file
+      template:
+        src: kubeadm-config.yml.j2
+        dest: "{{ kube_config_dir }}/kubeadm-config.yaml"
+        owner: "{{ kube_owner }}"
+        mode: "0640"
+
+    - name: kubeadm | Get cert info if it does exist
+      community.crypto.x509_certificate_info:
+        content: "{{ kubernetes_ca.crt | b64decode }}"
+      register: cert_info
+      when:
+        - kubernetes_ca is defined
+        - "'crt' in kubernetes_ca"
+        - kubernetes_ca.crt != ''
+
+    - name: Create cert
+      when: cert_info is skipped or ('expired' in cert_info and cert_info.expired)
+      delegate_to: parche
+      block:
+        - name: kubeadm | Get signed certificate if there are no certs or if the current is expired
+          include_role:
+            name: ca
+          vars:
+            signing_ca: root-ca
+            ca_name: kubernetes-ca
+            commit_ca: true
+            purpose: ca
+            ca_num: "{{ cert_info.subject.commonName | default('CA-01') | regex_search('CA-([0-9]{2})$','\\1') | first }}"
+            common_name: "{{ kubernetes_ca_cn }}-CA{{ '{:02d}'.format(ca_num|int + 1) }}"
+
+        - name: kubeadm | Reload kubernetes-ca var file
+          community.sops.load_vars:
+            file: "{{ pki_dir }}/kubernetes-ca.sops.yml"
+          delegate_to: localhost
+
     - name: kubeadm | Write out Kube CA cert files
       copy:
         dest: "{{ kube_cert_dir }}/ca.{{ item }}"

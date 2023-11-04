@@ -1,0 +1,8 @@
+---
+- include_tasks: # noqa name
+    file: ../init-mysql.yml
+    apply:
+      vars:
+        db_user_var: db-username
+        db_pass_var: db-password
+        db_name: nextcloud

@@ -36,7 +36,7 @@
       community.libvirt.virt_pool:
         name: "{{ pool_name }}"
         command: define
-        xml: "{{ lookup('template','libvirt_pool.xml.j2') }}"
+        xml: "{{ lookup('template','libvirt_dir_pool.xml.j2') }}"
         autostart: true
 
     - name: Activate storage pool

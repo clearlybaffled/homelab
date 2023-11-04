@@ -1,25 +1,30 @@
 image:
   repository: ghcr.io/linuxserver/calibre-web
-  tag: version-0.6.18
+  tag: version-0.6.21
 
 env:
   TZ: America/New_York
-  PUID: 997
   PGID: 997
   DOCKER_MODS: "linuxserver/calibre-web:calibre"
+
+
+service:
+  main:
+    ports:
+      http:
+        port: 8083
+
 
 persistence:
   config:
     enabled: true
-    existingClaim: calibre-web-config-0
+    type: pvc
+    size: 100MB
   media:
     enabled: true
-    type: custom
-    volumeSpec:
-      nfs:
-        server: 10.2.1.50
-        path: /volume1/media
+    existingClaim: shared-files
     mountPath: /media
+    subPath: Books
 
 ingress:
   main:
@@ -29,7 +34,7 @@ ingress:
       cert-manager.io/cluster-issuer: ca-issuer
     ingressClass: nginx
     hosts:
-    - host: &host calibre-web.gato.hermleigh.home
+    - host: &host calibre-web.seawolf.hermleigh.home
       paths:
       - path: /
         pathType: Prefix

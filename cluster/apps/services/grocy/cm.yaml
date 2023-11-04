@@ -3,8 +3,32 @@ kind: ConfigMap
 metadata:
   name: grocy-cm
   namespace: services
+  labels:
+    app.kubernetes.io/name: grocy
 data:
   GENERIC_TIMEZONE: "America/New_York"
   TZ: "America/New_York"
   PUID: "997"
   PGID: "997"
+  GROCY_CULTURE: en
+  MAX_UPLOAD: 50M
+  PHP_MAX_FILE_UPLOAD: "200"
+  PHP_MAX_POST: 100M
+  PHP_MEMORY_LIMIT: 512M
+  GROCY_MODE: production
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: barcode-buddy-cm
+  namespace: services
+  labels:
+    app.kubernetes.io/name: grocy
+data:
+  GENERIC_TIMEZONE: "America/New_York"
+  TZ: "America/New_York"
+  PUID: "997"
+  PGID: "997"
+  BBUDDY_DISABLE_AUTHENTICATION: "true"
+#  BBUDDY_TRUSTED_PROXIES: "172.16.1.24"
+  BBUDDY_BASEURL: "/barcode-buddy"

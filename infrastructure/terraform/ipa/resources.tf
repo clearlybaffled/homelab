@@ -6,7 +6,7 @@ resource "libvirt_cloudinit_disk" "ipa-cloud-init" {
     {
       ssh_pubkey  = data.sops_file.ansible_ssh_key.data["ansible_user_ssh_pubkey"]
       ssh_key     = data.sops_file.ansible_ssh_key.data["ansible_user_ssh_key"]
-      root_ca_crt = data.sops_file.root_ca_crt.data["root_ca_crt"]
+      root_ca_crt = data.sops_file.root_ca_crt.data["root_ca.crt"]
     }
   )
   network_config = file("${path.module}/ipa_network_config")
@@ -18,4 +18,6 @@ resource "libvirt_volume" "ipa-root" {
   format           = "qcow2"
   size             = "10737418240"
   base_volume_name = "fedora38.qcow2"
+  base_volume_pool = "cluster"
+
 }

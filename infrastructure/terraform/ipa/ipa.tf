@@ -1,6 +1,6 @@
 resource "libvirt_domain" "ipa-server" {
   name       = "tang"
-  memory     = "2048"
+  memory     = "4096"
   vcpu       = 2
   autostart  = true
   qemu_agent = true

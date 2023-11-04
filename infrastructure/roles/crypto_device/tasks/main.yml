@@ -12,7 +12,7 @@
       - cmd in ['create','open','close']
 
 - name: Get device data
-  command: 
+  command:
     cmd: "lsblk -d -b -o name,path,serial,size,log-sec {{ device_name | default('') }}"
   register: lsblk
   when: crypt_device_file is not defined

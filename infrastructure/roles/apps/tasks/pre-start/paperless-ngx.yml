@@ -1,0 +1,8 @@
+---
+- include_tasks: # noqa name
+    file: ../init-postgres.yml
+    apply:
+      vars:
+        db_user_var: PAPERLESS_DBUSER
+        db_pass_var: PAPERLESS_DBPASS
+        db_name: paperless

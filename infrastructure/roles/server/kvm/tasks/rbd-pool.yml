@@ -1,0 +1,77 @@
+---
+- name: Set facts
+  set_fact:
+    ceph_name: libvirt
+
+- name: Get CephClient config
+  kubernetes.core.k8s_info:
+    kind: CephClient
+    api_version: ceph.rook.io/v1
+    namespace: rook-ceph
+    name: "{{ ceph_name }}"
+  register: ceph_client
+  failed_when: ceph_client.resources | length == 0
+
+- name: Get Ceph secret
+  kubernetes.core.k8s_info:
+    kind: Secret
+    namespace: rook-ceph
+    name: "{{ ceph_client.resources[0].status.info.secretName }}"
+  register: ceph_secret
+  failed_when: ceph_secret.resources | length == 0
+
+- name: Create storage pool
+  delegate_to: "{{ groups.hypervisor | first }}"
+  become: true
+  vars:
+    pool_name: seawolf-rbd
+    secret_uuid: 9a1d6492-5fc2-47a2-8564-d7e75818fdb8
+    ceph_mon_host: ceph.hermleigh.home
+  block:
+    - name: Get a tempfile
+      tempfile:
+        state: file
+        suffix: .xml
+      register: tmpfile
+
+    # - name: Create secret xml file
+    #   copy:
+    #     dest: "{{ tmpfile.path }}"
+    #     content: |-
+    #       <secret ephemeral='no' private='no'>
+    #         <usage type='ceph'>
+    #           <name>client.{{ ceph_name }} secret</name>
+    #         </usage>
+    #       </secret>
+
+    # - name: Define libvirt secret
+    #   command: virsh secret-define --file "{{ tmpfile.path }}"
+    #   register: virt_secret
+
+    # - name: Get secret uuid
+    #   set_fact:
+    #     secret_uuid: "{{ virt_secret.stdout | regex_search('^Secret ([a-f0-9\\-]+?) created$', '\\1') | first }}"
+
+    # - name: Set virt secret data
+    #   command: >- 
+    #     virsh secret-set-value 
+    #       --secret "{{ secret_uuid }}" 
+    #       --base64 "{{ ceph_secret.resources[0].data[ceph_name] }}"
+
+    - name: Define storage pool
+      community.libvirt.virt_pool:
+        name: "{{ pool_name }}"
+        command: define
+        xml: "{{ lookup('template','libvirt_rbd_pool.xml.j2') }}"
+        autostart: true
+
+    - name: Activate storage pool
+      community.libvirt.virt_pool:
+        name: "{{ pool_name }}"
+        state: active
+
+  always:
+    - name: Remove secret xml tempfile
+      file:
+        path: "{{ tmpfile.path }}"
+        state: absent

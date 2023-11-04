@@ -1,0 +1,14 @@
+---
+- name: Wait for Ceph cluster to be healthy
+  kubernetes.core.k8s_info:
+    kind: CephCluster
+    api_version: ceph.rook.io/v1
+    namespace: rook-ceph
+    name: rook-ceph
+    wait: true
+    wait_sleep: "{{ 3 * 60 }}"
+    wait_timeout: "{{ 15 * 60 }}"
+    wait_condition:
+      type: Ready
+      reason: ClusterCreated
+      status: 'True'
