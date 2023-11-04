@@ -5,6 +5,14 @@ env:
   TZ: America/New_York
   QBITTORRENT__PORT: &port 8080
   QBITTORRENT__BT_PORT: &port-bt 50413
+  QBT_BitTorrent__Session__IPFilter: 'https:/github.com/Naunter/BT_BlockLists/blob/master/combined_2.txt?raw=true'
+  QBT_BitTorrent__Session_IPFilteringEnabled: 'true'
+  QBT_BitTorrent__Session__TrackerFilteringEnabled: 'true'
+  QBT_BitTorrent__Session__DefaultSavePath: '/shared/Downloads'
+  QBT_BitTorrent__Session__TorrentExportDirectory: '/shared/Downloads/torrents'
+  QBT_Preferences__WebUI__AuthSubnetWhitelist: '10.0.0.0/8, 172.16.0.0/12'
+  QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: 'true'
+
 service:
   main:
     ports:
@@ -20,6 +28,7 @@ service:
         protocol: TCP
         targetPort: *port-bt
     externalTrafficPolicy: Local
+
 ingress:
   main:
     enabled: true
@@ -59,6 +68,7 @@ persistence:
     enabled: true
     type: pvc
     existingClaim: videos
+
 resources:
   requests:
     cpu: 10m

@@ -53,6 +53,10 @@ persistence:
     enabled: true
     type: pvc
     existingClaim: shared-files
+  videos:
+    enabled: true
+    type: pvc
+    existingClaim: videos
 
 resources:
   requests:
