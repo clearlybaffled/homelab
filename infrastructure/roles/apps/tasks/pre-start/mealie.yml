@@ -5,4 +5,5 @@
       vars:
         db_user_var: POSTGRES_USER
         db_pass_var: POSTGRES_PASSWORD
-        db_name: mealie
+        db_names:
+          - mealie

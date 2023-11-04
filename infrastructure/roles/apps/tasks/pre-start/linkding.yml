@@ -5,4 +5,5 @@
       vars:
         db_user_var: LD_DB_USER
         db_pass_var: LD_DB_PASSWORD
-        db_name: linkding
+        db_names:
+          - linkding

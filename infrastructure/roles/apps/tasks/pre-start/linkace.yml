@@ -5,4 +5,5 @@
       vars:
         db_user_var: DB_USERNAME
         db_pass_var: DB_PASSWORD
-        db_name: linkacedb
+        db_names:
+          - linkacedb
