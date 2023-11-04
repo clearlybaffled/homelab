@@ -5,7 +5,7 @@ image:
 env:
   TZ: America/New_York
   PGID: 997
-  DOCKER_MODS: "linuxserver/calibre-web:calibre"
+  DOCKER_MODS: "linuxserver/mods:universal-calibre"
 
 
 service:
@@ -18,13 +18,11 @@ service:
 persistence:
   config:
     enabled: true
-    type: pvc
-    size: 100Mi
+    existingClaim: calibre-config
   media:
     enabled: true
     existingClaim: shared-files
     mountPath: /media
-    subPath: Books
 
 ingress:
   main:
