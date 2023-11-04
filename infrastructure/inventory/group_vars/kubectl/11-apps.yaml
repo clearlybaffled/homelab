@@ -301,6 +301,12 @@ apps:
     charts:
       - <<: *app_template
         release: sonarr
+    secrets:
+      secret:
+        data:
+          SONARR__API_KEY:
+            type: password
+            name: api
 
   radarr:
     namespace: downloads

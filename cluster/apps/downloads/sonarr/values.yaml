@@ -17,7 +17,7 @@ env:
   SONARR__LOG_LEVEL: info
 envFrom:
   - secretRef:
-    name: sonarr-secret
+      name: sonarr-secret
 
 service:
   main:
