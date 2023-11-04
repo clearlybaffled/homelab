@@ -1,0 +1,62 @@
+image:
+  repository: ghcr.io/onedr0p/prowlarr-develop
+  tag: 1.9.3.4013@sha256:53612010c44edc1db3810990236968898e7b3733a566777697288f13a3fdd5c5
+env:
+  TZ: America/New_York
+  PROWLARR__INSTANCE_NAME: Prowlarr
+  PROWLARR__PORT: &port 80
+  PROWLARR__LOG_LEVEL: info
+  PROWLARR__AUTHENTICATION_METHOD: External
+  PROWLARR__THEME: dark
+  PROWLARR__POSTGRES_HOST: postgres-rw.db.svc
+  PROWLARR__POSTGRES_PORT: "5432"
+envFrom:
+  - secretRef:
+      name: prowlarr-secret
+service:
+  main:
+    ports:
+      http:
+        port: *port
+probes:
+  liveness: &probes
+    enabled: true
+    custom: true
+    spec:
+      httpGet:
+        path: /ping
+        port: *port
+      initialDelaySeconds: 0
+      periodSeconds: 10
+      timeoutSeconds: 1
+      failureThreshold: 3
+  readiness: *probes
+  startup:
+    enabled: false
+ingress:
+  main:
+    enabled: true
+    ingressClassName: internal
+    hosts:
+      - host: &host prowlarr.seawolf.hermleigh.home
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - *host
+podSecurityContext:
+  runAsUser: 997
+  runAsGroup: 997
+  fsGroup: 997
+  fsGroupChangePolicy: OnRootMismatch
+persistence:
+  config:
+    enabled: true
+    type: emptyDir
+resources:
+  requests:
+    cpu: 10m
+    memory: 100Mi
+  limits:
+    memory: 500Mi
