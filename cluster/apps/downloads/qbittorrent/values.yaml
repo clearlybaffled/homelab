@@ -55,6 +55,10 @@ persistence:
   incomplete:
     enabled: true
     type: emptyDir
+  videos:
+    enabled: true
+    type: pvc
+    existingClaim: videos
 resources:
   requests:
     cpu: 10m
