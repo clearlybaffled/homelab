@@ -5,7 +5,7 @@ image:
 env:
   TZ: America/New_York
   PROWLARR__INSTANCE_NAME: Prowlarr
-  PROWLARR__PORT: &port 80
+  PROWLARR__PORT: &port 9696
   PROWLARR__LOG_LEVEL: debug
   PROWLARR__THEME: dark
   PROWLARR__POSTGRES_HOST: 10.233.56.52
