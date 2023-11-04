@@ -1,6 +1,6 @@
 image:
-  repository: localhost/linkwarden/linkwarden
-  tag: latest
+  repository: ghcr.io/linkwarden/linkwarden
+  tag: v1.2.5
 
 env:
   NEXTAUTH_URL: http://localhost:3000
