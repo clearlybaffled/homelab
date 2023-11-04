@@ -5,7 +5,7 @@ env:
   TZ: America/New_York
   PROWLARR__INSTANCE_NAME: Prowlarr
   PROWLARR__PORT: &port 80
-  PROWLARR__LOG_LEVEL: info
+  PROWLARR__LOG_LEVEL: debug
   PROWLARR__AUTHENTICATION_METHOD: External
   PROWLARR__THEME: dark
   PROWLARR__POSTGRES_HOST: postgres-rw.db.svc
@@ -36,7 +36,10 @@ probes:
 ingress:
   main:
     enabled: true
-    ingressClassName: internal
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: ca-issuer
+      hajimari.io/icon: cloud-search
     hosts:
       - host: &host prowlarr.seawolf.hermleigh.home
         paths:
@@ -53,7 +56,8 @@ podSecurityContext:
 persistence:
   config:
     enabled: true
-    type: emptyDir
+    type: pvc
+    size: 50Mi
 resources:
   requests:
     cpu: 10m
