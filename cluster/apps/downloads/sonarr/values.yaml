@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/onedr0p/sonarr-develop
-  tag: 4.0.0.610@sha256:9f43642aa6211d6814bc11a2898a08c1680be409e081690b0017522fba1386c8
+  tag: 4.0.0.710
 
 podSecurityContext:
   runAsUser: 997
@@ -13,13 +13,11 @@ podSecurityContext:
 env:
   SONARR__INSTANCE_NAME: Sonarr
   SONARR__PORT: &port 8989
-  SONARR__APPLICATION_URL: "https://sonarr.seawolf.hermleigh.home"
+  SONARR__APPLICATION_URL: https://sonarr.seawolf.hermleigh.home
   SONARR__LOG_LEVEL: info
-  SONARR__API_KEY:
-    valueFrom:
-      secretKeyRef:
-        name: sonarr-secret
-        key: api_key
+envFrom:
+  - secretRef:
+    name: sonarr-secret
 
 service:
   main:
@@ -39,7 +37,7 @@ ingress:
         sub_filter '<body>' '<body><link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/sonarr/nord.css">';
         sub_filter_once on;
     hosts:
-      - host: &host "sonarr.seawolf.hermleigh.home"
+      - host: &host sonarr.seawolf.hermleigh.home
         paths:
           - path: /
     tls:
@@ -53,6 +51,7 @@ persistence:
     type: pvc
   shared:
     enabled: true
+    type: pvc
     existingClaim: shared-files
 
 resources:
