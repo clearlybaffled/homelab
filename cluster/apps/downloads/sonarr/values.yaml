@@ -13,7 +13,7 @@ podSecurityContext:
 env:
   SONARR__INSTANCE_NAME: Sonarr
   SONARR__PORT: &port 8989
-  SONARR__APPLICATION_URL: "https://sonarr.gato.hermleigh.home"
+  SONARR__APPLICATION_URL: "https://sonarr.seawolf.hermleigh.home"
   SONARR__LOG_LEVEL: info
   SONARR__API_KEY:
     valueFrom:
@@ -49,7 +49,6 @@ ingress:
 persistence:
   config:
     enabled: true
-    storageClass: ceph-block
     size: 50Mi
   shared:
     enabled: true

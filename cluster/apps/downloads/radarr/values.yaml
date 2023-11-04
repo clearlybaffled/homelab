@@ -5,7 +5,7 @@ image:
 env:
   TZ: "America/New_York"
   RADARR__INSTANCE_NAME: Radarr
-  RADARR__APPLICATION_URL: 'https://movies.gato.hermleigh.home'
+  RADARR__APPLICATION_URL: 'https://movies.seawolf.hermleigh.home'
   RADARR__LOG_LEVEL: info
 
 service:
@@ -34,7 +34,6 @@ ingress:
 persistence:
   config:
     enabled: true
-    storageClass: ceph-block
     size: 50Mi
   videos:
     enabled: true
