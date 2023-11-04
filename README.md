@@ -133,6 +133,9 @@ This Git repository contains the following top level directories.
 |<img width="32" src="https://nextcloud.com/wp-content/uploads/2022/10/nextcloud-logo-blue-transparent.svg">| [NextCloud][nextcloud-url] | `File Sharing` | File Hosting | Deployed | [![][nextcloud-badge]][nextcloud-chart] |
 |<img width="32" src="https://hajimari.io/assets/logo.png">|[Hajimari][hajimari-url] | `Dashboard` | Startpage with K8S application discovery | Deployed | [![][hajimari-badge]][hajimari-url] |
 |<img width="32" src="https://github.com/paperless-ngx/paperless-ngx/raw/dev/docs/assets/favicon.png">|[Paperless-ngx][paperless-uri] | `File Sharing` | Document Management System | Deployed| [![][paperless-badge]][paperless-img] |
+| <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:serif="http://www.serif.com/" version="1.1" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.5;" viewBox="62.42 61.25 449.86 449.86"><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-custom-link"><script></script></link><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-general-link"></link><style xmlns="" lang="en" type="text/css" id="dark-mode-custom-style"></style><style xmlns="" lang="en" type="text/css" id="dark-mode-native-style"></style><style xmlns="" lang="en" type="text/css" id="dark-mode-native-sheet"></style><g transform="matrix(1.18075,0,0,1.18075,-1265.31,-1395.82)"><circle cx="1314.98" cy="1424.52" r="190.496" style="fill:rgb(88,86,224);"></circle></g><g transform="matrix(1,0,0,1,-1017.49,-1140.55)"><g transform="matrix(0.707351,0.706862,-0.706862,0.707351,1331.93,-512.804)"><path d="M1244.39,1293.95L1244.39,1493.59C1244.39,1493.59 1243.58,1561.48 1319.29,1562.47C1395.27,1563.46 1394.17,1493.59 1394.17,1493.59L1394.17,1293.95" style="fill:none;stroke:white;stroke-width:31.25px;"></path></g><g transform="matrix(-0.710067,-0.704134,0.704134,-0.710067,1284.12,3366.41)"><path d="M1244.39,1293.95L1244.39,1493.59C1244.39,1493.59 1243.58,1561.48 1319.29,1562.47C1395.27,1563.46 1394.17,1493.59 1394.17,1493.59L1394.17,1293.95" style="fill:none;stroke:white;stroke-width:31.25px;"></path></g></g></svg> | [Linkding][linkding-uri] | `Bookmark Sharing`| Minimal bookmark Manager | Deployed | [![][linkding-badge]][linkding-img] | 
+| <img width="32" src="https://raw.githubusercontent.com/Kovah/LinkAce/main/public/favicon.ico"> | [LinkAce][linkace-uri] | `Bookmark Sharing` | Your self-hosted bookmark archive | Deployed | [![][linkace-badge]][linkace-img] |
+|<img width="32" src="https://raw.githubusercontent.com/linkwarden/linkwarden/4454e615b64f710d7104dd2042fbe97da3904f7e/public/favicon-32x32.png">|[Linkwarden][linkwarden-uri] | `Bookmark Sharing` | Collaborative Bookmark Manager | Deployed | [![][linkwarden-badge]][linkwarden-img] | 
 
 ### [Monitoring](./cluster/apps/monitoring/)
 
@@ -222,6 +225,18 @@ This Git repository contains the following top level directories.
 [paperless-uri]: https://docs.paperless-ngx.com/
 [paperless-badge]: https://img.shields.io/badge/paperless--ngx-v1.15.1-blue?logo=docker
 [paperless-img]: https://ghcr.io/paperless-ngx/paperless-ngx
+
+[linkding-uri]: https://github.com/sissbruecker/linkding
+[linkding-badge]: https://img.shields.io/badge/linkding-1.19.1-blue?logo=docker
+[linkding-img]: https://hub.docker/com/r/sissbruecker/linkding
+
+[linkace-uri]: https://www.linkace.org/
+[linkace-badge]: https://img.shields.io/badge/linkace-v1.12.2-blue?logo=docker
+[linkace-img]: https://hub.docker.com/r/linkace/linkace
+
+[linkwarden-uri]: https://linkwarden.app
+[linkwarden-badge]: https://img.shields.io/badge/linkwarden-v1.2.5-blue?logo=docker
+[linkwarden-img]: https://ghcr.io/linkwarden/linkwarden
 
 [netbox-uri]: https://netbox.dev
 [vault-uri]: https://www.vaultproject.io

@@ -223,7 +223,7 @@ cephFileSystems:
             memory: "512M"
     storageClass:
       enabled: true
-      isDefault: true
+      isDefault: false
       name: ceph-fs-ssd
       pool: data1
       reclaimPolicy: Retain
