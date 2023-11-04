@@ -1,23 +1,25 @@
 image:
   repository: ghcr.io/onedr0p/prowlarr
   tag: 1.9.4
+
 env:
   TZ: America/New_York
   PROWLARR__INSTANCE_NAME: Prowlarr
   PROWLARR__PORT: &port 80
   PROWLARR__LOG_LEVEL: debug
-  PROWLARR__AUTHENTICATION_METHOD: External
   PROWLARR__THEME: dark
-  PROWLARR__POSTGRES_HOST: postgres-rw.db.svc
+  PROWLARR__POSTGRES_HOST: cnpg-cluster-rw.db.svc
   PROWLARR__POSTGRES_PORT: "5432"
 envFrom:
   - secretRef:
       name: prowlarr-secret
+
 service:
   main:
     ports:
       http:
         port: *port
+
 probes:
   liveness: &probes
     enabled: true
@@ -33,6 +35,7 @@ probes:
   readiness: *probes
   startup:
     enabled: false
+
 ingress:
   main:
     enabled: true
@@ -48,16 +51,20 @@ ingress:
     tls:
       - hosts:
           - *host
+        secretName: prowlarr-tls-ingress
+
 podSecurityContext:
   runAsUser: 997
   runAsGroup: 997
   fsGroup: 997
   fsGroupChangePolicy: OnRootMismatch
+
 persistence:
   config:
     enabled: true
     type: pvc
     size: 50Mi
+
 resources:
   requests:
     cpu: 10m
