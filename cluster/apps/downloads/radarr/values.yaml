@@ -22,7 +22,7 @@ ingress:
       cert-manager.io/cluster-issuer: ca-issuer
       hajimari.io/icon: filmstrip
     hosts:
-      - host: &host movies.gato.hermleigh.home
+      - host: &host movies.seawolf.hermleigh.home
         paths:
           - path: /
             pathType: Prefix

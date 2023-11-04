@@ -30,7 +30,7 @@ service:
 ingress:
   main:
     enabled: true
-    ingressClassName: "internal-nginx"
+    ingressClassName: nginx
     annotations:
       hajimari.io/icon: mdi:television-classic
       cert-manager.io/cluster-issuer: ca-issuer
@@ -39,7 +39,7 @@ ingress:
         sub_filter '<body>' '<body><link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/sonarr/nord.css">';
         sub_filter_once on;
     hosts:
-      - host: &host "sonarr.gato.hermleigh.home"
+      - host: &host "sonarr.seawolf.hermleigh.home"
         paths:
           - path: /
     tls:
@@ -50,6 +50,7 @@ persistence:
   config:
     enabled: true
     size: 50Mi
+    type: pvc
   shared:
     enabled: true
     existingClaim: shared-files
