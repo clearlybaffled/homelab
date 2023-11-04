@@ -8,7 +8,7 @@ env:
   PROWLARR__PORT: &port 80
   PROWLARR__LOG_LEVEL: debug
   PROWLARR__THEME: dark
-  PROWLARR__POSTGRES_HOST: cnpg-cluster-rw.db.svc
+  PROWLARR__POSTGRES_HOST: 10.233.56.52
   PROWLARR__POSTGRES_PORT: "5432"
 envFrom:
   - secretRef:
