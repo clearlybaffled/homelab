@@ -51,10 +51,8 @@ persistence:
 
 additionalContainers:
   api:
-    image:
-      repository: hkotel/mealie
-      tag: api-v1.0.0beta-5
-      pullPolicy: IfNotPresent
+    image: hkotel/mealie:api-v1.0.0beta-5
+    imagePullPolicy: IfNotPresent
 
     env:
       TZ: America/New_York
