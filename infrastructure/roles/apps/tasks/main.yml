@@ -37,14 +37,13 @@
   loop_control:
     label: "{{ item.0 }}"
 
-- name: Install Application specific configurations and files
-  include_tasks: application.yml
+- name: Make app loop
+  set_fact:
+    app_loop: "{{ app_loop | default([]) + [app] }}"
   loop: "{{ app_list }}"
   loop_control:
     loop_var: app
     label: "{{ app.name }}"
-    extended: true
-    # extended_allitems: false
   when:
     # Don't include if app.createApp is false
     - app.createApp | default(true)
@@ -56,6 +55,16 @@
     - app.name not in app_reject_list|default(omit)
     # Use the argument start_at to get the name of an app to start processing at
     #- ansible_loop.index0 >=  (app_list | map(attribute='name')).index(start_at )
+  tags: always
+
+- name: Install Application specific configurations and files
+  include_tasks: application.yml
+  loop: "{{ app_loop }}"
+  loop_control:
+    loop_var: app
+    label: "{{ app.name }}"
+    extended: true
+    # extended_allitems: false
   tags: always
   vars:
     mysql_app: "{{ app_list | selectattr('name','eq','mysql') | first }}"
