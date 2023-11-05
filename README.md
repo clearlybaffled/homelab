@@ -96,44 +96,62 @@ This Git repository contains the following top level directories.
 
 |Logo|Name|Description|
 |:----|:----|:--------|
-|<img width="32" src="https://simpleicons.org/icons/ansible.svg">|[Ansible][ansible-uri]|Automate bare metal provisioning and configuration|
-|<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/master/projects/argo/icon/color/argo-icon-color.svg">|[ArgoCD][argocd-uri]|GitOps tool built to deploy applications to Kubernetes|
-|<img width="32" src="https://github.com/jetstack/cert-manager/raw/master/logo/logo.png">|[cert-manager](https://cert-manager.io)|Cloud native certificate management|
-|<img width="32" src="https://raw.github.com/cncf/artwork/master/projects/crio/icon/color/crio-icon-color.png">|[CRI-O](https://www.cri-o.io)|OCI - Container Runtime|
-|<img width="32" src="https://www.debian.org/logos/openlogo-nd.svg">|[Debian](https://debian.org)|Base OS for Kubernetes nodes|
-|<img width="32" src="https://raw.githubusercontent.com/flannel-io/flannel/master/logos/flannel-glyph-color.svg">|[Flannel](https://www.github.com/flannel-io/flannel)|Kubernetes Network Plugin|
-|<img width="32" src="https://github.com/cncf/artwork/blob/master/projects/helm/icon/color/helm-icon-color.png?raw=true">|[Helm](https://helm.sh)|The package manager for Kubernetes|
-|<img width="32" src="https://docs.nginx.com/nginx-ingress-controller/images/icons/NGINX-Ingress-Controller-product-icon.svg">|[Ingress-nginx](https://kubernetes.github.io/ingress-nginx/)| Ingress controller for Kubernetes using NGINX as a reverse proxy and load balancer|
-|<img width="32" src="https://www.virt-tools.org/logo-kvm.png">|[KVM](https://www.linux-kvm.org)| Linux Kernel Virtual Machine Hypervisor |
-|<img width="32" src="https://github.com/cncf/artwork/blob/master/projects/kubernetes/icon/color/kubernetes-icon-color.svg?raw=true">|[Kubernetes](https://kubernetes.io)|Container Orchestration|
-|<img width="32" src="https://libvirt.org/logos/logo-square.svg">|[Libvirt](https://www.libvirt.org) | Virtualization API |
-|<img width="32" src="https://avatars.githubusercontent.com/u/60239468?s=200&v=4">|[MetalLB](https://metallb.org)|Bare metal load-balancer for Kubernetes|
-|<img width="32" src="https://github.com/cncf/artwork/blob/aea0dcfe090b8f36d7ae1eb3d5fbe95cc77380d3/projects/prometheus/icon/color/prometheus-icon-color.png?raw=true">|[Prometheus](https://prometheus.io)|Systems monitoring and alerting toolkit|
-|<img width="32" src="https://www.virt-tools.org/logo-qemu.png">|[QEMU](https://www.qemu.org)|Open source machine emulator and virtualizer|
-|<img width="32" src="https://github.com/cncf/artwork/blob/master/projects/rook/icon/color/rook-icon-color.png?raw=true">|[Rook](https://rook.io)|Cloud-native storage orchestrator for Ceph|
-|<img width="32" src="https://api.iconify.design/logos/terraform-icon.svg">|[Terraform](https://www.terraform.io/)|Infrastructure provisioning automation|
-|<img width="32" src="https://docs.zerotier.com/img/ZeroTierIcon.png">|[ZeroTier](https://zerotier.com)|Virtual Networking that just works|
+|[<img width="32" src="https://simpleicons.org/icons/ansible.svg">][ansible-uri]|[Ansible](./infrastructure/)|Automate bare metal provisioning and configuration|
+|[<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/master/projects/argo/icon/color/argo-icon-color.svg">][argocd-uri]|[ArgoCD](./cluster/argocd/)|GitOps tool built to deploy applications to Kubernetes|
+|[<img width="32" src="https://github.com/jetstack/cert-manager/raw/master/logo/logo.png">](https://cert-manager.io)|[cert-manager](./cluster/apps/infrastructure/cert-manager/)|Cloud native certificate management|
+|[<img width="32" src="https://raw.github.com/cncf/artwork/master/projects/crio/icon/color/crio-icon-color.png">](https://www.cri-o.io)|[CRI-O](./infrastructure/roles/containers/runtime/)|OCI - Container Runtime|
+|[<img width="32" src="https://www.debian.org/logos/openlogo-nd.svg">](https://debian.org)|Debian|Base OS for Kubernetes nodes|
+|[<img width="32" src="https://raw.githubusercontent.com/flannel-io/flannel/master/logos/flannel-glyph-color.svg">](https://www.github.com/flannel-io/flannel)|[Flannel](./infrastructure/roles/containers/network/)|Kubernetes Network Plugin|
+|[<img width="32" src="https://github.com/cncf/artwork/blob/master/projects/helm/icon/color/helm-icon-color.png?raw=true">](https://helm.sh)|Helm|The package manager for Kubernetes|
+|[<img width="32" src="https://docs.nginx.com/nginx-ingress-controller/images/icons/NGINX-Ingress-Controller-product-icon.svg">](https://kubernetes.github.io/ingress-nginx/)|[Ingress-nginx](./cluster/apps/infrastructure/ingress-nginx/)| Ingress controller for Kubernetes using NGINX as a reverse proxy and load balancer|
+|[<img width="32" src="https://www.virt-tools.org/logo-kvm.png">](https://www.linux-kvm.org)|[KVM](./infrastructure/roles/server/kvm/) | Linux Kernel Virtual Machine Hypervisor |
+|[<img width="32" src="https://github.com/cncf/artwork/blob/master/projects/kubernetes/icon/color/kubernetes-icon-color.svg?raw=true">](https://kubernetes.io)|[Kubernetes](./infrastructure/roles/kubernetes/)|Container Orchestration|
+|[<img width="32" src="https://libvirt.org/logos/logo-square.svg">](https://www.libvirt.org) |Libvirt| Virtualization API |
+|[![](https://avatars.githubusercontent.com/u/60239468?s=32&v=4)](https://metallb.org)|[MetalLB](./cluster/apps/infrastructure/metallb/)|Bare metal load-balancer for Kubernetes|
+|[<img width="32" src="https://github.com/cncf/artwork/blob/aea0dcfe090b8f36d7ae1eb3d5fbe95cc77380d3/projects/prometheus/icon/color/prometheus-icon-color.png?raw=true">](https://prometheus.io)|[Prometheus](./cluster/apps/monitoring/kube-prometheus-stack/)|Systems monitoring and alerting toolkit|
+|[<img width="32" src="https://www.virt-tools.org/logo-qemu.png">](https://www.qemu.org)|QEMU|Open source machine emulator and virtualizer|
+|[<img width="32" src="https://github.com/cncf/artwork/blob/master/projects/rook/icon/color/rook-icon-color.png?raw=true">](https://rook.io)|[Rook](./cluster/apps/infrastructure/rook-ceph/)|Cloud-native storage orchestrator for Ceph|
+|[<img width="32" src="https://api.iconify.design/logos/terraform-icon.svg">](https://www.terraform.io/)|[Terraform](./infrastructure/terraform/)|Infrastructure provisioning automation|
+|[<img width="32" src="https://docs.zerotier.com/img/ZeroTierIcon.png">](https://zerotier.com)|ZeroTier|Virtual Networking that just works|
 
 ## Applications (by namespace)
 
-### [DB](./cluster/apps/db/)
+### [Database](./cluster/apps/db/)
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
-|<img width="32" src="https://www.mysql.com/common/logos/logo-mysql-170x115.png">|[MySQL][mysql-uri]| `Database` | SQL Database | Deployed | [![][mysql-badge]][mysql-chart]
-|<img width="32" src="https://cloudnative-pg.io/images/hero_image.svg">| [PostgreSQL][postgres-uri] | `Database` | via [Cloudnative-PG][cnpg-uri] operator | Deployed | [![][cnpg-badge]][cnpg-chart]
-|<img width="32" src="https://redis.io/images/favicons/favicon-32x32.png">| [Redis][redis-uri] | `Database` | In-memory Key-Value store | Deployed | [![][redis-badge]][redis-chart]
+|[<img width="32" src="https://www.mysql.com/common/logos/logo-mysql-170x115.png">][mysql-uri]|[MySQL](./cluster/apps/db/mysql/)| `Relational DB` | SQL Database | Deployed | [![][mysql-badge]][mysql-chart]
+|[<img width="32" src="https://cloudnative-pg.io/images/hero_image.svg">][postgres-uri]| [PostgreSQL](./cluster/apps/db/cloudnative-pg/) | `Relational DB` | via [Cloudnative-PG][cnpg-uri] operator | Deployed | [![][cnpg-badge]][cnpg-chart]
+|[![](https://redis.io/images/favicons/favicon-32x32.png)][redis-uri]| [Redis](./cluster/apps/db/redis/) | `Caching` | In-memory Key-Value store | Deployed | [![][redis-badge]][redis-chart]
+
+
+### [Downloads](./cluster/apps/downloads/)
+
+| **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
+|--------|----------------|------------|---------------|----------|--------------------------|
+|[![](https://avatars.githubusercontent.com/u/2131270?s=32&v=4)][qbittorrent-uri]| [qBittorrent](./cluster/apps/downloads/qbittorrent/)| `Downloader` | BitTorrent client | Deployed |[![][qbittorrent-badge]][qbittorrent-img] |
+|[![](https://github.com/Radarr/Radarr/blob/develop/Logo/32.png?raw=true)][radarr-uri]|[Radarr](./cluster/apps/downloads/Radarr/)| `Movies` | Movie Collection manager | Deployed |[![][radarr-badge]][radarr-img] |
+|[![](https://github.com/Sonarr/Sonarr/blob/develop/Logo/32.png?raw=true)][sonarr-uri]|[Sonarr](./cluster/apps/downloads/sonarr/)| `TV` | TV Series Collection manager | Deployed |[![][sonarr-badge]][sonarr-img] |
+|[![](https://github.com/Lidarr/Lidarr/blob/develop/Logo/32.png?raw=true)][lidarr-uri]|[Lidarr](./cluster/apps/downloads/lidarr/)| `Music` | Music Collection manager | Deployed | [![][lidarr-badge]][lidarr-img] |
+|[![](https://github.com/Prowlarr/Prowlarr/blob/develop/Logo/32.png?raw=true)][prowlarr-uri]|[Prowlarr](./cluster/apps/downloads/prowlarr/)| `Tracker` | Tracker manager | Deployed | [![][prowlarr-badge]][prowlarr-img] |
+
+
+### [Media](./cluster/apps/media/)
+
+| **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
+|--------|----------------|------------|---------------|----------|--------------------------|
+|[<img width="32" src="https://github.com/kovidgoyal/calibre/blob/master/icons/calibre.png?raw=true">][calibre-uri] | [Calibre](./cluster/apps/media/calibre/) | `Books` | E-book collection manager | Deployed | [![][calibre-badge]][calibre-img] [![][calibre-web-badge]][calibre-web-img] |
 
 ### [Services](./cluster/apps/services/)
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
-|<img width="32" src="https://raw.githubusercontent.com/grocy/grocy/master/public/img/icon.svg">| [Grocy][grocy-uri] | `Services` | ERP Beyond your fridge | Deployed | [![][grocy-badge]][grocy-img] |
+|[<img width="32" src="https://raw.githubusercontent.com/grocy/grocy/master/public/img/icon.svg">][grocy-uri]| [Grocy](./cluster/apps/services/grocy/) | `Services` | ERP Beyond your fridge | Deployed | [![][grocy-badge]][grocy-img] |
 |<img width="32" src="https://github.com/hay-kot/mealie/raw/mealie-next/docs/docs/assets/img/favicon.png">| [Mealie][mealie-url] | `Services` | Recipe Manager | Deployed | [![][mealie-badge]][mealie-docker] |
 |<img width="32" src="https://nextcloud.com/wp-content/uploads/2022/10/nextcloud-logo-blue-transparent.svg">| [NextCloud][nextcloud-url] | `File Sharing` | File Hosting | Deployed | [![][nextcloud-badge]][nextcloud-chart] |
 |<img width="32" src="https://hajimari.io/assets/logo.png">|[Hajimari][hajimari-url] | `Dashboard` | Startpage with K8S application discovery | Deployed | [![][hajimari-badge]][hajimari-url] |
 |<img width="32" src="https://github.com/paperless-ngx/paperless-ngx/raw/dev/docs/assets/favicon.png">|[Paperless-ngx][paperless-uri] | `File Sharing` | Document Management System | Deployed| [![][paperless-badge]][paperless-img] |
-| <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:serif="http://www.serif.com/" version="1.1" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.5;" viewBox="62.42 61.25 449.86 449.86"><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-custom-link"><script></script></link><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-general-link"></link><style xmlns="" lang="en" type="text/css" id="dark-mode-custom-style"></style><style xmlns="" lang="en" type="text/css" id="dark-mode-native-style"></style><style xmlns="" lang="en" type="text/css" id="dark-mode-native-sheet"></style><g transform="matrix(1.18075,0,0,1.18075,-1265.31,-1395.82)"><circle cx="1314.98" cy="1424.52" r="190.496" style="fill:rgb(88,86,224);"></circle></g><g transform="matrix(1,0,0,1,-1017.49,-1140.55)"><g transform="matrix(0.707351,0.706862,-0.706862,0.707351,1331.93,-512.804)"><path d="M1244.39,1293.95L1244.39,1493.59C1244.39,1493.59 1243.58,1561.48 1319.29,1562.47C1395.27,1563.46 1394.17,1493.59 1394.17,1493.59L1394.17,1293.95" style="fill:none;stroke:white;stroke-width:31.25px;"></path></g><g transform="matrix(-0.710067,-0.704134,0.704134,-0.710067,1284.12,3366.41)"><path d="M1244.39,1293.95L1244.39,1493.59C1244.39,1493.59 1243.58,1561.48 1319.29,1562.47C1395.27,1563.46 1394.17,1493.59 1394.17,1493.59L1394.17,1293.95" style="fill:none;stroke:white;stroke-width:31.25px;"></path></g></g></svg> | [Linkding][linkding-uri] | `Bookmark Sharing`| Minimal bookmark Manager | Deployed | [![][linkding-badge]][linkding-img] | 
+| ![](data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2aWV3Qm94PSI2Mi40MjM5IDYxLjI1MzQgNDQ5Ljg1NjQgNDQ5Ljg1NjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgdHJhbnNmb3JtPSJtYXRyaXgoMSwgMCwgMCwgMSwgLTcuMTA1NDI3MzU3NjAxMDAyZS0xNSwgMCkiPgogICAgPGcgdHJhbnNmb3JtPSJtYXRyaXgoMS4xODA3NSwgMCwgMCwgMS4xODA3NSwgLTEyNjUuMzEwNDkxLCAtMTM5NS44MjAzODUpIj4KICAgICAgPGNpcmNsZSBjeD0iMTMxNC45OCIgY3k9IjE0MjQuNTIiIHI9IjE5MC40OTYiIHN0eWxlPSJmaWxsOnJnYig4OCw4NiwyMjQpOyIvPgogICAgPC9nPgogIDwvZz4KICA8ZyB0cmFuc2Zvcm09Im1hdHJpeCgxLCAwLCAwLCAxLCAtMTAxNy40OTAxMDQzMzU3NzI4LCAtMTE0MC41NTAxMDgzMTI0NDU3KSI+CiAgICA8ZyB0cmFuc2Zvcm09Im1hdHJpeCgwLjcwNzM1MSwwLjcwNjg2MiwtMC43MDY4NjIsMC43MDczNTEsMTMzMS45MywtNTEyLjgwNCkiPgogICAgICA8cGF0aCBkPSJNMTI0NC4zOSwxMjkzLjk1TDEyNDQuMzksMTQ5My41OUMxMjQ0LjM5LDE0OTMuNTkgMTI0My41OCwxNTYxLjQ4IDEzMTkuMjksMTU2Mi40N0MxMzk1LjI3LDE1NjMuNDYgMTM5NC4xNywxNDkzLjU5IDEzOTQuMTcsMTQ5My41OUwxMzk0LjE3LDEyOTMuOTUiIHN0eWxlPSJmaWxsOm5vbmU7c3Ryb2tlOndoaXRlO3N0cm9rZS13aWR0aDozMS4yNXB4OyIvPgogICAgPC9nPgogICAgPGcgdHJhbnNmb3JtPSJtYXRyaXgoLTAuNzEwMDY3LC0wLjcwNDEzNCwwLjcwNDEzNCwtMC43MTAwNjcsMTI4NC4xMiwzMzY2LjQxKSI+CiAgICAgIDxwYXRoIGQ9Ik0xMjQ0LjM5LDEyOTMuOTVMMTI0NC4zOSwxNDkzLjU5QzEyNDQuMzksMTQ5My41OSAxMjQzLjU4LDE1NjEuNDggMTMxOS4yOSwxNTYyLjQ3QzEzOTUuMjcsMTU2My40NiAxMzk0LjE3LDE0OTMuNTkgMTM5NC4xNywxNDkzLjU5TDEzOTQuMTcsMTI5My45NSIgc3R5bGU9ImZpbGw6bm9uZTtzdHJva2U6d2hpdGU7c3Ryb2tlLXdpZHRoOjMxLjI1cHg7Ii8+CiAgICA8L2c+CiAgPC9nPgo8L3N2Zz4=#Ti7xw74JX1) | [Linkding][linkding-uri] | `Bookmark Sharing`| Minimal bookmark Manager | Deployed | [![][linkding-badge]][linkding-img] | 
 | <img width="32" src="https://raw.githubusercontent.com/Kovah/LinkAce/main/public/favicon.ico"> | [LinkAce][linkace-uri] | `Bookmark Sharing` | Your self-hosted bookmark archive | Deployed | [![][linkace-badge]][linkace-img] |
 |<img width="32" src="https://raw.githubusercontent.com/linkwarden/linkwarden/4454e615b64f710d7104dd2042fbe97da3904f7e/public/favicon-32x32.png">|[Linkwarden][linkwarden-uri] | `Bookmark Sharing` | Collaborative Bookmark Manager | Deployed | [![][linkwarden-badge]][linkwarden-img] | 
 
@@ -141,7 +159,7 @@ This Git repository contains the following top level directories.
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
-|<img width="32" src="https://grafana.com/static/img/menu/grafana2.svg">|[Grafana][grafana-uri]| `Dashboard` | Operational dashboards | Deployed | [![][grafana-badge]][grafana-chart] |
+|[<img width="32" src="https://grafana.com/static/img/menu/grafana2.svg">][grafana-uri]|[Grafana](./cluster/apps/monitoring/kube-prometheus-stack/)| `Dashboard` | Operational dashboards | Deployed | [![][grafana-badge]][grafana-chart] |
 
 ### [Infrastructure Services](./cluster/apps/infrastructure)
 
@@ -244,3 +262,30 @@ This Git repository contains the following top level directories.
 [freeipa-uri]: https://wwww.freeipa.org
 [freeipa-img]: https://quay.io/repository/freeipa/freeipa-server
 [freeipa-badge]: https://img.shields.io/badge/freeipa/freeipa--server-fedora--38-blue.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNTYiIGhlaWdodD0iMjM2IiB2aWV3Qm94PSIwIDAgMjU2IDIzNiI+PHBhdGggZmlsbD0iIzQwQjRFNSIgZD0ibTIwMC4xMzQgMGw1NS41NTUgMTE3LjUxNGwtNTUuNTU1IDExNy41MThoLTQ3LjI5NWw1NS41NTUtMTE3LjUxOEwxNTIuODQgMGg0Ny4yOTVaTTExMC4wOCA5OS44MzZsMjAuMDU2LTM4LjA5MmwtMi4yOS04Ljg2OEwxMDIuODQ3IDBINTUuNTUybDQ4LjY0NyAxMDIuODk4bDUuODgxLTMuMDYyWm0xNy43NjYgNzQuNDMzbC0xNy4zMzMtMzkuMDM0bC02LjMxNC0zLjEwMWwtNDguNjQ3IDEwMi44OThoNDcuMjk1bDI1LTUyLjg4di03Ljg4M1oiLz48cGF0aCBmaWxsPSIjMDAzNzY0IiBkPSJNMTUyLjg0MiAyMzUuMDMyTDk3LjI4NyAxMTcuNTE0TDE1Mi44NDIgMGg0Ny4yOTVsLTU1LjU1NSAxMTcuNTE0bDU1LjU1NSAxMTcuNTE4aC00Ny4yOTVabS05Ny4yODcgMEwwIDExNy41MTRMNTUuNTU1IDBoNDcuMjk2TDQ3LjI5NSAxMTcuNTE0bDU1LjU1NiAxMTcuNTE4SDU1LjU1NVoiLz48L3N2Zz4=
+
+[qbittorrent-uri]: https://www.qbittorrent.org/
+[qbittorrent-img]: https://ghcr.io/onedr0p/qbittorrent
+[qbittorrent-badge]: https://img.shields.io/badge/onedr0p/qbittorrent-4.6.0-blue?logo=docker
+
+
+[lidarr-uri]: https://lidarr.audio
+[lidarr-img]: https://ghcr.io/onedr0p/lidarr
+[lidarr-badge]: https://img.shields.io/badge/onedr0p/lidarr-1.4.5-blue?logo=docker
+
+[radarr-uri]: https://radarr.video
+[radarr-img]: https://ghcr.io/onedr0p/radarr
+[radarr-badge]: https://img.shields.io/badge/onedr0p/radarr-5.0.3.8127-blue?logo=docker
+
+[sonarr-uri]: https://sonarr.tv
+[sonarr-img]: https://ghcr.io/onedr0p/sonarr
+[sonarr-badge]: https://img.shields.io/badge/onedr0p/sonarr--develop-4.0.0.710-blue?logo=docker
+
+[prowlarr-uri]: https://github.com/Prowlarr/Prowlarr
+[prowlarr-img]: https://ghcr.io/onedr0p/prowlarr
+[prowlarr-badge]: https://img.shields.io/badge/onedr0p/prowlarr-1.9.4-blue?logo=docker
+
+[calibre-uri]: https://calibre-ebook.com/
+[calibre-img]: https://ghcr.io/linuxserver/calibre
+[calibre-web-img]: https://ghcr.io/linuxserver/calibre-web
+[calibre-badge]:https://img.shields.io/badge/linuxserver/calibre-version--v6.29.0-blue?logo=docker
+[calibre-web-badge]: https://img.shields.io/badge/linuxserver/calibre--web-version--0.6.21-blue?logo=docker
