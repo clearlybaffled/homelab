@@ -15,6 +15,7 @@ env:
   SONARR__PORT: &port 8989
   SONARR__APPLICATION_URL: https://sonarr.seawolf.hermleigh.home
   SONARR__LOG_LEVEL: info
+  SONARR__POSTGRES_HOST: 10.233.56.52
 envFrom:
   - secretRef:
       name: sonarr-secret

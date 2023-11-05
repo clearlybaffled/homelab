@@ -307,7 +307,12 @@ apps:
           SONARR__API_KEY:
             type: password
             name: api
-
+          SONARR__POSTGRES_USER: sonarr
+          SONARR__POSTGRES_PASSWORD:
+            type: password
+            name: pgpass
+          SONARR__POSTGRES_MAIN_DB: sonarr_main
+          SONARR__POSTGRES_LOG_DB: sonarr_log
   radarr:
     namespace: downloads
     charts:
