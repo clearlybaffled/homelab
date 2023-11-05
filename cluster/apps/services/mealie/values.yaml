@@ -1,23 +1,23 @@
 image:
-  repository: hkotel/mealie
-  tag: frontend-v1.0.0beta-5
+  repository: ghcr.io/mealie-recipes/mealie
+  tag: v1.0.0-RC1.1
   pullPolicy: IfNotPresent
 
 service:
   main:
-    primary: true
     ports:
       http:
-        port: 3000
-        primary: true
-  api:
-    ports:
-      api:
         port: 9000
 
 env:
   TZ: America/New_York
-  API_URL: http://localhost:9000
+  DB_ENGINE: postgres
+  POSTGRES_SERVER: cnpg-cluster-rw.db.svc
+  POSTGRES_DB: mealie
+
+envFrom:
+  - secretRef:
+      name: mealie-secret
 
 ingress:
   main:
@@ -32,14 +32,12 @@ ingress:
           - path: /
             pathType: Prefix
             services:
-              port: 3000
+              port: http
+              name: main
     tls:
       - secretName: mealie-tls-ingress
         hosts:
           - *host
-          - mealie.seawolf
-          - mealie
-
 persistence:
   api-data:
     enabled: true
@@ -57,15 +55,10 @@ api:
 
   env:
     TZ: America/New_York
-    DB_ENGINE: postgres
-    POSTGRES_SERVER: cnpg-cluster-rw.db.svc
-    POSTGRES_DB: mealie
+
     PUID: 997
     PGID: 997
 
-  envFrom:
-    - secretRef:
-        name: mealie-secret
 
   volumeMounts:
     - name: api-data
