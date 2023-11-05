@@ -49,24 +49,25 @@ persistence:
     storageClass: ceph-fs-hdd
     retain: true
 
-api:
-  image:
-    repository: hkotel/mealie
-    tag: api-v1.0.0beta-5
-    pullPolicy: IfNotPresent
+additionalContainers:
+  api:
+    image:
+      repository: hkotel/mealie
+      tag: api-v1.0.0beta-5
+      pullPolicy: IfNotPresent
 
-  env:
-    TZ: America/New_York
-    DB_ENGINE: postgres
-    POSTGRES_SERVER: cnpg-cluster-rw.db.svc
-    POSTGRES_DB: mealie
-    PUID: 997
-    PGID: 997
+    env:
+      TZ: America/New_York
+      DB_ENGINE: postgres
+      POSTGRES_SERVER: cnpg-cluster-rw.db.svc
+      POSTGRES_DB: mealie
+      PUID: 997
+      PGID: 997
 
-  envFrom:
-    - secretRef:
-        name: mealie-secret
+    envFrom:
+      - secretRef:
+          name: mealie-secret
 
-  volumeMounts:
-    - name: api-data
-      mountPath: /app/data/
+    volumeMounts:
+      - name: api-data
+        mountPath: /app/data/
