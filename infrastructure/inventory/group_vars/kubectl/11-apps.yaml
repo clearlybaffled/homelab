@@ -349,6 +349,18 @@ apps:
     charts:
       - <<: *app_template
         release: lidarr
+    secrets:
+      secret:
+        data:
+          LIDARR__API_KEY:
+            type: password
+            name: api
+          LIDARR__POSTGRES_MAIN_DB: lidarr_main
+          LIDARR__POSTGRES_LOG_DB: lidarr_log
+          LIDARR__POSTGRES_USER: lidarr
+          LIDARR__POSTGRES_PASSWORD:
+            type: password
+            name: postgres
 
   netbox:
     namespace: infrastructure
