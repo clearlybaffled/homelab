@@ -1,0 +1,40 @@
+# BEGIN ANSIBLE MANAGED BLOCK
+#
+# template: {{ template_fullpath | relpath(root_dir) }}
+# date: 2023-10-08 20:57:16
+# user: {{ lookup('pipe', 'git config --get user.name') }}
+# host: tirante
+# commit: {{ lookup('pipe', 'git log --format="%h" -1 ' + template_fullpath|quote) }}
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: qbittorrent
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+  - chart: app-template
+    repoURL: https://bjw-s.github.io/helm-charts/
+    targetRevision: 1.5.1
+    helm:
+      valueFiles:
+      - $repo/cluster/apps/downloads/qbittorrent/values.yaml
+      releaseName: qbittorrent
+  - repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/apps/downloads/qbittorrent
+    targetRevision: main
+    ref: repo
+  destination:
+    name: in-cluster
+    namespace: downloads
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
+# END ANSIBLE MANAGED BLOCK

@@ -77,13 +77,6 @@ apps:
           password:
             type: password
 
-  traefik:
-    namespace: infrastructure
-    wave: "1"
-    charts:
-      - chart: traefik/traefik
-        version: "{{ traefik_chart_version }}"
-
   mysql:
     namespace: db
     wave: "3"
@@ -105,11 +98,6 @@ apps:
     charts:
       - chart: jetstack/cert-manager
         version: "{{ cert_manager_version }}"
-
-  grocy:
-    namespace: services
-    wave: "4"
-    pv: true
 
   ingress-nginx:
     namespace: infrastructure
@@ -252,3 +240,78 @@ apps:
             type: password
             name: nextauth
       db_url: {}
+
+  calibre:
+    namespace: media
+    charts:
+      - <<: *app_template
+        release: calibre
+      - <<: *app_template
+        release: calibre-web
+        valueFiles:
+          - values-web.yaml
+
+  qbittorrent:
+    namespace: downloads
+    charts:
+      - <<: *app_template
+        release: qbittorrent
+
+  sonarr:
+    namespace: downloads
+    charts:
+      - <<: *app_template
+        release: sonarr
+    secrets:
+      secret:
+        data:
+          SONARR__API_KEY:
+            type: password
+            name: api
+          SONARR__POSTGRES_USER: sonarr
+          SONARR__POSTGRES_PASSWORD:
+            type: password
+            name: pgpass
+          SONARR__POSTGRES_MAIN_DB: sonarr_main
+          SONARR__POSTGRES_LOG_DB: sonarr_log
+  radarr:
+    namespace: downloads
+    charts:
+      - <<: *app_template
+        release: radarr
+
+  prowlarr:
+    namespace: downloads
+    charts:
+      - <<: *app_template
+        release: prowlarr
+    secrets:
+      secret:
+        data:
+          PROWLARR__API_KEY:
+            type: password
+            name: api
+          PROWLARR__POSTGRES_USER: prowlarr
+          PROWLARR__POSTGRES_PASSWORD:
+            type: password
+            name: pgpass
+          PROWLARR__POSTGRES_MAIN_DB: prowlarr_main
+          PROWLARR__POSTGRES_LOG_DB: prowlarr_log
+
+  lidarr:
+    namespace: downloads
+    charts:
+      - <<: *app_template
+        release: lidarr
+    secrets:
+      secret:
+        data:
+          LIDARR__API_KEY:
+            type: password
+            name: api
+          LIDARR__POSTGRES_MAIN_DB: lidarr_main
+          LIDARR__POSTGRES_LOG_DB: lidarr_log
+          LIDARR__POSTGRES_USER: lidarr
+          LIDARR__POSTGRES_PASSWORD:
+            type: password
+            name: postgres

@@ -1,0 +1,67 @@
+image:
+  repository: ghcr.io/onedr0p/sonarr-develop
+  tag: 4.0.0.710
+
+podSecurityContext:
+  runAsUser: 997
+  runAsGroup: 997
+  fsGroup: 997
+  fsGroupChangePolicy: "OnRootMismatch"
+  supplementalGroups:
+    - 33
+
+env:
+  SONARR__INSTANCE_NAME: Sonarr
+  SONARR__PORT: &port 8989
+  SONARR__APPLICATION_URL: https://sonarr.seawolf.hermleigh.home
+  SONARR__LOG_LEVEL: info
+  SONARR__POSTGRES_HOST: 10.233.56.52
+envFrom:
+  - secretRef:
+      name: sonarr-secret
+
+service:
+  main:
+    ports:
+      http:
+        port: *port
+
+ingress:
+  main:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      hajimari.io/icon: mdi:television-classic
+      cert-manager.io/cluster-issuer: ca-issuer
+      nginx.ingress.kubernetes.io/configuration-snippet: |
+        proxy_set_header Accept-Encoding "";
+        sub_filter '<body>' '<body><link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/sonarr/nord.css">';
+        sub_filter_once on;
+    hosts:
+      - host: &host tv.seawolf.hermleigh.home
+        paths:
+          - path: /
+    tls:
+      - hosts:
+          - *host
+
+persistence:
+  config:
+    enabled: true
+    size: 50Mi
+    type: pvc
+  shared:
+    enabled: true
+    type: pvc
+    existingClaim: shared-files
+  videos:
+    enabled: true
+    type: pvc
+    existingClaim: videos
+
+resources:
+  requests:
+    cpu: 20m
+    memory: 323M
+  limits:
+    memory: 323M

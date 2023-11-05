@@ -1,0 +1,55 @@
+image:
+  repository: ghcr.io/onedr0p/lidarr
+  tag: 1.4.5
+env:
+  TZ: America/New_York
+  LIDARR__INSTANCE_NAME: Lidarr
+  LIDARR__PORT: &port 8686
+  LIDARR__POSTGRES_HOST: 10.233.56.52
+  LIDARR__LOG_LEVEL: info
+envFrom:
+  - secretRef:
+      name: lidarr-secret
+service:
+  main:
+    ports:
+      http:
+        port: *port
+ingress:
+  main:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: ca-issuer
+      hajimari.io/icon: music-box
+      nginx.ingress.kubernetes.io/configuration-snippet: |
+        proxy_set_header Accept-Encoding "";
+        sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/lidarr/nord.css"></head>';
+        sub_filter_once on;
+    hosts:
+      - host: &host music.seawolf.hermleigh.home
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - *host
+podSecurityContext:
+  runAsUser: 568
+  runAsGroup: 568
+  fsGroup: 568
+  fsGroupChangePolicy: OnRootMismatch
+  supplementalGroups: [10000]
+persistence:
+  config:
+    size: 10Gi
+    type: pvc
+  media:
+    enabled: true
+    existingClaim: shared-files
+resources:
+  requests:
+    cpu: 10m
+    memory: 250Mi
+  limits:
+    memory: 2000Mi

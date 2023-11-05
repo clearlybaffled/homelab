@@ -33,6 +33,7 @@
     mode: "0644"
     create: true
   register: application
+  tags: manifest
 
 - name: "Install Kustomization file | {{ app.name }}"
   blockinfile:
@@ -95,7 +96,7 @@
 
 - name: Wait a minute for the commit to land in Github
   pause:
-    minutes: 1
+    seconds: 15
   when: git_commit is not skipped
 
 - name: Launch application when wave is defined
