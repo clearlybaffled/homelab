@@ -1,6 +1,6 @@
 image:
-  repository: ghcr.io/onedr0p/lidarr-develop
-  tag: 1.2.2.3242@sha256:553300608b18d8a8fcaa61ab20e18e45aa6c94fb20666cbbedc354f73ff71a18
+  repository: ghcr.io/onedr0p/lidarr
+  tag: 1.4.5
 env:
   TZ: America/New_York
   LIDARR__INSTANCE_NAME: Lidarr
