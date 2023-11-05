@@ -1,23 +1,25 @@
 image:
-  repository: ghcr.io/mealie-recipes/mealie
-  tag: v1.0.0-RC1.1
+  repository: hkotel/mealie
+  tag: frontend-v1.0.0beta-5
   pullPolicy: IfNotPresent
 
 service:
   main:
+    primary: true
     ports:
       http:
+        port: 3000
+        primary: true
+  api:
+    ports:
+      api:
         port: 9000
 
 env: &env
   TZ: America/New_York
-  DB_ENGINE: postgres
+  API_URL: http://localhost:9000
   PUID: 997
   PGID: 997
-
-envFrom:
-  - secretRef:
-      name: mealie-secret
 
 ingress:
   main:
