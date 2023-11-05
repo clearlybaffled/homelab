@@ -5,7 +5,8 @@
       vars:
         db_user_var: DB_USER
         db_pass_var: DB_PASS
-        db_name: linkwarden
+        db_names:
+          - linkwarden
 
 - name: Create secret for db url
   community.sops.sops_encrypt:

@@ -5,4 +5,5 @@
       vars:
         db_user_var: PAPERLESS_DBUSER
         db_pass_var: PAPERLESS_DBPASS
-        db_name: paperless
+        db_names:
+          - paperless

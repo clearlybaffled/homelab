@@ -83,8 +83,7 @@
             | map('split',' ')
             | map('last'),
 
-          lookup('pipe','git status --porcelain -- ' ~ app.manifest_file).split(' ')
-            | last,
+          lookup('pipe','git status --porcelain -- ' ~ app.manifest_file).split(' ')| last,
 
           lookup('pipe','git status --porcelain').splitlines()
             | map('list')
