@@ -38,7 +38,7 @@ ingress:
         sub_filter '<body>' '<body><link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/sonarr/nord.css">';
         sub_filter_once on;
     hosts:
-      - host: &host sonarr.seawolf.hermleigh.home
+      - host: &host tv.seawolf.hermleigh.home
         paths:
           - path: /
     tls:
