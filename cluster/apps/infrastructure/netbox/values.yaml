@@ -2,7 +2,7 @@ postgresql:
   enabled: false
 
 externalDatabase:
-  host: cnpg-cluster-rw.db
+  host: 10.233.56.52
   port: 5432
   database: netbox
   username: netbox
@@ -33,7 +33,7 @@ tasksRedis:
 
   # Used only when redis.enabled is false. host and port are not used if
   # sentinels are given.
-  host: redis.db
+  host: 10.233.37.142
   port: 6379
   sentinels: []
   #  - mysentinel:26379
@@ -48,7 +48,7 @@ cachingRedis:
 
   # Used only when redis.enabled is false. host and port are not used if
   # sentinels are given.
-  host: redis.db
+  host: 10.233.37.142
   port: 6379
   sentinels: []
   #  - mysentinel:26379
