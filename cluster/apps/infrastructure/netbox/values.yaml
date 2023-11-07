@@ -2,19 +2,25 @@ postgresql:
   enabled: false
 
 externalDatabase:
-  host: cnpg-rw.db
+  host: cnpg-cluster-rw.db
   port: 5432
   database: netbox
   username: netbox
-  password: ""
-  existingSecretName: ""
-  existingSecretKey: postgresql-password
 
   # The following settings also apply when using the bundled PostgreSQL chart:
   sslMode: prefer
   connMaxAge: 300
   disableServerSideCursors: false
   targetSessionAttrs: read-write
+
+internalIPs:
+  - 10.233.64.1
+  - 172.16.1.11
+
+metricsExposed: true
+
+timezone: America/New_York
+existingSecret: netbox-secret
 
 redis:
   enabled: false
@@ -33,10 +39,6 @@ tasksRedis:
   #  - mysentinel:26379
   sentinelService: netbox-redis
   sentinelTimeout: 300
-  username: ""
-  password: ""
-  existingSecretName: redis
-  existingSecretKey: password
 
 cachingRedis:
   database: 1
@@ -52,10 +54,7 @@ cachingRedis:
   #  - mysentinel:26379
   sentinelService: netbox-redis
   sentinelTimeout: 300
-  username: ""
-  password: ""
-  existingSecretName: redis
-  existingSecretKey: password
+
 
 podSecurityContext:
   fsGroup: 997
@@ -74,15 +73,16 @@ securityContext:
 
 persistence:
   enabled: true
-  storageClass: ceph-block
+  storageClass: ceph-fs-hdd
 
 ingress:
   enabled: true
   className: ingress-nginx
   annotations:
     hajimari.io/icon: https://github.com/netbox-community/netbox/wiki/images/logos/netbox_icon.svg
+    cert-manager.io/cluster-issuer: ca-issuer
   hosts:
-    - host: &host netbox.gato.hermleigh.home
+    - host: &host netbox.seawolf.hermleigh.home
       paths:
         - /
   tls:
