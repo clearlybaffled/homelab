@@ -392,3 +392,4 @@ apps:
           email_password: ''
           redis_tasks_password: ''
           redis_cache_password: ''
+          napalm_password: ''
