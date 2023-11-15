@@ -318,12 +318,36 @@ apps:
     charts:
       - <<: *app_template
         release: radarr
+    secrets:
+      secret:
+        data:
+          RADARR__API_KEY:
+            type: password
+            name: api
+          RADARR__POSTGRES_USER: radarr
+          RADARR__POSTGRES_PASSWORD:
+            type: password
+            name: pgpass
+          RADARR__POSTGRES_MAIN_DB: radarr_main
+          RADARR__POSTGRES_LOG_DB: radarr_log
 
   readarr:
     namespace: downloads
     charts:
       - <<: *app_template
         release: readarr
+    secrets:
+      secret:
+        data:
+          READARR__API_KEY:
+            type: password
+            name: api
+          READARR__POSTGRES_USER: readarr
+          READARR__POSTGRES_PASSWORD:
+            type: password
+            name: pgpass
+          READARR__POSTGRES_MAIN_DB: readarr_main
+          READARR__POSTGRES_LOG_DB: readarr_log
 
   prowlarr:
     namespace: downloads
@@ -393,3 +417,15 @@ apps:
           redis_tasks_password: ''
           redis_cache_password: ''
           napalm_password: ''
+
+  audiobookshelf:
+    namespace: media
+    charts:
+      - <<: *app_template
+        release: audiobookshelf
+
+  elastic:
+    namespace: monitoring
+    charts:
+      - chart: elastic/eck-operator
+        version: "{{ elastic_chart_version }}"

@@ -1,0 +1,46 @@
+image:
+  repository: ghcr.io/onedr0p/readarr-develop
+  tag: 0.3.10.2287
+
+env:
+  TZ: "America/New_York"
+
+service:
+  main:
+    ports:
+      http:
+        port: 8787
+
+ingress:
+  main:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - host: &host readarr.seawolf.hermleigh.home
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - *host
+
+persistence:
+  config:
+    enabled: true
+    storageClass: ceph-fs-hdd
+    size: 5Gi
+  media:
+    enabled: true
+    existingClaim: shared-files-downloads
+
+podSecurityContext:
+  runAsUser: 997
+  runAsGroup: 997
+  fsGroup: 997
+
+resources:
+  requests:
+    memory: 750Mi
+    cpu: 25m
+  limits:
+    memory: 2000Mi

@@ -133,27 +133,40 @@ This Git repository contains the following top level directories.
 |[![](https://github.com/Radarr/Radarr/blob/develop/Logo/32.png?raw=true)][radarr-uri]|[Radarr](./cluster/apps/downloads/Radarr/)| `Movies` | Movie Collection manager | Deployed |[![][radarr-badge]][radarr-img] |
 |[![](https://github.com/Sonarr/Sonarr/blob/develop/Logo/32.png?raw=true)][sonarr-uri]|[Sonarr](./cluster/apps/downloads/sonarr/)| `TV` | TV Series Collection manager | Deployed |[![][sonarr-badge]][sonarr-img] |
 |[![](https://github.com/Lidarr/Lidarr/blob/develop/Logo/32.png?raw=true)][lidarr-uri]|[Lidarr](./cluster/apps/downloads/lidarr/)| `Music` | Music Collection manager | Deployed | [![][lidarr-badge]][lidarr-img] |
+|[![](https://github.com/Readarr/Readarr/blob/develop/Logo/32.png?raw=true)][readarr-uri]|[Readarr](./cluster/apps/downloads/readarr/)| `Ebooks` | Ebook and audiobook collection manager | Deployed | [![][readarr-badge]][readarr-img] |
 |[![](https://github.com/Prowlarr/Prowlarr/blob/develop/Logo/32.png?raw=true)][prowlarr-uri]|[Prowlarr](./cluster/apps/downloads/prowlarr/)| `Tracker` | Tracker manager | Deployed | [![][prowlarr-badge]][prowlarr-img] |
 
+### [Infrastructure Services](./cluster/apps/infrastructure)
+
+| **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
+|--------|----------------|------------|---------------|----------|--------------------------|
+|[<img width="32" src="https://avatars.githubusercontent.com/u/44905828?s=200&v=4">][netbox-uri]|NetBox| `Services`| Full-scale network inventory | | |
+|[<img width="32" src="https://simpleicons.org/icons/vault.svg">][vault-uri]|Vault| `Services` | Secrets and encryption management| | |
 
 ### [Media](./cluster/apps/media/)
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
 |[<img width="32" src="https://github.com/kovidgoyal/calibre/blob/master/icons/calibre.png?raw=true">][calibre-uri] | [Calibre](./cluster/apps/media/calibre/) | `Books` | E-book collection manager | Deployed | [![][calibre-badge]][calibre-img] [![][calibre-web-badge]][calibre-web-img] |
+|[![](./cluster/apps/media/audiobookshelf/audiobookshelf.svg)][audiobookshelf-uri]| [Audiobookshelf](./cluster/apps/media/audiobookshelf) | `Audio Books` | Self-hosted audiobook and podcast server | Next-up | [![][audiobookshelf-badge]][audiobookshelf-img]
+|[<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/appicon.png">][immich-uri]|Immich| `Media` | Photo Management | Planned | |
+|[<img width="32" src="https://github.com/owntone/owntone-server/blob/master/docs/assets/logo.svg?raw=true">][owntone-uri]| OwnTone |`Media` | DAAP Audio server| Planned | |
+|[<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">][listenbrainz-uri]|ListenBrainz| `Media` | Open Source scrobbler | Planned | | 
+
+
 
 ### [Services](./cluster/apps/services/)
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
 |[<img width="32" src="https://raw.githubusercontent.com/grocy/grocy/master/public/img/icon.svg">][grocy-uri]| [Grocy](./cluster/apps/services/grocy/) | `Services` | ERP Beyond your fridge | Deployed | [![][grocy-badge]][grocy-img] |
-|<img width="32" src="https://github.com/hay-kot/mealie/raw/mealie-next/docs/docs/assets/img/favicon.png">| [Mealie][mealie-url] | `Services` | Recipe Manager | Deployed | [![][mealie-badge]][mealie-docker] |
-|<img width="32" src="https://nextcloud.com/wp-content/uploads/2022/10/nextcloud-logo-blue-transparent.svg">| [NextCloud][nextcloud-url] | `File Sharing` | File Hosting | Deployed | [![][nextcloud-badge]][nextcloud-chart] |
-|<img width="32" src="https://hajimari.io/assets/logo.png">|[Hajimari][hajimari-url] | `Dashboard` | Startpage with K8S application discovery | Deployed | [![][hajimari-badge]][hajimari-url] |
-|<img width="32" src="https://github.com/paperless-ngx/paperless-ngx/raw/dev/docs/assets/favicon.png">|[Paperless-ngx][paperless-uri] | `File Sharing` | Document Management System | Deployed| [![][paperless-badge]][paperless-img] |
-| ![](data:image/png;base64,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) | [Linkding][linkding-uri] | `Bookmark Sharing`| Minimal bookmark Manager | Deployed | [![][linkding-badge]][linkding-img] | 
-| <img width="32" src="https://raw.githubusercontent.com/Kovah/LinkAce/main/public/favicon.ico"> | [LinkAce][linkace-uri] | `Bookmark Sharing` | Your self-hosted bookmark archive | Deployed | [![][linkace-badge]][linkace-img] |
-|<img width="32" src="https://raw.githubusercontent.com/linkwarden/linkwarden/4454e615b64f710d7104dd2042fbe97da3904f7e/public/favicon-32x32.png">|[Linkwarden][linkwarden-uri] | `Bookmark Sharing` | Collaborative Bookmark Manager | Deployed | [![][linkwarden-badge]][linkwarden-img] | 
+|[<img width="32" src="https://github.com/hay-kot/mealie/raw/mealie-next/docs/docs/assets/img/favicon.png">][mealie-url] | [Mealie](./cluster/apps/services/mealie/) | `Services` | Recipe Manager | Deployed | [![][mealie-badge]][mealie-docker] |
+|[<img width="32" src="https://nextcloud.com/wp-content/uploads/2022/10/nextcloud-logo-blue-transparent.svg">][nextcloud-url] | [NextCloud](./cluster/apps/services/nextcloud/) | `File Sharing` | File Hosting | Deployed | [![][nextcloud-badge]][nextcloud-chart] |
+|[<img width="32" src="https://hajimari.io/assets/logo.png">][hajimari-url] |[Hajimari](./cluster/apps/services/hajimari/) | `Dashboard` | Startpage with K8S application discovery | Deployed | [![][hajimari-badge]][hajimari-url] |
+|[<img width="32" src="https://github.com/paperless-ngx/paperless-ngx/raw/dev/docs/assets/favicon.png">][paperless-uri] |[Paperless-ngx](./cluster/apps/services/paperless-ngx/) | `File Sharing` | Document Management System | Deployed| [![][paperless-badge]][paperless-img] |
+| [![](./cluster/apps/services/linkding/linkding.svg)][linkding-uri]  | [Linkding](./cluster/apps/services/linkding/) | `Bookmark Sharing`| Minimal bookmark Manager | Deployed | [![][linkding-badge]][linkding-img] | 
+|[<img width="32" src="https://raw.githubusercontent.com/Kovah/LinkAce/main/public/favicon.ico">][linkace-uri] | [LinkAce](./cluster/apps/services/linkace/) | `Bookmark Sharing` | Your self-hosted bookmark archive | Deployed | [![][linkace-badge]][linkace-img] |
+|[<img width="32" src="https://raw.githubusercontent.com/linkwarden/linkwarden/4454e615b64f710d7104dd2042fbe97da3904f7e/public/favicon-32x32.png">][linkwarden-uri] |[Linkwarden](./cluster/apps/services/linkwarden/) | `Bookmark Sharing` | Collaborative Bookmark Manager | Deployed | [![][linkwarden-badge]][linkwarden-img] | 
 
 ### [Monitoring](./cluster/apps/monitoring/)
 
@@ -277,8 +290,20 @@ This Git repository contains the following top level directories.
 [prowlarr-img]: https://ghcr.io/onedr0p/prowlarr
 [prowlarr-badge]: https://img.shields.io/badge/onedr0p/prowlarr-1.9.4-blue?logo=docker
 
+[readarr-uri]: https://readarr.com
+[readarr-img]: https://ghcr.io/onedr0p/readarr-develop
+[readarr-badge]: https://img.shields.io/badge/onedr0p/readarr--develop-0.3.10.2287-blue?logo=docker
+
 [calibre-uri]: https://calibre-ebook.com/
 [calibre-img]: https://ghcr.io/linuxserver/calibre
 [calibre-web-img]: https://ghcr.io/linuxserver/calibre-web
 [calibre-badge]:https://img.shields.io/badge/linuxserver/calibre-version--v6.29.0-blue?logo=docker
 [calibre-web-badge]: https://img.shields.io/badge/linuxserver/calibre--web-version--0.6.21-blue?logo=docker
+
+[audiobookshelf-uri]: https://www.audiobookshelf.org/
+[audiobookshelf-img]: https://ghcr.io/advplyr/audiobookshelf
+[audiobookshelf-badge]: https://img.shields.io/badge/advplyr/audiobookshelf-2.5.0-blue?logo=docker
+
+[owntone-uri]: https://owntone.github.io/owntone-server/
+[immich-uri]: https://immich.app
+[listenbrainz-uri]: https://listenbrainz.org
