@@ -25,7 +25,7 @@ spec:
       releaseName: audiobookshelf
   - repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/media/audiobookshelf
-    targetRevision: development
+    targetRevision: main
     ref: repo
   destination:
     name: in-cluster
