@@ -31,7 +31,7 @@ persistence:
     size: 5Gi
   media:
     enabled: true
-    existingClaim: shared-files-downloads
+    existingClaim: shared-files
 
 podSecurityContext:
   runAsUser: 997

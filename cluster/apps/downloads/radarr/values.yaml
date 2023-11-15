@@ -7,6 +7,10 @@ env:
   RADARR__INSTANCE_NAME: Radarr
   RADARR__APPLICATION_URL: 'https://movies.seawolf.hermleigh.home'
   RADARR__LOG_LEVEL: info
+  RADARR__POSTGRES_HOST: 10.233.56.52
+envFrom:
+  - secretRef:
+      name: radarr-secret
 
 service:
   main:
