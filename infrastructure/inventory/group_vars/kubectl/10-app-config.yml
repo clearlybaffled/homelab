@@ -18,6 +18,7 @@ helm_repositories:
   hashicorp: https://helm.releases.hashicorp.com
   immich: https://immich-app.github.io/immich-charts
   bootc: https://charts.boo.tc
+  elastic: https://helm.elastic.co
 
 # Registry deployment
 registry_enabled: false
@@ -78,6 +79,7 @@ metallb_version: v0.13.11
 
 app_template_version: 1.5.1
 
+elastic_chart_version: 2.10.0
 netbox_chart_version: 4.1.1
 hajimari_version: 2.0.2
 cnpg_chart_version: 0.18.2
