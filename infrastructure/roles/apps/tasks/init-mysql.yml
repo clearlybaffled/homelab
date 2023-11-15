@@ -18,6 +18,9 @@
         login_user: root
         login_password: "{{ mysql_secret.data['mysql-root-password'] | b64decode }}"
         login_host: 172.16.1.32
+      loop: "{{ db_names }}"
+      loop_control:
+        loop_var: db_name
 
     - name: Create MySQL user | {{ app.name }}
       community.mysql.mysql_user:
@@ -28,6 +31,3 @@
         login_host: 172.16.1.32
         login_user: root
         login_password: "{{ mysql_secret.data['mysql-root-password'] | b64decode }}"
-      loop: "{{ db_names }}"
-      loop_control:
-        loop_var: db_name
