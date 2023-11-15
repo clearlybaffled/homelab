@@ -101,7 +101,7 @@
 
 - name: Launch application when wave is defined
   when:
-    - app.wave is defined
+    - app.wave is defined or app_deploy_list is defined
   block:
     - name: Launch application now | {{ app.name }}
       kubernetes.core.k8s:
