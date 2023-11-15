@@ -1,0 +1,52 @@
+---
+interfaces:
+  - vlan: 10
+    ports:
+      - name: GigabitEthernet0/1
+        description: Parche Admin
+      - name: GigabitEthernet0/2
+        description: AP Admin
+      - name: GigabitEthernet0/4
+        description: APC PDU
+      - name: GigabitEthernet0/5
+        description: Growler Admin
+      - name: GigabitEthernet0/6
+        description: APC UPS
+  - vlan: 2
+    lacp:
+      - name: GigabitEthernet0/23
+        description: Parche Server Port 1
+      - name: GigabitEthernet0/24
+        description: Parche Server Port 2
+  - vlan: 3
+    ports:
+      - name: GigabitEthernet0/25
+        description: Barb
+  - vlan: 4
+    ports:
+      - name: GigabitEthernet0/37
+        description: HP Printer
+      - name: GigabitEthernet0/38
+        description: ObiHai
+  - trunk:
+      native_vlan: 69
+      encapsulation: dot1q
+    ports:
+      - name: GigabitEthernet0/46
+        description: Growler LACP port 1
+      - name: GigabitEthernet0/47
+        description: Growler LACP port 2
+      - name: GigabitEthernet0/48
+        description: Growler LACP port 3
+  - trunk:
+      native_vlan: 69
+      encapsulation: dot1q
+      allowed_vlans:
+        - 3
+        - 4
+        - 9
+    ports:
+      - name: GigabitEthernet0/43
+        description: AP LACP port 1
+      - name: GigabitEthernet0/45
+        description: AP LACP Port 2
