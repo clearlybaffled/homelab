@@ -8,23 +8,36 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd
+  name: calibre
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
-  annotations:
-    argocd.argoproj.io/sync-wave: '0'
 spec:
   project: default
   destination:
     name: in-cluster
-    namespace: argocd
-  source:
-    repoURL: https://github.com/clearlybaffled/homelab
-    path: cluster/argocd
+    namespace: media
+  sources:
+  - chart: app-template
+    repoURL: https://bjw-s.github.io/helm-charts/
+    targetRevision: 1.5.1
+    helm:
+      valueFiles:
+      - $repo/cluster/apps/media/calibre/values.yaml
+      releaseName: calibre
+  - chart: app-template
+    repoURL: https://bjw-s.github.io/helm-charts/
+    targetRevision: 1.5.1
+    helm:
+      valueFiles:
+      - $repo/cluster/apps/media/calibre/values-web.yaml
+      releaseName: calibre-web
+  - repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/apps/media/calibre
     targetRevision: development
     directory:
       exclude: application.yaml
+    ref: repo
   syncPolicy:
     automated:
       prune: true
