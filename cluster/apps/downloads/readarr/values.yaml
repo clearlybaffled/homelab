@@ -4,6 +4,13 @@ image:
 
 env:
   TZ: "America/New_York"
+  READARR__INSTANCE_NAME: Readarr
+  READARR__APPLICATION_URL: 'https://books.seawolf.hermleigh.home'
+  READARR__LOG_LEVEL: info
+  READARR__POSTGRES_HOST: 10.233.56.52
+envFrom:
+  - secretRef:
+      name: readarr-secret
 
 service:
   main:
@@ -16,7 +23,7 @@ ingress:
     enabled: true
     ingressClassName: nginx
     hosts:
-      - host: &host readarr.seawolf.hermleigh.home
+      - host: &host books.seawolf.hermleigh.home
         paths:
           - path: /
             pathType: Prefix
@@ -27,8 +34,8 @@ ingress:
 persistence:
   config:
     enabled: true
-    storageClass: ceph-fs-hdd
-    size: 5Gi
+    storageClass: ceph-fs-ssd
+    size: 1Gi
   media:
     enabled: true
     existingClaim: shared-files
