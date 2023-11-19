@@ -20,7 +20,88 @@
           #include_role:
           #name: server/kvm
           #tasks_from: rbd-pool
-- name: Create FreeIPA master
-  roles:
-    - freeipa
 
+- name: Provision FreeIPA virtual hosts using terraform
+  hosts: localhost
+  tasks:
+    - name: Provision KVM hosts with terraform
+      community.general.terraform:
+        project_path: "{{ infra_dir }}/terraform/ipa"
+      register: tf_ipa_out
+
+    - name: Wait for qemu-agent to start
+      pause:
+        seconds: 15
+
+    - name: Refresh inventory
+      meta: "refresh_inventory"
+
+- name: Wait for host to be ready
+  hosts: ipaserver
+  gather_facts: false
+  tasks:
+    - name: Wait for host to be ready
+      pause:
+        minutes: 5
+
+    - name: Check for selinux status
+      command: getenforce
+      register: getenforce
+      until: getenforce.stdout == "Permissive"
+      retries: 10
+      delay: 30
+
+- name: IPA Server install - first stage
+  hosts: ipaserver
+  become: true
+  vars:
+    ipaserver_external_ca: true
+  roles:
+    - freeipa.ansible_freeipa.ipaserver
+
+- name: Sign IPA Certificate Signing Request
+  hosts: parche
+  become: true
+  gather_facts: false
+  roles:
+    - ca
+  pre_tasks:
+    - name: Slurp CSR from ipa server
+      slurp:
+        src: /root/ipa.csr
+      register: ipa_csr
+      delegate_to: "{{ groups.ipaserver | first }}"
+  vars:
+    ca_name: ipa-ca
+    signing_ca: root-ca
+    purpose: ca
+    csr_text: "{{ ipa_csr.content | b64decode }}"
+
+- name: Continue IPA Setup with signed CA cert
+  hosts: ipaserver
+  become: true
+  gather_facts: false
+  vars:
+    ipaserver_external_cert_files:
+      - /root/ipa.crt
+      - /root/ca.crt
+  roles:
+    - freeipa.ansible_freeipa.ipaserver
+  pre_tasks:
+    - name: Drop CA cert file into /root
+      copy:
+        dest: /root/ca.crt
+        content: "{{ root_ca.crt | b64decode }}"
+    - name: Drop IPA CA cert into 
+      copy:
+        dest: /root/ipa.crt
+        content: "{{ hostvars.parche.certificate_text }}"
+
+- name: Clean up Host
+  hosts: ipaserver
+  gather_facts: false
+  tasks:
+    - name: Restore SE linux to enforcing
+      ansible.posix.selinux:
+        state: enforcing
+        policy: 

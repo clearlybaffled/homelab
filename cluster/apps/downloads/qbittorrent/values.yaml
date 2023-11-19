@@ -8,8 +8,8 @@ env:
   QBT_BitTorrent__Session__IPFilter: 'https:/github.com/Naunter/BT_BlockLists/blob/master/combined_2.txt?raw=true'
   QBT_BitTorrent__Session_IPFilteringEnabled: 'true'
   QBT_BitTorrent__Session__TrackerFilteringEnabled: 'true'
-  QBT_BitTorrent__Session__DefaultSavePath: '/shared/Downloads'
-  QBT_BitTorrent__Session__TorrentExportDirectory: '/shared/Downloads/torrents'
+  QBT_BitTorrent__Session__DefaultSavePath: '/media/Downloads'
+  QBT_BitTorrent__Session__TorrentExportDirectory: '/media/Downloads/torrents'
   QBT_Preferences__WebUI__AuthSubnetWhitelist: '10.0.0.0/8, 172.16.0.0/12'
   QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: 'true'
 
@@ -57,7 +57,7 @@ persistence:
   config:
     enabled: true
     size: 50Mi
-  shared:
+  media:
     enabled: true
     type: pvc
     existingClaim: shared-files

@@ -23,7 +23,7 @@ ingress:
     tls:
       - hosts:
           - *host
-        secretName: linkace-ingress-cert
+        secretName: linkwarden-ingress-cert
 
 service:
   main:

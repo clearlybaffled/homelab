@@ -77,13 +77,6 @@ apps:
           password:
             type: password
 
-  traefik:
-    namespace: infrastructure
-    wave: "1"
-    charts:
-      - chart: traefik/traefik
-        version: "{{ traefik_chart_version }}"
-
   mysql:
     namespace: db
     wave: "3"
@@ -105,11 +98,6 @@ apps:
     charts:
       - chart: jetstack/cert-manager
         version: "{{ cert_manager_version }}"
-
-  grocy:
-    namespace: services
-    wave: "4"
-    pv: true
 
   ingress-nginx:
     namespace: infrastructure
@@ -263,38 +251,11 @@ apps:
         valueFiles:
           - values-web.yaml
 
-  heimdall:
-    namespace: services
-    charts:
-      - <<: *app_template
-        release: heimdall
-
-  vault:
-    namespace: infrastructure
-    charts:
-      - chart: hashicorp/vault
-        version: "{{ vault_chart_version }}"
-
   qbittorrent:
     namespace: downloads
     charts:
       - <<: *app_template
         release: qbittorrent
-
-  listen-brainz:
-    namespace: media
-
-  immich:
-    namespace: media
-    charts:
-      - chart: immich/immich
-        version: "{{ immich_chart_version }}"
-
-  typesense:
-    namespace: db
-    charts:
-      - <<: *app_template
-        release: typesense
 
   sonarr:
     namespace: downloads
@@ -367,12 +328,6 @@ apps:
           PROWLARR__POSTGRES_MAIN_DB: prowlarr_main
           PROWLARR__POSTGRES_LOG_DB: prowlarr_log
 
-  overseerr:
-    namespace: downloads
-    charts:
-      - <<: *app_template
-        release: overseerr
-
   lidarr:
     namespace: downloads
     charts:
@@ -390,42 +345,8 @@ apps:
           LIDARR__POSTGRES_PASSWORD:
             type: password
             name: postgres
-
-  netbox:
-    namespace: infrastructure
-    charts:
-      - chart: bootc/netbox
-        version: "{{ netbox_chart_version }}"
-    secrets:
-      secret:
-        data:
-          db_user: netbox
-          db_password:
-            type: password
-            name: db
-          secret_key:
-            type: key
-            name: api
-          superuser_password:
-            type: password
-            name: superuser
-          superuser_api_token:
-            type: key
-            name: superuser_api
-          ldap_bind_password: ''
-          email_password: ''
-          redis_tasks_password: ''
-          redis_cache_password: ''
-          napalm_password: ''
-
   audiobookshelf:
     namespace: media
     charts:
       - <<: *app_template
         release: audiobookshelf
-
-  elastic:
-    namespace: monitoring
-    charts:
-      - chart: elastic/eck-operator
-        version: "{{ elastic_chart_version }}"

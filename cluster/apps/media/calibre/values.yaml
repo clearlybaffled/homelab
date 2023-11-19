@@ -1,10 +1,9 @@
 image:
   repository: ghcr.io/linuxserver/calibre
-  tag: version-v6.29.0
+  tag: 7.0.0
 
 env:
   TZ: America/New_York
-  PGID: 997
 
 persistence:
   config:
@@ -21,10 +20,7 @@ service:
     ports:
       http:
         port: 8080
-  webserver:
-    enabled: true
-    ports:
-      webserver:
+      content-server:
         enabled: true
         port: 8081
         protocol: TCP
@@ -37,14 +33,34 @@ ingress:
       cert-manager.io/cluster-issuer: ca-issuer
     ingressClass: nginx
     hosts:
-    - host: &host calibre.seawolf.hermleigh.home
+    - host: &ui_host calibre.seawolf.hermleigh.home
       paths:
       - path: /
         pathType: Prefix
     tls:
     - hosts:
-      - *host
+      - *ui_host
       secretName: calibre-tls-ingress
+  content-server:
+    enabled: true
+    annotations:
+      hajimari.io/enable: "false"
+      cert-manager.io/cluster-issuer: ca-issuer
+    ingressClass: nginx
+    hosts:
+    - host: &content_host calibre-content.seawolf.hermleigh.home
+      paths:
+      - path: /
+        pathType: Prefix
+        service:
+          port: 8081
+    tls:
+    - hosts:
+      - *content_host
+      secretName: calibre-content-tls-ingress
+
+podSecurityContext:
+  supplementalGroups: [33, 997]
 
 resources:
   requests:
