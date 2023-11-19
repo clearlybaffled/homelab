@@ -16,6 +16,7 @@ controller:
     proxy-body-size: 0
     proxy-buffer-size: 16k
     ssl-protocols: "TLSv1.3 TLSv1.2"
+    allow-snippet-annotations: "true"
 
   ingressClassResource:
     name: nginx
