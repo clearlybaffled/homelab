@@ -1,11 +1,3 @@
-# BEGIN ANSIBLE MANAGED BLOCK
-#
-# template: {{ template_fullpath | relpath(root_dir) }}
-# date: 2023-10-08 20:57:16
-# user: {{ lookup('pipe', 'git config --get user.name') }}
-# host: tirante
-# commit: {{ lookup('pipe', 'git log --format="%h" -1 ' + template_fullpath|quote) }}
-#
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -20,14 +12,14 @@ spec:
   sources:
   - chart: kube-prometheus-stack
     repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 51.3.0
+    targetRevision: 54.1.0
     helm:
       valueFiles:
       - $repo/cluster/apps/monitoring/kube-prometheus-stack/operator.yaml
       releaseName: prometheus
   - chart: prometheus-adapter
     repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 4.7.0
+    targetRevision: 4.8.1
     helm:
       valueFiles:
       - $repo/cluster/apps/monitoring/kube-prometheus-stack/adapter.yaml
@@ -46,4 +38,3 @@ spec:
     syncOptions:
     - CreateNamespace=true
     - ServerSideApply=true
-# END ANSIBLE MANAGED BLOCK

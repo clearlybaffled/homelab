@@ -20,36 +20,36 @@
         sops_file: "{{ (app.app_dir, secret.name+'.sops.yaml')| path_join }}"
 
     - name: Render KSOPS generator template | {{ app.name }}
-      blockinfile:
-        block: "{{ lookup('template', 'secret-generator.yaml.j2', convert_data=false) }}"
-        path: "{{ app.app_dir }}/secret-generator.yaml"
-        create: true
+      template:
+        src: secret-generator.yaml.j2
+        dest: "{{ app.app_dir }}/secret-generator.yaml"
+        force: true
       register: ksops
 
 - name: ArgoCD application manifest | {{ app.name }}
-  blockinfile:
-    block: "{{ lookup('template', 'application.yaml.j2', convert_data=false) }}"
+  template:
+    src: application.yaml.j2
     dest: "{{ app.manifest_file }}"
     mode: "0644"
-    create: true
+    force: true
   register: application
   tags: manifest
 
 - name: "Install Kustomization file | {{ app.name }}"
-  blockinfile:
-    block: "{{ lookup('template', 'kustomization.yaml.j2', convert_data=false) }}"
+  template:
+    src: kustomization.yaml.j2
     dest: "{{ app.app_dir }}/kustomization.yaml"
     mode: "0644"
-    create: true
+    force: true
   register: kustomization
   when: ('kustomize' in app) or ('secrets' in app)
 
 - name: "Install PersistentVolumeClaim file | {{ app.name }}"
-  blockinfile:
-    block: "{{ lookup('template', 'pvc.yaml.j2', convert_data=false) }}"
+  template:
+    src: 'pvc.yaml.j2'
     dest: "{{ app.app_dir }}/pvc.yaml"
     mode: "0644"
-    create: true
+    force: true
   when: app.pvc is defined and app.pvc
   register: pvc
 
@@ -73,7 +73,9 @@
     url: "{{ git_repo_ssh_url }}"
     push: "{{ git_push | default(true) }}"
     branch: "{{ git_branch }}"
-  when: files | length > 0
+  when: 
+    - files | length > 0
+    - not batch_apps | default(false)
   register: git_commit
   tags: commit
   vars:
@@ -128,3 +130,4 @@
   when:
     - not ansible_loop.last
     - not app_no_loop_pause|default(false)
+    - not batch_apps | default(false)

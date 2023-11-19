@@ -1,11 +1,3 @@
-# BEGIN ANSIBLE MANAGED BLOCK
-#
-# template: {{ template_fullpath | relpath(root_dir) }}
-# date: 2023-10-08 20:57:16
-# user: {{ lookup('pipe', 'git config --get user.name') }}
-# host: tirante
-# commit: {{ lookup('pipe', 'git log --format="%h" -1 ' + template_fullpath|quote) }}
-#
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -20,7 +12,7 @@ spec:
   sources:
   - chart: mysql
     repoURL: https://charts.bitnami.com/bitnami
-    targetRevision: 9.12.3
+    targetRevision: 9.14.3
     helm:
       valueFiles:
       - $repo/cluster/apps/db/mysql/values.yaml
@@ -44,4 +36,3 @@ spec:
     - CreateNamespace=true
     - ServerSideApply=true
     - RespectIgnoreDifferences=true
-# END ANSIBLE MANAGED BLOCK

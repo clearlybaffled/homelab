@@ -1,11 +1,3 @@
-# BEGIN ANSIBLE MANAGED BLOCK
-#
-# template: {{ template_fullpath | relpath(root_dir) }}
-# date: 2023-10-08 20:57:16
-# user: {{ lookup('pipe', 'git config --get user.name') }}
-# host: tirante
-# commit: {{ lookup('pipe', 'git log --format="%h" -1 ' + template_fullpath|quote) }}
-#
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: db
@@ -14,4 +6,3 @@ generators:
 resources:
 - ./pvc.yaml
 - ./pv.yaml
-# END ANSIBLE MANAGED BLOCK
