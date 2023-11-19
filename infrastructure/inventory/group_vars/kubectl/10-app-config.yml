@@ -87,7 +87,7 @@ immich_chart_version: 0.1.3
 ingress_nginx_version: 4.8.3
 bitnami_redis_chart_version: 18.1.2
 redis_version: 7.2.1
-nextcloud_chart_version: 4.5.1
+nextcloud_chart_version: 4.5.0
 prometheus_version: 2.47.0
 prometheus_operator_version: v0.69.1
 kube_prometheus_stack_chart_version: 54.1.0

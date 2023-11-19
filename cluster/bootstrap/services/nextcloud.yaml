@@ -12,7 +12,7 @@ spec:
   sources:
   - chart: nextcloud
     repoURL: https://nextcloud.github.io/helm/
-    targetRevision: 4.5.1
+    targetRevision: 4.5.0
     helm:
       valueFiles:
       - $repo/cluster/apps/services/nextcloud/values.yaml
