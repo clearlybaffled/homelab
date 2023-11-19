@@ -43,7 +43,7 @@ persistence:
 podSecurityContext:
   runAsUser: 997
   runAsGroup: 997
-  fsGroup: 997
+  fsGroup: 33
 
 resources:
   requests:
