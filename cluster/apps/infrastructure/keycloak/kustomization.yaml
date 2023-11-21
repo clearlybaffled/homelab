@@ -8,3 +8,4 @@ resources:
 - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/22.0.5/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml
 - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/22.0.5/kubernetes/kubernetes.yml
 - ./keycloak.yaml
+- ./ingress.yaml

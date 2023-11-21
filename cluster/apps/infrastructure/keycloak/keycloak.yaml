@@ -16,10 +16,8 @@ spec:
       name: keycloak-db-secret
       key: password
   http:
-    tlsSecret: example-tls-secret
+    tlsSecret: keycloak-tls-ingress
   hostname:
     hostname: keycloak.seawolf.hermleigh.home
   ingress:
-    className: nginx
-    annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
+    enabled: false

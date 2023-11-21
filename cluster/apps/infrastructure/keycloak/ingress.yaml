@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: ca-issuer
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/icon: https://avatars.githubusercontent.com/u/4921466?s=48&v=4
+  labels:
+    app: keycloak
+    app.kubernetes.io/instance: keycloak
+    app.kubernetes.io/managed-by: keycloak-operator
+  name: keycloak-ingress
+  namespace: infrastructure
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: &host keycloak.seawolf.hermleigh.home
+    http:
+      paths:
+      - backend:
+          service:
+            name: keycloak-service
+            port:
+              number: &port 8443
+        pathType: ImplementationSpecific
+  defaultBackend:
+    service:
+      name: keycloak-service
+      port:
+        number: *port
+  tls:
+    - hosts:
+        - *host
+      secretName: keycloak-tls-ingresss
