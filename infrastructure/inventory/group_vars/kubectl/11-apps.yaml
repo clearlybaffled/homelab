@@ -350,3 +350,25 @@ apps:
     charts:
       - <<: *app_template
         release: audiobookshelf
+
+  homepage:
+    namespace: services
+    charts:
+      - chart: jameswynn/homepage
+        version: "{{ homepage_chart_version }}"
+
+  keycloak:
+    namespace: infrastructure
+    kustomize:
+      resources:
+        - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/{{ keycloak_version }}/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
+        - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/{{ keycloak_version }}/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml
+        - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/{{ keycloak_version }}/kubernetes/kubernetes.yml
+    secrets:
+      secret:
+        nameOverride: keycloak-db
+        data:
+          username: keycloak
+          password:
+            type: password
+            name: db

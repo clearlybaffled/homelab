@@ -82,6 +82,7 @@ app_template_version: 1.5.1
 elastic_chart_version: 2.10.0
 netbox_chart_version: 4.1.1
 hajimari_version: 2.0.2
+homepage_chart_version: 1.2.3
 cnpg_chart_version: 0.19.1
 bitnami_mysql_chart_version: 9.14.3
 mysql_version: 8.0.35
@@ -96,3 +97,4 @@ kube_prometheus_stack_chart_version: 54.1.0
 prometheus_adapter_chart_version: 4.8.1
 rook_ceph_version: v1.12.8
 vault_chart_version: 0.25.0
+keycloak_version: 22.0.5
