@@ -15,8 +15,6 @@ spec:
     passwordSecret:
       name: keycloak-db-secret
       key: password
-  http:
-    tlsSecret: example-tls-secret
   hostname:
     hostname: keycloak.seawolf.hermleigh.home
   ingress:
