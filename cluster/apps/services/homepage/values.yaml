@@ -1,5 +1,5 @@
 image:
-  repository: ghcr.io/benphelps/homepage
+  repository: ghcr.io/gethomepage/homepage
   tag: v0.8.0
 
 # Enable RBAC. RBAC is necessary to use Kubernetes integration
@@ -72,12 +72,12 @@ config:
   widgets:
     - resources:
         # change backend to 'kubernetes' to use Kubernetes integration. Requires RBAC.
-        backend: resources
+        backend: kubernetes
         expanded: true
         cpu: true
         memory: true
     - search:
-        provider: duckduckgo
+        provider: google
         target: _blank
     # Uncomment to enable Kubernetes integration
     - kubernetes:
