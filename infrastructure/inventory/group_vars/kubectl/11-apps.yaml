@@ -364,9 +364,9 @@ apps:
         - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/{{ keycloak_version }}/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
         - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/{{ keycloak_version }}/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml
         - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/{{ keycloak_version }}/kubernetes/kubernetes.yml
+        - ./keycloak.yaml
     secrets:
-      secret:
-        nameOverride: keycloak-db
+      db-secret:
         data:
           username: keycloak
           password:

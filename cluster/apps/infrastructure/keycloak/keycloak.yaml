@@ -20,6 +20,6 @@ spec:
   hostname:
     hostname: keycloak.seawolf.hermleigh.home
   ingress:
-    className: ingress-nginx
+    className: nginx
     annotations:
       cert-manager.io/cluster-issuer: ca-issuer
