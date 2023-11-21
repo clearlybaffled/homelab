@@ -3,13 +3,13 @@ image:
   # tag: v0.6.0
 
 # Enable RBAC. RBAC is necessary to use Kubernetes integration
-enableRbac: false
+enableRbac: true
 
 serviceAccount:
   # Specify a different service account name
   name: homepage
   # Create service account. Needed when RBAC is enabled.
-  create: false
+  create: true
 
 service:
   main:
@@ -26,25 +26,25 @@ controller:
 # Enable the ingress to expose Homepage to the network.
 ingress:
   main:
-    enabled: false
-    # labels:
-    #   # This label will enable discover of this deployment in Homepage
-    #   gethomepage.dev/enabled: "true"
-    # annotations:
-    #   # These annotations will configure how this deployment is shown in Homepage
-    #   gethomepage.dev/name: "Homepage"
-    #   gethomepage.dev/description: "A modern, secure, highly customizable application dashboard."
-    #   gethomepage.dev/group: "A New Group"
-    #   gethomepage.dev/icon: "homepage.png"
-    # ingressClassName: "nginx"
-    # hosts:
-    #   - host: &host "homepage.local"
-    #     paths:
-    #       - path: /
-    #         pathType: Prefix
-    # tls:
-    #   - hosts:
-    #       - *host
+    enabled: true
+    labels:
+      # This label will enable discover of this deployment in Homepage
+      gethomepage.dev/enabled: "true"
+    annotations:
+      # These annotations will configure how this deployment is shown in Homepage
+      gethomepage.dev/name: "Homepage"
+      gethomepage.dev/description: "A modern, secure, highly customizable application dashboard."
+      gethomepage.dev/group: "A New Group"
+      gethomepage.dev/icon: "homepage.png"
+    ingressClassName: nginx
+    hosts:
+      - host: &host "homepage.seawolf.hermleigh.home"
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - *host
 
 # All the config files for Homepage can be specified under their relevant config block.
 config:
@@ -80,22 +80,22 @@ config:
     - search:
         provider: duckduckgo
         target: _blank
-    ## Uncomment to enable Kubernetes integration
-    # - kubernetes:
-    #     cluster:
-    #       show: true
-    #       cpu: true
-    #       memory: true
-    #       showLabel: true
-    #       label: "cluster"
-    #     nodes:
-    #       show: true
-    #       cpu: true
-    #       memory: true
-    #       showLabel: true
+    # Uncomment to enable Kubernetes integration
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: "cluster"
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
   kubernetes:
     # change mode to 'cluster' to use RBAC service account
-    mode: disable
+    mode: cluster
   docker:
   settings:
 
