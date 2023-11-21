@@ -4,10 +4,20 @@ auth:
   sentinel: false
 master:
   persistence:
-    enabled: false
+    enabled: true
+    storageClass: ceph-fs-ssd
+  dnsConfig:
+    options:
+      - name: ndots
+        value: "8"
 replica:
   persistence:
-    enabled: false
+    enabled: true
+    storageClass: ceph-fs-ssd
+  dnsConfig:
+    options:
+      - name: ndots
+        value: "8"
 sentinel:
   enabled: true
   masterSet: redis-master
