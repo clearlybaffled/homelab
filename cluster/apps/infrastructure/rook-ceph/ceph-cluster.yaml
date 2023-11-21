@@ -185,7 +185,7 @@ cephFileSystems:
             memory: "512M"
     storageClass:
       enabled: true
-      isDefault: false
+      isDefault: true
       name: ceph-fs-ssd
       pool: data1
       reclaimPolicy: Retain
@@ -203,40 +203,4 @@ cephFileSystems:
 cephBlockPoolsVolumeSnapshotClass:
   enabled: false
 
-cephObjectStores:
-  - name: s3
-    spec:
-      metadataPool:
-        replicated:
-          size: 1
-      dataPool:
-        replicated:
-          size: 1
-      preservePoolsOnDelete: false
-      gateway:
-        port: 80
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128M
-          limits:
-            memory: 1Gi
-        instances: 1
-    storageClass:
-      enabled: true
-      name: ceph-bucket
-      reclaimPolicy: Retain
-    ingress:
-      # Enable an ingress for the ceph-objectstore
-      enabled: true
-      annotations:
-        cert-manager.io/cluster-issuer: 'ca-issuer'
-      host:
-        name: s3.seawolf.hermleigh.home
-        path: /
-      tls:
-      - hosts:
-          - s3.seawolf.hermleigh.home
-          - s3.seawolf
-        secretName: ceph-objectstore-tls
-      ingressClassName: nginx
+cephObjectStores: []
