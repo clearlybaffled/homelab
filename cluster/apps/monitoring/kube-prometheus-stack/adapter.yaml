@@ -1,7 +1,7 @@
 # Url to access prometheus
 prometheus:
   # Value is templated
-  url: http://kube-prometheus-stack-prometheus.monitoring
+  url: http://kube-prometheus-prometheus.monitoring
   port: 9090
   path: ""
 
