@@ -19,6 +19,7 @@ helm_repositories:
   immich: https://immich-app.github.io/immich-charts
   bootc: https://charts.boo.tc
   elastic: https://helm.elastic.co
+  jameswynn: http://jameswynn.github.io/helm-charts
 
 # Registry deployment
 registry_enabled: false
