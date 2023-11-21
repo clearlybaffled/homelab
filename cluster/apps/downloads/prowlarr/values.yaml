@@ -58,6 +58,7 @@ persistence:
     enabled: true
     type: pvc
     size: 50Mi
+    storageClass: ceph-fs-ssd
 
 resources:
   requests:

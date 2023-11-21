@@ -68,6 +68,7 @@ persistence:
     mountPath: /library
     accessMode: ReadWriteMany
     size: 30Gi
+    storageClass: ceph-fs-ssd
 
 resources:
   requests:

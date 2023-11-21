@@ -44,6 +44,7 @@ persistence:
   config:
     size: 10Gi
     type: pvc
+    storageClass: ceph-fs-ssd
   media:
     enabled: true
     existingClaim: shared-files

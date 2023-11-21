@@ -39,6 +39,7 @@ persistence:
   config:
     enabled: true
     size: 50Mi
+    storageClass: ceph-fs-ssd
   videos:
     enabled: true
     type: pvc

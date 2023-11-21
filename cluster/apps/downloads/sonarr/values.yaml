@@ -50,6 +50,7 @@ persistence:
     enabled: true
     size: 50Mi
     type: pvc
+    storageClass: ceph-fs-ssd
   shared:
     enabled: true
     type: pvc

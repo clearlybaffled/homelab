@@ -42,7 +42,7 @@ persistence:
     enabled: true
     type: pvc
     mountPath: /data/data
-    storageClass: ceph-fs-hdd
+    storageClass: ceph-fs-ssd
     accessMode: ReadWriteOnce
     size: 10Gi
     retain: true

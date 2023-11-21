@@ -57,6 +57,7 @@ persistence:
   config:
     enabled: true
     size: 50Mi
+    storageClass: ceph-fs-ssd
   media:
     enabled: true
     type: pvc
