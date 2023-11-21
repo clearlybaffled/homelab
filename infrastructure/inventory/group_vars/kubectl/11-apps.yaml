@@ -345,6 +345,34 @@ apps:
           LIDARR__POSTGRES_PASSWORD:
             type: password
             name: postgres
+
+  netbox:
+    namespace: infrastructure
+    charts:
+      - chart: bootc/netbox
+        version: "{{ netbox_chart_version }}"
+    secrets:
+      secret:
+        data:
+          db_user: netbox
+          db_password:
+            type: password
+            name: db
+          secret_key:
+            type: key
+            name: api
+          superuser_password:
+            type: password
+            name: superuser
+          superuser_api_token:
+            type: key
+            name: superuser_api
+          ldap_bind_password: ''
+          email_password: ''
+          redis_tasks_password: ''
+          redis_cache_password: ''
+          napalm_password: ''
+
   audiobookshelf:
     namespace: media
     charts:

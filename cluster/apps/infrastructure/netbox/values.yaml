@@ -1,0 +1,99 @@
+postgresql:
+  enabled: false
+
+externalDatabase:
+  host: cnpg-cluster-rw.db.svc
+  port: 5432
+  database: netbox
+  username: netbox
+
+  # The following settings also apply when using the bundled PostgreSQL chart:
+  sslMode: prefer
+  connMaxAge: 300
+  disableServerSideCursors: false
+  targetSessionAttrs: read-write
+
+internalIPs:
+  - 10.233.64.1
+  - 172.16.1.11
+
+metricsExposed: true
+
+timezone: America/New_York
+existingSecret: netbox-secret
+
+redis:
+  enabled: false
+
+tasksRedis:
+  database: 0
+  ssl: false
+  insecureSkipTlsVerify: false
+  caCertPath: ""
+
+  # Used only when redis.enabled is false. host and port are not used if
+  # sentinels are given.
+  host: redis-headless.db.svc
+  port: 6379
+  sentinels: []
+  #  - mysentinel:26379
+  # sentinelService: netbox-redis
+  # sentinelTimeout: 300
+
+cachingRedis:
+  database: 1
+  ssl: false
+  insecureSkipTlsVerify: false
+  caCertPath: ""
+
+  # Used only when redis.enabled is false. host and port are not used if
+  # sentinels are given.
+  host: redis-headless.db.svc
+  port: 6379
+  sentinels: []
+  #  - mysentinel:26379
+  # sentinelService: netbox-redis
+  # sentinelTimeout: 300
+
+
+podSecurityContext:
+  fsGroup: 997
+  runAsNonRoot: true
+  runAsUser: 997
+  runAsGroup: 997
+
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 997
+  runAsGroup: 997
+
+persistence:
+  enabled: true
+  storageClass: ceph-fs-hdd
+
+ingress:
+  enabled: true
+  className: ingress-nginx
+  annotations:
+    hajimari.io/icon: https://github.com/netbox-community/netbox/wiki/images/logos/netbox_icon.svg
+    cert-manager.io/cluster-issuer: ca-issuer
+  hosts:
+    - host: &host netbox.seawolf.hermleigh.home
+      paths:
+        - /
+  tls:
+    - secretName: netbox-ingress-tls
+      hosts:
+        - *host
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
