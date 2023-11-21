@@ -32,4 +32,4 @@ spec:
   tls:
     - hosts:
         - *host
-      secretName: keycloak-tls-ingresss
+      secretName: keycloak-tls-ingress
