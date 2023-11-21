@@ -40,7 +40,8 @@ tasksRedis:
 
   # Used only when redis.enabled is false. host and port are not used if
   # sentinels are given.
-  host: redis-node-2.redis-headless.db
+  # TODO: Don't hardcode the master
+  host: redis-node-0.redis-headless.db
   port: 6379
   sentinels: []
     # - redis-master:26379
@@ -55,7 +56,8 @@ cachingRedis:
 
   # Used only when redis.enabled is false. host and port are not used if
   # sentinels are given.
-  host: redis-node-2.redis-headless.db
+  # TODO: Don't hardcode the master
+  host: redis-node-0.redis-headless.db
   port: 6379
   sentinels: []
     # - redis-master:26379
