@@ -88,7 +88,7 @@ registry: txt
 # uniquely identifies this instance of external-dns.
 txtOwnerId: "k8s"
 # Specifies a prefix for the domain names of TXT records created by the "txt" registry. Optional. Mutually exclusive with `txtSuffix`.
-txtPrefix: "seawolf-external-dns"
+txtPrefix: "seawolf-external-dns-"
 # Specifies a suffix for the domain names of TXT records created by the "txt" registry. Optional. Mutually exclusive with `txtPrefix`.
 txtSuffix: ""
 
@@ -103,7 +103,7 @@ extraArgs:
   - --rfc2136-zone=hermleigh.home
   - --rfc2136-tsig-secret=$(TSIG_KEY)
   - --rfc2136-tsig-secret-alg=hmac-sha512
-  - --rfc2136-tsig-keyname=externaldns
+  - --rfc2136-tsig-keyname=external-dns
   - --rfc2136-tsig-axfr
 
 deploymentStrategy:
