@@ -54,10 +54,10 @@ dex:
 
 ## Redis
 redis:
-  enabled: true
+  enabled: false
 # External Redis parameters
-# externalRedis:
-#   host: redis.db
+externalRedis:
+  host: redis-node-0.redis-headless.db
 
 ## Server
 server:
@@ -72,18 +72,16 @@ server:
       hajimari.io/appName: ArgoCD
       cert-manager.io/cluster-issuer: ca-issuer
     ingressClassName: nginx
-    hosts:
-      - argocd.seawolf.hermleigh.home
-      - argocd.seawolf
+    hosts: &hosts
+      - argocd.hermleigh.home
+      - argocd
     paths:
       - /
     pathType: Prefix
 
     tls:
       - secretName: argocd-ingress-cert
-        hosts:
-          - argocd.seawolf.hermleigh.home
-          - argocd.seawolf
+        hosts: *hosts
 
 repoServer:
   metrics:
