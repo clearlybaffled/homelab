@@ -118,12 +118,12 @@ ingress:
       hajimari.io/icon: simple-icons:ceph
       cert-manager.io/cluster-issuer: 'ca-issuer'
     host:
-      name: ceph-dashboard.seawolf.hermleigh.home
+      name: ceph-dashboard.hermleigh.home
       path: /
     tls:
     - hosts:
-        - ceph-dashboard.seawolf.hermleigh.home
-        - ceph-dashboard.seawolf
+        - ceph-dashboard.hermleigh.home
+        - ceph-dashboard
       secretName: ceph-dashboard-tls
     # Note: Only one of ingress class annotation or the `ingressClassName:` can be used at a time
     # to set the ingress class
@@ -161,6 +161,44 @@ cephBlockPools:
       enabled: false
 
 cephFileSystems:
+  - name: k8s-hdd-fs
+    spec:
+      metadataPool:
+        replicated:
+          size: 1
+        deviceClass: ssd
+      dataPools:
+        - name: data0
+          failureDomain: osd
+          replicated:
+            size: 1
+            requireSafeReplicaSize: false
+          deviceClass: hdd
+      metadataServer:
+        activeCount: 1
+        activeStandby: true
+        resources:
+          requests:
+            cpu: "35m"
+            memory: "128M"
+          limits:
+            memory: "512M"
+    storageClass:
+      enabled: true
+      isDefault: false
+      name: ceph-fs-hdd
+      pool: data0
+      reclaimPolicy: Retain
+      allowVolumeExpansion: true
+      mountOptions: []
+      parameters:
+        csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
+        csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
+        csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
+        csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
+        csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
+        csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
+        csi.storage.k8s.io/fstype: ext4
   - name: ssd-fs
     spec:
       metadataPool:
