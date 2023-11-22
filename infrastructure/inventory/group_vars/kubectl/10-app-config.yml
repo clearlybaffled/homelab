@@ -18,6 +18,7 @@ helm_repositories:
   hashicorp: https://helm.releases.hashicorp.com
   immich: https://immich-app.github.io/immich-charts
   bootc: https://charts.boo.tc
+  external-dns: https://kubernetes-sigs.github.io/external-dns/
 
 # Registry deployment
 registry_enabled: false
@@ -94,3 +95,4 @@ kube_prometheus_stack_chart_version: 54.1.0
 prometheus_adapter_chart_version: 4.8.1
 rook_ceph_version: v1.12.8
 vault_chart_version: 0.25.0
+external_dns_chart_version: 1.13.1

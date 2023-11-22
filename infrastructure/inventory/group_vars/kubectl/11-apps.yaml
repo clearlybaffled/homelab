@@ -378,3 +378,11 @@ apps:
     charts:
       - <<: *app_template
         release: audiobookshelf
+
+  external-dns:
+    namespace: infrastructure
+    charts:
+      - chart: external-dns/external-dns
+        version: "{{ external_dns_chart_version }}"
+    secrets:
+      secret: {}

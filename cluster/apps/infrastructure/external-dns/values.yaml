@@ -1,0 +1,113 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kubernetes-sigs/external-dns/master/charts/external-dns/values.schema.json
+
+image:
+  repository: registry.k8s.io/external-dns/external-dns
+  # Overrides the image tag whose default is v{{ .Chart.AppVersion }}
+  tag: ""
+  pullPolicy: IfNotPresent
+
+commonLabels: {}
+
+serviceAccount:
+  create: true
+
+rbac:
+  # Specifies whether RBAC resources should be created
+  create: true
+  additionalPermissions: []
+
+podSecurityContext:
+  fsGroup: 65534
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  runAsUser: 65534
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop: ["ALL"]
+
+# Defaults to `ClusterFirst`.
+# Valid values are: `ClusterFirstWithHostNet`, `ClusterFirst`, `Default` or `None`.
+dnsPolicy: ClusterFirst
+
+serviceMonitor:
+  enabled: true
+
+env:
+  - name: TSIG_KEY
+    valueFrom:
+      secretKeyRef:
+        name: dns-tsig-key
+        key: tsig-key
+
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 2
+  successThreshold: 1
+
+readinessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+  successThreshold: 1
+
+service:
+  port: 7979
+  annotations: {}
+
+logLevel: info
+logFormat: text
+
+interval: 1m
+triggerLoopOnEvent: false
+
+namespaced: false
+
+sources:
+  - service
+  - ingress
+
+policy: sync
+
+# Specifies the registry for storing ownership and labels.
+# Valid values are "aws-sd", "noop", "dynamodb", and "txt".
+registry: txt
+# When using a registry other than "noop", specifies a name that
+# uniquely identifies this instance of external-dns.
+txtOwnerId: "k8s"
+# Specifies a prefix for the domain names of TXT records created by the "txt" registry. Optional. Mutually exclusive with `txtSuffix`.
+txtPrefix: "seawolf-external-dns"
+# Specifies a suffix for the domain names of TXT records created by the "txt" registry. Optional. Mutually exclusive with `txtPrefix`.
+txtSuffix: ""
+
+domainFilters:
+  - hermleigh.home
+
+provider: rfc2136
+
+extraArgs:
+  - --rfc2136-host=172.16.1.2
+  - --rfc2136-port=53
+  - --rfc2136-zone=hermleigh.home
+  - --rfc2136-tsig-secret=$(TSIG_KEY)
+  - --rfc2136-tsig-secret-alg=hmac-sha512
+  - --rfc2136-tsig-keyname=externaldns
+  - --rfc2136-tsig-axfr
+
+deploymentStrategy:
+  type: Recreate
+
+# Optional field that specifies the number of old ReplicaSets to retain to allow rollback with the Deployment.
+revisionHistoryLimit: 2
