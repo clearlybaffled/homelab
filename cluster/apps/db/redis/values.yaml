@@ -4,16 +4,14 @@ auth:
   sentinel: false
 master:
   persistence:
-    enabled: true
-    storageClass: ceph-fs-ssd
+    enabled: false
   dnsConfig:
     options:
       - name: ndots
         value: "8"
 replica:
   persistence:
-    enabled: true
-    storageClass: ceph-fs-ssd
+    enabled: false
   dnsConfig:
     options:
       - name: ndots
