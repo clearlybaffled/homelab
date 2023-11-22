@@ -45,7 +45,7 @@ controller:
     serviceMonitor: &service-monitor
       enabled: true
       additionalLabels:
-        release: prometheus
+        release: prometheus-operator
 ## Dex
 dex:
   metrics:

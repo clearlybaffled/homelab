@@ -35,6 +35,10 @@
   register: application
   tags: manifest
 
+- name: Get Kubernetes Cluster info
+  kubernetes.core.k8s_cluster_info:
+  register: cluster_info
+
 - name: "Install Kustomization file | {{ app.name }}"
   template:
     src: kustomization.yaml.j2
@@ -43,6 +47,8 @@
     force: true
   register: kustomization
   when: ('kustomize' in app) or ('secrets' in app)
+  vars:
+    k8s_apis: "{{ cluster_info.apis.keys() | list }}"
 
 - name: "Install PersistentVolumeClaim file | {{ app.name }}"
   template:

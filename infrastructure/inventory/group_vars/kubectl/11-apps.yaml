@@ -10,8 +10,6 @@ apps:
     wave: "0"
     path: ''
     kustomize:
-      resources:
-        - ./ns.yaml
       charts:
         - chart: argocd/argo-cd
           version: "{{ argocd_chart_version }}"
