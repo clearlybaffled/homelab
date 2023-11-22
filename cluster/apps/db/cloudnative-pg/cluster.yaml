@@ -6,8 +6,11 @@ metadata:
 spec:
   instances: 1
 
+  imageName: ghcr.io/cloudnative-pg/postgresql:15.5-2
+
   superuserSecret:
     name: cloudnative-pg-superuser
+  enableSuperuserAccess: true
 
   bootstrap:
     initdb:

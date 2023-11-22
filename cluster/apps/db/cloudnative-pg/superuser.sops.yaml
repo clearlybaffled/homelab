@@ -1,6 +1,6 @@
 apiVersion: v1
 data:
-    password: ENC[AES256_GCM,data:lZ8oD2z3dOKhIoLFbiAVzxkhOxAE2SuFnM3dzPqxAAtynyuNdauLZg==,iv:PfQNoHqkrBzTs6SrOz311TdtvR5XpDTJy6FnktZoP1Q=,tag:eWfdC3g7lRDDcC/s6LBD+g==,type:str]
+    password: ENC[AES256_GCM,data:rblPf3wTD9U/D6FKI5vgWs3iyaSUmHn/JNky3ylW+7mUDf5xjB3iaw==,iv:P2EOcbeuGQA8yrD6E7vp9y9eulL4K7V2nY+byi5oYj4=,tag:BbBYnrs4Y5rzuY4evcFwcQ==,type:str]
     username: ENC[AES256_GCM,data:rn7sWRrhPMJTAbsc,iv:80CmTyjV/bvng8U2WFdE5Op+kuSprGVkQpT2bY+aDas=,tag:XvXmAhZy1s6CmRA65NGqeA==,type:str]
 kind: Secret
 metadata:
@@ -22,8 +22,8 @@ sops:
             eExrT1daVEc3TldiN1JPR0Q0NDlVY2MKZKWmG7ur6YbuOw2XGMlFt6TJ56Ik09VJ
             uGNfjB/44pxLCFnYS15ir5+1U0ifVjbUnJmW64xXi/KnENMRQ7tE/Q==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-10-09T00:58:48Z"
-    mac: ENC[AES256_GCM,data:VbEKGvRrI01wrIUBtcIOZUpOlz1oKz9h1rrNlNhxQi/fkJgwmxp95CKO8Kjg7JD755PdgLNg7uoDIdQd1AdSjxNkX6M2NFgIOlMtVdjvrBSMf63+zch3UmUmx/rEXtvx5+1fhwVpuXMf+LF2glphCJCN74eUdWqxTbkq79MGl54=,iv:aAKZr9R8QwqWQ6fx4ycmTGBxxwA7IQmcBZGzHuJu2Z4=,tag:X4TmOY/IECdWcocn8GRfxg==,type:str]
+    lastmodified: "2023-11-22T11:39:59Z"
+    mac: ENC[AES256_GCM,data:gNDNyhvcsAA27G9od+GMD756c24i7xlP4CMjukKttStiivZvTKx5wLeRSktsbVfHSUQElFZfeguoTLPu6kh7p1NkP4/5cAnkZt0WZUbcNi8YBjW+YrKA4hzhSrlBsyYj3P5Ec8YA5z1lY3mQKO5b0WTeKdoJCa0o8rtiABEsnGw=,iv:7yPSOjSOB1Gat6L3qNlU91a+DUagjygXMu2wBobGMr4=,tag:4QEoZAg8Zt+GK+Jo1fF3WA==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
-    version: 3.7.3
+    version: 3.8.1
