@@ -91,8 +91,29 @@ redis_version: 7.2.1
 nextcloud_chart_version: 4.5.0
 prometheus_version: 2.47.0
 prometheus_operator_version: v0.69.1
-kube_prometheus_stack_chart_version: 54.1.0
+kube_prometheus_stack_chart_version: 54.2.1
 prometheus_adapter_chart_version: 4.8.1
 rook_ceph_version: v1.12.8
 vault_chart_version: 0.25.0
 external_dns_chart_version: 1.13.1
+
+grafana_dashboards:
+  - folder_name: Ceph
+    dashboards:
+      - 5336 # CephOSD
+      - 5342 # Ceph Pools
+      - 2842 # Ceph Cluster
+  - folder_name: Database
+    dashboards:
+      - 763 # Redis
+  - folder_name: DNS
+    dashboards:
+      - 12539 # CoreDNS
+      - 14981 # Another CoreDNS?
+      - 15038 # External DNS
+  - folder_name: Ingress
+    dashboards:
+      - 9614 # NGINX Ingress
+      # - 4475 # Traefik
+  
+  

@@ -105,3 +105,11 @@ prometheus:
   prometheusSpec:
     podMonitorSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
+    additionalScrapeConfigs:
+      - job_name: "cri-o-exporter-seawolf"
+        scrape_interval: 1s
+        metrics_path: /seawolf
+        static_configs:
+          - targets: ["cri-o-metrics-exporter.cri-o-metrics-exporter"]
+            labels:
+              instance: "seawolf"
