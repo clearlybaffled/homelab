@@ -106,6 +106,7 @@ grafana_dashboards:
   - folder_name: Database
     dashboards:
       - 763 # Redis
+      - 12776 # Redis (from datasource)
   - folder_name: DNS
     dashboards:
       - 12539 # CoreDNS
