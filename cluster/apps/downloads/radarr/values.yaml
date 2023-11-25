@@ -5,9 +5,9 @@ image:
 env:
   TZ: "America/New_York"
   RADARR__INSTANCE_NAME: Radarr
-  RADARR__APPLICATION_URL: 'https://movies.seawolf.hermleigh.home'
+  RADARR__APPLICATION_URL: 'https://movies.hermleigh.home'
   RADARR__LOG_LEVEL: info
-  RADARR__POSTGRES_HOST: 10.233.56.52
+  RADARR__POSTGRES_HOST: 10.233.47.154
 envFrom:
   - secretRef:
       name: radarr-secret
@@ -24,9 +24,21 @@ ingress:
     ingressClassName: 'nginx'
     annotations:
       cert-manager.io/cluster-issuer: ca-issuer
-      hajimari.io/icon: filmstrip
+      cert-manager.io/common-name: Radarr - Movie Download Manager
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organization: HERMLEIGH.HOME
+      cert-manager.io/subject-organizationalunits: Hermleigh House Network,Kubernetes Cluster - Seawolf,Downloads
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "384"
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: Movie Download Manager
+      gethomepage.dev/icon: radarr.png
+      gethomepage.dev/group: Downloads
+      gethomepage.dev/name: radarr
+      gethomepage.dev/widget.type: "radarr"
+      gethomepage.dev/widget.url: "https://movies.hermleigh.home"
     hosts:
-      - host: &host movies.seawolf.hermleigh.home
+      - host: &host movies.hermleigh.home
         paths:
           - path: /
             pathType: Prefix
