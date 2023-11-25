@@ -5,7 +5,7 @@ env:
   TZ: America/New_York
   LIDARR__INSTANCE_NAME: Lidarr
   LIDARR__PORT: &port 8686
-  LIDARR__POSTGRES_HOST: 10.233.56.52
+  LIDARR__POSTGRES_HOST: cnpg-cluster-rw.db
   LIDARR__LOG_LEVEL: info
 envFrom:
   - secretRef:
@@ -42,8 +42,9 @@ podSecurityContext:
   supplementalGroups: [10000]
 persistence:
   config:
-    size: 10Gi
+    size: 1Gi
     type: pvc
+    storageClass: ceph-fs-ssd
   media:
     enabled: true
     existingClaim: shared-files
