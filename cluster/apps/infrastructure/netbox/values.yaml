@@ -45,7 +45,7 @@ tasksRedis:
   port: 6379
   sentinels: []
     # - redis-master:26379
-  sentinelService: redis-node-2.redis-headless.db
+  sentinelService: redis-node-0.redis-headless.db
   sentinelTimeout: 300
 
 cachingRedis:
@@ -61,7 +61,7 @@ cachingRedis:
   port: 6379
   sentinels: []
     # - redis-master:26379
-  sentinelService: redis-node-2.redis-headless.db
+  sentinelService: redis-node-0.redis-headless.db
   sentinelTimeout: 300
 
 persistence:
@@ -91,7 +91,7 @@ ingress:
     hajimari.io/icon: https://github.com/netbox-community/netbox/wiki/images/logos/netbox_icon.svg
     cert-manager.io/cluster-issuer: ca-issuer
   hosts:
-    - host: &host netbox.seawolf.hermleigh.home
+    - host: &host netbox.hermleigh.home
       paths:
         - /
   tls:
