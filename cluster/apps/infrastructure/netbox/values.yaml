@@ -4,6 +4,11 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: v3.6.5
 
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 60
+  periodSeconds: 15
+
 postgresql:
   enabled: false
 
@@ -24,7 +29,9 @@ internalIPs:
   - 10.233.64.1
   - 172.16.1.11
 
-metricsExposed: true
+metricsEnabled: true
+serviceMonitor:
+  enabled: true
 
 timezone: America/New_York
 existingSecret: netbox-secret
@@ -83,7 +90,6 @@ securityContext:
   runAsUser: 997
   runAsGroup: 997
 
-
 ingress:
   enabled: true
   className: nginx
@@ -94,6 +100,13 @@ ingress:
     - host: &host netbox.hermleigh.home
       paths:
         - /
+        - path: /graphite
+          pathType: Prefix
+          backend:
+            service:
+              name: graphite
+              port:
+                number: 80
   tls:
     - secretName: netbox-ingress-tls
       hosts:
@@ -106,3 +119,37 @@ resources:
   requests:
     cpu: 100m
     memory: 128Mi
+
+extraContainers:
+  - name: graphite
+    image: netreplica/graphite
+    imagePullPolicy: IfNotPresent
+    # command: ["/bin/sh", "-c", "sleep 360"]
+    volumeMounts:
+      - name: nrx-files
+        mountPath: /htdocs/default
+    ports:
+      - name: http
+        containerPort: 80
+        protocol: TCP
+    securityContext:
+      readOnlyRootFilesystem: false
+      allowPrivilegeEscalation: true
+      runAsNonRoot: false
+      runAsUser: 0
+      runAsGroup: 0
+      capabilities:
+        drop:
+          - all
+        add:
+          - NET_BIND_SERVICE
+          - SETUID
+          - SETGID
+
+extraVolumes:
+  - name: nrx-files
+    emptyDir: {}
+
+extraVolumeMounts:
+  - name: nrx-files
+    mountPath: /graphite

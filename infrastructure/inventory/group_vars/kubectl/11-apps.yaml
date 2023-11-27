@@ -349,6 +349,9 @@ apps:
     charts:
       - chart: bootc/netbox
         version: "{{ netbox_chart_version }}"
+    kustomize:
+      resources:
+        - ./graphite-svc.yaml
     secrets:
       secret:
         data:
