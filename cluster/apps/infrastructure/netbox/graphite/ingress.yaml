@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: graphite
+  namespace: infrastructure
+  labels:
+    name: graphite
+  annotations:
+    cert-manager.io/cluster-issuer: ca-issuer
+spec:
+  rules:
+  - host: graphite.hermleigh.home
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: graphite
+            port:
+              number: 80
+  tls:
+    - hosts:
+        - graphite.hermleigh.home
+      secretName: graphite-ingress-tls

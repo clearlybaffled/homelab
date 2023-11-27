@@ -100,13 +100,6 @@ ingress:
     - host: &host netbox.hermleigh.home
       paths:
         - /
-        - path: /graphite
-          pathType: Prefix
-          backend:
-            service:
-              name: graphite
-              port:
-                number: 80
   tls:
     - secretName: netbox-ingress-tls
       hosts:
