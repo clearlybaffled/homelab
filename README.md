@@ -101,8 +101,9 @@ This Git repository contains the following top level directories.
 |[<img width="32" src="https://github.com/jetstack/cert-manager/raw/master/logo/logo.png">](https://cert-manager.io)|[cert-manager](./cluster/apps/infrastructure/cert-manager/)|Cloud native certificate management|
 |[<img width="32" src="https://raw.github.com/cncf/artwork/master/projects/crio/icon/color/crio-icon-color.png">](https://www.cri-o.io)|[CRI-O](./infrastructure/roles/containers/runtime/)|OCI - Container Runtime|
 |[<img width="32" src="https://www.debian.org/logos/openlogo-nd.svg">](https://debian.org)|Debian|Base OS for Kubernetes nodes|
+|[<img width="32" src="https://github.com/kubernetes-sigs/external-dns/raw/master/docs/img/external-dns.png">](https://github.com/kubernetes-sigs/external-dns) | [External DNS](./cluster/apps/infrastructure/external-dns/) | Synchronize exposed services and ingresses with DNS providers |
 |[<img width="32" src="https://raw.githubusercontent.com/flannel-io/flannel/master/logos/flannel-glyph-color.svg">](https://www.github.com/flannel-io/flannel)|[Flannel](./infrastructure/roles/containers/network/)|Kubernetes Network Plugin|
-|[<img width="32" src="https://github.com/cncf/artwork/blob/master/projects/helm/icon/color/helm-icon-color.png?raw=true">](https://helm.sh)|Helm|The package manager for Kubernetes|
+|[<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/main/projects/helm/icon/color/helm-icon-color.png">](https://helm.sh)|Helm|The package manager for Kubernetes|
 |[<img width="32" src="https://docs.nginx.com/nginx-ingress-controller/images/icons/NGINX-Ingress-Controller-product-icon.svg">](https://kubernetes.github.io/ingress-nginx/)|[Ingress-nginx](./cluster/apps/infrastructure/ingress-nginx/)| Ingress controller for Kubernetes using NGINX as a reverse proxy and load balancer|
 |[<img width="32" src="https://www.virt-tools.org/logo-kvm.png">](https://www.linux-kvm.org)|[KVM](./infrastructure/roles/server/kvm/) | Linux Kernel Virtual Machine Hypervisor |
 |[<img width="32" src="https://github.com/cncf/artwork/blob/master/projects/kubernetes/icon/color/kubernetes-icon-color.svg?raw=true">](https://kubernetes.io)|[Kubernetes](./infrastructure/roles/kubernetes/)|Container Orchestration|
@@ -140,7 +141,7 @@ This Git repository contains the following top level directories.
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
-|[<img width="32" src="https://avatars.githubusercontent.com/u/44905828?s=200&v=4">][netbox-uri]|NetBox| `Services`| Full-scale network inventory | | |
+|[<img width="32" src="https://avatars.githubusercontent.com/u/44905828?s=200&v=4">][netbox-uri]|NetBox| `Inventory`| Full-scale network inventory | Deployed | [![netbox-badge]][netbox-chart] |
 |[<img width="32" src="https://simpleicons.org/icons/vault.svg">][vault-uri]|Vault| `Services` | Secrets and encryption management| | |
 
 ### [Media](./cluster/apps/media/)
@@ -263,6 +264,8 @@ This Git repository contains the following top level directories.
 [linkwarden-img]: https://ghcr.io/linkwarden/linkwarden
 
 [netbox-uri]: https://netbox.dev
+[netbox-chart]: https://artifacthub.io/packages/helm/bootc/netbox
+[netbox-badge]: https://img.shields.io/badge/bootc/netbox-4.1.1-blue?logo=helm
 [vault-uri]: https://www.vaultproject.io
 
 [freeipa-uri]: https://wwww.freeipa.org
