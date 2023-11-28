@@ -134,6 +134,7 @@ apps:
           - ceph-cluster.yaml
 
   paperless-ngx:
+    createApp: false
     namespace: services
     wave: "4"
     charts:
@@ -152,6 +153,7 @@ apps:
             name: admin
 
   nextcloud:
+    createApp: false
     namespace: services
     wave: "4"
     charts:
@@ -250,12 +252,14 @@ apps:
           - values-web.yaml
 
   qbittorrent:
+    createApp: false
     namespace: downloads
     charts:
       - <<: *app_template
         release: qbittorrent
 
   sonarr:
+    createApp: false
     namespace: downloads
     charts:
       - <<: *app_template
@@ -273,6 +277,7 @@ apps:
           SONARR__POSTGRES_MAIN_DB: sonarr_main
           SONARR__POSTGRES_LOG_DB: sonarr_log
   radarr:
+    createApp: false
     namespace: downloads
     charts:
       - <<: *app_template
@@ -291,6 +296,7 @@ apps:
           RADARR__POSTGRES_LOG_DB: radarr_log
 
   readarr:
+    createApp: false
     namespace: downloads
     charts:
       - <<: *app_template
@@ -309,6 +315,7 @@ apps:
           READARR__POSTGRES_LOG_DB: readarr_log
 
   prowlarr:
+    createApp: false
     namespace: downloads
     charts:
       - <<: *app_template
@@ -327,6 +334,7 @@ apps:
           PROWLARR__POSTGRES_LOG_DB: prowlarr_log
 
   lidarr:
+    createApp: false
     namespace: downloads
     charts:
       - <<: *app_template
@@ -375,6 +383,7 @@ apps:
           napalm_password: ''
 
   audiobookshelf:
+    createApp: false
     namespace: media
     charts:
       - <<: *app_template
@@ -387,3 +396,26 @@ apps:
         version: "{{ external_dns_chart_version }}"
     secrets:
       secret: {}
+
+  homepage:
+    namespace: services
+    charts:
+      - chart: jameswynn/homepage
+        version: "{{ homepage_chart_version }}"
+
+  keycloak:
+    namespace: infrastructure
+    kustomize:
+      resources:
+        - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/{{ keycloak_version }}/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
+        - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/{{ keycloak_version }}/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml
+        - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/{{ keycloak_version }}/kubernetes/kubernetes.yml
+        - ./keycloak.yaml
+        - ./ingress.yaml
+    secrets:
+      secret:
+        data:
+          username: keycloak
+          password:
+            type: password
+            name: db

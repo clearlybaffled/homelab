@@ -22,11 +22,11 @@ all:
 
 kube_control_plane:
   hosts:
-    seawolf:
+    parche:
 
 kube_node:
   hosts:
-    seawolf:
+    parche:
 
 kubectl:
   hosts:
@@ -51,3 +51,15 @@ workstations:
 hypervisor:
   hosts:
     parche:
+
+ios:
+  hosts:
+    agg-1-off:
+  vars:
+    ansible_network_os: ios
+    ansible_connection: network_cli
+    ansible_become: true
+    ansible_become_method: enable
+    ansible_ssh_extra_args: -o Compression=no -o KexAlgorithms=diffie-hellman-group1-sha1 -o HostKeyAlgorithms=ssh-rsa -c aes256-cbc
+    ansible_network_cli_ssh_type: libssh
+    ansible_module_compression: none

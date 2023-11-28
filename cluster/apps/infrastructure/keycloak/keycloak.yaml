@@ -1,0 +1,23 @@
+---
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: keycloak
+  namespace: infrastructure
+spec:
+  instances: 1
+  db:
+    vendor: postgres
+    host: cnpg-cluster-rw.db.svc
+    usernameSecret:
+      name: keycloak-db-secret
+      key: username
+    passwordSecret:
+      name: keycloak-db-secret
+      key: password
+  http:
+    tlsSecret: keycloak-tls-ingress
+  hostname:
+    hostname: keycloak.seawolf.hermleigh.home
+  ingress:
+    enabled: false

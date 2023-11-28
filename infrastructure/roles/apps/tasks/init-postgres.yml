@@ -27,6 +27,7 @@
         login_user: "{{ postgres_secret.data.username | b64decode }}"
         login_password: "{{ postgres_secret.data.password | b64decode }}"
         host: 172.16.1.33
+        encoding: UTF8
       loop: "{{ db_names }}"
       loop_control:
         loop_var: db_name

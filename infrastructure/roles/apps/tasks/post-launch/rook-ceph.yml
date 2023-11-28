@@ -12,3 +12,17 @@
       type: Ready
       reason: ClusterCreated
       status: 'True'
+
+- name: Create fstab for direct-mount pod
+  kubernetes.core.k8s:
+    kind: ConfigMap
+    api_version: v1
+    namespace: rook-ceph
+    name: mount-sh
+    definition:
+      data:
+        mount.sh: |-
+          umask 077
+          ceph auth get-key client.admin > /etc/ceph/admin.secret
+        fstab: |-
+          admin@.k8s-hdd-fs=/     /mnt    ceph    secretfile=/etc/ceph/admin.secret,noatime,_netdev   0   0
