@@ -20,7 +20,13 @@ service:
     ports:
       http:
         port: 8080
-      content-server:
+  content-server:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: calibre-content.hermleigh.home
+      metallb.universe.tf/loadBalancerIPs: 172.16.1.39
+    type: LoadBalancer
+    ports:
+      content:
         enabled: true
         port: 8081
         protocol: TCP
@@ -33,7 +39,7 @@ ingress:
       cert-manager.io/cluster-issuer: ca-issuer
     ingressClass: nginx
     hosts:
-    - host: &ui_host calibre.seawolf.hermleigh.home
+    - host: &ui_host calibre.hermleigh.home
       paths:
       - path: /
         pathType: Prefix
@@ -41,23 +47,6 @@ ingress:
     - hosts:
       - *ui_host
       secretName: calibre-tls-ingress
-  content-server:
-    enabled: true
-    annotations:
-      hajimari.io/enable: "false"
-      cert-manager.io/cluster-issuer: ca-issuer
-    ingressClass: nginx
-    hosts:
-    - host: &content_host calibre-content.seawolf.hermleigh.home
-      paths:
-      - path: /
-        pathType: Prefix
-        service:
-          port: 8081
-    tls:
-    - hosts:
-      - *content_host
-      secretName: calibre-content-tls-ingress
 
 podSecurityContext:
   supplementalGroups: [33, 997]
