@@ -1,0 +1,74 @@
+---
+# - name: General Interface Configuration
+#   cisco.ios.ios_interfaces:
+#     config: >-
+#       {%- set interface = [] -%}
+#       {%- for ifgroup in interfaces -%}
+#         {%- for if in (ifgroup.ports|default([]) + ifgroup.lacp|default([])) -%}
+#           {%- do interface.append({
+#             'name': if.name,
+#             'description': if.description
+#           }) -%}
+#         {%- endfor -%}
+#       {%- endfor -%}
+#       {{ interface }}
+#     state: rendered
+
+# - name: Define Vlans
+#   cisco.ios.ios_vlans:
+#     config:
+#       - name: Administration
+#         vlan_id: 10
+#         state: active
+#       - name: Servers
+#         vlan_id: 2
+#         state: active
+#       - name: Users
+#         vlan_id: 3
+#         state: active
+#       - name: Devices
+#         vlan_id: 4
+#         state: active
+#       - name: DMZ
+#         vlan_id: 8
+#         state: active
+#       - name: Guest
+#         vlan_id: 9
+#         state: active
+#       - name: Native
+#         vlan_id: 69
+#         state: active
+
+
+- name: L2 Interface Configuration
+  cisco.ios.ios_l2_interfaces:
+    config: >-
+      {%- set interface = [] -%}
+      {%- for ifgroup in interfaces -%}
+        {%- for if in (ifgroup.ports|default([]) + ifgroup.lacp|default([])) -%}
+          {%- set ifcfg = {'name': if.name} -%}
+          {%- if 'vlan' in ifgroup -%}
+              {%- do ifcfg.update({
+                'mode': 'access',
+                'access': { 'vlan': ifgroup.vlan }
+              }) -%}
+          {%- elif 'trunk' in ifgroup -%}
+            {%- do ifcfg.update({
+              'mode': 'trunk',
+              'trunk': ifgroup.trunk
+            }) -%}
+          {%- endif -%}
+          {%- do interface.append(ifcfg) -%}
+        {%- endfor -%}
+      {%- endfor -%}
+      {{ interface }}
+    state: rendered
+
+- name: Configure LACP ports
+  cisco.ios.ios_lacp_interfaces:
+    config: "{{ dict([] | zip_longest(item | map(attribute='name'), fillvalue='name')) }}"
+    state: rendered
+  loop: "{{ interfaces | selectattr('trunk', 'defined') | map(attribute='ports') + interfaces | selectattr('lacp','defined') | map(attribute='lacp') }}"
+  loop_control:
+    extended: true
+ 

@@ -18,6 +18,6 @@ spec:
   http:
     tlsSecret: keycloak-tls-ingress
   hostname:
-    hostname: keycloak.seawolf.hermleigh.home
+    hostname: keycloak.hermleigh.home
   ingress:
     enabled: false

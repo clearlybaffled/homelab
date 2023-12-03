@@ -15,7 +15,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: &host keycloak.seawolf.hermleigh.home
+  - host: &host keycloak.hermleigh.home
     http:
       paths:
       - backend:

@@ -77,6 +77,20 @@
 - name: Run package install
   include_tasks: packages.yml
 
+- name: Enable vlan kernel modules now
+  community.general.modprobe:
+    name: 80
+    state: present
+  with_items:
+    - 8021q
+
+- name: Enable kernel modules on boot
+  copy:
+    mode: '0644'
+    content: "{{ item }}"
+    dest: "/etc/modules-load.d/{{ item }}.conf"
+  with_items:
+
 - name: Manage IP addresses on parche
   when: inventory_hostname == 'parche'
   block:

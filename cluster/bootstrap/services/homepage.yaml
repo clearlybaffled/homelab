@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: homepage
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+  - chart: homepage
+    repoURL: http://jameswynn.github.io/helm-charts
+    targetRevision: 1.2.3
+    helm:
+      valueFiles:
+      - $repo/cluster/apps/services/homepage/values.yaml
+  - repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/apps/services/homepage
+    targetRevision: main
+    ref: repo
+  destination:
+    name: in-cluster
+    namespace: services
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

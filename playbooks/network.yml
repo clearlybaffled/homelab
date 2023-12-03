@@ -1,0 +1,8 @@
+---
+- name: Test connection
+  hosts: ios
+  gather_facts: false
+  roles:
+    - role: network
+      vars:
+        ansible_become_password: "{{ enable_password }}"

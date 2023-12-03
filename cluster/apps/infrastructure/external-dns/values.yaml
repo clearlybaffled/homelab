@@ -70,8 +70,8 @@ service:
 logLevel: info
 logFormat: text
 
-interval: 1m
-triggerLoopOnEvent: false
+interval: 1h
+triggerLoopOnEvent: true
 
 namespaced: false
 

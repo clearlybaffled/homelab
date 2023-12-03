@@ -17,6 +17,8 @@ controller:
     proxy-buffer-size: 16k
     ssl-protocols: "TLSv1.3 TLSv1.2"
     allow-snippet-annotations: "true"
+    use-forwarded-headers: "true"
+    forwarded-for-header: "X-Forwarded-For"
 
   ingressClassResource:
     name: nginx

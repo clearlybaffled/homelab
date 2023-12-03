@@ -22,11 +22,11 @@ all:
 
 kube_control_plane:
   hosts:
-    parche:
+    seawolf:
 
 kube_node:
   hosts:
-    parche:
+    seawolf:
 
 kubectl:
   hosts:
