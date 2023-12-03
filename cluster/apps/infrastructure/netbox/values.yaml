@@ -75,21 +75,6 @@ persistence:
   enabled: true
   storageClass: ceph-fs-ssd
 
-podSecurityContext:
-  fsGroup: 997
-  runAsNonRoot: true
-  runAsUser: 997
-  runAsGroup: 997
-
-securityContext:
-  capabilities:
-    drop:
-      - ALL
-  readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsUser: 997
-  runAsGroup: 997
-
 ingress:
   enabled: true
   className: nginx
@@ -117,7 +102,6 @@ extraContainers:
   - name: graphite
     image: netreplica/graphite
     imagePullPolicy: IfNotPresent
-    # command: ["/bin/sh", "-c", "sleep 360"]
     volumeMounts:
       - name: nrx-files
         mountPath: /htdocs/default
