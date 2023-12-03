@@ -5,6 +5,7 @@ metadata:
   namespace: db
   annotations:
     metallb.universe.tf/loadBalancerIPs: 172.16.1.33
+    external-dns.alpha.kubernetes.io/hostname: postgres.hermleigh.home
 spec:
   selector:
     cnpg.io/cluster: cnpg-cluster

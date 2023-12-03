@@ -16,4 +16,5 @@ primary:
   service:
     annotations:
       metallb.universe.tf/loadBalancerIPs: 172.16.1.32
+      external-dns.alpha.kubernetes.io/hostname: mysql.hermleigh.home
     type: LoadBalancer
