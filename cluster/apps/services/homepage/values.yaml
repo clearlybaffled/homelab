@@ -28,6 +28,13 @@ ingress:
   main:
     enabled: true
     annotations:
+      cert-manager.io/cluster-issuer: ca-issuer
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organization: HERMLEIGH.HOME
+      cert-manager.io/subject-organizationalunits: Hermleigh House Network,Kubernetes Cluster - Seawolf,Downloads
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "512"
+      cert-manager.io/common-name: Cluster Homepage
       # This label will enable discover of this deployment in Homepage
       gethomepage.dev/enabled: "true"
       # These annotations will configure how this deployment is shown in Homepage
@@ -37,7 +44,7 @@ ingress:
       gethomepage.dev/icon: "homepage.png"
     ingressClassName: nginx
     hosts:
-      - host: &host "homepage.seawolf.hermleigh.home"
+      - host: &host www.seawolf.hermleigh.home
         paths:
           - path: /
             pathType: Prefix

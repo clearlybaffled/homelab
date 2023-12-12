@@ -44,7 +44,7 @@ ingress:
       cert-manager.io/cluster-issuer: ca-issuer
       hajimari.io/icon: cloud-search
     hosts:
-      - host: &host prowlarr.seawolf.hermleigh.home
+      - host: &host trackers.hermleigh.home
         paths:
           - path: /
             pathType: Prefix
@@ -57,7 +57,7 @@ persistence:
   config:
     enabled: true
     type: pvc
-    size: 50Mi
+    size: 100Mi
     storageClass: ceph-fs-ssd
 
 resources:

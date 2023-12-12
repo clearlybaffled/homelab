@@ -32,6 +32,7 @@ def helm_charts(charts, app, helm_repos):
             'name': chart_name,
             'repo_url': repo_url,
             "version": chart["version"],
+            "release_name": app["name"],
             'skip_crds': bool(chart["skipCrds"]) if "skipCrds" in chart else False
         }
 

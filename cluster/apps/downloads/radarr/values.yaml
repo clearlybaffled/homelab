@@ -51,7 +51,7 @@ ingress:
 persistence:
   config:
     enabled: true
-    size: 50Mi
+    size: 1Gi
     storageClass: ceph-fs-ssd
   videos:
     enabled: true

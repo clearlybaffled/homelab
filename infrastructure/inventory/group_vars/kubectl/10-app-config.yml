@@ -98,7 +98,7 @@ kube_prometheus_stack_chart_version: 54.2.1
 prometheus_adapter_chart_version: 4.8.1
 rook_ceph_version: v1.12.8
 vault_chart_version: 0.25.0
-keycloak_version: 22.0.5
+keycloak_version: 23.0.1
 external_dns_chart_version: 1.13.1
 
 grafana_dashboards:

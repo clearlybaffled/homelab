@@ -27,7 +27,7 @@ ingress:
         sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/lidarr/nord.css"></head>';
         sub_filter_once on;
     hosts:
-      - host: &host music.seawolf.hermleigh.home
+      - host: &host music.hermleigh.home
         paths:
           - path: /
             pathType: Prefix

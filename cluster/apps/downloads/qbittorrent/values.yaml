@@ -37,7 +37,7 @@ ingress:
       cert-manager.io/cluster-issuer: ca-issuer
       hajimari.io/icon: mdi:download
     hosts:
-      - host: &host torrent.seawolf.hermleigh.home
+      - host: &host torrent.hermleigh.home
         paths:
           - path: /
             pathType: Prefix

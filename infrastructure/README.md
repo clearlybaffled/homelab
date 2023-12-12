@@ -13,6 +13,10 @@ I refactored a couple of the kubespray roles (especially download) to be more sp
 
 ## Infrastructure Layout
 
+### Network Diagram
+
+![](/docs/Homelab.png)
+
 ### Hardware
 
 - Location: America / North East
@@ -30,7 +34,7 @@ As a homage to that, I named all physical and virtual hosts for [WW2 submarines 
 
 I also have names of two boats that did not meet the requirements of being commanded by a MoH recipient that I wanted to use anyway, so I reserved them for more "logical" assignments as opposed to the physical assignments of hosts/VMs:
 
-- The kubernetes cluster is named `seawolf`, a boat with a very successful WW2 record and a name with quite the [prolific history][seawolf-wiki] throughout the history of the submarine force.
+- The kubernetes cluster is named `seawolf`, a boat with a very successful WW2 record and a name with quite the [prolific record][seawolf-wiki] throughout the history of the submarine force.
 - I also want to name something `wahoo`, after [another][wahoo-uri] of the most highly successful and aggressive submarines of the Pacific theater, but I felt Seawolf's record lead it to deserve the cluster name. I'll come up with something...
 
 ### Systems
@@ -38,8 +42,8 @@ I also have names of two boats that did not meet the requirements of being comma
 |Hostname|Use(s)|Operating System|Hardware|RAM|Storage|Other|
 |:---------|:-----|:---------------|:-------|:---|:------------|:---------|
 |`growler` [<sup>1</sup>][growler-moh]|Gateway/Firewall| FreeBSD 13.2-RELEASE-p3 | ASUS Z170-M<br/>Pentium G440 @ 3.3GHz| 8GB| 250GB NVMe ||
-|`parche` [<sup>2</sup>][parche-moh]|Server|Debian 11.7|ASUS Z170-A<br/>i7-6700 @ 4.0GHz|32GB|<ul><li>250GB SSD<li>24TB (4x) HDDs</ul>| Happauge 1609 WinTV-quadHD tuner|
-|`barb` [<sup>3</sup>][barb-moh]|Workstation|Windows 10 Pro|Gigabyte Z370 AORUS<br/>Intel i5-8600K @ 3.60 GHz| 64GB | <ul><li>500GB NVMe<li>250GB SSD</ul>| Zotac GeForce GTX 1660 Super 6GB GDDR6|
+|`parche` [<sup>2</sup>][parche-moh]|Server|Debian 12 |ASUS Z170-A<br/>i7-6700 @ 4.0GHz|32GB|<ul><li>250GB SSD<li>24TB (4x) HDDs</ul>| Happauge 1609 WinTV-quadHD tuner|
+|`barb` [<sup>3</sup>][barb-moh]|Workstation|Windows 10 Pro|Gigabyte Z370 AORUS<br/>Intel i5-8600K @ 3.60 GHz| 64GB | 500GB NVMe | Zotac GeForce GTX 1660 Super 6GB GDDR6|
 |`tirante` [<sup>4</sup>][tirante-moh]|Workstation|Ubuntu 22.04 LTS| WSL version 2 on `barb`| 32GB | 375MB | |
 |`sculpin` [<sup>5</sup>][sculpin-moh]|Workstation|Windows 10 Home|Dell XPS 13|16GB|250GB HDD||
 |`tang` [<sup>6</sup>][tang-moh]|Server|Fedora 38 (Cloud)|Qemu Virtual Host|4GB|5GB qcow2||

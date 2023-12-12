@@ -48,7 +48,7 @@ ingress:
 persistence:
   config:
     enabled: true
-    size: 50Mi
+    size: 1Gi
     type: pvc
     storageClass: ceph-fs-ssd
   shared:

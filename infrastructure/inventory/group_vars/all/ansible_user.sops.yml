@@ -1,6 +1,6 @@
 ansible_user_ssh_key: ENC[AES256_GCM,data:ERx5GFa5aZQET4PUqVVCYdWJIID5LcUPnDhAOkTsr4aofrnVOoqKGSYFPWlegdTfrgDu8+SI55ExQ6xz6GDdgNOQPWCkd/tTmqGPBH+srQYLHB1iLnw9ImLKa7IMGK5F78aav/8VMXF5VTk/A7eR2BVb/TzjWUKDBhmyyg2gf+NTu0mJwrqR3pIc10R8unBNhcyqXTg+3H4JYv69w7fS94c4SWHbYXKjujS+w71ItPkHLUN/0ZBx5cmt926lsVT44rHLnJClvKmkeBUE55YZExATPuCLYobMtZdbY0AIIJARDLvbiPoDjDp428Uw3X3L6H/SXZXvjhqpqWtX5q3IGyBX0piLOaj7Tnlk6mUejbEDLffeUEGQbURBvB3fiS9bO3ZWfn8/GP6kglLHJdlh+6P7DZ7EZ61PQg5pZ+RPcsVMeUV0sxZ8p/SMusxCXr6kP24NMkVLSCNDZbclKZKUxGFk+qCwylJClgg/+OPwyWDxSqD6XgM/VkBxjXZMrwzRAFulAQ2JsaaOgOAHwbQo8AZ5Zu7A33cgewMnbzxu2X/bJxZ/m7eEWQyvZnVNG36Oa0eqBqKzBkiTT6zPHhhqPoJUPrHyGp1bTfvXUuU2l9oDjt8oPc1fmOBobINRwFzWjZe+S/7z+iCdlNtDkJ4/PDYZ5AY2fEOk1+MiL53v1QNxFa7C,iv:2bis3sfTaU6itsWU7lwFdC6gDh8Pr0G+uNZraIg/Vjc=,tag:Zai6npXX/+pFayTTHGx9Xw==,type:str]
 ansible_user_ssh_pubkey: ENC[AES256_GCM,data:D8SJkMeOtv7T8X92UIV3Fv10OZfSE+BPdi9R8u/q9khnCNmc3ksjlzQeKQUXuH2lb1EmKOxu3fF4yjkmW5pI9zs8xc11IK1LPrbYYWVHixKQQFnQp7FyoUQR12bLoJjvrtKV7nYKihYX+/CB,iv:3an2W7FgJStrMqKr3tfcBa7QdzNqB62LXM9Ic5IvUvk=,tag:d9Y0eyrVDTg+2oBJLggUsw==,type:str]
-ansible_password: ENC[AES256_GCM,data:GtKfKjT1YAE2tbWGkIe9Y5OfmrAajM5jtA==,iv:wudXsq0Dw1KvmvqWD7FsYxEhjSs9jY5hLK/aQ4LZ6k0=,tag:D159Hjn+34jAajnsC5cYkA==,type:str]
+#ENC[AES256_GCM,data:AY6wWwyeLPd0JKWs+2TQsoS14JNUrAXkXAjjkO+XHtLvlxOPJdhzJleSXz4=,iv:zqnrSdquibMgQY0BW/PvG2TyOYVdX6OTlbE0ACDrgNc=,tag:9C6b00pC0mY3v7kxhNwdSg==,type:comment]
 sops:
     kms: []
     gcp_kms: []
@@ -16,8 +16,8 @@ sops:
             L1lVbGdRL2xLcDRpc2dvOUNFRDhzU1EKEDEva8rvw6Ny6sLc4h7rJGvMzItZknEw
             VrBegpbN25WMfHd4EIO8nwa7KZY6R3Ld1sLfozUzETa+xdhq8Rm/Zw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-11-12T19:07:15Z"
-    mac: ENC[AES256_GCM,data:cS+cq/IlCFCAc99Sh+4jZe6b9lz8gHhLh2EvyQ/Wu5BRu6FMDfnfotO3O8U5RZ9kFS+BGmlRo8/7e2txjUtvcNJJh5qmi9FQNH9x2M8lqOCAPlVDHBk2MlDZkY5ohq3b+sX8bIBCmzwdJ7oITLZCDde/tKF3o6hXcpr/KVMRjsY=,iv:tLzSG3y04cTwydhIjg7Th4iZk6vyl4EIx6ZUmhzrWe0=,tag:C27Go68D5UHYnRHM0PIqog==,type:str]
+    lastmodified: "2023-12-12T20:18:41Z"
+    mac: ENC[AES256_GCM,data:glKJH1KGDQr+DOSmlZQYhkQO30jjKk5SmomEqzjFCKPu4yE352yQsqLgEIYj3d6E4PAjkcTtw2nGTXASq3rjshEOhB2sc/KvQ0sL9ryzkfbJXcK1DSjug10ygETXJJ1hQnsewBPtAiGCeGpa6SjVtgzxtkZT96fIA8uwpBLRB/k=,iv:DdGLJ91myAih3yRZ3emWPW4hy6LpDMb/wb5FecqXXyc=,tag:A3lAj2AOATWsUCphfrxOkQ==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 3.8.1

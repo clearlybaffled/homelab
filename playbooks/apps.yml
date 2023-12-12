@@ -2,13 +2,7 @@
 - name: Generate application manifest files
   hosts: localhost
   gather_facts: true
-  roles:
-    - apps
   tasks:
-    - name: Bootstrap cluster
-      kubernetes.core.k8s:
-        src: "{{ (cluster_dir, 'cluster.yaml') | path_join }}"
-        server_side_apply:
-          field_manager: ansible
-      tags:
-        - bootstrap
+    - name: Install Application manifest files
+      include_role: # noqa name
+        name: cluster

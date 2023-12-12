@@ -32,7 +32,7 @@ Ultimately, this will include all applications for managing home IT systems.
 - [x] Infrastructure Automation with Ansible to provision hosts, clusters, devices, etc.
 - [x] Offline Root CA / Scripted PKI management using `openssl(1)`
 - [x] Manage cluster state and apps using GitOps and ArgoCD
-- [ ] FreeIPA server
+- [x] FreeIPA server
 - [ ] RADIUS server
 - [ ] Remote access via VPN
 
@@ -106,12 +106,12 @@ This Git repository contains the following top level directories.
 |[<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/main/projects/helm/icon/color/helm-icon-color.png">](https://helm.sh)|Helm|The package manager for Kubernetes|
 |[<img width="32" src="https://docs.nginx.com/nginx-ingress-controller/images/icons/NGINX-Ingress-Controller-product-icon.svg">](https://kubernetes.github.io/ingress-nginx/)|[Ingress-nginx](./cluster/apps/infrastructure/ingress-nginx/)| Ingress controller for Kubernetes using NGINX as a reverse proxy and load balancer|
 |[<img width="32" src="https://www.virt-tools.org/logo-kvm.png">](https://www.linux-kvm.org)|[KVM](./infrastructure/roles/server/kvm/) | Linux Kernel Virtual Machine Hypervisor |
-|[<img width="32" src="https://github.com/cncf/artwork/blob/master/projects/kubernetes/icon/color/kubernetes-icon-color.svg?raw=true">](https://kubernetes.io)|[Kubernetes](./infrastructure/roles/kubernetes/)|Container Orchestration|
+|[<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/main/projects/kubernetes/icon/color/kubernetes-icon-color.svg">](https://kubernetes.io)|[Kubernetes](./infrastructure/roles/kubernetes/)|Container Orchestration|
 |[<img width="32" src="https://libvirt.org/logos/logo-square.svg">](https://www.libvirt.org) |Libvirt| Virtualization API |
 |[![](https://avatars.githubusercontent.com/u/60239468?s=32&v=4)](https://metallb.org)|[MetalLB](./cluster/apps/infrastructure/metallb/)|Bare metal load-balancer for Kubernetes|
 |[<img width="32" src="https://github.com/cncf/artwork/blob/aea0dcfe090b8f36d7ae1eb3d5fbe95cc77380d3/projects/prometheus/icon/color/prometheus-icon-color.png?raw=true">](https://prometheus.io)|[Prometheus](./cluster/apps/monitoring/kube-prometheus-stack/)|Systems monitoring and alerting toolkit|
 |[<img width="32" src="https://www.virt-tools.org/logo-qemu.png">](https://www.qemu.org)|QEMU|Open source machine emulator and virtualizer|
-|[<img width="32" src="https://github.com/cncf/artwork/blob/master/projects/rook/icon/color/rook-icon-color.png?raw=true">](https://rook.io)|[Rook](./cluster/apps/infrastructure/rook-ceph/)|Cloud-native storage orchestrator for Ceph|
+|[<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/main/projects/rook/icon/color/rook-icon-color.png">](https://rook.io)|[Rook](./cluster/apps/infrastructure/rook-ceph/)|Cloud-native storage orchestrator for Ceph|
 |[<img width="32" src="https://api.iconify.design/logos/terraform-icon.svg">](https://www.terraform.io/)|[Terraform](./infrastructure/terraform/)|Infrastructure provisioning automation|
 |[<img width="32" src="https://docs.zerotier.com/img/ZeroTierIcon.png">](https://zerotier.com)|ZeroTier|Virtual Networking that just works|
 
@@ -141,7 +141,8 @@ This Git repository contains the following top level directories.
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
-|[<img width="32" src="https://avatars.githubusercontent.com/u/44905828?s=200&v=4">][netbox-uri]|NetBox| `Inventory`| Full-scale network inventory | Deployed | [![netbox-badge]][netbox-chart] |
+|[<img width="32" src="https://raw.githubusercontent.com/netbox-community/netbox/develop/netbox/project-static/img/netbox_icon.svg">][netbox-uri]|[NetBox](./cluster/apps/infrastructure/netbox/)| `Inventory`| Full-scale network inventory | Deployed | [![netbox-badge]][netbox-chart] |
+|[<img width="32" src="https://raw.githubusercontent.com/keycloak/keycloak/main/js/apps/admin-ui/public/icon.svg">][keycloak-url]|[Keycloak](./cluster/apps/infrastructure/keycloak)| `SSO` | Identity and Access Management solution | Deployed | [![keycloak-badge]][keycloak-operator] |
 |[<img width="32" src="https://simpleicons.org/icons/vault.svg">][vault-uri]|Vault| `Services` | Secrets and encryption management| | |
 
 ### [Media](./cluster/apps/media/)
@@ -149,10 +150,10 @@ This Git repository contains the following top level directories.
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
 |[<img width="32" src="https://github.com/kovidgoyal/calibre/blob/master/icons/calibre.png?raw=true">][calibre-uri] | [Calibre](./cluster/apps/media/calibre/) | `Books` | E-book collection manager | Deployed | [![][calibre-badge]][calibre-img] [![][calibre-web-badge]][calibre-web-img] |
-|[![](./cluster/apps/media/audiobookshelf/audiobookshelf.svg)][audiobookshelf-uri]| [Audiobookshelf](./cluster/apps/media/audiobookshelf) | `Audio Books` | Self-hosted audiobook and podcast server | Next-up | [![][audiobookshelf-badge]][audiobookshelf-img]
-|[<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/appicon.png">][immich-uri]|Immich| `Media` | Photo Management | Planned | |
-|[<img width="32" src="https://github.com/owntone/owntone-server/blob/master/docs/assets/logo.svg?raw=true">][owntone-uri]| OwnTone |`Media` | DAAP Audio server| Planned | |
-|[<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">][listenbrainz-uri]|ListenBrainz| `Media` | Open Source scrobbler | Planned | | 
+|[<img width="32" src="https://raw.githubusercontent.com/advplyr/audiobookshelf/84160b2f07164605295d6cb6f7f7925cbdf538e4/client/static/icon.svg">][audiobookshelf-uri]| [Audiobookshelf](./cluster/apps/media/audiobookshelf) | `Audio Books` | Self-hosted audiobook and podcast server | Next-up | [![][audiobookshelf-badge]][audiobookshelf-img]
+|[<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/appicon.png">][immich-uri]|Immich| `Photos` | Photo Management | Planned | |
+|[<img width="32" src="https://github.com/owntone/owntone-server/blob/master/docs/assets/logo.svg?raw=true">][owntone-uri]| OwnTone |`Audio` | DAAP Audio server| Planned | |
+|[<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">][listenbrainz-uri]|ListenBrainz| `Scrobble` | Open Source scrobbler | Planned | | 
 
 
 
@@ -182,7 +183,8 @@ This Git repository contains the following top level directories.
 |<img width="32" src="https://avatars.githubusercontent.com/u/10979201?s=200&v=4">| [FreeIPA][freeipa-uri] | `Infrastructure`| Full IdAM solution + PKI | Deploying.. | [![][freeipa-badge]][freeipa-img] |
 |<img width="32" src="https://github.com/MythTV/mythtv/raw/master/mythtv/html/images/icons/upnp_small_icon.png">|[MythTV][mythtv-url]| `Media` | Digital Video Recorder | Running directly on node | [![][mythtv-badge]][mythtv-gh] |
 
-## 🤝 Thank you
+
+# 🤝 Thank you
 
 - [bjw-s/home-ops](https://github.com/bjw-s/home-ops)
 - [onedr0p/home-ops](https://github.com/onedr0p/home-ops)
@@ -305,8 +307,12 @@ This Git repository contains the following top level directories.
 
 [audiobookshelf-uri]: https://www.audiobookshelf.org/
 [audiobookshelf-img]: https://ghcr.io/advplyr/audiobookshelf
-[audiobookshelf-badge]: https://img.shields.io/badge/advplyr/audiobookshelf-2.5.0-blue?logo=docker
+[audiobookshelf-badge]: https://img.shields.io/badge/advplyr/audiobookshelf-2.6.0-blue?logo=docker
 
 [owntone-uri]: https://owntone.github.io/owntone-server/
 [immich-uri]: https://immich.app
 [listenbrainz-uri]: https://listenbrainz.org
+
+[keycloak-url]: https://www.keycloak.org/
+[keycloak-operator]: https://operatorhub.io/operator/keycloak-operator
+[keycloak-badge]: https://img.shields.io/badge/keycloak-22.0.5-blue.svg?logo=data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2aWV3Qm94PSIwIDMwLjgwMDUgNDkwLjYgNDM2LjkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0iIzYxREFGQiIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTk5OTk5OTk5OTk5OTk5LCAwLCAwLCAwLjk5OTk5OTk5OTk5OTk5OTksIC0xNzUuNzAwMDk3NjY0NDUwMjUsIC00Ny4xOTk0OTU4Njk4NDg1MjYpIj4KICAgIDxwYXRoIGQ9Ik02NjYuMyAyOTYuNWMwLTMyLjUtNDAuNy02My4zLTEwMy4xLTgyLjQgMTQuNC02My42IDgtMTE0LjItMjAuMi0xMzAuNC02LjUtMy44LTE0LjEtNS42LTIyLjQtNS42djIyLjNjNC42IDAgOC4zLjkgMTEuNCAyLjYgMTMuNiA3LjggMTkuNSAzNy41IDE0LjkgNzUuNy0xLjEgOS40LTIuOSAxOS4zLTUuMSAyOS40LTE5LjYtNC44LTQxLTguNS02My41LTEwLjktMTMuNS0xOC41LTI3LjUtMzUuMy00MS42LTUwIDMyLjYtMzAuMyA2My4yLTQ2LjkgODQtNDYuOVY3OGMtMjcuNSAwLTYzLjUgMTkuNi05OS45IDUzLjYtMzYuNC0zMy44LTcyLjQtNTMuMi05OS45LTUzLjJ2MjIuM2MyMC43IDAgNTEuNCAxNi41IDg0IDQ2LjYtMTQgMTQuNy0yOCAzMS40LTQxLjMgNDkuOS0yMi42IDIuNC00NCA2LjEtNjMuNiAxMS0yLjMtMTAtNC0xOS43LTUuMi0yOS00LjctMzguMiAxLjEtNjcuOSAxNC42LTc1LjggMy0xLjggNi45LTIuNiAxMS41LTIuNlY3OC41Yy04LjQgMC0xNiAxLjgtMjIuNiA1LjYtMjguMSAxNi4yLTM0LjQgNjYuNy0xOS45IDEzMC4xLTYyLjIgMTkuMi0xMDIuNyA0OS45LTEwMi43IDgyLjMgMCAzMi41IDQwLjcgNjMuMyAxMDMuMSA4Mi40LTE0LjQgNjMuNi04IDExNC4yIDIwLjIgMTMwLjQgNi41IDMuOCAxNC4xIDUuNiAyMi41IDUuNiAyNy41IDAgNjMuNS0xOS42IDk5LjktNTMuNiAzNi40IDMzLjggNzIuNCA1My4yIDk5LjkgNTMuMiA4LjQgMCAxNi0xLjggMjIuNi01LjYgMjguMS0xNi4yIDM0LjQtNjYuNyAxOS45LTEzMC4xIDYyLTE5LjEgMTAyLjUtNDkuOSAxMDIuNS04Mi4zem0tMTMwLjItNjYuN2MtMy43IDEyLjktOC4zIDI2LjItMTMuNSAzOS41LTQuMS04LTguNC0xNi0xMy4xLTI0LTQuNi04LTkuNS0xNS44LTE0LjQtMjMuNCAxNC4yIDIuMSAyNy45IDQuNyA0MSA3Ljl6bS00NS44IDEwNi41Yy03LjggMTMuNS0xNS44IDI2LjMtMjQuMSAzOC4yLTE0LjkgMS4zLTMwIDItNDUuMiAyLTE1LjEgMC0zMC4yLS43LTQ1LTEuOS04LjMtMTEuOS0xNi40LTI0LjYtMjQuMi0zOC03LjYtMTMuMS0xNC41LTI2LjQtMjAuOC0zOS44IDYuMi0xMy40IDEzLjItMjYuOCAyMC43LTM5LjkgNy44LTEzLjUgMTUuOC0yNi4zIDI0LjEtMzguMiAxNC45LTEuMyAzMC0yIDQ1LjItMiAxNS4xIDAgMzAuMi43IDQ1IDEuOSA4LjMgMTEuOSAxNi40IDI0LjYgMjQuMiAzOCA3LjYgMTMuMSAxNC41IDI2LjQgMjAuOCAzOS44LTYuMyAxMy40LTEzLjIgMjYuOC0yMC43IDM5Ljl6bTMyLjMtMTNjNS40IDEzLjQgMTAgMjYuOCAxMy44IDM5LjgtMTMuMSAzLjItMjYuOSA1LjktNDEuMiA4IDQuOS03LjcgOS44LTE1LjYgMTQuNC0yMy43IDQuNi04IDguOS0xNi4xIDEzLTI0LjF6TTQyMS4yIDQzMGMtOS4zLTkuNi0xOC42LTIwLjMtMjcuOC0zMiA5IC40IDE4LjIuNyAyNy41LjcgOS40IDAgMTguNy0uMiAyNy44LS43LTkgMTEuNy0xOC4zIDIyLjQtMjcuNSAzMnptLTc0LjQtNTguOWMtMTQuMi0yLjEtMjcuOS00LjctNDEtNy45IDMuNy0xMi45IDguMy0yNi4yIDEzLjUtMzkuNSA0LjEgOCA4LjQgMTYgMTMuMSAyNCA0LjcgOCA5LjUgMTUuOCAxNC40IDIzLjR6TTQyMC43IDE2M2M5LjMgOS42IDE4LjYgMjAuMyAyNy44IDMyLTktLjQtMTguMi0uNy0yNy41LS43LTkuNCAwLTE4LjcuMi0yNy44LjcgOS0xMS43IDE4LjMtMjIuNCAyNy41LTMyem0tNzQgNTguOWMtNC45IDcuNy05LjggMTUuNi0xNC40IDIzLjctNC42IDgtOC45IDE2LTEzIDI0LTUuNC0xMy40LTEwLTI2LjgtMTMuOC0zOS44IDEzLjEtMy4xIDI2LjktNS44IDQxLjItNy45em0tOTAuNSAxMjUuMmMtMzUuNC0xNS4xLTU4LjMtMzQuOS01OC4zLTUwLjYgMC0xNS43IDIyLjktMzUuNiA1OC4zLTUwLjYgOC42LTMuNyAxOC03IDI3LjctMTAuMSA1LjcgMTkuNiAxMy4yIDQwIDIyLjUgNjAuOS05LjIgMjAuOC0xNi42IDQxLjEtMjIuMiA2MC42LTkuOS0zLjEtMTkuMy02LjUtMjgtMTAuMnpNMzEwIDQ5MGMtMTMuNi03LjgtMTkuNS0zNy41LTE0LjktNzUuNyAxLjEtOS40IDIuOS0xOS4zIDUuMS0yOS40IDE5LjYgNC44IDQxIDguNSA2My41IDEwLjkgMTMuNSAxOC41IDI3LjUgMzUuMyA0MS42IDUwLTMyLjYgMzAuMy02My4yIDQ2LjktODQgNDYuOS00LjUtLjEtOC4zLTEtMTEuMy0yLjd6bTIzNy4yLTc2LjJjNC43IDM4LjItMS4xIDY3LjktMTQuNiA3NS44LTMgMS44LTYuOSAyLjYtMTEuNSAyLjYtMjAuNyAwLTUxLjQtMTYuNS04NC00Ni42IDE0LTE0LjcgMjgtMzEuNCA0MS4zLTQ5LjkgMjIuNi0yLjQgNDQtNi4xIDYzLjYtMTEgMi4zIDEwLjEgNC4xIDE5LjggNS4yIDI5LjF6bTM4LjUtNjYuN2MtOC42IDMuNy0xOCA3LTI3LjcgMTAuMS01LjctMTkuNi0xMy4yLTQwLTIyLjUtNjAuOSA5LjItMjAuOCAxNi42LTQxLjEgMjIuMi02MC42IDkuOSAzLjEgMTkuMyA2LjUgMjguMSAxMC4yIDM1LjQgMTUuMSA1OC4zIDM0LjkgNTguMyA1MC42LS4xIDE1LjctMjMgMzUuNi01OC40IDUwLjZ6TTMyMC44IDc4LjR6Ii8+CiAgICA8Y2lyY2xlIGN4PSI0MjAuOSIgY3k9IjI5Ni41IiByPSI0NS43Ii8+CiAgICA8cGF0aCBkPSJNNTIwLjUgNzguMXoiLz4KICA8L2c+Cjwvc3ZnPg==#al5RUqUzTx

@@ -134,12 +134,10 @@ apps:
           - ceph-cluster.yaml
 
   paperless-ngx:
-    createApp: false
     namespace: services
     wave: "4"
     charts:
-      - <<: *app_template
-        release: paperless-ngx
+      - *app_template
     secrets:
       secret:
         data:
@@ -153,7 +151,6 @@ apps:
             name: admin
 
   nextcloud:
-    createApp: false
     namespace: services
     wave: "4"
     charts:
@@ -175,8 +172,7 @@ apps:
     namespace: services
     wave: "4"
     charts:
-      - <<: *app_template
-        release: mealie
+      - *app_template
     secrets:
       secret:
         data:
@@ -189,8 +185,7 @@ apps:
   linkding:
     namespace: services
     charts:
-      - <<: *app_template
-        release: linkding
+      - *app_template
     secrets:
       secret:
         data:
@@ -206,8 +201,7 @@ apps:
   linkace:
     namespace: services
     charts:
-      - <<: *app_template
-        release: linkace
+      - *app_template
     kustomize:
       extras:
         configMapGenerator:
@@ -227,8 +221,7 @@ apps:
   linkwarden:
     namespace: services
     charts:
-      - <<: *app_template
-        release: linkwarden
+      - *app_template
     secrets:
       secret:
         data:
@@ -252,18 +245,14 @@ apps:
           - values-web.yaml
 
   qbittorrent:
-    createApp: false
     namespace: downloads
     charts:
-      - <<: *app_template
-        release: qbittorrent
+      - *app_template
 
   sonarr:
-    createApp: false
     namespace: downloads
     charts:
-      - <<: *app_template
-        release: sonarr
+      - *app_template
     secrets:
       secret:
         data:
@@ -277,11 +266,9 @@ apps:
           SONARR__POSTGRES_MAIN_DB: sonarr_main
           SONARR__POSTGRES_LOG_DB: sonarr_log
   radarr:
-    createApp: false
     namespace: downloads
     charts:
-      - <<: *app_template
-        release: radarr
+      - *app_template
     secrets:
       secret:
         data:
@@ -296,11 +283,9 @@ apps:
           RADARR__POSTGRES_LOG_DB: radarr_log
 
   readarr:
-    createApp: false
     namespace: downloads
     charts:
-      - <<: *app_template
-        release: readarr
+      - *app_template
     secrets:
       secret:
         data:
@@ -315,11 +300,9 @@ apps:
           READARR__POSTGRES_LOG_DB: readarr_log
 
   prowlarr:
-    createApp: false
     namespace: downloads
     charts:
-      - <<: *app_template
-        release: prowlarr
+      - *app_template
     secrets:
       secret:
         data:
@@ -334,11 +317,9 @@ apps:
           PROWLARR__POSTGRES_LOG_DB: prowlarr_log
 
   lidarr:
-    createApp: false
     namespace: downloads
     charts:
-      - <<: *app_template
-        release: lidarr
+      - *app_template
     secrets:
       secret:
         data:
@@ -383,11 +364,9 @@ apps:
           napalm_password: ''
 
   audiobookshelf:
-    createApp: false
     namespace: media
     charts:
-      - <<: *app_template
-        release: audiobookshelf
+      - *app_template
 
   external-dns:
     namespace: infrastructure
