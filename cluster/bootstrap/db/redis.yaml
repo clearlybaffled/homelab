@@ -12,10 +12,11 @@ spec:
   sources:
   - chart: redis
     repoURL: https://charts.bitnami.com/bitnami
-    targetRevision: 18.1.2
+    targetRevision: 18.6.1
     helm:
       valueFiles:
       - $repo/cluster/apps/db/redis/values.yaml
+      releaseName: redis
   - repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/db/redis
     targetRevision: main
