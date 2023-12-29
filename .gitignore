@@ -262,3 +262,7 @@ cluster/**/charts/
 
 # Draw.io
 .$*drawio.*
+
+# VScode SOPS plugin
+.decrypted~*.sops.yml
+.decrypted~*.sops.yaml

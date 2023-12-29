@@ -1,6 +1,7 @@
 ---
 - name: "binary | Setup local client - {{ binary }}"
   when: ansible_os_family|lower in ["redhat","debian"]
+  become: true
   block:
     - name: binary | Copy {{ binary }} binary to ansible host # noqa name
       fetch:

@@ -16,51 +16,48 @@
     server_side_apply:
       field_manager: ansible
     definition:
-      kind: PersistentVolume
-      api_version: v1
-      metadata:
-        name: "{{ item[1].name }}-{{ item[0] }}"
-        finalizers:
-          - kubernetes.io/pv-protection
-      spec:
-        capacity:
-          storage: "{{ item[1].size }}"
-        volumeMode: Filesystem
-        accessModes:
-          - ReadWriteOnce
-        persistentVolumeReclaimPolicy: Retain
-        storageClassName: local-storage
-        local:
-          path: "{{ item[1].path }}"
-        nodeAffinity:
-          required:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/hostname
-                    operator: In
-                    values:
-                      - seawolf
-  loop: "{{ storage.namespaces | product(storage.volumes) }}"
-
-- name: Define local-storage PersistentVolumeClaims for cross-namespace access
-  kubernetes.core.k8s:
-    server_side_apply:
-      field_manager: ansible
-    definition:
-      kind: PersistentVolumeClaim
-      api_version: v1
-      metadata:
-        name: "{{ item[1].name }}"
-        namespace: "{{ item[0] }}"
-        finalizers:
-          - kubernetes.io/pvc-protection
-      spec:
-        volumeMode: Filesystem
-        accessModes:
-          - ReadWriteOnce
-        storageClassName: local-storage
-        volumeName: "{{ item[1].name }}-{{ item[0] }}"
-        resources:
-          requests:
+      - kind: Namespace
+        api_veresion: v1
+        metadata:
+          name: "{{ item[0] }}"
+      - kind: PersistentVolume
+        api_version: v1
+        metadata:
+          name: "{{ item[1].name }}-{{ item[0] }}"
+          finalizers:
+            - kubernetes.io/pv-protection
+        spec:
+          capacity:
             storage: "{{ item[1].size }}"
+          volumeMode: Filesystem
+          accessModes:
+            - ReadWriteOnce
+          persistentVolumeReclaimPolicy: Retain
+          storageClassName: local-storage
+          local:
+            path: "{{ item[1].path }}"
+          nodeAffinity:
+            required:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: kubernetes.io/hostname
+                      operator: In
+                      values:
+                        - seawolf
+      - kind: PersistentVolumeClaim
+        api_version: v1
+        metadata:
+          name: "{{ item[1].name }}"
+          namespace: "{{ item[0] }}"
+          finalizers:
+            - kubernetes.io/pvc-protection
+        spec:
+          volumeMode: Filesystem
+          accessModes:
+            - ReadWriteOnce
+          storageClassName: local-storage
+          volumeName: "{{ item[1].name }}-{{ item[0] }}"
+          resources:
+            requests:
+              storage: "{{ item[1].size }}"
   loop: "{{ storage.namespaces | product(storage.volumes) }}"
