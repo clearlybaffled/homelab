@@ -13,9 +13,9 @@ crun_enabled: false
 runc_enabled: true
 
 # Project versions
-crio_version: v1.28.1
-crictl_version: v1.28.0
-runc_version: v1.1.9
+crio_version: v1.29.0
+crictl_version: v1.29.0
+runc_version: v1.1.10
 skopeo_version: v1.13.3
 
 # CRI socket path

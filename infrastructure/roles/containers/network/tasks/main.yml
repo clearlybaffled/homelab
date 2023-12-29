@@ -7,7 +7,7 @@
   register: subnetenv_file
 
 - name: Install Flannel
-  when: not subnetenv_file.stat.exists
+  # when: not subnetenv_file.stat.exists
   block:
     - name: Render kustomize template
       template:

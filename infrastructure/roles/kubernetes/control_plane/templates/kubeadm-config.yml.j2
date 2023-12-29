@@ -39,7 +39,11 @@ networking:
   serviceSubnet: {{ kube_service_addresses }}
   podSubnet: {{ kube_pods_subnet }}
 kubernetesVersion: {{ kube_version }}
-controlPlaneEndpoint: {{ ip | default(fallback_ips[inventory_hostname]) }}:{{ kube_apiserver_port }}
+{% if kubeadm_config_api_fqdn is defined %}
+controlPlaneEndpoint: {{ kubeadm_config_api_fqdn }}:{{ loadbalancer_apiserver.port | default(kube_apiserver_port) }}
+{% else %}
+controlPlaneEndpoint: {{ kube_apiserver_bind_address | default(fallback_ips[inventory_hostname]) }}:{{ kube_apiserver_port }}
+{% endif %}
 certificatesDir: {{ kube_cert_dir }}
 imageRepository: {{ kube_image_repo }}
 apiServer:
@@ -47,6 +51,8 @@ apiServer:
 {% if kube_api_anonymous_auth is defined %}
     anonymous-auth: "{{ kube_api_anonymous_auth }}"
 {% endif %}
+    authorization-mode: {{ authorization_modes | join(',') }}
+    bind-address: {{ kube_apiserver_bind_address }}
 {% if kube_apiserver_feature_gates or kube_feature_gates %}
     feature-gates: "{{ kube_apiserver_feature_gates | default(kube_feature_gates, true) | join(',') }}"
 {% endif %}

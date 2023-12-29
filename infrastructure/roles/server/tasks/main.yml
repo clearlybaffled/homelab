@@ -77,27 +77,27 @@
 - name: Run package install
   include_tasks: packages.yml
 
-- name: Enable vlan kernel modules now
-  community.general.modprobe:
-    name: 80
-    state: present
-  with_items:
-    - 8021q
+# - name: Enable vlan kernel modules now
+#   community.general.modprobe:
+#     name: 80
+#     state: present
+#   with_items:
+#     - 8021q
 
-- name: Enable kernel modules on boot
-  copy:
-    mode: '0644'
-    content: "{{ item }}"
-    dest: "/etc/modules-load.d/{{ item }}.conf"
-  with_items:
-    - 8021q
+# - name: Enable kernel modules on boot
+#   copy:
+#     mode: '0644'
+#     content: "{{ item }}"
+#     dest: "/etc/modules-load.d/{{ item }}.conf"
+#   with_items:
+#     - 8021q
 
 - name: Manage IP addresses on parche
   when: inventory_hostname == 'parche'
   block:
-    - name: parche | Manage interface config file
+    - name: parche | Manage interface bond0 config file
       blockinfile:
-        path: /etc/network/interfaces
+        path: /etc/network/interfaces.d/bond0
         create: true
         content: |-
           auto bond0
@@ -107,10 +107,17 @@
             bond-miimon 100
             bond-downdelay 200
             bond-updelay 200
+            bond-min-links 1
+      register: ifcfg_bond0
 
+    - name: parche | Manage interface br0 config file
+      blockinfile:
+        path: /etc/network/interfaces.d/br0
+        create: true
+        content: |-
           auto br0
           iface br0 inet static
-            address 172.16.1.11
+            address 172.16.1.10
             network 172.16.1.0
             netmask 255.255.255.0
             broadcast 172.16.1.255
@@ -120,26 +127,43 @@
             bridge_ports bond0
             bridge_stp on
             bridge_waitport 0
+          iface br0 inet static
+            address 172.16.1.11
+            network 172.16.1.0
+            netmask 255.255.255.0
+            broadcast 172.16.1.255
 
+      register: ifcfg_br0
+
+    - name: parche | Manage interface br1 config file
+      blockinfile:
+        path: /etc/network/interfaces.d/br1
+        create: true
+        content: |-
           auto br1
           iface br1 inet static
-            address 172.16.1.10
+            address 172.17.1.10
             netmask 255.255.255.0
-            gateway 172.16.1.1
-            broadcast 172.16.1.255
+            gateway 172.17.1.1
+            broadcast 172.17.1.255
             dns-domain hermleigh.home
-            dns-nameservers 172.16.1.1
+            dns-nameservers 172.17.1.1
             bridge_ports enp0s31f6
             bridge_stp on
             bridge_waitport 0
+          iface br1 inet static
+            address 172.17.1.11
+            network 172.17.1.0
+            netmask 255.255.255.0
+            broadcast 172.17.1.255
 
-      register: iface_cfg
+      register: ifcfg_br1
 
     - name: restart networking # noqa no-handler
       service:
         name: networking
         state: restarted
-      when: iface_cfg is changed
+      when: ifcfg_bond0 is changed or ifcfg_br0 is changed or ifcfg_br1 is changed
 
 - name: Load Root CA into system ca trust store
   copy:

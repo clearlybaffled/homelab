@@ -48,12 +48,12 @@
     - argocd
     - krew
 
-- name: Prefetch helm repositories
-  kubernetes.core.helm_repository:
-    repo_name: "{{ item.key }}"
-    repo_url: "{{ item.value }}"
-    repo_state: present
-  with_items: "{{ helm_repositories | dict2items }}"
+# - name: Prefetch helm repositories
+#   kubernetes.core.helm_repository:
+#     repo_name: "{{ item.key }}"
+#     repo_url: "{{ item.value }}"
+#     repo_state: present
+#   with_items: "{{ helm_repositories | dict2items }}"
 
 - name: Update helm repository cache
   command: "helm repo update"

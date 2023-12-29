@@ -22,6 +22,8 @@
           - "kubernetes.default.svc"
           - "kubernetes.default.svc.{{ dns_domain }}"
           - "{{ kube_apiserver_ip }}"
+          - "{{ cluster_name }}"
+          - "{{ cluster_name}}.{{ domain_name }}"
           - "localhost"
           - "127.0.0.1"
         sans_lb: "{{ [apiserver_loadbalancer_domain_name] if apiserver_loadbalancer_domain_name is defined else [] }}"
@@ -34,7 +36,7 @@
         sans_hostname: "{{ groups['kube_control_plane'] | map('extract', hostvars, ['ansible_hostname']) | list | select('defined') | list }}"
         sans_fqdn: "{{ groups['kube_control_plane'] | map('extract', hostvars, ['ansible_fqdn']) | list | select('defined') | list }}"
         sans_kube_vip_address: "{{ [kube_vip_address] if kube_vip_address is defined and kube_vip_address else [] }}"
-        sans_kube_service_ip: "{{ [ kube_service_addresses | ipaddr('net')|ipaddr(1)|ipaddr('address') ] }}"
+        sans_kube_service_ip: "{{ [ kube_service_addresses | ansible.utils.ipaddr('net')|ansible.utils.ipaddr(1)|ansible.utils.ipaddr('address') ] }}"
       tags: facts
 
     - name: kubeadm | Install kubeadm.config file

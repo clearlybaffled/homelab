@@ -2,6 +2,7 @@ all:
   hosts:
     parche:
       ip: 172.16.1.10
+      # ansible_ssh_host: 172.17.1.10
     barb:
     growler:
       ip: 172.16.1.1
@@ -9,9 +10,7 @@ all:
       ansible_host: barb
       ansible_port: 2222
     seawolf:
-      ip: 172.16.1.11
-      ansible_host: parche
-      ansible_fqdn: seawolf.hermleigh.home
+      ip: 172.17.1.11
     localhost:
       ansible_connection: local
   vars:
@@ -21,15 +20,15 @@ all:
 
 kube_control_plane:
   hosts:
-    seawolf:
+    parche:
 
 kube_node:
   hosts:
-    seawolf:
+    parche:
 
 kubectl:
   hosts:
-    seawolf:
+    parche:
     localhost:
 
 k8s_cluster:
