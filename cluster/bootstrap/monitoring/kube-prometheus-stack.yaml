@@ -12,14 +12,14 @@ spec:
   sources:
   - chart: kube-prometheus-stack
     repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 54.2.1
+    targetRevision: 55.5.0
     helm:
       valueFiles:
       - $repo/cluster/apps/monitoring/kube-prometheus-stack/operator.yaml
       releaseName: prometheus
   - chart: prometheus-adapter
     repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 4.8.1
+    targetRevision: 4.9.0
     helm:
       valueFiles:
       - $repo/cluster/apps/monitoring/kube-prometheus-stack/adapter.yaml
