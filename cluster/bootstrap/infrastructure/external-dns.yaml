@@ -14,6 +14,7 @@ spec:
     helm:
       valueFiles:
       - $repo/cluster/apps/infrastructure/external-dns/values.yaml
+      releaseName: external-dns
   - repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/infrastructure/external-dns
     targetRevision: main
