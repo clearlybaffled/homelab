@@ -16,6 +16,7 @@ spec:
     helm:
       valueFiles:
       - $repo/cluster/apps/db/mysql/values.yaml
+      releaseName: mysql
   - repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/db/mysql
     targetRevision: main

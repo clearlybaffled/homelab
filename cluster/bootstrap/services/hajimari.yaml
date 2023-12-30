@@ -16,6 +16,7 @@ spec:
     helm:
       valueFiles:
       - $repo/cluster/apps/services/hajimari/values.yaml
+      releaseName: hajimari
   - repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/services/hajimari
     targetRevision: main

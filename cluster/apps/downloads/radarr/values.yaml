@@ -1,16 +1,26 @@
-image:
-  repository: ghcr.io/onedr0p/radarr
-  tag: 5.1.3.8246
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          repository: ghcr.io/onedr0p/radarr
+          tag: 5.2.6
 
-env:
-  TZ: "America/New_York"
-  RADARR__INSTANCE_NAME: Radarr
-  RADARR__APPLICATION_URL: 'https://movies.hermleigh.home'
-  RADARR__LOG_LEVEL: info
-  RADARR__POSTGRES_HOST: 10.233.47.154
-envFrom:
-  - secretRef:
-      name: radarr-secret
+        env:
+          TZ: "America/New_York"
+          RADARR__INSTANCE_NAME: Radarr
+          RADARR__APPLICATION_URL: 'https://movies.hermleigh.home'
+          RADARR__LOG_LEVEL: info
+          RADARR__POSTGRES_HOST: 10.233.47.154
+        envFrom:
+          - secretRef:
+              name: radarr-secret
+        resources:
+          requests:
+            memory: 350Mi
+            cpu: 25m
+          limits:
+            memory: 500Mi
 
 service:
   main:
@@ -21,7 +31,7 @@ service:
 ingress:
   main:
     enabled: true
-    ingressClassName: 'nginx'
+    className: 'nginx'
     annotations:
       cert-manager.io/cluster-issuer: ca-issuer
       hajimari.io/icon: filmstrip
@@ -62,14 +72,8 @@ persistence:
     type: pvc
     existingClaim: shared-files
 
-podSecurityContext:
-  runAsUser: 997
-  runAsGroup: 997
-  fsGroup: 997
-
-resources:
-  requests:
-    memory: 350Mi
-    cpu: 25m
-  limits:
-    memory: 500Mi
+defaultPodOptions:
+  podSecurityContext:
+    runAsUser: 997
+    runAsGroup: 997
+    fsGroup: 997

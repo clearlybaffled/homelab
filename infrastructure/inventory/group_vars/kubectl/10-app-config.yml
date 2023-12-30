@@ -120,5 +120,3 @@ grafana_dashboards:
     dashboards:
       - 9614 # NGINX Ingress
       # - 4475 # Traefik
-  
-  

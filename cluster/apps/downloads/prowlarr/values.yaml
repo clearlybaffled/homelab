@@ -1,18 +1,45 @@
-image:
-  repository: ghcr.io/onedr0p/prowlarr
-  tag: 1.9.4
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          repository: ghcr.io/onedr0p/prowlarr
+          tag: 1.11.4
 
-env:
-  TZ: America/New_York
-  PROWLARR__INSTANCE_NAME: Prowlarr
-  PROWLARR__PORT: &port 9696
-  PROWLARR__LOG_LEVEL: debug
-  PROWLARR__THEME: dark
-  PROWLARR__POSTGRES_HOST: 10.233.56.52
-  PROWLARR__POSTGRES_PORT: "5432"
-envFrom:
-  - secretRef:
-      name: prowlarr-secret
+        env:
+          TZ: America/New_York
+          PROWLARR__INSTANCE_NAME: Prowlarr
+          PROWLARR__PORT: &port 9696
+          PROWLARR__LOG_LEVEL: debug
+          PROWLARR__THEME: dark
+          PROWLARR__POSTGRES_HOST: 10.233.56.52
+          PROWLARR__POSTGRES_PORT: "5432"
+        envFrom:
+          - secretRef:
+              name: prowlarr-secret
+
+        resources:
+          requests:
+            cpu: 10m
+            memory: 100Mi
+          limits:
+            memory: 500Mi
+
+        probes:
+          liveness: &probes
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /ping
+                port: *port
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 1
+              failureThreshold: 3
+          readiness: *probes
+          startup:
+            enabled: false
 
 service:
   main:
@@ -20,26 +47,10 @@ service:
       http:
         port: *port
 
-probes:
-  liveness: &probes
-    enabled: true
-    custom: true
-    spec:
-      httpGet:
-        path: /ping
-        port: *port
-      initialDelaySeconds: 0
-      periodSeconds: 10
-      timeoutSeconds: 1
-      failureThreshold: 3
-  readiness: *probes
-  startup:
-    enabled: false
-
 ingress:
   main:
     enabled: true
-    ingressClassName: nginx
+    className: nginx
     annotations:
       cert-manager.io/cluster-issuer: ca-issuer
       hajimari.io/icon: cloud-search
@@ -59,13 +70,6 @@ persistence:
     type: pvc
     size: 100Mi
     storageClass: ceph-fs-ssd
-
-resources:
-  requests:
-    cpu: 10m
-    memory: 100Mi
-  limits:
-    memory: 500Mi
 
 podSecurityContext:
   runAsUser: 568

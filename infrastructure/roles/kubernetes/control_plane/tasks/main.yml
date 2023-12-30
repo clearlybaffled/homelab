@@ -23,7 +23,6 @@
           - "kubernetes.default.svc.{{ dns_domain }}"
           - "{{ kube_apiserver_ip }}"
           - "{{ cluster_name }}"
-          - "{{ cluster_name}}.{{ domain_name }}"
           - "localhost"
           - "127.0.0.1"
         sans_lb: "{{ [apiserver_loadbalancer_domain_name] if apiserver_loadbalancer_domain_name is defined else [] }}"

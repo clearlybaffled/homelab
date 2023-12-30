@@ -6,13 +6,13 @@ resource "libvirt_volume" "fedora38-qcow2" {
 }
 
 resource "libvirt_network" "server_network" {
-  name  = "servers"
-  mode  = "bridge"
-  bridge  = "br0"
+  name   = "servers"
+  mode   = "bridge"
+  bridge = "br0"
 }
 
 resource "libvirt_network" "admin_network" {
-  name = "admin"
-  mode = "bridge"
+  name   = "admin"
+  mode   = "bridge"
   bridge = "br1"
 }

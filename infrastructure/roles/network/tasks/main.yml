@@ -71,4 +71,3 @@
   loop: "{{ interfaces | selectattr('trunk', 'defined') | map(attribute='ports') + interfaces | selectattr('lacp','defined') | map(attribute='lacp') }}"
   loop_control:
     extended: true
- 

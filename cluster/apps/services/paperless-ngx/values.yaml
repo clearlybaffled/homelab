@@ -1,41 +1,61 @@
 global:
   nameOverride: paperless
 
-controller:
-  type: deployment
+controllers:
+  main:
+    type: deployment
+    containers:
+      main:
+        image:
+          repository: ghcr.io/paperless-ngx/paperless-ngx
+          tag: 1.17.4
+        env:
+          PAPERLESS_CONSUMER_POLLING: 60
+          PAPERLESS_CONSUMER_RECURSIVE: "true"
+          PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
+          PAPERLESS_CONSUMPTION_DIR: /library/consume
+          PAPERLESS_DBENGINE: postgresql
+          PAPERLESS_DBHOST: cnpg-cluster-rw.db.svc
+          PAPERLESS_DATA_DIR: /library/data
+          PAPERLESS_EXPORT_DIR: /library/export
+          PAPERLESS_MEDIA_ROOT: /library/media
+          PAPERLESS_TRASH_DIR: /trash
+          PAPERLESS_OCR_LANGUAGE: eng
+          PAPERLESS_OCR_MODE: skip
+          PAPERLESS_OCR_ROTATE_PAGES: "true"
+          PAPERLESS_OCR_IMAGE_DPI: 300
+          PAPERLESS_PORT: &port 8080
+          PAPERLESS_TASK_WORKERS: 2
+          PAPERLESS_TIME_ZONE: America/New_York
+          PAPERLESS_TIKA_ENABLED: 1
+          PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
+          PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
+          PAPERLESS_URL: https://paperless.seawolf.hermleigh.home
+          PAPERLESS_REDIS: redis://redis.db:6379
+          USERMAP_UID: 997
+          USERMAP_GID: 997
+          TZ: America/New_York
+        envFrom:
+          - secretRef:
+              name: paperless-ngx-secret
+        resources:
+          requests:
+            cpu: 100m
+            memory: 1000Mi
+          limits:
+            memory: 5000Mi
 
-image:
-  repository: ghcr.io/paperless-ngx/paperless-ngx
-  tag: 1.17.4
-env:
-  PAPERLESS_CONSUMER_POLLING: 60
-  PAPERLESS_CONSUMER_RECURSIVE: "true"
-  PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
-  PAPERLESS_CONSUMPTION_DIR: /library/consume
-  PAPERLESS_DBENGINE: postgresql
-  PAPERLESS_DBHOST: cnpg-cluster-rw.db.svc
-  PAPERLESS_DATA_DIR: /library/data
-  PAPERLESS_EXPORT_DIR: /library/export
-  PAPERLESS_MEDIA_ROOT: /library/media
-  PAPERLESS_TRASH_DIR: /library/trash
-  PAPERLESS_OCR_LANGUAGE: eng
-  PAPERLESS_OCR_MODE: skip
-  PAPERLESS_OCR_ROTATE_PAGES: "true"
-  PAPERLESS_OCR_IMAGE_DPI: 300
-  PAPERLESS_PORT: &port 8080
-  PAPERLESS_TASK_WORKERS: 2
-  PAPERLESS_TIME_ZONE: America/New_York
-  PAPERLESS_TIKA_ENABLED: 1
-  PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
-  PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
-  PAPERLESS_URL: https://paperless.seawolf.hermleigh.home
-  PAPERLESS_REDIS: redis://redis.db:6379
-  USERMAP_UID: 997
-  USERMAP_GID: 997
-  TZ: America/New_York
-envFrom:
-  - secretRef:
-      name: paperless-ngx-secret
+      gotenburg:
+        image: thecodingmachine/gotenberg:7.8.3
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: DISABLE_GOOGLE_CHROME
+            value: "1"
+
+      tika:
+        image: ghcr.io/paperless-ngx/tika:2.7.0-full
+        imagePullPolicy: IfNotPresent
+
 service:
   main:
     ports:
@@ -44,7 +64,7 @@ service:
 ingress:
   main:
     enabled: true
-    ingressClassName: nginx
+    className: nginx
     annotations:
       hajimari.io/icon: arcticons:paperless
       cert-manager.io/cluster-issuer: ca-issuer
@@ -69,25 +89,13 @@ persistence:
     accessMode: ReadWriteMany
     size: 30Gi
     storageClass: ceph-fs-ssd
+  trash:
+    enabled: true
+    type: emptyDir
+    mountPath: /trash
 
-resources:
-  requests:
-    cpu: 100m
-    memory: 1000Mi
-  limits:
-    memory: 5000Mi
-
-sidecars:
-  gotenburg:
-    image: thecodingmachine/gotenberg:7.8.3
-    imagePullPolicy: IfNotPresent
-    env:
-      - { name: DISABLE_GOOGLE_CHROME, value: "1" }
-  tika:
-    image: ghcr.io/paperless-ngx/tika:2.7.0-full
-    imagePullPolicy: IfNotPresent
-
-podSecurityContext:
-  # runAsUser: 997
-  # runAsGroup: 997
-  fsGroup: 997
+defaultPodOptions:
+  podSecurityContext:
+    # runAsUser: 997
+    # runAsGroup: 997
+    fsGroup: 997

@@ -1,7 +1,31 @@
-image:
-  repository: hkotel/mealie
-  tag: frontend-v1.0.0beta-5
-  pullPolicy: IfNotPresent
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          repository: hkotel/mealie
+          tag: frontend-v1.0.0beta-5
+          pullPolicy: IfNotPresent
+      env: &env
+        TZ: America/New_York
+        API_URL: http://localhost:9000
+        PUID: 997
+        PGID: 997
+
+      api:
+        image: hkotel/mealie:api-v1.0.0beta-5
+        imagePullPolicy: IfNotPresent
+        env:
+          <<: *env
+          DB_ENGINE: postgres
+          POSTGRES_SERVER: cnpg-cluster-rw.db.svc
+          POSTGRES_DB: mealie
+        envFrom:
+          - secretRef:
+              name: mealie-secret
+        volumeMounts:
+          - name: api-data
+            mountPath: /app/data/
 
 service:
   main:
@@ -15,16 +39,10 @@ service:
       api:
         port: 9000
 
-env: &env
-  TZ: America/New_York
-  API_URL: http://localhost:9000
-  PUID: 997
-  PGID: 997
-
 ingress:
   main:
     enabled: true
-    ingressClassName: nginx
+    className: nginx
     annotations:
       hajimari.io/icon: chef-hat
       cert-manager.io/cluster-issuer: ca-issuer
@@ -40,6 +58,7 @@ ingress:
       - secretName: mealie-tls-ingress
         hosts:
           - *host
+
 persistence:
   api-data:
     enabled: true
@@ -48,22 +67,3 @@ persistence:
     size: 10Gi
     storageClass: ceph-fs-ssd
     retain: true
-
-additionalContainers:
-  api:
-    image: hkotel/mealie:api-v1.0.0beta-5
-    imagePullPolicy: IfNotPresent
-
-    env:
-      <<: *env
-      DB_ENGINE: postgres
-      POSTGRES_SERVER: cnpg-cluster-rw.db.svc
-      POSTGRES_DB: mealie
-
-    envFrom:
-      - secretRef:
-          name: mealie-secret
-
-    volumeMounts:
-      - name: api-data
-        mountPath: /app/data/

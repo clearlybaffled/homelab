@@ -31,7 +31,7 @@ ingress:
       cert-manager.io/cluster-issuer: ca-issuer
       cert-manager.io/subject-countries: US
       cert-manager.io/subject-organization: HERMLEIGH.HOME
-      cert-manager.io/subject-organizationalunits: Hermleigh House Network,Kubernetes Cluster - Seawolf,Downloads
+      cert-manager.io/subject-organizationalunits: Hermleigh House Network,Kubernetes Cluster - Seawolf,Services
       cert-manager.io/private-key-algorithm: ECDSA
       cert-manager.io/private-key-size: "512"
       cert-manager.io/common-name: Cluster Homepage

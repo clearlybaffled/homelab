@@ -1,14 +1,18 @@
-image:
-  repository: ghcr.io/linkwarden/linkwarden
-  tag: v1.2.5
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          repository: ghcr.io/linkwarden/linkwarden
+          tag: v1.2.5
 
-env:
-  NEXTAUTH_URL: http://localhost:3000
-envFrom:
-  - secretRef:
-      name: linkwarden-secret
-  - secretRef:
-      name: linkwarden-db-url
+        env:
+          NEXTAUTH_URL: http://localhost:3000
+        envFrom:
+          - secretRef:
+              name: linkwarden-secret
+          - secretRef:
+              name: linkwarden-db-url
 
 ingress:
   main:
@@ -32,12 +36,6 @@ service:
         port: 3000
 
 persistence:
-#   nginx-conf:
-#     enabled: true
-#     type: configMap
-#     mountPath: /opt/nginx
-#     name: nginx-conf
-
   data:
     enabled: true
     type: pvc

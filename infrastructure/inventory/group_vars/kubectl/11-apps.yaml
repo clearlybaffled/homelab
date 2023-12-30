@@ -28,6 +28,15 @@ apps:
               name: argocd-application-controller
               labelSelector: "app.kubernetes.io/name=argocd-application-controller"
 
+  external-dns:
+    namespace: infrastructure
+    wave: "1"
+    charts:
+      - chart: external-dns/external-dns
+        version: "{{ external_dns_chart_version }}"
+    secrets:
+      secret: {}
+
   kube-prometheus-stack:
     namespace: monitoring
     wave: "1"
@@ -41,6 +50,19 @@ apps:
         version: "{{ prometheus_adapter_chart_version }}"
         valueFiles:
           - adapter.yaml
+    kustomize:
+      resources:
+        - "https://raw.githubusercontent.com/cri-o/cri-o/main/contrib/metrics-exporter/cluster.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_probes.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_prometheusagents.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_scrapeconfigs.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml"
+        - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml"
 
   hajimari:
     namespace: services
@@ -367,14 +389,6 @@ apps:
     namespace: media
     charts:
       - *app_template
-
-  external-dns:
-    namespace: infrastructure
-    charts:
-      - chart: external-dns/external-dns
-        version: "{{ external_dns_chart_version }}"
-    secrets:
-      secret: {}
 
   homepage:
     namespace: services

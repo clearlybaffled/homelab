@@ -44,7 +44,7 @@ patches:
                   requests:
                     cpu: {{ flannel_cpu_requests }}
                     memory: {{ flannel_memory_requests }}
-                args: 
+                args:
                   - --kube-subnet-mgr
                   {% if flannel_interface is defined -%}
                   - --iface={{ flannel_interface }}

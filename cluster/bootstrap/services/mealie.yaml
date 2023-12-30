@@ -12,11 +12,11 @@ spec:
   sources:
   - chart: app-template
     repoURL: https://bjw-s.github.io/helm-charts/
-    targetRevision: 1.5.1
+    targetRevision: 2.4.0
     helm:
       valueFiles:
       - $repo/cluster/apps/services/mealie/values.yaml
-      releaseName: mealie
+      releaseName: app-template
   - repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/services/mealie
     targetRevision: main

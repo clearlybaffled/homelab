@@ -12,10 +12,11 @@ spec:
   sources:
   - chart: cert-manager
     repoURL: https://charts.jetstack.io
-    targetRevision: v1.13.2
+    targetRevision: v1.13.3
     helm:
       valueFiles:
       - $repo/cluster/apps/infrastructure/cert-manager/values.yaml
+      releaseName: cert-manager
   - repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/infrastructure/cert-manager
     targetRevision: main

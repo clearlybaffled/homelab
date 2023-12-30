@@ -1,17 +1,27 @@
-image:
-  repository: ghcr.io/onedr0p/qbittorrent
-  tag: 4.6.0
-env:
-  TZ: America/New_York
-  QBITTORRENT__PORT: &port 8080
-  QBITTORRENT__BT_PORT: &port-bt 50413
-  QBT_BitTorrent__Session__IPFilter: 'https:/github.com/Naunter/BT_BlockLists/blob/master/combined_2.txt?raw=true'
-  QBT_BitTorrent__Session_IPFilteringEnabled: 'true'
-  QBT_BitTorrent__Session__TrackerFilteringEnabled: 'true'
-  QBT_BitTorrent__Session__DefaultSavePath: '/media/Downloads'
-  QBT_BitTorrent__Session__TorrentExportDirectory: '/media/Downloads/torrents'
-  QBT_Preferences__WebUI__AuthSubnetWhitelist: '10.0.0.0/8, 172.16.0.0/12'
-  QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: 'true'
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          repository: ghcr.io/onedr0p/qbittorrent
+          tag: 4.6.2
+        env:
+          TZ: America/New_York
+          QBITTORRENT__PORT: &port 8080
+          QBITTORRENT__BT_PORT: &port-bt 50413
+          QBT_BitTorrent__Session__IPFilter: 'https:/github.com/Naunter/BT_BlockLists/blob/master/combined_2.txt?raw=true'
+          QBT_BitTorrent__Session_IPFilteringEnabled: 'true'
+          QBT_BitTorrent__Session__TrackerFilteringEnabled: 'true'
+          QBT_BitTorrent__Session__DefaultSavePath: '/media/Downloads'
+          QBT_BitTorrent__Session__TorrentExportDirectory: '/media/Downloads/torrents'
+          QBT_Preferences__WebUI__AuthSubnetWhitelist: '10.0.0.0/8, 172.16.0.0/12'
+          QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: 'true'
+        resources:
+          requests:
+            cpu: 10m
+            memory: 250Mi
+          limits:
+            memory: 2Gi
 
 service:
   main:
@@ -32,7 +42,7 @@ service:
 ingress:
   main:
     enabled: true
-    ingressClassName: nginx
+    className: nginx
     annotations:
       cert-manager.io/cluster-issuer: ca-issuer
       hajimari.io/icon: mdi:download
@@ -46,11 +56,13 @@ ingress:
           - *host
         secretName: qbittorrent-tls-ingress
 
-podSecurityContext:
-  runAsUser: 997
-  runAsGroup: 997
-  fsGroup: 997
-  fsGroupChangePolicy: "OnRootMismatch"
+defaultPodOptions:
+  podSecurityContext:
+    runAsUser: 997
+    runAsGroup: 997
+    fsGroup: 997
+    fsGroupChangePolicy: "OnRootMismatch"
+
 # Note: If downloading very large torrents it might be worth using NFS for your download directory.
 # Beware if you are downloading torrents directly to a ZFS dataset that dataset will accrue fragmentation.
 persistence:
@@ -69,10 +81,3 @@ persistence:
     enabled: true
     type: pvc
     existingClaim: videos
-
-resources:
-  requests:
-    cpu: 10m
-    memory: 250Mi
-  limits:
-    memory: 2Gi

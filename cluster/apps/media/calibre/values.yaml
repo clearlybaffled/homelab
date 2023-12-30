@@ -1,9 +1,18 @@
-image:
-  repository: ghcr.io/linuxserver/calibre
-  tag: 7.1.0
-
-env:
-  TZ: America/New_York
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          repository: ghcr.io/linuxserver/calibre
+          tag: 7.2.0
+        env:
+          TZ: America/New_York
+        resources:
+          requests:
+            cpu: 15m
+            memory: 298M
+          limits:
+            memory: 298M
 
 persistence:
   config:
@@ -31,13 +40,14 @@ service:
         port: 8081
         protocol: TCP
         targetPort: 8081
+
 ingress:
   main:
     enabled: true
     annotations:
       hajimari.io/icon: mdi:book
       cert-manager.io/cluster-issuer: ca-issuer
-    ingressClass: nginx
+    className: nginx
     hosts:
     - host: &ui_host calibre.hermleigh.home
       paths:
@@ -48,12 +58,6 @@ ingress:
       - *ui_host
       secretName: calibre-tls-ingress
 
-podSecurityContext:
-  supplementalGroups: [33, 997]
-
-resources:
-  requests:
-    cpu: 15m
-    memory: 298M
-  limits:
-    memory: 298M
+defaultPodOptions:
+  podSecurityContext:
+    supplementalGroups: [33, 997]

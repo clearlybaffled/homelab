@@ -50,6 +50,11 @@
   when: app.pvc is defined and app.pvc
   register: pvc
 
+- name: Ensure cluster/bootstrap namespace dir exists
+  file:
+    path: "{{ (cluster_dir, 'bootstrap', app.namespace ) | path_join }}"
+    state: directory
+
 - name: ArgoCD application manifest | {{ app.name }}
   template:
     src: application.yaml.j2
@@ -79,7 +84,7 @@
     url: "{{ git_repo_ssh_url }}"
     push: "{{ git_push | default(true) }}"
     branch: "{{ git_branch }}"
-  when: 
+  when:
     - files | length > 0
     - not batch_apps | default(false)
   register: git_commit

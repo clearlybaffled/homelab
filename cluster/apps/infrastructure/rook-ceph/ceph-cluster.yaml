@@ -97,10 +97,13 @@ cephClusterSpec:
     config:
       osdsPerDevice: "1"
     nodes:
-      - name: "seawolf"
+      - name: parche
         devices:
           - name: "/dev/disk/by-id/ata-WDC_WD40EFRX-68WT0N0_WD-WCC4E6ZHVFSP"
+          - name: "/dev/disk/by-id/ata-WDC_WD101EFBX-68B0AN0_VHGW8LNM"
           - name: "/dev/disk/by-id/ata-Samsung_SSD_850_EVO_250GB_S2R5NB0HA05691Y"
+          - name: "/dev/disk/by-id/nvme-Samsung_SSD_980_PRO_1TB_S5P2NU0WA19259N"
+          - name: "/dev/disk/by-id/ata-WDC_WDS400T1R0A-68A4W0_234411800211"
 
   disruptionManagement:
     managePodBudgets: true
@@ -118,30 +121,31 @@ ingress:
       hajimari.io/icon: simple-icons:ceph
       cert-manager.io/cluster-issuer: 'ca-issuer'
     host:
-      name: ceph-dashboard.hermleigh.home
+      name: ceph-dashboard.seawolf.hermleigh.home
       path: /
     tls:
     - hosts:
-        - ceph-dashboard.hermleigh.home
-        - ceph-dashboard
+        - ceph-dashboard.seawolf.hermleigh.home
+        - ceph-dashboard.seawolf
       secretName: ceph-dashboard-tls
     # Note: Only one of ingress class annotation or the `ingressClassName:` can be used at a time
     # to set the ingress class
     ingressClassName: nginx
 
 cephBlockPools:
-  - name: k8s-block
+  - name: k8s-block-ssd
     spec:
       failureDomain: osd
       replicated:
         size: 1
+      deviceClass: ssd
     storageClass:
       enabled: true
-      name: ceph-block
+      name: ceph-block-ssd
       isDefault: false
       reclaimPolicy: Retain
       allowVolumeExpansion: true
-      parameters:
+      parameters: &csi-params
         imageFormat: "2"
         imageFeatures: layering
         csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
@@ -151,6 +155,21 @@ cephBlockPools:
         csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
         csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
         csi.storage.k8s.io/fstype: ext4
+
+  - name: k8s-block-hdd
+    spec:
+      failureDomain: osd
+      replicated:
+        size: 1
+      deviceClass: hdd
+    storageClass:
+      enabled: true
+      name: ceph-block-hdd
+      isDefault: false
+      reclaimPolicy: Retain
+      allowVolumeExpansion: true
+      parameters: *csi-params
+
   - name: libvirt-pool
     spec:
       failureDomain: osd
@@ -166,7 +185,7 @@ cephFileSystems:
       metadataPool:
         replicated:
           size: 1
-        deviceClass: ssd
+        deviceClass: nvme
       dataPools:
         - name: data0
           failureDomain: osd
@@ -191,20 +210,14 @@ cephFileSystems:
       reclaimPolicy: Retain
       allowVolumeExpansion: true
       mountOptions: []
-      parameters:
-        csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
-        csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
-        csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
-        csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
-        csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
-        csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
-        csi.storage.k8s.io/fstype: ext4
-  - name: ssd-fs
+      parameters: *csi-params
+
+  - name: k8s-ssd-fs
     spec:
       metadataPool:
         replicated:
           size: 1
-        deviceClass: ssd
+        deviceClass: nvme
       dataPools:
         - name: data1
           failureDomain: osd
@@ -229,16 +242,47 @@ cephFileSystems:
       reclaimPolicy: Retain
       allowVolumeExpansion: true
       mountOptions: []
-      parameters:
-        csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
-        csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
-        csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
-        csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
-        csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
-        csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
-        csi.storage.k8s.io/fstype: ext4
+      parameters: *csi-params
 
 cephBlockPoolsVolumeSnapshotClass:
   enabled: false
 
-cephObjectStores: []
+cephObjectStores:
+  - name: s3
+    spec:
+      metadataPool:
+        replicated:
+          size: 1
+        deviceClass: nvme
+      dataPool:
+        replicated:
+          size: 1
+        deviceClass: ssd
+      preservePoolsOnDelete: false
+      gateway:
+        port: 80
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128M
+          limits:
+            memory: 1Gi
+        instances: 1
+    storageClass:
+      enabled: true
+      name: s3
+      reclaimPolicy: Retain
+    ingress:
+      # Enable an ingress for the ceph-objectstore
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: 'ca-issuer'
+      host:
+        name: s3.hermleigh.home
+        path: /
+      tls:
+      - hosts:
+          - s3.hermleigh.home
+          - s3
+        secretName: ceph-objectstore-tls
+      ingressClassName: nginx

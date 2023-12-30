@@ -1,19 +1,26 @@
-image:
-  repository: ghcr.io/linuxserver/calibre-web
-  tag: version-0.6.21
-
-env:
-  TZ: America/New_York
-  PGID: 997
-  DOCKER_MODS: "linuxserver/mods:universal-calibre"
-
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          repository: ghcr.io/linuxserver/calibre-web
+          tag: version-0.6.21
+        env:
+          TZ: America/New_York
+          PGID: 997
+          DOCKER_MODS: "linuxserver/mods:universal-calibre"
+      resources:
+        requests:
+          cpu: 15m
+          memory: 164M
+        limits:
+          memory: 458M
 
 service:
   main:
     ports:
       http:
         port: 8083
-
 
 persistence:
   config:
@@ -30,7 +37,7 @@ ingress:
     annotations:
       hajimari.io/icon: mdi:book
       cert-manager.io/cluster-issuer: ca-issuer
-    ingressClass: nginx
+    className: nginx
     hosts:
     - host: &host calibre-web.seawolf.hermleigh.home
       paths:
@@ -40,10 +47,3 @@ ingress:
     - hosts:
       - *host
       secretName: calibre-web-tls-ingress
-
-resources:
-  requests:
-    cpu: 15m
-    memory: 164M
-  limits:
-    memory: 458M

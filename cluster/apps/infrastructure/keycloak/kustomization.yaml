@@ -4,8 +4,8 @@ namespace: infrastructure
 generators:
 - ./secret-generator.yaml
 resources:
-- https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/22.0.5/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
-- https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/22.0.5/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml
-- https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/22.0.5/kubernetes/kubernetes.yml
+- https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/23.0.1/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
+- https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/23.0.1/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml
+- https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/23.0.1/kubernetes/kubernetes.yml
 - ./keycloak.yaml
 - ./ingress.yaml

@@ -1,16 +1,26 @@
-image:
-  repository: ghcr.io/onedr0p/readarr-develop
-  tag: 0.3.10.2287
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          repository: ghcr.io/onedr0p/readarr-develop
+          tag: 0.3.10.2287
 
-env:
-  TZ: "America/New_York"
-  READARR__INSTANCE_NAME: Readarr
-  READARR__APPLICATION_URL: 'https://books.seawolf.hermleigh.home'
-  READARR__LOG_LEVEL: info
-  READARR__POSTGRES_HOST: 10.233.56.52
-envFrom:
-  - secretRef:
-      name: readarr-secret
+        env:
+          TZ: "America/New_York"
+          READARR__INSTANCE_NAME: Readarr
+          READARR__APPLICATION_URL: 'https://books.seawolf.hermleigh.home'
+          READARR__LOG_LEVEL: info
+          READARR__POSTGRES_HOST: 10.233.56.52
+        envFrom:
+          - secretRef:
+              name: readarr-secret
+        resources:
+          requests:
+            memory: 750Mi
+            cpu: 25m
+          limits:
+            memory: 2000Mi
 
 service:
   main:
@@ -21,7 +31,7 @@ service:
 ingress:
   main:
     enabled: true
-    ingressClassName: nginx
+    className: nginx
     hosts:
       - host: &host books.seawolf.hermleigh.home
         paths:
@@ -40,14 +50,8 @@ persistence:
     enabled: true
     existingClaim: shared-files
 
-podSecurityContext:
-  runAsUser: 997
-  runAsGroup: 997
-  fsGroup: 33
-
-resources:
-  requests:
-    memory: 750Mi
-    cpu: 25m
-  limits:
-    memory: 2000Mi
+defaultPodOptions:
+  podSecurityContext:
+    runAsUser: 997
+    runAsGroup: 997
+    fsGroup: 33

@@ -6,7 +6,7 @@ Apps to deploy:
 - [ ] Thanos? Elastic?
 - [ ] Snipe-IT and/or homebox?
 
-Other tasks: 
+Other tasks:
 - [ ] preload helm repos on argocd-app-controller using ansible kubectl connection
 - [ ] Add [grafana-dashboards-kubernetes](https://github.com/dotdc/grafana-dashboards-kubernetes) to grafana setup
 - [ ] CoreDns standalone config (still doing this??)

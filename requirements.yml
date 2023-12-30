@@ -12,7 +12,9 @@ collections:
   - community.sops
   - community.postgresql
   - community.mysql
+  - community.grafana
   - kubernetes.core
+  - cisco.ios
 roles:
   - name: xanmanning.k3s
     version: v3.4.2

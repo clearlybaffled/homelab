@@ -53,9 +53,9 @@
     #     secret_uuid: "{{ virt_secret.stdout | regex_search('^Secret ([a-f0-9\\-]+?) created$', '\\1') | first }}"
 
     # - name: Set virt secret data
-    #   command: >- 
-    #     virsh secret-set-value 
-    #       --secret "{{ secret_uuid }}" 
+    #   command: >-
+    #     virsh secret-set-value
+    #       --secret "{{ secret_uuid }}"
     #       --base64 "{{ ceph_secret.resources[0].data[ceph_name] }}"
 
     - name: Define storage pool

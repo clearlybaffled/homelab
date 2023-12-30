@@ -6,17 +6,17 @@
 #     url_password: prom-operator
 #     dashboard_id: "{{ item }}"
 
-- name: Create Redis Datasource
-  community.grafana.grafana_datasource:
-    url: https://grafana.seawolf.hermleigh.home
-    url_username: admin
-    url_password: prom-operator
-    ds_type: redis-datasource
-    ds_url: redis://redis-node-0.redis-headless.db:26379
-    name: Redis
-    additional_json_data:
-      client: sentinel
-      sentinelName: redis-master
+# - name: Create Redis Datasource
+#   community.grafana.grafana_datasource:
+#     url: https://grafana.seawolf.hermleigh.home
+#     url_username: admin
+#     url_password: prom-operator
+#     ds_type: redis-datasource
+#     ds_url: redis://redis-node-0.redis-headless.db:26379
+#     name: Redis
+#     additional_json_data:
+#       client: sentinel
+#       sentinelName: redis-master
 
 # - name: CRI-O Metrics Dashboard
 #   community.grafana.grafana_dashboard:
@@ -24,7 +24,3 @@
 #     url_username: admin
 #     url_password: prom-operator
 #     path: https://raw.githubusercontent.com/cri-o/cri-o/main/contrib/metrics-exporter/dashboard.json
-
-- name: Start CRI-O Metrics Exporter
-  kubernetes.core.k8s:
-    definition: "{{ lookup('url', 'https://raw.githubusercontent.com/cri-o/cri-o/main/contrib/metrics-exporter/cluster.yaml', split_lines=False) }}"

@@ -126,7 +126,6 @@ This Git repository contains the following top level directories.
 |[<img width="32" src="https://cloudnative-pg.io/images/hero_image.svg">][postgres-uri]| [PostgreSQL](./cluster/apps/db/cloudnative-pg/) | `Relational DB` | via [Cloudnative-PG][cnpg-uri] operator | Deployed | [![][cnpg-badge]][cnpg-chart]
 |[![](https://redis.io/images/favicons/favicon-32x32.png)][redis-uri]| [Redis](./cluster/apps/db/redis/) | `Caching` | In-memory Key-Value store | Deployed | [![][redis-badge]][redis-chart]
 
-
 ### [Downloads](./cluster/apps/downloads/)
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
@@ -154,9 +153,7 @@ This Git repository contains the following top level directories.
 |[<img width="32" src="https://raw.githubusercontent.com/advplyr/audiobookshelf/84160b2f07164605295d6cb6f7f7925cbdf538e4/client/static/icon.svg">][audiobookshelf-uri]| [Audiobookshelf](./cluster/apps/media/audiobookshelf) | `Audio Books` | Self-hosted audiobook and podcast server | Next-up | [![][audiobookshelf-badge]][audiobookshelf-img]
 |[<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/appicon.png">][immich-uri]|Immich| `Photos` | Photo Management | Planned | |
 |[<img width="32" src="https://github.com/owntone/owntone-server/blob/master/docs/assets/logo.svg?raw=true">][owntone-uri]| OwnTone |`Audio` | DAAP Audio server| Planned | |
-|[<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">][listenbrainz-uri]|ListenBrainz| `Scrobble` | Open Source scrobbler | Planned | | 
-
-
+|[<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">][listenbrainz-uri]|ListenBrainz| `Scrobble` | Open Source scrobbler | Planned | |
 
 ### [Services](./cluster/apps/services/)
 
@@ -167,9 +164,9 @@ This Git repository contains the following top level directories.
 |[<img width="32" src="https://nextcloud.com/wp-content/uploads/2022/10/nextcloud-logo-blue-transparent.svg">][nextcloud-url] | [NextCloud](./cluster/apps/services/nextcloud/) | `File Sharing` | File Hosting | Deployed | [![][nextcloud-badge]][nextcloud-chart] |
 |[<img width="32" src="https://hajimari.io/assets/logo.png">][hajimari-url] |[Hajimari](./cluster/apps/services/hajimari/) | `Dashboard` | Startpage with K8S application discovery | Deployed | [![][hajimari-badge]][hajimari-url] |
 |[<img width="32" src="https://github.com/paperless-ngx/paperless-ngx/raw/dev/docs/assets/favicon.png">][paperless-uri] |[Paperless-ngx](./cluster/apps/services/paperless-ngx/) | `File Sharing` | Document Management System | Deployed| [![][paperless-badge]][paperless-img] |
-| [![](./cluster/apps/services/linkding/linkding.svg)][linkding-uri]  | [Linkding](./cluster/apps/services/linkding/) | `Bookmark Sharing`| Minimal bookmark Manager | Deployed | [![][linkding-badge]][linkding-img] | 
+| [![](./cluster/apps/services/linkding/linkding.svg)][linkding-uri]  | [Linkding](./cluster/apps/services/linkding/) | `Bookmark Sharing`| Minimal bookmark Manager | Deployed | [![][linkding-badge]][linkding-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/Kovah/LinkAce/main/public/favicon.ico">][linkace-uri] | [LinkAce](./cluster/apps/services/linkace/) | `Bookmark Sharing` | Your self-hosted bookmark archive | Deployed | [![][linkace-badge]][linkace-img] |
-|[<img width="32" src="https://raw.githubusercontent.com/linkwarden/linkwarden/4454e615b64f710d7104dd2042fbe97da3904f7e/public/favicon-32x32.png">][linkwarden-uri] |[Linkwarden](./cluster/apps/services/linkwarden/) | `Bookmark Sharing` | Collaborative Bookmark Manager | Deployed | [![][linkwarden-badge]][linkwarden-img] | 
+|[<img width="32" src="https://raw.githubusercontent.com/linkwarden/linkwarden/4454e615b64f710d7104dd2042fbe97da3904f7e/public/favicon-32x32.png">][linkwarden-uri] |[Linkwarden](./cluster/apps/services/linkwarden/) | `Bookmark Sharing` | Collaborative Bookmark Manager | Deployed | [![][linkwarden-badge]][linkwarden-img] |
 
 ### [Monitoring](./cluster/apps/monitoring/)
 
@@ -183,7 +180,6 @@ This Git repository contains the following top level directories.
 |--------|----------------|------------|---------------|----------|--------------------------|
 |<img width="32" src="https://avatars.githubusercontent.com/u/10979201?s=200&v=4">| [FreeIPA][freeipa-uri] | `Infrastructure`| Full IdAM solution + PKI | Deploying.. | [![][freeipa-badge]][freeipa-img] |
 |<img width="32" src="https://github.com/MythTV/mythtv/raw/master/mythtv/html/images/icons/upnp_small_icon.png">|[MythTV][mythtv-url]| `Media` | Digital Video Recorder | Running directly on node | [![][mythtv-badge]][mythtv-gh] |
-
 
 # 🤝 Thank you
 
@@ -277,38 +273,41 @@ This Git repository contains the following top level directories.
 
 [qbittorrent-uri]: https://www.qbittorrent.org/
 [qbittorrent-img]: https://ghcr.io/onedr0p/qbittorrent
-[qbittorrent-badge]: https://img.shields.io/badge/onedr0p/qbittorrent-4.6.0-blue?logo=docker
-
+[qbittorrent-badge]: https://img.shields.io/badge/onedr0p/qbittorrent-4.6.2-blue?logo=docker
 
 [lidarr-uri]: https://lidarr.audio
 [lidarr-img]: https://ghcr.io/onedr0p/lidarr
-[lidarr-badge]: https://img.shields.io/badge/onedr0p/lidarr-1.4.5-blue?logo=docker
+[lidarr-badge]: https://img.shields.io/badge/onedr0p/lidarr-2.0.7-blue?logo=docker
 
 [radarr-uri]: https://radarr.video
 [radarr-img]: https://ghcr.io/onedr0p/radarr
-[radarr-badge]: https://img.shields.io/badge/onedr0p/radarr-5.0.3.8127-blue?logo=docker
+[radarr-badge]: https://img.shields.io/badge/onedr0p/radarr-5.2.6-blue?logo=docker
 
 [sonarr-uri]: https://sonarr.tv
 [sonarr-img]: https://ghcr.io/onedr0p/sonarr
-[sonarr-badge]: https://img.shields.io/badge/onedr0p/sonarr--develop-4.0.0.710-blue?logo=docker
+[sonarr-badge]: https://img.shields.io/badge/onedr0p/sonarr-4.0.0-blue?logo=docker
 
 [prowlarr-uri]: https://github.com/Prowlarr/Prowlarr
 [prowlarr-img]: https://ghcr.io/onedr0p/prowlarr
-[prowlarr-badge]: https://img.shields.io/badge/onedr0p/prowlarr-1.9.4-blue?logo=docker
+[prowlarr-badge]: https://img.shields.io/badge/onedr0p/prowlarr-1.11.4-blue?logo=docker
 
 [readarr-uri]: https://readarr.com
 [readarr-img]: https://ghcr.io/onedr0p/readarr-develop
 [readarr-badge]: https://img.shields.io/badge/onedr0p/readarr--develop-0.3.10.2287-blue?logo=docker
 
+[bazarr-uri]: https://www.bazarr.media/
+[bazarr-img]: https://ghcr.io/onedr0p/bazarr
+[bazarr-badge]: https://img.shields.io/badge/onedr0p/bazarr-1.4.0-blue?logo=docker
+
 [calibre-uri]: https://calibre-ebook.com/
 [calibre-img]: https://ghcr.io/linuxserver/calibre
 [calibre-web-img]: https://ghcr.io/linuxserver/calibre-web
-[calibre-badge]:https://img.shields.io/badge/linuxserver/calibre-version--v6.29.0-blue?logo=docker
+[calibre-badge]:https://img.shields.io/badge/linuxserver/calibre-version--v7.2.0-blue?logo=docker
 [calibre-web-badge]: https://img.shields.io/badge/linuxserver/calibre--web-version--0.6.21-blue?logo=docker
 
 [audiobookshelf-uri]: https://www.audiobookshelf.org/
 [audiobookshelf-img]: https://ghcr.io/advplyr/audiobookshelf
-[audiobookshelf-badge]: https://img.shields.io/badge/advplyr/audiobookshelf-2.6.0-blue?logo=docker
+[audiobookshelf-badge]: https://img.shields.io/badge/advplyr/audiobookshelf-2.7.0-blue?logo=docker
 
 [owntone-uri]: https://owntone.github.io/owntone-server/
 [immich-uri]: https://immich.app

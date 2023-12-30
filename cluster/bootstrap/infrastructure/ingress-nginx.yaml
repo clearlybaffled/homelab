@@ -12,10 +12,11 @@ spec:
   sources:
   - chart: ingress-nginx
     repoURL: https://kubernetes.github.io/ingress-nginx
-    targetRevision: 4.8.3
+    targetRevision: 4.9.0
     helm:
       valueFiles:
       - $repo/cluster/apps/infrastructure/ingress-nginx/values.yaml
+      releaseName: ingress-nginx
   - repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/infrastructure/ingress-nginx
     targetRevision: main

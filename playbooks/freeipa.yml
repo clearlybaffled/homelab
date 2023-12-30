@@ -92,7 +92,7 @@
       copy:
         dest: /root/ca.crt
         content: "{{ root_ca.crt | b64decode }}"
-    - name: Drop IPA CA cert into 
+    - name: Drop IPA CA cert into
       copy:
         dest: /root/ipa.crt
         content: "{{ hostvars.parche.certificate_text }}"
@@ -104,4 +104,4 @@
     - name: Restore SE linux to enforcing
       ansible.posix.selinux:
         state: enforcing
-        policy: 
+        policy:

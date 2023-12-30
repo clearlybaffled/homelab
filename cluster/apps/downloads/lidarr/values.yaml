@@ -1,24 +1,36 @@
-image:
-  repository: ghcr.io/onedr0p/lidarr
-  tag: 1.4.5
-env:
-  TZ: America/New_York
-  LIDARR__INSTANCE_NAME: Lidarr
-  LIDARR__PORT: &port 8686
-  LIDARR__POSTGRES_HOST: cnpg-cluster-rw.db
-  LIDARR__LOG_LEVEL: info
-envFrom:
-  - secretRef:
-      name: lidarr-secret
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          repository: ghcr.io/onedr0p/lidarr
+          tag: 2.0.7
+        env:
+          TZ: America/New_York
+          LIDARR__INSTANCE_NAME: Lidarr
+          LIDARR__PORT: &port 8686
+          LIDARR__POSTGRES_HOST: cnpg-cluster-rw.db
+          LIDARR__LOG_LEVEL: info
+        envFrom:
+          - secretRef:
+              name: lidarr-secret
+        resources:
+          requests:
+            cpu: 10m
+            memory: 250Mi
+          limits:
+            memory: 2000Mi
+
 service:
   main:
     ports:
       http:
         port: *port
+
 ingress:
   main:
     enabled: true
-    ingressClassName: nginx
+    className: nginx
     annotations:
       cert-manager.io/cluster-issuer: ca-issuer
       hajimari.io/icon: music-box
@@ -34,12 +46,15 @@ ingress:
     tls:
       - hosts:
           - *host
-podSecurityContext:
-  runAsUser: 568
-  runAsGroup: 568
-  fsGroup: 568
-  fsGroupChangePolicy: OnRootMismatch
-  supplementalGroups: [10000]
+
+defaultPodOptions:
+  podSecurityContext:
+    runAsUser: 568
+    runAsGroup: 568
+    fsGroup: 568
+    fsGroupChangePolicy: OnRootMismatch
+    supplementalGroups: [10000]
+
 persistence:
   config:
     size: 1Gi
@@ -48,9 +63,3 @@ persistence:
   media:
     enabled: true
     existingClaim: shared-files
-resources:
-  requests:
-    cpu: 10m
-    memory: 250Mi
-  limits:
-    memory: 2000Mi

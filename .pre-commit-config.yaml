@@ -46,6 +46,10 @@ repos:
     rev: 3.0.0  # or specific git tag
     hooks:
       - id: forbid-binary
+        exclude: >
+          (?x)^(
+            docs/
+          )$
       # - id: shellcheck
       # - id: shfmt
 

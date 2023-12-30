@@ -49,9 +49,9 @@
           retries: 10
           delay: 5
 
-    - name: user | Create kubeconfig file
-      set_fact:
-        kubeconfig_str: "{{ lookup('ansible.builtin.template', 'kubeconfig.yml.j2') }}"
+        - name: user | Create kubeconfig file
+          set_fact:
+            kubeconfig_str: "{{ lookup('ansible.builtin.template', 'kubeconfig.yml.j2') }}"
   always:
     - name: Make sure that output (which contains the private key) is overwritten
       set_fact:

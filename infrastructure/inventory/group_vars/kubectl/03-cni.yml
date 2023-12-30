@@ -1,5 +1,5 @@
 ---
-flannel_backend_type: host-gw
+flannel_backend_type: vxlan
 flannel_interface: br0
 
 flannel_version: v0.24.0

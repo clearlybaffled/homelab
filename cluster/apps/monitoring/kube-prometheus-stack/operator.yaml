@@ -44,7 +44,7 @@ grafana:
   defaultDashboardsTimezone: America/New_York
   persistence:
     enabled: true
-    storageClass: ceph-fs-ssd
+    storageClass: local-path
   ingress:
     enabled: true
     ingressClassName: nginx
