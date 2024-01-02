@@ -27,6 +27,7 @@ configs:
 
 
   params:
+    redis.server: redis-node-0.redis-headless.db:6379
     server.insecure: "true"
     server.disable.auth: "true"
   ssh:
@@ -55,9 +56,6 @@ dex:
 ## Redis
 redis:
   enabled: false
-# External Redis parameters
-externalRedis:
-  host: redis-node-0.redis-headless.db
 
 ## Server
 server:
