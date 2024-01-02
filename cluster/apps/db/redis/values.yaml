@@ -1,9 +1,15 @@
 clusterDomain: seawolf
-architecture: standalone
 auth:
   enabled: false
   sentinel: false
 master:
+  persistence:
+    enabled: false
+  dnsConfig:
+    options:
+      - name: ndots
+        value: "8"
+replica:
   persistence:
     enabled: false
   dnsConfig:
@@ -23,6 +29,3 @@ metrics:
   serviceMonitor:
     enabled: true
     interval: 1m
-
-useExternalDNS:
-  enabled: true
