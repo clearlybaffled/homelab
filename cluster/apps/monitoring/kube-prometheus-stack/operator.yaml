@@ -44,7 +44,7 @@ grafana:
   defaultDashboardsTimezone: America/New_York
   persistence:
     enabled: true
-    storageClass: local-path
+    storageClassName: local-path
   ingress:
     enabled: true
     ingressClassName: nginx
