@@ -52,7 +52,6 @@ apps:
           - adapter.yaml
     kustomize:
       resources:
-        - "https://raw.githubusercontent.com/cri-o/cri-o/main/contrib/metrics-exporter/cluster.yaml"
         - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml"
         - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml"
         - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml"

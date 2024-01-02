@@ -24,3 +24,7 @@
 #     url_username: admin
 #     url_password: prom-operator
 #     path: https://raw.githubusercontent.com/cri-o/cri-o/main/contrib/metrics-exporter/dashboard.json
+
+- name: Start CRI-O Metrics Exporter
+  kubernetes.core.k8s:
+    definition: "{{ lookup('url', 'https://raw.githubusercontent.com/cri-o/cri-o/main/contrib/metrics-exporter/cluster.yaml', split_lines=False) }}"
