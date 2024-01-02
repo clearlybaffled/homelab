@@ -17,6 +17,5 @@ spec:
   resources:
     requests:
       storage: 8Gi
-  storageClassName: local-path
   volumeMode: Filesystem
   volumeName: mysql-data
