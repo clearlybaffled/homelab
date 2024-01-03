@@ -14,7 +14,7 @@ spec:
     helm:
       valueFiles:
       - $repo/cluster/apps/downloads/sonarr/values.yaml
-      releaseName: app-template
+      releaseName: sonarr
   - repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/downloads/sonarr
     targetRevision: main

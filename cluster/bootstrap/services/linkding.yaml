@@ -14,7 +14,7 @@ spec:
     helm:
       valueFiles:
       - $repo/cluster/apps/services/linkding/values.yaml
-      releaseName: app-template
+      releaseName: linkding
   - repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/services/linkding
     targetRevision: main

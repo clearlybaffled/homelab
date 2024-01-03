@@ -111,6 +111,8 @@
   pause:
     seconds: 15
   tags: commit
+  when:
+    - git_commit is not skipped
 
 - name: Launch application when wave is defined
   when:

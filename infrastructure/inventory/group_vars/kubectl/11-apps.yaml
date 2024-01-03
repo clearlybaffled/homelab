@@ -1,9 +1,5 @@
 # yaml-language-server: $schema=../../../../schemas/apps.schema.json
 ---
-app_template: &app_template
-  chart: bjw-s/app-template
-  version: "{{ app_template_version }}"
-
 apps:
   argocd:
     namespace: argocd
@@ -135,7 +131,7 @@ apps:
 
   redis:
     namespace: db
-    wave: "3"
+    wave: "0"
     charts:
       - chart: bitnami/redis
         version: "{{ bitnami_redis_chart_version }}"
@@ -158,7 +154,7 @@ apps:
     namespace: services
     wave: "4"
     charts:
-      - *app_template
+      - chart: app-template
     secrets:
       secret:
         data:
@@ -193,7 +189,7 @@ apps:
     namespace: services
     wave: "4"
     charts:
-      - *app_template
+      - chart: app-template
     secrets:
       secret:
         data:
@@ -206,7 +202,7 @@ apps:
   linkding:
     namespace: services
     charts:
-      - *app_template
+      - chart: app-template
     secrets:
       secret:
         data:
@@ -222,7 +218,7 @@ apps:
   linkace:
     namespace: services
     charts:
-      - *app_template
+      - chart: app-template
     kustomize:
       extras:
         configMapGenerator:
@@ -242,7 +238,7 @@ apps:
   linkwarden:
     namespace: services
     charts:
-      - *app_template
+      - chart: app-template
     secrets:
       secret:
         data:
@@ -258,9 +254,9 @@ apps:
   calibre:
     namespace: media
     charts:
-      - <<: *app_template
+      - chart: app-template
         release: calibre
-      - <<: *app_template
+      - chart: app-template
         release: calibre-web
         valueFiles:
           - values-web.yaml
@@ -268,12 +264,12 @@ apps:
   qbittorrent:
     namespace: downloads
     charts:
-      - *app_template
+      - chart: app-template
 
   sonarr:
     namespace: downloads
     charts:
-      - *app_template
+      - chart: app-template
     secrets:
       secret:
         data:
@@ -289,7 +285,7 @@ apps:
   radarr:
     namespace: downloads
     charts:
-      - *app_template
+      - chart: app-template
     secrets:
       secret:
         data:
@@ -306,7 +302,7 @@ apps:
   readarr:
     namespace: downloads
     charts:
-      - *app_template
+      - chart: app-template
     secrets:
       secret:
         data:
@@ -323,7 +319,7 @@ apps:
   prowlarr:
     namespace: downloads
     charts:
-      - *app_template
+      - chart: app-template
     secrets:
       secret:
         data:
@@ -340,7 +336,7 @@ apps:
   lidarr:
     namespace: downloads
     charts:
-      - *app_template
+      - chart: app-template
     secrets:
       secret:
         data:
@@ -387,7 +383,7 @@ apps:
   audiobookshelf:
     namespace: media
     charts:
-      - *app_template
+      - chart: app-template
 
   homepage:
     namespace: services

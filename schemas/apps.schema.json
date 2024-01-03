@@ -244,7 +244,7 @@
         "chart": {
           "title": "chart",
           "type": "string",
-          "description": "Chart identifier in $chart_repo/$chart_name format.\n\nThe chart repository must be defined in inventory/group_vars/kubectl/01-cluster.yml",
+          "description": "Chart identifier in $chart_repo/$chart_name format.\n\nThe chart repository must be defined in inventory/group_vars/kubectl/10-app-config.yml",
           "examples": [
             "bitnami/mysql"
           ]
@@ -256,8 +256,7 @@
       },
       "additionalProperties": true,
       "required": [
-        "chart",
-        "version"
+        "chart"
       ]
     }
   }

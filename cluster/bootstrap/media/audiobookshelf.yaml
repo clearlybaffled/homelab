@@ -14,7 +14,7 @@ spec:
     helm:
       valueFiles:
       - $repo/cluster/apps/media/audiobookshelf/values.yaml
-      releaseName: app-template
+      releaseName: audiobookshelf
   - repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/media/audiobookshelf
     targetRevision: main

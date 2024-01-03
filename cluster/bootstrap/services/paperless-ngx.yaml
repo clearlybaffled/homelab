@@ -16,7 +16,7 @@ spec:
     helm:
       valueFiles:
       - $repo/cluster/apps/services/paperless-ngx/values.yaml
-      releaseName: app-template
+      releaseName: paperless-ngx
   - repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/services/paperless-ngx
     targetRevision: main

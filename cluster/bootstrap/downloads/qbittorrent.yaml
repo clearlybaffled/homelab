@@ -14,7 +14,7 @@ spec:
     helm:
       valueFiles:
       - $repo/cluster/apps/downloads/qbittorrent/values.yaml
-      releaseName: app-template
+      releaseName: qbittorrent
   - repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/downloads/qbittorrent
     targetRevision: main

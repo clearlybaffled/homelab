@@ -10,19 +10,23 @@ from jinja2.filters import pass_context
 
 
 def get_helm_chart_repo(chart, app_name, helm_repositories):
-    try:
-        parse_result = urlparse(chart["chart"])
-        if parse_result.scheme == '':
-            (helm_repo, chart_name) = parse_result.path.split("/")
-        else:
-            return (chart["chart"], app_name)
-    except ValueError:
-        (helm_repo, chart_name) = chart["chart"].split("/")
+    if chart["chart"] == "app-template":
+        chart_name = chart["chart"]
+        helm_repo = "bjw-s"
+    else:
+        try:
+            parse_result = urlparse(chart["chart"])
+            if parse_result.scheme == '':
+                (helm_repo, chart_name) = parse_result.path.split("/")
+            else:
+                return (chart["chart"], app_name)
+        except ValueError:
+            (helm_repo, chart_name) = chart["chart"].split("/")
 
     return (helm_repositories[helm_repo], chart_name)
 
 
-def helm_charts(charts, app, helm_repos):
+def helm_charts(charts, app, helm_repos, app_template_version):
     chart_list = []
     for chart in charts:
         (repo_url, chart_name) = get_helm_chart_repo(
@@ -31,15 +35,19 @@ def helm_charts(charts, app, helm_repos):
         c = {
             'name': chart_name,
             'repo_url': repo_url,
-            "version": chart["version"],
-            "release_name": app["name"],
-            'skip_crds': bool(chart["skipCrds"]) if "skipCrds" in chart else False
         }
+        
+        if chart_name == 'app-template':
+            c["version"] = app_template_version
+        else:
+            c["version"] = chart["version"]
 
         if "release" in chart:
             c['release_name'] = chart["release"]
-        elif app['name'] != chart_name:
+        elif app['name'] != chart_name and chart_name != 'app-template':
             c['release_name'] = chart_name
+        else:
+            c['release_name'] = app['name']
 
         if "namespace" in chart:
             c['namespace'] = chart["namespace"]
@@ -51,6 +59,11 @@ def helm_charts(charts, app, helm_repos):
                 c['value_files'] = chart["valueFiles"]
         else:
             c['value_files'] = ['values.yaml']
+            
+        if "skipCrds" in chart:
+            c["skip_crds"] = bool(chart["skipCrds"])
+        else:
+            c["skip_crds"] = False
 
         chart_list.append(c)
 
@@ -82,7 +95,7 @@ def application(ctx, app):
         }
 
     if "charts" in app:
-        for chart in helm_charts(app["charts"], app, ctx.get("helm_repositories")):
+        for chart in helm_charts(app["charts"], app, ctx.get("helm_repositories"), ctx.get("app_template_version")):
             source = {
                 "chart": chart['name'],
                 "repoURL": chart['repo_url'],
@@ -175,9 +188,8 @@ def kustomization(ctx, app):
                 {"resources": [r for r in app["kustomize"]["resources"]]})
 
         if "charts" in app["kustomize"]:
-            helm_repositories = ctx.get("helm_repositories")
             kustomize.update({"helmCharts": []})
-            for chart in helm_charts(app["kustomize"]["charts"], app, ctx.get("helm_repositories")):
+            for chart in helm_charts(app["kustomize"]["charts"], app, ctx.get("helm_repositories"), ctx.get("app_template_version")):
                 c = {
                     "name": chart["name"],
                     "repo": chart["repo_url"],

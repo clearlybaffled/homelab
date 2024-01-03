@@ -14,7 +14,7 @@ spec:
     helm:
       valueFiles:
       - $repo/cluster/apps/downloads/readarr/values.yaml
-      releaseName: app-template
+      releaseName: readarr
   - repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/downloads/readarr
     targetRevision: main

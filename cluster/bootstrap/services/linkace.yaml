@@ -14,7 +14,7 @@ spec:
     helm:
       valueFiles:
       - $repo/cluster/apps/services/linkace/values.yaml
-      releaseName: app-template
+      releaseName: linkace
   - repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/services/linkace
     targetRevision: main

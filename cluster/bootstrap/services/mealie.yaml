@@ -16,7 +16,7 @@ spec:
     helm:
       valueFiles:
       - $repo/cluster/apps/services/mealie/values.yaml
-      releaseName: app-template
+      releaseName: mealie
   - repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/services/mealie
     targetRevision: main
