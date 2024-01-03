@@ -91,7 +91,7 @@ ingress:
 persistence:
   library:
     enabled: true
-    type: pvc
+    type: persistentVolumeClaim
     mountPath: /library
     accessMode: ReadWriteMany
     size: 30Gi

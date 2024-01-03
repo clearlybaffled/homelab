@@ -75,12 +75,12 @@ persistence:
     storageClass: ceph-fs-ssd
   media:
     enabled: true
-    type: pvc
+    type: persistentVolumeClaim
     existingClaim: shared-files
   incomplete:
     enabled: true
     type: emptyDir
   videos:
     enabled: true
-    type: pvc
+    type: persistentVolumeClaim
     existingClaim: videos

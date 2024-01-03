@@ -17,7 +17,7 @@ controllers:
 persistence:
   config:
     enabled: true
-    type: pvc
+    type: persistentVolumeClaim
     size: 100Mi
   media:
     enabled: true

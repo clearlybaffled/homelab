@@ -38,7 +38,7 @@ service:
 persistence:
   data:
     enabled: true
-    type: pvc
+    type: persistentVolumeClaim
     mountPath: /data/data
     storageClass: ceph-fs-ssd
     accessMode: ReadWriteOnce

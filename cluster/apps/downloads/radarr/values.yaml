@@ -68,11 +68,11 @@ persistence:
     storageClass: ceph-fs-ssd
   videos:
     enabled: true
-    type: pvc
+    type: persistentVolumeClaim
     existingClaim: videos
   shared:
     enabled: true
-    type: pvc
+    type: persistentVolumeClaim
     existingClaim: shared-files
 
 defaultPodOptions:

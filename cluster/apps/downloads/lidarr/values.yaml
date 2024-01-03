@@ -61,7 +61,7 @@ defaultPodOptions:
 persistence:
   config:
     size: 1Gi
-    type: pvc
+    type: persistentVolumeClaim
     storageClass: ceph-fs-ssd
   media:
     enabled: true

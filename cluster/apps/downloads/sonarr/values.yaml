@@ -63,13 +63,13 @@ persistence:
   config:
     enabled: true
     size: 1Gi
-    type: pvc
+    type: persistentVolumeClaim
     storageClass: ceph-fs-ssd
   shared:
     enabled: true
-    type: pvc
+    type: persistentVolumeClaim
     existingClaim: shared-files
   videos:
     enabled: true
-    type: pvc
+    type: persistentVolumeClaim
     existingClaim: videos

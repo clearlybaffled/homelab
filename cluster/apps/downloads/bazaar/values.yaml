@@ -84,7 +84,7 @@ persistence:
   config:
     enabled: true
     size: 1Gi
-    type: pvc
+    type: persistentVolumeClaim
     storageClass: ceph-fs-ssd
   media:
     existingClaim: media
