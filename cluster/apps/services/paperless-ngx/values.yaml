@@ -76,6 +76,9 @@ ingress:
       - host: &host paperless.seawolf.hermleigh.home
         paths:
           - path: /
+            service:
+              name: main
+              port: http
     tls:
       - hosts:
           - *host

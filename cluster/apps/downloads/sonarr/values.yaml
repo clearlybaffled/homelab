@@ -52,6 +52,9 @@ ingress:
       - host: &host tv.seawolf.hermleigh.home
         paths:
           - path: /
+            service:
+              name: main
+              port: http
     tls:
       - hosts:
           - *host
@@ -70,5 +73,3 @@ persistence:
     enabled: true
     type: pvc
     existingClaim: videos
-
-
