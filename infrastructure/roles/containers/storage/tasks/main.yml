@@ -43,7 +43,7 @@
                     - key: kubernetes.io/hostname
                       operator: In
                       values:
-                        - seawolf
+                        - parche
       - kind: PersistentVolumeClaim
         api_version: v1
         metadata:
