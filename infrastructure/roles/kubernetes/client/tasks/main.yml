@@ -15,7 +15,7 @@
     state: directory
   when: kubedir is not exists
 
-- name: Install windows clients
+- name: Install windows apps
   include_tasks: windows.yml
   when: ansible_os_family|lower == "windows"
 

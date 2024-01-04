@@ -130,12 +130,12 @@ kube_network_node_prefix: 24
 # NOTE: loadbalancer_apiserver_localhost somewhat alters the final API enpdoint
 # access IP value (automatically evaluated below)
 # kube_apiserver_ip: "{{ kube_service_addresses | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(1) | ansible.utils.ipaddr('address') }}"
-kube_apiserver_ip: "{{ ip }}"
+kube_apiserver_ip: "{{ hostvars.seawolf.ip }}"
 kube_apiserver_port: 6443  # (https)
 
 # NOTE: If you specific address/interface and use loadbalancer_apiserver_localhost
 # loadbalancer_apiserver_localhost (nginx/haproxy) will deploy on masters on 127.0.0.1:{{ loadbalancer_apiserver_port|default(kube_apiserver_port) }} too.
-kube_apiserver_bind_address: "{{ ip }}"   # 0.0.0.0
+kube_apiserver_bind_address: "{{ hostvars.seawolf.ip }}"   # 0.0.0.0
 
 # If non-empty, will use this string as identification instead of the actual hostname
 kube_override_hostname: "{{ inventory_hostname }}"
@@ -318,9 +318,9 @@ certificates_duration: 36500
 
 # External LB example config
 apiserver_loadbalancer_domain_name: "{{ cluster_name }}.{{ domain_name }}"
-# loadbalancer_apiserver:
-#   address: "{{ kube_apiserver_bind_address }}"
-#   port: "{{ kube_apiserver_port }}"
+loadbalancer_apiserver:
+   address: "{{ kube_apiserver_bind_address }}"
+   port: "{{ kube_apiserver_port }}"
 
 # Vars for pointing to kubernetes api endpoints
 is_kube_master: "{{ inventory_hostname in groups['kube_control_plane'] }}"

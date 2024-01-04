@@ -10,7 +10,7 @@ all:
       ansible_host: barb
       ansible_port: 2222
     seawolf:
-      ip: 172.17.1.11
+      ip: 172.16.1.11
     localhost:
       ansible_connection: local
   vars:
