@@ -21,6 +21,6 @@ spec:
 
   storage:
     size: 10Gi
-    storageClass: ceph-block-ssd
+    storageClass: ceph-fs-ssd
   monitoring:
     enablePodMonitor: true
