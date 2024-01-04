@@ -43,8 +43,8 @@ ingress:
   tls:
     - secretName: nextcloud-tls
       hosts:
-        - &host nextcloud.seawolf.hermleigh.home
-        - nextcloud.seawolf
+        - &host nextcloud.hermleigh.home
+        - nextcloud
   labels: {}
   path: /
   pathType: Prefix
@@ -86,10 +86,10 @@ nextcloud:
           "trusted_domains" =>
             array (
               0 => 'localhost',
-              1 => 'nextcloud.seawolf.hermleigh.home',
-              2 => 'nextcloud.seawolf'
+              1 => 'nextcloud.hermleigh.home',
+              2 => 'nextcloud'
           ),
-          "overwrite.cli.url" => 'https://nextcloud.seawolf.hermleigh.home',
+          "overwrite.cli.url" => 'https://nextcloud.hermleigh.home',
           "overwriteprotocol" => 'https',
           "trusted_proxies" =>
             array (
