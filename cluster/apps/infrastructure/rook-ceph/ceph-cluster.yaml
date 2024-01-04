@@ -113,13 +113,12 @@ cephClusterSpec:
         interval: 45s
         timeout: 600s
 
-
 ingress:
   # -- Enable an ingress for the ceph-dashboard
   dashboard:
     annotations:
       hajimari.io/icon: simple-icons:ceph
-      cert-manager.io/cluster-issuer: 'ca-issuer' 
+      cert-manager.io/cluster-issuer: 'ca-issuer'
     host:
       name: ceph-dashboard.seawolf.hermleigh.home
       path: /
@@ -145,7 +144,7 @@ cephBlockPools:
       isDefault: false
       reclaimPolicy: Retain
       allowVolumeExpansion: true
-      parameters: &csi-params
+      parameters: &csi-block-params
         imageFormat: "2"
         imageFeatures: layering
         csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
@@ -168,7 +167,7 @@ cephBlockPools:
       isDefault: false
       reclaimPolicy: Retain
       allowVolumeExpansion: true
-      parameters: *csi-params
+      parameters: *csi-block-params
 
   - name: libvirt-pool
     spec:
@@ -210,7 +209,14 @@ cephFileSystems:
       reclaimPolicy: Retain
       allowVolumeExpansion: true
       mountOptions: []
-      parameters: *csi-params
+      parameters: &csi-fs-params
+        csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
+        csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
+        csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
+        csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
+        csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
+        csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
+        csi.storage.k8s.io/fstype: ext4
 
   - name: k8s-ssd-fs
     spec:
@@ -242,7 +248,7 @@ cephFileSystems:
       reclaimPolicy: Retain
       allowVolumeExpansion: true
       mountOptions: []
-      parameters: *csi-params
+      parameters: *csi-fs-params
 
 cephBlockPoolsVolumeSnapshotClass:
   enabled: false
