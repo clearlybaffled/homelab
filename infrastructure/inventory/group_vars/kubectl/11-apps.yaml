@@ -48,6 +48,7 @@ apps:
           - adapter.yaml
     kustomize:
       resources:
+        - "https://github.com/cert-manager/cert-manager/releases/download/{{ cert_manager_version }}/cert-manager.crds.yaml"
         - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml"
         - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml"
         - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml"
