@@ -155,8 +155,12 @@ apps:
   paperless-ngx:
     namespace: services
     wave: "4"
+    pv: true
     charts:
       - chart: app-template
+    kustomize:
+      resources:
+        - ./consume-volume.yaml
     secrets:
       secret:
         data:

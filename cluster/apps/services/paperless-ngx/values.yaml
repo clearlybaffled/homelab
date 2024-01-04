@@ -13,7 +13,7 @@ controllers:
           PAPERLESS_CONSUMER_POLLING: 60
           PAPERLESS_CONSUMER_RECURSIVE: "true"
           PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
-          PAPERLESS_CONSUMPTION_DIR: /library/consume
+          PAPERLESS_CONSUMPTION_DIR: /consume
           PAPERLESS_DBENGINE: postgresql
           PAPERLESS_DBHOST: cnpg-cluster-rw.db.svc
           PAPERLESS_DATA_DIR: /library/data
@@ -26,12 +26,12 @@ controllers:
           PAPERLESS_OCR_IMAGE_DPI: 300
           PAPERLESS_PORT: &port 8080
           PAPERLESS_TASK_WORKERS: 2
-          PAPERLESS_TIME_ZONE: America/New_York
+          PAPERLESS_TIME_ZONE: &tz America/New_York
           PAPERLESS_TIKA_ENABLED: 1
           PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
           PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
-          PAPERLESS_URL: https://paperless.seawolf.hermleigh.home
-          PAPERLESS_REDIS: redis://redis.db:6379
+          PAPERLESS_URL: https://paperless.hermleigh.home
+          PAPERLESS_REDIS: redis://redis-node-0.redis-headless.db:6379
           USERMAP_UID: 997
           USERMAP_GID: 997
           TZ: America/New_York
@@ -60,6 +60,36 @@ controllers:
           tag: 2.7.0-full
         imagePullPolicy: IfNotPresent
 
+      hp-scan-to:
+        image:
+          repository: manuc66/node-hp-scan-to
+          tag: master
+        env:
+          - name: IP
+            value: 172.16.1.180
+          - name: PATTERN
+            value: '"scan"_dd.mm.yyyy_hh:MM:ss'
+          - name: PGID
+            value: "997"
+          - name: PUID
+            value: "997"
+          - name: LABEL
+            value: paperless-ngx
+          - name: RESOLUTION
+            value: 300
+          - name: DIR
+            value: /consume
+          - name: TZ
+            value: *tz
+          - name: CMDLINE
+            value: "-D -l paperless-ngx -r 300 "
+        resources:
+          limits:
+            memory: 256Mi
+          requests:
+            cpu: "0"
+            memory: 64Mi
+
 service:
   main:
     ports:
@@ -73,7 +103,7 @@ ingress:
       hajimari.io/icon: arcticons:paperless
       cert-manager.io/cluster-issuer: ca-issuer
     hosts:
-      - host: &host paperless.seawolf.hermleigh.home
+      - host: &host paperless.hermleigh.home
         paths:
           - path: /
             service:
@@ -82,7 +112,6 @@ ingress:
     tls:
       - hosts:
           - *host
-          - paperless.seawolf
           - paperless
           - paperless.apps
           - paperless.apps.svc
@@ -100,6 +129,8 @@ persistence:
     enabled: true
     type: emptyDir
     mountPath: /trash
+  consume:
+    existingClaim: paperless-consume
 
 defaultPodOptions:
   podSecurityContext:
