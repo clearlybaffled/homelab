@@ -138,7 +138,8 @@ def application(ctx, app):
                         "kind": "PersistentVolume",
                         "jsonPointers": [
                             "/spec/claimRef/resourceVersion",
-                            "/spec/claimRef/uid"
+                            "/spec/claimRef/uid",
+                            "/status/lastPhaseTransitionTime"
                         ]
                     }
                 ]

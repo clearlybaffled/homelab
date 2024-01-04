@@ -29,6 +29,7 @@ spec:
     jsonPointers:
     - /spec/claimRef/resourceVersion
     - /spec/claimRef/uid
+    - /status/lastPhaseTransitionTime
   syncPolicy:
     automated:
       prune: true
