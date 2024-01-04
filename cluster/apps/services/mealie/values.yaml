@@ -3,40 +3,30 @@ controllers:
     containers:
       main:
         image:
-          repository: hkotel/mealie
-          tag: frontend-v1.0.0beta-5
+          repository: ghcr.io/mealie-recipes/mealie
+          tag: v1.0.0-RC2
           pullPolicy: IfNotPresent
-      env: &env
-        TZ: America/New_York
-        API_URL: http://localhost:9000
-        PUID: 997
-        PGID: 997
-
-      api:
-        image: hkotel/mealie:api-v1.0.0beta-5
-        imagePullPolicy: IfNotPresent
         env:
-          <<: *env
+          TZ: America/New_York
+          PUID: 997
+          PGID: 997
           DB_ENGINE: postgres
           POSTGRES_SERVER: cnpg-cluster-rw.db.svc
           POSTGRES_DB: mealie
         envFrom:
           - secretRef:
               name: mealie-secret
-        volumeMounts:
-          - name: api-data
-            mountPath: /app/data/
+        resources:
+          requests:
+            cpu: 5m
+            memory: 256Mi
+          limits:
+            memory: 512Mi
 
 service:
   main:
-    primary: true
     ports:
       http:
-        port: 3000
-        primary: true
-  api:
-    ports:
-      api:
         port: 9000
 
 ingress:
@@ -47,11 +37,11 @@ ingress:
       hajimari.io/icon: chef-hat
       cert-manager.io/cluster-issuer: ca-issuer
     hosts:
-      - host: &host mealie.seawolf.hermleigh.home
+      - host: &host mealie.hermleigh.home
         paths:
           - path: /
             pathType: Prefix
-            services:
+            service:
               port: http
               name: main
     tls:
@@ -62,8 +52,9 @@ ingress:
 persistence:
   api-data:
     enabled: true
-    mountPath: /app/data/
     accessMode: ReadWriteOnce
     size: 10Gi
     storageClass: ceph-fs-ssd
     retain: true
+    globalMounts:
+      - path: /app/data
