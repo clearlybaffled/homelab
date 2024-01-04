@@ -39,6 +39,9 @@ ingress:
       - host: &host "linkding.seawolf.hermleigh.home"
         paths:
           - path: /
+            service:
+              port: http
+              name: main
     tls:
       - hosts:
           - *host
