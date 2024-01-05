@@ -20,6 +20,7 @@ helm_repositories:
   bootc: https://charts.boo.tc
   jameswynn: http://jameswynn.github.io/helm-charts
   external-dns: https://kubernetes-sigs.github.io/external-dns/
+  emberstack: https://emberstack.github.io/helm-charts
 
 # Registry deployment
 registry_enabled: false
@@ -100,6 +101,7 @@ rook_ceph_version: v1.13.1
 vault_chart_version: 0.25.0
 keycloak_version: 23.0.1
 external_dns_chart_version: 1.13.1
+kubernetes_reflector_version: 7.1.238
 
 grafana_dashboards:
   - folder_name: Ceph

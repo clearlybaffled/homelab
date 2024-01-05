@@ -45,8 +45,8 @@
     loop_var: app
     label: "{{ app.name }}"
   when:
-    # Don't include if app.createApp is false
-    - app.createApp | default(true)
+    # Don't include if app.enable is false
+    - app.enable | default(true)
     # Start deploying when argument app_start_wave is app.wave
     - app.wave|default(10)|int >= app_start_wave|default(omit)|int
     # If there's an argument called app_deploy_list, only include the app if its present

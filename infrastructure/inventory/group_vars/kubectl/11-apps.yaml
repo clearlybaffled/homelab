@@ -61,6 +61,7 @@ apps:
         - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml"
 
   hajimari:
+    enable: false
     namespace: services
     wave: "4"
     charts:
@@ -151,6 +152,14 @@ apps:
         version: "{{ rook_ceph_version }}"
         valueFiles:
           - ceph-cluster.yaml
+
+  reflector:
+    namespace: infrastructure
+    wave: "3"
+    charts:
+      - chart: emberstack/reflector
+        version: "{{ kubernetes_reflector_version }}"
+        valueFiles: []
 
   paperless-ngx:
     namespace: services
@@ -278,6 +287,8 @@ apps:
       - chart: app-template
     secrets:
       secret:
+        reflect:
+          - homepage
         data:
           SONARR__API_KEY:
             type: password
@@ -294,6 +305,8 @@ apps:
       - chart: app-template
     secrets:
       secret:
+        reflect:
+          - homepage
         data:
           RADARR__API_KEY:
             type: password
@@ -311,6 +324,8 @@ apps:
       - chart: app-template
     secrets:
       secret:
+        reflect:
+          - homepage
         data:
           READARR__API_KEY:
             type: password
@@ -345,6 +360,8 @@ apps:
       - chart: app-template
     secrets:
       secret:
+        reflect:
+          - homepage
         data:
           LIDARR__API_KEY:
             type: password
@@ -392,7 +409,8 @@ apps:
       - chart: app-template
 
   homepage:
-    namespace: services
+    namespace: homepage
+    path: services
     charts:
       - chart: jameswynn/homepage
         version: "{{ homepage_chart_version }}"
