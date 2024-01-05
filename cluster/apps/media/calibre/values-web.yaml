@@ -9,12 +9,12 @@ controllers:
           TZ: America/New_York
           PGID: 997
           DOCKER_MODS: "linuxserver/mods:universal-calibre"
-      resources:
-        requests:
-          cpu: 15m
-          memory: 164M
-        limits:
-          memory: 458M
+        resources:
+          requests:
+            cpu: 15m
+            memory: 164M
+          limits:
+            memory: 458M
 
 service:
   main:
@@ -39,7 +39,7 @@ ingress:
       cert-manager.io/cluster-issuer: ca-issuer
     className: nginx
     hosts:
-    - host: &host calibre-web.seawolf.hermleigh.home
+    - host: &host calibre-web.hermleigh.home
       paths:
       - path: /
         pathType: Prefix
@@ -49,4 +49,5 @@ ingress:
     tls:
     - hosts:
       - *host
+      - calibre-web
       secretName: calibre-web-tls-ingress
