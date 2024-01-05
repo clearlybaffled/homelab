@@ -29,6 +29,7 @@ helmCharts:
   - discovery.k8s.io/v1
   - flowcontrol.apiserver.k8s.io/v1
   - flowcontrol.apiserver.k8s.io/v1beta3
+  - monitoring.coreos.com/v1
   releaseName: argocd
   valuesFile: values.yaml
 patches:
