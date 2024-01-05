@@ -21,7 +21,7 @@ spec:
     ref: repo
   destination:
     name: in-cluster
-    namespace: services
+    namespace: homepage
   syncPolicy:
     automated:
       prune: true

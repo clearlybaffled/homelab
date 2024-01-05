@@ -2,6 +2,22 @@ image:
   repository: ghcr.io/gethomepage/homepage
   tag: v0.8.0
 
+controller:
+  strategy: RollingUpdate
+  rollingUpdate:
+    maxSurge: 25%
+    maxUnavailable: 25%
+
+envFrom:
+  - secretRef:
+      name: lidarr-secret
+  - secretRef:
+      name: radarr-secret
+  - secretRef:
+      name: readarr-secret
+  - secretRef:
+      name: sonarr-secret
+
 # Enable RBAC. RBAC is necessary to use Kubernetes integration
 enableRbac: true
 
@@ -16,12 +32,6 @@ service:
     ports:
       http:
         port: 3000
-
-controller:
-  strategy: RollingUpdate
-  rollingUpdate:
-    maxSurge: 25%
-    maxUnavailable: 25%
 
 # Enable the ingress to expose Homepage to the network.
 ingress:
@@ -55,55 +65,7 @@ ingress:
 # All the config files for Homepage can be specified under their relevant config block.
 config:
   # To use an existing ConfigMap uncomment this line and specify the name
-  # useExistingConfigMap: existing-homepage-configmap
-  bookmarks:
-    - Developer:
-        - Github:
-            - abbr: GH
-              href: https://github.com/
-  services:
-    - My First Group:
-        - My First Service:
-            href: http://localhost/
-            description: Homepage is awesome
-
-    - My Second Group:
-        - My Second Service:
-            href: http://localhost/
-            description: Homepage is the best
-
-    - My Third Group:
-        - My Third Service:
-            href: http://localhost/
-            description: Homepage is 😎
-  widgets:
-    - resources:
-        # change backend to 'kubernetes' to use Kubernetes integration. Requires RBAC.
-        backend: kubernetes
-        expanded: true
-        cpu: true
-        memory: true
-    - search:
-        provider: google
-        target: _blank
-    # Uncomment to enable Kubernetes integration
-    - kubernetes:
-        cluster:
-          show: true
-          cpu: true
-          memory: true
-          showLabel: true
-          label: "cluster"
-        nodes:
-          show: true
-          cpu: true
-          memory: true
-          showLabel: true
-  kubernetes:
-    # change mode to 'cluster' to use RBAC service account
-    mode: cluster
-  docker:
-  settings:
+  useExistingConfigMap: homepage
 
 persistence:
   logs:
