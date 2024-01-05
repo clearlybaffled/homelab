@@ -13,8 +13,4 @@ spec:
       port: 80
       targetPort: 8080
       protocol: TCP
-    - name: barcode-buddy-web
-      port: 81
-      targetPort: 80
-      protocol: TCP
   type: ClusterIP

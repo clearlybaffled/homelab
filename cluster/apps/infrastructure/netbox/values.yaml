@@ -63,8 +63,11 @@ ingress:
   enabled: true
   className: nginx
   annotations:
-    hajimari.io/icon: https://github.com/netbox-community/netbox/wiki/images/logos/netbox_icon.svg
     cert-manager.io/cluster-issuer: ca-issuer
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/group: "Apps & Services"
+    gethomepage.dev/icon: netbox.png
+    gethomepage.dev/description: "Infrastructure inventory and IPAM solution"
   hosts:
     - host: &host netbox.hermleigh.home
       paths:

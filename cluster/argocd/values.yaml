@@ -46,7 +46,8 @@ controller:
     serviceMonitor: &service-monitor
       enabled: true
       additionalLabels:
-        release: prometheus-operator
+        release: kube-prometheus-stack
+
 ## Dex
 dex:
   metrics:
@@ -66,13 +67,16 @@ server:
   ingress:
     enabled: true
     annotations:
-      hajimari.io/icon: devicon:argocd
-      hajimari.io/appName: ArgoCD
       cert-manager.io/cluster-issuer: ca-issuer
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: "Infrastructure"
+      gethomepage.dev/icon: argocd.png
+      gethomepage.dev/description: "GitOps Cluster Dashboard"
+      gethomepage.dev/name: ArgoCD
     ingressClassName: nginx
     hosts: &hosts
-      - argocd.hermleigh.home
-      - argocd
+      - argocd.seawolf.hermleigh.home
+      - argocd.seawolf
     paths:
       - /
     pathType: Prefix

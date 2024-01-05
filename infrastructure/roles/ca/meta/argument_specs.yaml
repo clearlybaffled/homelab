@@ -101,15 +101,15 @@ argument_specs:
       common_name:
         type: str
         description: Common Name (CN) for the CA subject
-        required_one_of:
-          - common_name
-          - csr_text
+        # required_one_of:
+        #   - common_name
+        #   - csr_text
       csr_text:
         type: str
         description: PEM-encoded Certificate Signing Request
-        required_one_of:
-          - common_name
-          - csr_text
+        # required_one_of:
+        #   - common_name
+        #   - csr_text
       signing_ca:
         type: str
         required: true

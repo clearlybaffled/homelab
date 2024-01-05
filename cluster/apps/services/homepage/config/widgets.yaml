@@ -1,0 +1,26 @@
+---
+# - logo:
+- kubernetes:
+    cluster:
+      show: true
+      cpu: true
+      memory: true
+      showLabel: true
+      label: "seawolf"
+    nodes:
+      show: true
+      cpu: true
+      memory: true
+      showLabel: true
+- search:
+    provider: custom
+    url: https://search.unlocked.link/search?q=
+    target: _blank
+    # focus: true # Optional, will set focus to the search bar on page load
+- openmeteo:
+    label: Home # optional
+    latitude: {{HOMEPAGE_VAR_LATITUDE}}
+    longitude: {{HOMEPAGE_VAR_LONGITUDE}}
+    timezone: America/New_York
+    units: imperial # or metric
+    cache: 5 # Time in minutes to cache API responses, to stay within limits

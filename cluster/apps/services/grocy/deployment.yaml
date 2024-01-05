@@ -9,7 +9,7 @@ metadata:
   annotations:
     kompose.cmd: kompose convert -n services -f docker-compose.yml --service-group-mode label
     kompose.controller.type: Deployment
-    kompose.service.expose: grocy.seawolf.hermleigh.home, grocy.seawolf
+    kompose.service.expose: grocy.hermleigh.home, grocy
     kompose.service.expose.tls-secret: grocy-tls-ingress
     kompose.service.group: grocy
     kompose.service.type: ClusterIP
@@ -74,28 +74,6 @@ spec:
               name: grocy-tmpfs1
             - mountPath: /tmp
               name: grocy-tmpfs0
-        - name: barcodebuddy
-          image: docker.io/f0rc3/barcodebuddy:latest
-          envFrom:
-            - configMapRef:
-                name: barcode-buddy-cm
-          ports:
-            - name: web
-              containerPort: 80
-              protocol: TCP
-            - name: tls
-              containerPort: 443
-              protocol: TCP
-          resources:
-            requests:
-              cpu: 80m
-              memory: 256Mi
-            limits:
-              cpu: 220m
-              memory: 512Mi
-          volumeMounts:
-            - name: barcode-buddy
-              mountPath: /config/barcodebuddy
       volumes:
         - name: grocy
           persistentVolumeClaim:

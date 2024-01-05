@@ -27,7 +27,14 @@ service:
 ingress:
   main:
     enabled: true
-    className: 'nginx'
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: ca-issuer
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: "Media"
+      gethomepage.dev/icon: audiobookshelf.png
+      gethomepage.dev/name: Audiobookshelf
+  hosts:
     hosts:
       - host: &host audiobookshelf.hermleigh.home
         paths:

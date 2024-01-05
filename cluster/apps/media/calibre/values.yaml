@@ -46,8 +46,12 @@ ingress:
   main:
     enabled: true
     annotations:
-      hajimari.io/icon: mdi:book
       cert-manager.io/cluster-issuer: ca-issuer
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: "Media"
+      gethomepage.dev/icon: calibre.png
+      gethomepage.dev/description: "E-Book collection manager"
+      gethomepage.dev/name: Calibre
     className: nginx
     hosts:
     - host: &ui_host calibre.hermleigh.home

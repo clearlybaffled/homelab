@@ -100,8 +100,12 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      hajimari.io/icon: arcticons:paperless
       cert-manager.io/cluster-issuer: ca-issuer
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: "Apps & Services"
+      gethomepage.dev/icon: paperless-ngx.png
+      gethomepage.dev/description: "Scan, index and archive all your physical documents"
+      gethomepage.dev/name: Paperless-NGX
     hosts:
       - host: &host paperless.hermleigh.home
         paths:

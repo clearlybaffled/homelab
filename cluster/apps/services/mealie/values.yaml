@@ -34,8 +34,12 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      hajimari.io/icon: chef-hat
       cert-manager.io/cluster-issuer: ca-issuer
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: "A self-hosted recipe manager and meal planner"
+      gethomepage.dev/icon: mealie.png
+      gethomepage.dev/group: "Apps & Services"
+      gethomepage.dev/name: Mealie
     hosts:
       - host: &host mealie.hermleigh.home
         paths:

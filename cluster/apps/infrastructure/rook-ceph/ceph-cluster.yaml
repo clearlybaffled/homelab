@@ -117,8 +117,11 @@ ingress:
   # -- Enable an ingress for the ceph-dashboard
   dashboard:
     annotations:
-      hajimari.io/icon: simple-icons:ceph
       cert-manager.io/cluster-issuer: 'ca-issuer'
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/icon: ceph.png
+      gethomepage.dev/group: Monitoring
+      gethomepage.dev/name: "Ceph Dashboard"
     host:
       name: ceph-dashboard.seawolf.hermleigh.home
       path: /

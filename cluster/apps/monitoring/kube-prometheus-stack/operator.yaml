@@ -15,11 +15,12 @@ alertmanager:
     # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
     # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
     ingressClassName: nginx
-
     annotations:
-      hajimari.io/appName: "Alert Manager"
-      hajimari.io/icon: mdi:alert-decagram-outline
-
+      cert-manager.io/cluster-issuer: ca-issuer
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: "Monitoring"
+      gethomepage.dev/icon: alertmanager.png
+      gethomepage.dev/name: Alertmanager
     hosts: &alert-mgr-hosts
       - alertmanager.seawolf.hermleigh.home
       - alertmanager.seawolf
@@ -49,8 +50,11 @@ grafana:
     enabled: true
     ingressClassName: nginx
     annotations:
-      hajimari.io/icon: "logos:grafana"
       cert-manager.io/cluster-issuer: ca-issuer
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: "Monitoring"
+      gethomepage.dev/icon: grafana.png
+      gethomepage.dev/name: Grafana
     hosts: &grafana-hosts
       - grafana.seawolf.hermleigh.home
       - grafana.seawolf
@@ -88,9 +92,11 @@ prometheusOperator:
     ingress:
       enabled: true
       ingressClassName: nginx
-
       annotations:
-        hajimari.io/icon: devicon:prometheus
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: "Monitoring"
+        gethomepage.dev/icon: prometheus.png
+        gethomepage.dev/name: Prometheus
     hosts: &prom-hosts
       - prometheus.seawolf.hermleigh.home
       - prometheus.seawolf
@@ -106,10 +112,10 @@ prometheus:
     podMonitorSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
     additionalScrapeConfigs:
-      - job_name: "cri-o-exporter-seawolf"
+      - job_name: "cri-o-exporter-parche"
         scrape_interval: 1s
-        metrics_path: /seawolf
+        metrics_path: /parche
         static_configs:
           - targets: ["cri-o-metrics-exporter.cri-o-metrics-exporter"]
             labels:
-              instance: "seawolf"
+              instance: "parche"

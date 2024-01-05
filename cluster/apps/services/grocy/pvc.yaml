@@ -10,15 +10,3 @@ spec:
   resources:
     requests:
       storage: 100Mi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: barcode-buddy
-  namespace: services
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Mi

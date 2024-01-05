@@ -4,15 +4,17 @@ metadata:
   name: grocy
   namespace: services
   annotations:
-    hajimari.io/icon: "cart-variant"
-    hajimari.io/appName: "Grocy"
     cert-manager.io/cluster-issuer: ca-issuer
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/group: "Apps & Services"
+    gethomepage.dev/icon: grocy.png
+    gethomepage.dev/description: "ERP beyond your Fridge"
   labels:
     app.kubernetes.io/name: grocy
 spec:
   ingressClassName: nginx
   rules:
-  - host: grocy.seawolf.hermleigh.home
+  - host: grocy.hermleigh.home
     http:
       paths:
       - path: /
@@ -22,15 +24,8 @@ spec:
             name: grocy
             port:
               number: 8080
-      - path: /barcode-buddy
-        pathType: Prefix
-        backend:
-          service:
-            name: grocy
-            port:
-              number: 80
   tls:
     - hosts:
-      - grocy.seawolf.hermleigh.home
-      - grocy.seawolf
+      - grocy.hermleigh.home
+      - grocy
       secretName: grocy-ingress-cert

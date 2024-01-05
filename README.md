@@ -106,6 +106,7 @@ This Git repository contains the following top level directories.
 |[<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/main/projects/helm/icon/color/helm-icon-color.png">](https://helm.sh)|Helm|The package manager for Kubernetes|
 |[<img width="32" src="https://docs.nginx.com/nginx-ingress-controller/images/icons/NGINX-Ingress-Controller-product-icon.svg">](https://kubernetes.github.io/ingress-nginx/)|[Ingress-nginx](./cluster/apps/infrastructure/ingress-nginx/)| Ingress controller for Kubernetes using NGINX as a reverse proxy and load balancer|
 |[<img width="32" src="https://kubernetes.io/images/kubeadm-stacked-color.png">](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/)|[kubeadm](./infrastructure/roles/kubernetes/control_plane/)| Official command-line cluster management tool |
+|[<img width="32" src="https://avatars.githubusercontent.com/u/33608853?s=32&v=4">](https://github.com/EmberStack/kubernetes-reflector)|[kubernetes-reflector](./cluster/bootstrap/infrastructure/reflector.yaml)| Custom Kubernetes controller that can be used to replicate secrets, configmaps and certificates |
 |[<img width="32" src="https://www.virt-tools.org/logo-kvm.png">](https://www.linux-kvm.org)|[KVM](./infrastructure/roles/server/kvm/) | Linux Kernel Virtual Machine Hypervisor |
 |[<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/main/projects/kubernetes/icon/color/kubernetes-icon-color.svg">](https://kubernetes.io)|[Kubernetes](./infrastructure/roles/kubernetes/)|Container Orchestration|
 |[<img width="32" src="https://libvirt.org/logos/logo-square.svg">](https://www.libvirt.org) |Libvirt| Virtualization API |
@@ -117,6 +118,12 @@ This Git repository contains the following top level directories.
 |[<img width="32" src="https://docs.zerotier.com/img/ZeroTierIcon.png">](https://zerotier.com)|ZeroTier|Virtual Networking that just works|
 
 ## Applications (by namespace)
+
+### [Homepage](./cluster/apps/services/homepage/)
+
+| **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
+|--------|----------------|------------|---------------|----------|--------------------------|
+|[<img width="32" src="https://raw.githubusercontent.com/gethomepage/homepage/main/docs/assets/favicon.ico">][homepage-uri]|[Homepage](./cluster/apps/services/homepage)| `Home` | Landing page for exploring the cluster, with live widgets! | Deployed | [![][homepage-badge]][homepage-chart]
 
 ### [Database](./cluster/apps/db/)
 
@@ -136,6 +143,7 @@ This Git repository contains the following top level directories.
 |[![](https://github.com/Lidarr/Lidarr/blob/develop/Logo/32.png?raw=true)][lidarr-uri]|[Lidarr](./cluster/apps/downloads/lidarr/)| `Music` | Music Collection manager | Deployed | [![][lidarr-badge]][lidarr-img] |
 |[![](https://github.com/Readarr/Readarr/blob/develop/Logo/32.png?raw=true)][readarr-uri]|[Readarr](./cluster/apps/downloads/readarr/)| `Ebooks` | Ebook and audiobook collection manager | Deployed | [![][readarr-badge]][readarr-img] |
 |[![](https://github.com/Prowlarr/Prowlarr/blob/develop/Logo/32.png?raw=true)][prowlarr-uri]|[Prowlarr](./cluster/apps/downloads/prowlarr/)| `Tracker` | Tracker manager | Deployed | [![][prowlarr-badge]][prowlarr-img] |
+|[<img width="32" src="https://raw.githubusercontent.com/bazarr/wiki/main/docs/img/logo.png">][bazarr-uri]|[Bazarr](./cluster/apps/downloads/bazaar/)| `Subtitles` | Subtitle download manager | | [![][bazarr-badge]][bazarr-img] |
 
 ### [Infrastructure Services](./cluster/apps/infrastructure)
 
@@ -150,7 +158,7 @@ This Git repository contains the following top level directories.
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
 |[<img width="32" src="https://github.com/kovidgoyal/calibre/blob/master/icons/calibre.png?raw=true">][calibre-uri] | [Calibre](./cluster/apps/media/calibre/) | `Books` | E-book collection manager | Deployed | [![][calibre-badge]][calibre-img] [![][calibre-web-badge]][calibre-web-img] |
-|[<img width="32" src="https://raw.githubusercontent.com/advplyr/audiobookshelf/84160b2f07164605295d6cb6f7f7925cbdf538e4/client/static/icon.svg">][audiobookshelf-uri]| [Audiobookshelf](./cluster/apps/media/audiobookshelf) | `Audio Books` | Self-hosted audiobook and podcast server | Next-up | [![][audiobookshelf-badge]][audiobookshelf-img]
+|[<img width="32" src="https://raw.githubusercontent.com/advplyr/audiobookshelf/84160b2f07164605295d6cb6f7f7925cbdf538e4/client/static/icon.svg">][audiobookshelf-uri]| [Audiobookshelf](./cluster/apps/media/audiobookshelf) | `Audio Books` | Self-hosted audiobook and podcast server | Deployed | [![][audiobookshelf-badge]][audiobookshelf-img]
 |[<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/appicon.png">][immich-uri]|Immich| `Photos` | Photo Management | Planned | |
 |[<img width="32" src="https://github.com/owntone/owntone-server/blob/master/docs/assets/logo.svg?raw=true">][owntone-uri]| OwnTone |`Audio` | DAAP Audio server| Planned | |
 |[<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">][listenbrainz-uri]|ListenBrainz| `Scrobble` | Open Source scrobbler | Planned | |
@@ -162,8 +170,7 @@ This Git repository contains the following top level directories.
 |[<img width="32" src="https://raw.githubusercontent.com/grocy/grocy/master/public/img/icon.svg">][grocy-uri]| [Grocy](./cluster/apps/services/grocy/) | `Services` | ERP Beyond your fridge | Deployed | [![][grocy-badge]][grocy-img] |
 |[<img width="32" src="https://github.com/hay-kot/mealie/raw/mealie-next/docs/docs/assets/img/favicon.png">][mealie-url] | [Mealie](./cluster/apps/services/mealie/) | `Services` | Recipe Manager | Deployed | [![][mealie-badge]][mealie-docker] |
 |[<img width="32" src="https://nextcloud.com/wp-content/uploads/2022/10/nextcloud-logo-blue-transparent.svg">][nextcloud-url] | [NextCloud](./cluster/apps/services/nextcloud/) | `File Sharing` | File Hosting | Deployed | [![][nextcloud-badge]][nextcloud-chart] |
-|[<img width="32" src="https://hajimari.io/assets/logo.png">][hajimari-url] |[Hajimari](./cluster/apps/services/hajimari/) | `Dashboard` | Startpage with K8S application discovery | Deployed | [![][hajimari-badge]][hajimari-url] |
-|[<img width="32" src="https://github.com/paperless-ngx/paperless-ngx/raw/dev/docs/assets/favicon.png">][paperless-uri] |[Paperless-ngx](./cluster/apps/services/paperless-ngx/) | `File Sharing` | Document Management System | Deployed| [![][paperless-badge]][paperless-img] |
+|[<img width="32" src="https://github.com/paperless-ngx/paperless-ngx/raw/dev/docs/assets/favicon.png">][paperless-uri] |[Paperless-ngx](./cluster/apps/services/paperless-ngx/) | `File Sharing` | Document Management System | Deployed| [![][paperless-badge]][paperless-img] [![][node-hp-scan-to-badge]][node-hp-scan-to-img] |
 | [![](./cluster/apps/services/linkding/linkding.svg)][linkding-uri]  | [Linkding](./cluster/apps/services/linkding/) | `Bookmark Sharing`| Minimal bookmark Manager | Deployed | [![][linkding-badge]][linkding-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/Kovah/LinkAce/main/public/favicon.ico">][linkace-uri] | [LinkAce](./cluster/apps/services/linkace/) | `Bookmark Sharing` | Your self-hosted bookmark archive | Deployed | [![][linkace-badge]][linkace-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/linkwarden/linkwarden/4454e615b64f710d7104dd2042fbe97da3904f7e/public/favicon-32x32.png">][linkwarden-uri] |[Linkwarden](./cluster/apps/services/linkwarden/) | `Bookmark Sharing` | Collaborative Bookmark Manager | Deployed | [![][linkwarden-badge]][linkwarden-img] |
@@ -239,8 +246,9 @@ This Git repository contains the following top level directories.
 [nextcloud-badge]: https://img.shields.io/badge/nextcloud-v27.0.0-blue?logo=helm
 [nextcloud-chart]: https://nextcloud.github.io/helm/
 
-[hajimari-url]:https://hajimari.io/
-[hajimari-badge]: https://img.shields.io/badge/hajimari-v2.0.2-blue?logo=helm
+[homepage-uri]: https://gethomepage.dev/
+[homepage-badge]: https://img.shields.io/badge/jameswynn/homepage-v1.2.3-blue?logo=helm
+[homepage-chart]: https://jameswynn.github.io/helm-charts/
 
 [grafana-badge]: https://img.shields.io/badge/grafana-v9.5.2-blue?logo=helm
 [grafana-uri]: https://grafana.com
@@ -249,6 +257,8 @@ This Git repository contains the following top level directories.
 [paperless-uri]: https://docs.paperless-ngx.com/
 [paperless-badge]: https://img.shields.io/badge/paperless--ngx-v1.15.1-blue?logo=docker
 [paperless-img]: https://ghcr.io/paperless-ngx/paperless-ngx
+[node-hp-scan-to-badge]: https://img.shields.io/badge/manuc66/node--hp--scan--to-v1.4.2-blue?logo=docker
+[node-hp-scan-to-img]: https://hub.docker.com/repository/docker/manuc66/node-hp-scan-to
 
 [linkding-uri]: https://github.com/sissbruecker/linkding
 [linkding-badge]: https://img.shields.io/badge/linkding-1.19.1-blue?logo=docker
