@@ -295,7 +295,7 @@ This Git repository contains the following top level directories.
 
 [sonarr-uri]: https://sonarr.tv
 [sonarr-img]: https://ghcr.io/onedr0p/sonarr
-[sonarr-badge]: https://img.shields.io/badge/onedr0p/sonarr-4.0.0-blue?logo=docker
+[sonarr-badge]: https://img.shields.io/badge/onedr0p/sonarr--develop-4.0.0.725-blue?logo=docker
 
 [prowlarr-uri]: https://github.com/Prowlarr/Prowlarr
 [prowlarr-img]: https://ghcr.io/onedr0p/prowlarr
@@ -303,7 +303,7 @@ This Git repository contains the following top level directories.
 
 [readarr-uri]: https://readarr.com
 [readarr-img]: https://ghcr.io/onedr0p/readarr-develop
-[readarr-badge]: https://img.shields.io/badge/onedr0p/readarr--develop-0.3.10.2287-blue?logo=docker
+[readarr-badge]: https://img.shields.io/badge/onedr0p/readarr--develop-0.3.14-blue?logo=docker
 
 [bazarr-uri]: https://www.bazarr.media/
 [bazarr-img]: https://ghcr.io/onedr0p/bazarr

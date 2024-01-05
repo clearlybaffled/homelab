@@ -365,6 +365,30 @@ apps:
             type: password
             name: postgres
 
+  bazarr:
+    namespace: downloads
+    charts:
+      - chart: app-template
+    kustomize:
+      extras:
+        configMapGenerator:
+          - name: bazarr-scripts
+            files:
+              - ./scripts/post-process.sh
+        generatorOptions:
+          disableNameSuffixHash: true
+
+    secrets:
+      secret:
+        reflect:
+          - homepage
+        data:
+          POSTGRES_DATABASE: bazarr
+          POSTGRES_USERNAME: bazarr
+          POSTGRES_PASSWORD:
+            type: password
+            name: postgres
+
   netbox:
     namespace: infrastructure
     charts:

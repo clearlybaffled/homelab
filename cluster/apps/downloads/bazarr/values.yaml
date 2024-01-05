@@ -6,7 +6,10 @@ controllers:
           repository: ghcr.io/onedr0p/bazarr
           tag: 1.4.0@sha256:c81c4d9cbec093d5a999cfa3cd1af01d3f00d6292d6f5c33608510cef0ed83c7
         env:
-          TZ: ${TIMEZONE}
+          TZ: America/New_York
+          POSTGRES_ENABLED: "true"
+          POSTGRES_HOST: cnpg-cluster-rw.db.svc.seawolf
+          POSTGRES_PORT: "5432"
         envFrom:
           - secretRef:
               name: bazarr-secret
@@ -61,15 +64,22 @@ controllers:
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
-          - 65536
+          - 33
 ingress:
   main:
     enabled: true
     className: nginx
     annotations:
-      hajimari.io/icon: mdi:subtitles-outline
+      cert-manager.io/cluster-issuer: ca-issuer
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: Subtitle Downloader
+      gethomepage.dev/icon: bazarr.png
+      gethomepage.dev/group: Downloads
+      gethomepage.dev/name: Bazarr
+      gethomepage.dev/widget.type: "bazarr"
+      gethomepage.dev/widget.url: "http://bazarr.downloads.svc:6767"
     hosts:
-      - host: &host "{{ .Release.Name }}.${PUBLIC_DOMAIN}"
+      - host: &host subtitles.hermleigh.home
         paths:
           - path: /
             service:
@@ -86,8 +96,10 @@ persistence:
     size: 1Gi
     type: persistentVolumeClaim
     storageClass: ceph-fs-ssd
-  media:
-    existingClaim: media
+  share:
+    existingClaim: shared-files
+  videos:
+    existingClaim: videos
   scripts:
     type: configMap
     name: bazarr-scripts
