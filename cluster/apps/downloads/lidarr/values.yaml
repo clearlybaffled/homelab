@@ -9,7 +9,7 @@ controllers:
           TZ: America/New_York
           LIDARR__INSTANCE_NAME: Lidarr
           LIDARR__PORT: &port 8686
-          LIDARR__POSTGRES_HOST: cnpg-cluster-rw.db
+          LIDARR__POSTGRES_HOST: 10.233.1.99
           LIDARR__LOG_LEVEL: info
         envFrom:
           - secretRef:
@@ -33,7 +33,15 @@ ingress:
     className: nginx
     annotations:
       cert-manager.io/cluster-issuer: ca-issuer
-      hajimari.io/icon: music-box
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: Music Management
+      gethomepage.dev/group: Media
+      gethomepage.dev/icon: lidarr.png
+      gethomepage.dev/name: Lidarr
+      gethomepage.dev/widget.type: "lidarr"
+      gethomepage.dev/widget.url: "http://lidarr.downloads.svc:8686"
+      gethomepage.dev/widget.key: "{{LIDARR__API_KEY}}"
+      gethomepage.dev/pod-selector: ""
       nginx.ingress.kubernetes.io/configuration-snippet: |
         proxy_set_header Accept-Encoding "";
         sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/lidarr/nord.css"></head>';
