@@ -21,6 +21,16 @@ controllers:
             cpu: 25m
           limits:
             memory: 2000Mi
+        securityContext: &security-context
+          runAsUser: 568
+          runAsGroup: 568
+
+defaultPodOptions:
+  securityContext:
+    <<: *security-context
+    fsGroup: 568
+    fsGroupChangePolicy: OnRootMismatch
+    supplementalGroups: [10000]
 
 service:
   main:
@@ -61,9 +71,3 @@ persistence:
   media:
     enabled: true
     existingClaim: shared-files
-
-defaultPodOptions:
-  podSecurityContext:
-    runAsUser: 997
-    runAsGroup: 997
-    fsGroup: 33

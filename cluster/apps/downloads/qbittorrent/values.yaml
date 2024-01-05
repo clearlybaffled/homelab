@@ -22,6 +22,16 @@ controllers:
             memory: 250Mi
           limits:
             memory: 2Gi
+        securityContext: &security-context
+          runAsUser: 568
+          runAsGroup: 568
+
+defaultPodOptions:
+  securityContext:
+    <<: *security-context
+    fsGroup: 568
+    fsGroupChangePolicy: OnRootMismatch
+    supplementalGroups: [10000]
 
 service:
   main:
@@ -31,6 +41,7 @@ service:
   bittorrent:
     enabled: true
     type: LoadBalancer
+    controller: main
     ports:
       bittorrent:
         enabled: true
@@ -58,13 +69,6 @@ ingress:
       - hosts:
           - *host
         secretName: qbittorrent-tls-ingress
-
-defaultPodOptions:
-  podSecurityContext:
-    runAsUser: 997
-    runAsGroup: 997
-    fsGroup: 997
-    fsGroupChangePolicy: "OnRootMismatch"
 
 # Note: If downloading very large torrents it might be worth using NFS for your download directory.
 # Beware if you are downloading torrents directly to a ZFS dataset that dataset will accrue fragmentation.

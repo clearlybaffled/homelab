@@ -20,16 +20,16 @@ controllers:
             memory: 323M
           limits:
             memory: 323M
+        securityContext: &security-context
+          runAsUser: 568
+          runAsGroup: 568
 
 defaultPodOptions:
-  podSecurityContext:
-    runAsUser: 997
-    runAsGroup: 997
-    fsGroup: 997
-    fsGroupChangePolicy: "OnRootMismatch"
-    supplementalGroups:
-      - 33
-
+  securityContext:
+    <<: *security-context
+    fsGroup: 568
+    fsGroupChangePolicy: OnRootMismatch
+    supplementalGroups: [10000]
 
 service:
   main:
