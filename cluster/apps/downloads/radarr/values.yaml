@@ -11,7 +11,7 @@ controllers:
           RADARR__INSTANCE_NAME: Radarr
           RADARR__APPLICATION_URL: 'https://movies.hermleigh.home'
           RADARR__LOG_LEVEL: info
-          RADARR__POSTGRES_HOST: 10.233.47.154
+          RADARR__POSTGRES_HOST: 10.233.1.99
         envFrom:
           - secretRef:
               name: radarr-secret
@@ -34,7 +34,6 @@ ingress:
     className: 'nginx'
     annotations:
       cert-manager.io/cluster-issuer: ca-issuer
-      hajimari.io/icon: filmstrip
       cert-manager.io/common-name: Radarr - Movie Download Manager
       cert-manager.io/subject-countries: US
       cert-manager.io/subject-organization: HERMLEIGH.HOME
@@ -47,7 +46,8 @@ ingress:
       gethomepage.dev/group: Downloads
       gethomepage.dev/name: radarr
       gethomepage.dev/widget.type: "radarr"
-      gethomepage.dev/widget.url: "https://movies.hermleigh.home"
+      gethomepage.dev/widget.url: "http://radarr.downloads.svc:7878"
+      gethomepage.dev/widget.key: "{{ RADARR__API_KEY }}"
     hosts:
       - host: &host movies.hermleigh.home
         paths:
