@@ -31,7 +31,7 @@ controllers:
           PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
           PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
           PAPERLESS_URL: https://paperless.hermleigh.home
-          PAPERLESS_REDIS: redis://redis-node-0.redis-headless.db:6379
+          PAPERLESS_REDIS: redis://redis-master.db.svc:6379
           USERMAP_UID: 997
           USERMAP_GID: 997
           TZ: America/New_York

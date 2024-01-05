@@ -26,11 +26,9 @@
     url_username: *user
     url_password: *password
     ds_type: redis-datasource
-    ds_url: redis://redis-node-0.redis-headless.db:26379
+    ds_url: redis://redis-master.db:26379
     name: Redis
-    additional_json_data:
-      client: sentinel
-      sentinelName: redis-master
+
 
 - name: CRI-O Metrics Dashboard
   community.grafana.grafana_dashboard:

@@ -44,32 +44,16 @@ tasksRedis:
   ssl: false
   insecureSkipTlsVerify: false
   caCertPath: ""
-
-  # Used only when redis.enabled is false. host and port are not used if
-  # sentinels are given.
-  # TODO: Don't hardcode the master
-  host: redis-node-0.redis-headless.db
-  port: 6379
-  sentinels: []
-    # - redis-master:26379
-  sentinelService: redis-node-0.redis-headless.db
-  sentinelTimeout: 300
+  host: &redis-host redis-master.db.svc
+  port: &redis-port 6379
 
 cachingRedis:
   database: 1
   ssl: false
   insecureSkipTlsVerify: false
   caCertPath: ""
-
-  # Used only when redis.enabled is false. host and port are not used if
-  # sentinels are given.
-  # TODO: Don't hardcode the master
-  host: redis-node-0.redis-headless.db
-  port: 6379
-  sentinels: []
-    # - redis-master:26379
-  sentinelService: redis-node-0.redis-headless.db
-  sentinelTimeout: 300
+  host: *redis-host
+  port: *redis-port
 
 persistence:
   enabled: true

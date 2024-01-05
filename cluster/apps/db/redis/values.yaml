@@ -1,14 +1,17 @@
 clusterDomain: seawolf
 auth:
   enabled: false
-  sentinel: false
+
 master:
   persistence:
     enabled: false
+  service:
+    type: LoadBalancer
   dnsConfig:
     options:
       - name: ndots
         value: "8"
+
 replica:
   persistence:
     enabled: false
@@ -16,16 +19,11 @@ replica:
     options:
       - name: ndots
         value: "8"
-sentinel:
-  enabled: true
-  masterSet: redis-master
-  getMasterTimeout: 10
-  startupProbe:
-    failureThreshold: 2
-  persistence:
-    enabled: false
+
 metrics:
   enabled: true
   serviceMonitor:
     enabled: true
     interval: 1m
+useExternalDNS:
+  enabled: true
