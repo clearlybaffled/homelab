@@ -11,7 +11,7 @@ controllers:
           RADARR__INSTANCE_NAME: Radarr
           RADARR__APPLICATION_URL: 'https://movies.hermleigh.home'
           RADARR__LOG_LEVEL: info
-          RADARR__POSTGRES_HOST: 10.233.1.99
+          RADARR__POSTGRES_HOST: cnpg-cluster-rw.db.svc.seawolf
         envFrom:
           - secretRef:
               name: radarr-secret

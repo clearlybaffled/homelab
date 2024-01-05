@@ -10,7 +10,7 @@ controllers:
           SONARR__PORT: &port 8989
           SONARR__APPLICATION_URL: https://tv.hermleigh.home
           SONARR__LOG_LEVEL: info
-          SONARR__POSTGRES_HOST: 10.233.1.99
+          SONARR__POSTGRES_HOST: cnpg-cluster-rw.db.svc.seawolf
         envFrom:
           - secretRef:
               name: sonarr-secret
