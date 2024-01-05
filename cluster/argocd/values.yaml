@@ -27,6 +27,7 @@ configs:
 
 
   params:
+    redis.server: redis-master.db:6379
     server.insecure: "true"
     server.disable.auth: "true"
   ssh:
@@ -54,7 +55,7 @@ dex:
 
 ## Redis
 redis:
-  enabled: true
+  enabled: false
 
 ## Server
 server:
