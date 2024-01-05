@@ -11,7 +11,7 @@ controllers:
           READARR__INSTANCE_NAME: Readarr
           READARR__APPLICATION_URL: 'https://books.seawolf.hermleigh.home'
           READARR__LOG_LEVEL: info
-          READARR__POSTGRES_HOST: 10.233.56.52
+          READARR__POSTGRES_HOST: 10.233.1.99
         envFrom:
           - secretRef:
               name: readarr-secret
@@ -32,6 +32,15 @@ ingress:
   main:
     enabled: true
     className: nginx
+    annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: E-Book Download Manager
+      gethomepage.dev/icon: readarr.png
+      gethomepage.dev/group: Downloads
+      gethomepage.dev/name: readarr
+      gethomepage.dev/widget.type: "readarr"
+      gethomepage.dev/widget.url: "http://readarr.downloads.svc:8787"
+      gethomepage.dev/widget.key: "{{ READARR__API_KEY }}"
     hosts:
       - host: &host books.seawolf.hermleigh.home
         paths:
