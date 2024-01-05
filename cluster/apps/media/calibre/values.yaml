@@ -33,6 +33,7 @@ service:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: calibre-content.hermleigh.home
       metallb.universe.tf/loadBalancerIPs: 172.16.1.39
+    controller: main
     type: LoadBalancer
     ports:
       content:
