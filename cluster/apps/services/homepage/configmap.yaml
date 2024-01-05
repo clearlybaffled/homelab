@@ -169,7 +169,7 @@ data:
             icon: minio.png
             # description: This is my service
         - Rook-Ceph:
-            href: https://ceph.${SECRET_DOMAIN}
+            href: https://ceph-dashboard.seawolf.hermleigh.home
             icon: ceph.png
             # description: This is my service
         - Scrutiny:
@@ -186,39 +186,30 @@ data:
             icon: redis.png
             # description: This is my service
     - Media:
-        - qBittorrent:
-            icon: qbittorrent.png
-            href: https://qbit.${SECRET_DOMAIN_0}
-            description: Torrent Management
-            widget:
-              type: qbittorrent
-              url: http://qbittorrent.default.svc.cluster.local:8080
-              username: {{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}
-              password: {{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}
         - Radarr:
             icon: radarr.png
-            href: https://movie.${SECRET_DOMAIN_0}
+            href: https://movies.hermleigh.home
             description: Movies Management
             widget:
               type: radarr
-              url: http://radarr.default.svc.cluster.local:7878
+              url: http://radarr.downloads.svc:7878
               key: {{RADARR__API_KEY}}
         - Sonarr:
             icon: sonarr.png
-            href: https://tv.${SECRET_DOMAIN_0}
+            href: https://tv.hermleigh.home
             description: TV Shows Management
             widget:
               type: sonarr
-              url: http://sonarr.default.svc.cluster.local:8989
+              url: http://sonarr.downloads:8989
               key: {{SONARR__API_KEY}}
-        - Bazarr:
-            icon: bazarr.png
-            href: https://bazarr.${SECRET_DOMAIN_0}
-            description: Subtitles Management
+        - Readarr:
+            icon: readarr.png
+            href: https://ebooks.hermleigh.home
+            description: E-Book Management
             widget:
-              type: bazarr
-              url: http://bazarr.default.svc.cluster.local:6767
-              key: {{BAZAAR__API_KEY}}
+              type: readarr
+              url: http://readarr.downloads:8787
+              key: {{READARR__API_KEY}}
 
   bookmarks.yaml: |
     ---

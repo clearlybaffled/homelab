@@ -56,7 +56,13 @@ ingress:
     className: nginx
     annotations:
       cert-manager.io/cluster-issuer: ca-issuer
-      hajimari.io/icon: mdi:download
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: Torrent Management
+      gethomepage.dev/group: Downloads
+      gethomepage.dev/icon: qbittorrent.png
+      gethomepage.dev/name: qBittorrent
+      gethomepage.dev/widget.type: "qbittorrent"
+      gethomepage.dev/widget.url: "http://qbittorrent.downloads.svc:8080"
     hosts:
       - host: &host torrent.hermleigh.home
         paths:

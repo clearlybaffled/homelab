@@ -9,7 +9,7 @@ controllers:
         env:
           TZ: "America/New_York"
           READARR__INSTANCE_NAME: Readarr
-          READARR__APPLICATION_URL: 'https://books.seawolf.hermleigh.home'
+          READARR__APPLICATION_URL: 'https://ebooks.hermleigh.home'
           READARR__LOG_LEVEL: info
           READARR__POSTGRES_HOST: 10.233.1.99
         envFrom:
@@ -47,12 +47,12 @@ ingress:
       gethomepage.dev/description: E-Book Download Manager
       gethomepage.dev/icon: readarr.png
       gethomepage.dev/group: Downloads
-      gethomepage.dev/name: readarr
+      gethomepage.dev/name: Readarr
       gethomepage.dev/widget.type: "readarr"
       gethomepage.dev/widget.url: "http://readarr.downloads.svc:8787"
-      gethomepage.dev/widget.key: "{{ READARR__API_KEY }}"
+      gethomepage.dev/widget.key: "${READARR__API_KEY}"
     hosts:
-      - host: &host books.seawolf.hermleigh.home
+      - host: &host ebooks.hermleigh.home
         paths:
           - path: /
             pathType: Prefix

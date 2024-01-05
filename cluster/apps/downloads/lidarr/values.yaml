@@ -40,7 +40,7 @@ ingress:
       gethomepage.dev/name: Lidarr
       gethomepage.dev/widget.type: "lidarr"
       gethomepage.dev/widget.url: "http://lidarr.downloads.svc:8686"
-      gethomepage.dev/widget.key: "{{LIDARR__API_KEY}}"
+      gethomepage.dev/widget.key: "${LIDARR__API_KEY}"
       gethomepage.dev/pod-selector: ""
       nginx.ingress.kubernetes.io/configuration-snippet: |
         proxy_set_header Accept-Encoding "";

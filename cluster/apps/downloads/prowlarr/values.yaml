@@ -64,7 +64,7 @@ ingress:
     className: nginx
     annotations:
       cert-manager.io/cluster-issuer: ca-issuer
-      hajimari.io/icon: cloud-search
+      
     hosts:
       - host: &host trackers.hermleigh.home
         paths:
