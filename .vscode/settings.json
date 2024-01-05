@@ -185,5 +185,6 @@
       "name": "yamllint",
       "url": "https://github.com/adrienverge/yamllint"
     }
-  }
+  },
+  "GitHooks.hooksDirectory": "/home/jared/workspace/homelab/.git/hooks"
 }

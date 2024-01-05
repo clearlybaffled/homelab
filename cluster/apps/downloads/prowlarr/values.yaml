@@ -64,7 +64,13 @@ ingress:
     className: nginx
     annotations:
       cert-manager.io/cluster-issuer: ca-issuer
-      
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: Torrent Tracker Manager
+      gethomepage.dev/icon: prowlarr.png
+      gethomepage.dev/group: Downloads
+      gethomepage.dev/name: Prowlarr
+      gethomepage.dev/widget.type: "prowlarr"
+      gethomepage.dev/widget.url: "http://prowlarr.downloads.svc:9696"
     hosts:
       - host: &host trackers.hermleigh.home
         paths:

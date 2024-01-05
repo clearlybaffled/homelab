@@ -4,7 +4,7 @@ controllers:
       main:
         image:
           repository: ghcr.io/onedr0p/readarr-develop
-          tag: 0.3.10.2287
+          tag: 0.3.14
 
         env:
           TZ: "America/New_York"
