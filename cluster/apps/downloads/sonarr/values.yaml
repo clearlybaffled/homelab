@@ -10,7 +10,7 @@ controllers:
           SONARR__PORT: &port 8989
           SONARR__APPLICATION_URL: https://sonarr.seawolf.hermleigh.home
           SONARR__LOG_LEVEL: info
-          SONARR__POSTGRES_HOST: 10.233.56.52
+          SONARR__POSTGRES_HOST: 10.233.1.99
         envFrom:
           - secretRef:
               name: sonarr-secret
@@ -42,8 +42,16 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      hajimari.io/icon: mdi:television-classic
       cert-manager.io/cluster-issuer: ca-issuer
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: TV Show Management
+      gethomepage.dev/group: Downloads
+      gethomepage.dev/icon: sonarr.png
+      gethomepage.dev/name: Sonarr
+      gethomepage.dev/widget.type: "sonarr"
+      gethomepage.dev/widget.url: "http://sonarr.downloads.svc:8989"
+      gethomepage.dev/widget.key: "{{SONARR__API_KEY}}"
+      gethomepage.dev/pod-selector: ""
       nginx.ingress.kubernetes.io/configuration-snippet: |
         proxy_set_header Accept-Encoding "";
         sub_filter '<body>' '<body><link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/sonarr/nord.css">';
