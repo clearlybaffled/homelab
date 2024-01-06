@@ -44,6 +44,16 @@ controllers:
           runAsUser: 568
           runAsGroup: 568
 
+      flaresolverr:
+        image:
+          repository: ghcr.io/flaresolverr/flaresolverr
+          tag: latest
+        env:
+          TZ: America/New_York
+        securityContext:
+          readOnlyRootFilesystem: false
+          runAsUser: 0
+
 defaultPodOptions:
   securityContext:
     <<: *security-context
@@ -56,6 +66,11 @@ service:
     ports:
       http:
         port: *port
+  flaresolverr:
+    controller: main
+    ports:
+      http:
+        port: 8191
 
 ingress:
   main:
