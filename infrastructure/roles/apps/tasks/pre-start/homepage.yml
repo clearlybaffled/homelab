@@ -1,0 +1,34 @@
+---
+- name: Build Secret with credentials needed for widgets
+  vars:
+    secrets: {}
+  block:
+    - name: Get all secrets
+      set_fact:
+        secrets: >-
+          {{ 
+            secrets | combine({
+              "HOMEPAGE_VAR_" + item|upper + "_API_KEY":
+              lookup('community.sops.sops', (apps[item].app_dir, 'secret.sops.yaml')|path_join) | from_yaml | json_query('data.'+item|upper+'__API_KEY')
+            })
+          }}
+      with_items:
+        - radarr
+        - sonarr
+        - lidarr
+        - readarr
+        - prowlarr
+ 
+    - name: Write out SOPS file
+      community.sops.sops_encrypt:
+        path: "{{ (app.app_dir, 'app-keys.sops.yaml') | path_join }}"
+        encrypted_regex: "^(data|stringData)$"
+        content_yaml:
+          apiVersion: v1
+          kind: Secret
+          type: Opaque
+          metadata:
+            name: app-keys
+            namespace: "{{ app.namespace }}"
+          data:
+            "{{ secrets }}"

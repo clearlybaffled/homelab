@@ -150,6 +150,7 @@ apps:
           - ceph-cluster.yaml
 
   reflector:
+    enable: false
     namespace: infrastructure
     wave: "3"
     charts:
@@ -283,8 +284,6 @@ apps:
       - chart: app-template
     secrets:
       secret:
-        reflect:
-          - homepage
         data:
           SONARR__API_KEY:
             type: password
@@ -301,8 +300,6 @@ apps:
       - chart: app-template
     secrets:
       secret:
-        reflect:
-          - homepage
         data:
           RADARR__API_KEY:
             type: password
@@ -320,8 +317,6 @@ apps:
       - chart: app-template
     secrets:
       secret:
-        reflect:
-          - homepage
         data:
           READARR__API_KEY:
             type: password
@@ -356,8 +351,6 @@ apps:
       - chart: app-template
     secrets:
       secret:
-        reflect:
-          - homepage
         data:
           LIDARR__API_KEY:
             type: password
@@ -384,8 +377,6 @@ apps:
 
     secrets:
       secret:
-        reflect:
-          - homepage
         data:
           POSTGRES_DATABASE: bazarr
           POSTGRES_USERNAME: bazarr
@@ -436,6 +427,7 @@ apps:
         version: "{{ homepage_chart_version }}"
     secrets:
       secret: {}
+      app-keys: {}
     kustomize:
       extras:
         configMapGenerator:

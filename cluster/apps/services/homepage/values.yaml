@@ -10,13 +10,7 @@ controller:
 
 envFrom:
   - secretRef:
-      name: lidarr-secret
-  - secretRef:
-      name: radarr-secret
-  - secretRef:
-      name: readarr-secret
-  - secretRef:
-      name: sonarr-secret
+      name: app-keys
   - secretRef:
       name: homepage-secret
 

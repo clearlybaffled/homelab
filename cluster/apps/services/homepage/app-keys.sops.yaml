@@ -1,0 +1,32 @@
+apiVersion: v1
+data:
+    HOMEPAGE_VAR_LIDARR_API_KEY: ENC[AES256_GCM,data:mbsew2FYmp65uQmv6N8b5uimKQBcdIjCYH1hMpzc76U63ntPTey2Sg==,iv:lXdk+J+d3pNbTqnoGneHTzE5EUynXj56ABhvD9DwtSs=,tag:2bxtEmi38vOkq7lBsfGPjg==,type:str]
+    HOMEPAGE_VAR_PROWLARR_API_KEY: ENC[AES256_GCM,data:WiI7DR7umNH2WNuGy9HzSasHqouh2IAHXXGkeHK9HpwhMTg+riX4Ag==,iv:ctoH9S2aEa3gi86/4T4XLF91ZGieslR8GQAutLdEC2s=,tag:OIaab/0O9VcDSIgUb1adGA==,type:str]
+    HOMEPAGE_VAR_RADARR_API_KEY: ENC[AES256_GCM,data:ZqmGuxX5FF9StNxKFVI2911dxXiW7eELoZbbTxLe3m6gGVb3xWUElA==,iv:URkVoeR7/mxqtpAe3iiTMv8x7mx4Kx75CrAZjSRzKt0=,tag:umMP9Vl2jTDKqnWaoY4f/g==,type:str]
+    HOMEPAGE_VAR_READARR_API_KEY: ENC[AES256_GCM,data:kUo+RiiTA2VRluuiNU1EFuaL5FEL8dLPJgSGgChbChDFTACcYRpe2Q==,iv:W11Xbk7uVPhDbC7ruyu5UE7LWEOC6KtUx30ILNOc5zM=,tag:mt2OV9AUZWJB3cEXCFyoPA==,type:str]
+    HOMEPAGE_VAR_SONARR_API_KEY: ENC[AES256_GCM,data:JtmY545068ODFe2w2bZPQVs8LTHlrAR6ZBH7PYOhGh/ltZClHwYQ0Q==,iv:9vyuUJu3K3RhzS+KRxqPMMarbTVOn3tDvPBHP1AGR0c=,tag:OIyl2GbMYFPZyhGxbddPBw==,type:str]
+kind: Secret
+metadata:
+    name: app-keys
+    namespace: homepage
+type: Opaque
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1e764qpphm5nlzp04qf6zcq8f400390d9wmzramq84hqp60k6qyvqsvgg45
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBmL0dyNnhoUFA5Szd6OTN0
+            aFlJcFdCb0w3RTZrdENESk9DTGFtclhWM2c0CkJnN3g4RVlJQWlrcmhmM0tVSEF5
+            RmtuRHRiQkZmTm5Wemd2NStoNmZZNjQKLS0tIGJBRnc0ZWhTeFNUOWpTT2s3Rnli
+            ZGQ1bXRlYTZZdklodHB0UzF1dkV1VEEKSC/V5zdU9qic9DJd8qBGdONrA7y9FtmZ
+            q5x9vW/FavAsmIq2kvH2mUuixhvbP6UIP0u254/hu1qiXwG5gKeHkw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-01-06T17:38:09Z"
+    mac: ENC[AES256_GCM,data:GSNBnK4lXcw6UtVpe3TfSOY1qLbnvDsQOxuZPI0BaziesB3bWr+V+/YOWcI8fjxEjM2GI1E0jkxc3btuUPNxqOFEFm5xTM+Aozsjlhm7EgsMpy6Nm2ygx6ccMdvHe76otHEhTPwHZyssrrYXoI+w93QIGO/Ly9UimhIng4JEs0c=,iv:ibmJ353R2aXv7AgXr35VV2Fiu4uLFOL/DaaEQIjEJ8c=,tag:TzcLPojcb3TJu24nr+CXqg==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1

@@ -6,23 +6,19 @@ useEqualHeights: true
 layout: # key by group name in services.yaml
   Apps & Services:
     style: row
-    columns: 3
+    columns: 4
     # icon: home-assistant.png
   Infrastructure:
     style: row
-    columns: 3
+    columns: 4
     # icon: home-assistant.png
   Monitoring:
     style: row
-    columns: 3
+    columns: 4
     # icon: home-assistant.png
-  Storage:
+  Downloads:
     style: row
-    columns: 3
-    # icon: home-assistant.png
-  Databases:
-    style: row
-    columns: 3
+    columns: 4
     # icon: home-assistant.png
   Media:
     style: row

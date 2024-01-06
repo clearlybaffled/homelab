@@ -6,6 +6,9 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: HTTPS
     gethomepage.dev/enabled: "true"
     gethomepage.dev/icon: https://avatars.githubusercontent.com/u/4921466?s=48&v=4
+    gethomepage.dev/name: Keycloak
+    gethomepage.dev/description: "Single-Sign On Provider"
+    gethomepage.dev/group: Infrastructure
   labels:
     app: keycloak
     app.kubernetes.io/instance: keycloak

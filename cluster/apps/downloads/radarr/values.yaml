@@ -57,7 +57,7 @@ ingress:
       gethomepage.dev/name: Radarr
       gethomepage.dev/widget.type: "radarr"
       gethomepage.dev/widget.url: "http://radarr.downloads.svc:7878"
-      gethomepage.dev/widget.key: "${RADARR__API_KEY}"
+      gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
     hosts:
       - host: &host movies.hermleigh.home
         paths:

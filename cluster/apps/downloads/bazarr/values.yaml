@@ -76,8 +76,6 @@ ingress:
       gethomepage.dev/icon: bazarr.png
       gethomepage.dev/group: Downloads
       gethomepage.dev/name: Bazarr
-      gethomepage.dev/widget.type: "bazarr"
-      gethomepage.dev/widget.url: "http://bazarr.downloads.svc:6767"
     hosts:
       - host: &host subtitles.hermleigh.home
         paths:

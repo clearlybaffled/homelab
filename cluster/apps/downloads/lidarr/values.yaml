@@ -35,12 +35,12 @@ ingress:
       cert-manager.io/cluster-issuer: ca-issuer
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: Music Management
-      gethomepage.dev/group: Media
+      gethomepage.dev/group: Downloads
       gethomepage.dev/icon: lidarr.png
       gethomepage.dev/name: Lidarr
       gethomepage.dev/widget.type: "lidarr"
       gethomepage.dev/widget.url: "http://lidarr.downloads.svc:8686"
-      gethomepage.dev/widget.key: "${LIDARR__API_KEY}"
+      gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_LIDARR_API_KEY}}"
       gethomepage.dev/pod-selector: ""
       nginx.ingress.kubernetes.io/configuration-snippet: |
         proxy_set_header Accept-Encoding "";
