@@ -34,7 +34,6 @@ ingress:
       gethomepage.dev/group: "Media"
       gethomepage.dev/icon: audiobookshelf.png
       gethomepage.dev/name: Audiobookshelf
-  hosts:
     hosts:
       - host: &host audiobookshelf.hermleigh.home
         paths:
