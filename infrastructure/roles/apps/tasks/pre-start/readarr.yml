@@ -8,5 +8,6 @@
         db_names:
           - "{{ secret.data.READARR__POSTGRES_MAIN_DB | b64decode }}"
           - "{{ secret.data.READARR__POSTGRES_LOG_DB | b64decode }}"
+          - readarr
   vars:
     secret: "{{ lookup('community.sops.sops', app.app_dir+'/secret.sops.yaml') | from_yaml }}"

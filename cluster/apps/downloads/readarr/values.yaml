@@ -4,14 +4,14 @@ controllers:
       main:
         image:
           repository: ghcr.io/onedr0p/readarr-develop
-          tag: 0.3.14
+          tag: 0.3.10
 
         env:
           TZ: "America/New_York"
           READARR__INSTANCE_NAME: Readarr
           READARR__APPLICATION_URL: 'https://ebooks.hermleigh.home'
           READARR__LOG_LEVEL: info
-          READARR__POSTGRES_HOST: cnpg-cluster-rw.db.svc.seawolf
+          READARR__POSTGRES_HOST: 10.233.1.99
         envFrom:
           - secretRef:
               name: readarr-secret
