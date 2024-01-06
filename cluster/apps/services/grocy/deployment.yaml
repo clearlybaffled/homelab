@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -31,6 +30,15 @@ spec:
         kompose.service.group: grocy
         kompose.version: 1.30.0 (9d8dcb518)
     spec:
+      initContainers:
+        - name: link-config
+          image: busybox:1.28
+          command: ['sh', '-c', 'ln -sfv /config/config.php /var/www/data']
+          volumeMounts:
+            - name: grocy
+              mountPath: /var/www/data
+            - mountPath: /config
+              name: grocy-config
       containers:
         - name: grocy-frontend
           image: docker.io/grocy/frontend:v4.0.3
@@ -72,15 +80,17 @@ spec:
               mountPath: /var/www/data
             - mountPath: /var/www/data/viewcache
               name: grocy-tmpfs1
+            - mountPath: /config
+              name: grocy-config
             - mountPath: /tmp
               name: grocy-tmpfs0
       volumes:
         - name: grocy
           persistentVolumeClaim:
             claimName: grocy
-        - name: barcode-buddy
-          persistentVolumeClaim:
-            claimName: barcode-buddy
+        - name: grocy-config
+          configMap:
+            name: grocy-config
         - name: grocy-tmpfs0
           emptyDir: &tempfs
             medium: Memory
@@ -91,3 +101,7 @@ spec:
         - ip: 127.0.0.1
           hostnames:
             - backend
+      securityContext:
+        fsGroup: 997
+        runAsGroup: 997
+        runAsUser: 997

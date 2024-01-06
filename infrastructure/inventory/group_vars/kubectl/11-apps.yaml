@@ -109,6 +109,10 @@ apps:
       - chart: jetstack/cert-manager
         version: "{{ cert_manager_version }}"
 
+  grocy:
+    namespace: services
+    wave: "4"
+
   ingress-nginx:
     namespace: infrastructure
     wave: "1"

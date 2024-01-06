@@ -36,10 +36,11 @@
     "https://raw.githubusercontent.com/canonical/cloud-init/main/cloudinit/config/schemas/versions.schema.cloud-config.json": [
       "*_cloud_init*"
     ],
-    "kubernetes": [],
     "kubernetes://schema/postgresql.cnpg.io/v1@cluster": "cluster/apps/db/cloudnative-pg/cluster.yaml",
     "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/role-arg-spec.json": "*/meta/argument_specs.yaml",
-    "https://json-schema.org/draft-07/schema": "*.schema.json"
+    "https://json-schema.org/draft-07/schema": "*.schema.json",
+    "https://json.schemastore.org/kustomization.json": "kustomization.yaml",
+    "kubernetes": ["deployment.yaml"],
   },
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter"
