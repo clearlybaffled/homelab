@@ -2,45 +2,45 @@
 - name: Build up app_list to include some conventions for file locations and sort by wave
   tags: always
   set_fact:
-    app_list: >-
+    apps: >-
       {{
-          app_list | default([]) +
-          [
-            item.1 | combine({
-              'name': item.0,
+          apps | combine(
+          {
+             item.key: item.value |combine({
+              'name': item.key,
               'app_dir': (
                   cluster_dir,
-                  ('path' in item.1) |
+                  ('path' in item.value) |
                     ternary(
-                      item.1.path|default(omit) if (item.1.path|default(omit) == '') else ('apps', item.1.path|default(omit)),
-                      ('apps', item.1.namespace)
+                      item.value.path|default(omit) if (item.value.path|default(omit) == '') else ('apps', item.value.path|default(omit)),
+                      ('apps', item.value.namespace)
                     ),
-                  item.0
+                  item.key
                 ) | flatten |  path_join,
               'manifest_file':
                 (
                   cluster_dir,
                   'bootstrap',
-                  ('path' in item.1) | ternary(item.1.path, item.1.namespace),
-                  item.0+'.yaml'
+                  ('path' in item.value) | ternary(item.value.path, item.value.namespace),
+                  item.key+'.yaml'
                 ) | path_join
-            })
-          ]
+             })
+          })
       }}
-  loop: >-
-      {{
-        (
-          (apps | items | selectattr('1.wave','defined') | sort(attribute='1.wave')) +
-          (apps | items | rejectattr('1.wave','defined'))
-        )
-      }}
+  loop: "{{ apps | dict2items }}"
   loop_control:
-    label: "{{ item.0 }}"
+    label: "{{ item.key }}"
 
 - name: Make app loop
   set_fact:
     app_loop: "{{ app_loop | default([]) + [app] }}"
-  loop: "{{ app_list }}"
+  loop: >-
+    {{
+      (
+        (apps.values() | selectattr('1.wave','defined') | sort(attribute='1.wave')) +
+        (apps.values() | rejectattr('1.wave','defined'))
+      )
+    }}
   loop_control:
     loop_var: app
     label: "{{ app.name }}"
@@ -67,15 +67,13 @@
     # extended_allitems: false
   tags: always
   vars:
-    mysql_app: "{{ app_list | selectattr('name','eq','mysql') | first }}"
-    postgres_app: "{{ app_list | selectattr('name','eq','cloudnative-pg') | first }}"
     mysql_secret: >-
       {{
         lookup(
           'community.sops.sops',
           (
-            mysql_app.app_dir,
-            mysql_app.secrets.keys() | first ~ '.sops.yaml'
+            apps.mysql.app_dir,
+            apps.secrets.keys() | first ~ '.sops.yaml'
           ) | path_join
         ) | from_yaml
       }}
@@ -84,8 +82,8 @@
         lookup(
           'community.sops.sops',
           (
-            postgres_app.app_dir,
-            postgres_app.secrets | items | selectattr('1.data.username','eq', 'postgres') | first | first ~ '.sops.yaml'
+            apps['cloudnative-pg'].app_dir,
+            apps['cloudnative-pg'].secrets | items | selectattr('1.data.username','eq', 'postgres') | first | first ~ '.sops.yaml'
           ) | path_join
         ) | from_yaml
       }}
