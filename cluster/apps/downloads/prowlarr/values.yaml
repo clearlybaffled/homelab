@@ -10,9 +10,8 @@ controllers:
           TZ: America/New_York
           PROWLARR__INSTANCE_NAME: Prowlarr
           PROWLARR__PORT: &port 9696
-          PROWLARR__LOG_LEVEL: debug
           PROWLARR__THEME: dark
-          PROWLARR__POSTGRES_HOST: 10.233.1.99
+          PROWLARR__POSTGRES_HOST: cnpg-cluster-rw.db.svc.seawolf
           PROWLARR__POSTGRES_PORT: "5432"
         envFrom:
           - secretRef:

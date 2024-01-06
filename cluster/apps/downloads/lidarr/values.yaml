@@ -9,7 +9,7 @@ controllers:
           TZ: America/New_York
           LIDARR__INSTANCE_NAME: Lidarr
           LIDARR__PORT: &port 8686
-          LIDARR__POSTGRES_HOST: cnpg-cluster-rw.db.svc.seawolf
+          LIDARR__POSTGRES_HOST: 10.233.1.99
           LIDARR__LOG_LEVEL: info
         envFrom:
           - secretRef:

@@ -88,11 +88,24 @@ prometheusOperator:
         name: "ca-issuer"
         kind: "ClusterIssuer"
 
+prometheus:
+  prometheusSpec:
+    podMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    additionalScrapeConfigs:
+      - job_name: "cri-o-exporter-parche"
+        scrape_interval: 1s
+        metrics_path: /parche
+        static_configs:
+          - targets: ["cri-o-metrics-exporter.cri-o-metrics-exporter"]
+            labels:
+              instance: "parche"
   service:
     ingress:
       enabled: true
       ingressClassName: nginx
       annotations:
+        cert-manager.io/cluster-issuer: ca-issuer
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: "Monitoring"
         gethomepage.dev/icon: prometheus.png
@@ -106,16 +119,3 @@ prometheusOperator:
     tls:
       - secretName: prometheus-general-tls
         hosts: *prom-hosts
-
-prometheus:
-  prometheusSpec:
-    podMonitorSelectorNilUsesHelmValues: false
-    serviceMonitorSelectorNilUsesHelmValues: false
-    additionalScrapeConfigs:
-      - job_name: "cri-o-exporter-parche"
-        scrape_interval: 1s
-        metrics_path: /parche
-        static_configs:
-          - targets: ["cri-o-metrics-exporter.cri-o-metrics-exporter"]
-            labels:
-              instance: "parche"
