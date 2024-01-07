@@ -8,10 +8,11 @@ crds:
   enabled: true
 resources:
   requests:
-    cpu: 109m
+    cpu: 50m
     memory: 204M
   limits:
     memory: 453M
+    cpu: 250m
 
 # nodeSelector:
 #  hermleigh.home/jbod: true

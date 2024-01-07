@@ -38,6 +38,7 @@ controllers:
             memory: 9248M
           limits:
             memory: 9248M
+            cpu: 250m
 
 service:
   main:

@@ -47,12 +47,26 @@ controller:
       enabled: true
       additionalLabels:
         release: kube-prometheus-stack
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 125m
+      memory: 256Mi
 
 ## Dex
 dex:
   metrics:
     enabled: true
     serviceMonitor: *service-monitor
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 50m
+      memory: 64Mi
 
 ## Redis
 redis:
@@ -84,6 +98,13 @@ server:
     tls:
       - secretName: argocd-ingress-cert
         hosts: *hosts
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
 
 repoServer:
   metrics:
@@ -124,6 +145,14 @@ repoServer:
       value: /home/argocd/.config
     - name: KUSTOMIZE_PLUGIN_HOME
       value: /home/argocd/.config/kustomize/plugin
+
+  resources:
+    limits:
+      cpu: 50m
+      memory: 128Mi
+    requests:
+      cpu: 10m
+      memory: 64Mi
 
 applicationSet:
   enabled: false
