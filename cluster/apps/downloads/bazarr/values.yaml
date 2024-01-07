@@ -86,6 +86,8 @@ ingress:
     tls:
       - hosts:
           - *host
+        secretName: bazarr-ingress-tls
+
 persistence:
   add-ons:
     type: emptyDir

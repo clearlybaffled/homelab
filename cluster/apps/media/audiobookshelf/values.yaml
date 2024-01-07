@@ -45,6 +45,7 @@ ingress:
     tls:
       - hosts:
         - *host
+        secretName: audiobookshelf-ingress-tls
 
 persistence:
   config:

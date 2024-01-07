@@ -54,9 +54,11 @@ ingress:
         paths:
           - path: /
             pathType: Prefix
+
     tls:
       - hosts:
           - *host
+        secretName: homepage-ingress-tls
 
 # All the config files for Homepage can be specified under their relevant config block.
 config:
