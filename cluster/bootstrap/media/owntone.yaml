@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: owntone
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+  - chart: app-template
+    repoURL: https://bjw-s.github.io/helm-charts/
+    targetRevision: 2.4.0
+    helm:
+      valueFiles:
+      - $repo/cluster/apps/media/owntone/values.yaml
+      releaseName: owntone
+  - repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/apps/media/owntone
+    targetRevision: main
+    ref: repo
+  destination:
+    name: in-cluster
+    namespace: media
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

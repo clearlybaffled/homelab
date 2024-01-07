@@ -466,3 +466,8 @@ apps:
     namespace: media
     charts:
       - chart: app-template
+
+  owntone:
+    namespace: media
+    charts:
+      - chart: app-template
