@@ -11,7 +11,7 @@ controllers:
           DB_HOST: mysql.db
           DB_DATABASE: linkacedb
           DB_CONNECTION: mysql
-          REDIS_HOST: redis.db
+          REDIS_HOST: redis-master.db
           # REDIS_PASSWORD: password
           # REDIS_PORT: 6379
           # SESSION_DRIVER: redis
@@ -26,9 +26,12 @@ ingress:
     enabled: true
     annotations:
       cert-manager.io/cluster-issuer: ca-issuer
-      hajimari.io/icon: link
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: "Apps & Services"
+      gethomepage.dev/name: Linkace
+      gethomepage.dev/icon: linkace.png
     hosts:
-      - host: &host "linkace.seawolf.hermleigh.home"
+      - host: &host linkace.hermleigh.home
         paths:
           - path: /
             service:

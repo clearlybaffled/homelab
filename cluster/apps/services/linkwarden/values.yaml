@@ -19,9 +19,12 @@ ingress:
     enabled: true
     annotations:
       cert-manager.io/cluster-issuer: ca-issuer
-      hajimari.io/icon: link
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: "Apps & Services"
+      gethomepage.dev/icon: linkwarden.png
+      gethomepage.dev/name: Linkwarden
     hosts:
-      - host: &host "linkwarden.seawolf.hermleigh.home"
+      - host: &host "linkwarden.hermleigh.home"
         paths:
           - path: /
             service:
@@ -42,8 +45,9 @@ persistence:
   data:
     enabled: true
     type: persistentVolumeClaim
-    mountPath: /data/data
     storageClass: ceph-fs-ssd
     accessMode: ReadWriteOnce
     size: 10Gi
     retain: true
+    globalMounts:
+      - path: /data/data
