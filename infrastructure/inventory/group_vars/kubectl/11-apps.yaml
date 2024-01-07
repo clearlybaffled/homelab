@@ -461,3 +461,8 @@ apps:
           password:
             type: password
             name: db
+
+  jellyfin:
+    namespace: media
+    charts:
+      - chart: app-template
