@@ -148,11 +148,11 @@ repoServer:
 
   resources:
     limits:
+      cpu: 150m
+      memory: 1Gi
+    requests:
       cpu: 50m
       memory: 128Mi
-    requests:
-      cpu: 10m
-      memory: 64Mi
 
 applicationSet:
   enabled: false
