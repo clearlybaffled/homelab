@@ -56,10 +56,11 @@ cephClusterSpec:
         memory: "1059M"
     osd:
       requests:
-        cpu: "442m"
+        cpu: "100m"
         memory: "2678M"
       limits:
         memory: "5944M"
+        cpu: 300m
     mgr-sidecar:
       requests:
         cpu: "49m"
