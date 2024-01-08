@@ -1,0 +1,11 @@
+---
+- include_tasks: # noqa name
+    file: ../init-postgres.yml
+    apply:
+      vars:
+        db_user_var: DB_USERNAME
+        db_pass_var: DB_PASSWORD
+        db_names:
+          - "{{ secret.data.DB_DATABASE_NAME | b64decode }}"
+  vars:
+    secret: "{{ lookup('community.sops.sops', app.app_dir+'/secret.sops.yaml') | from_yaml }}"

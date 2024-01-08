@@ -8,7 +8,7 @@ apps:
     kustomize:
       charts:
         - chart: argocd/argo-cd
-          version: "{{ argocd_chart_version }}"
+          version: 5.51.6
           namespace: argocd
           release: argocd
       extras:
@@ -29,7 +29,7 @@ apps:
     wave: "1"
     charts:
       - chart: external-dns/external-dns
-        version: "{{ external_dns_chart_version }}"
+        version: 1.13.1
     secrets:
       secret: {}
 
@@ -43,7 +43,7 @@ apps:
         valueFiles:
           - operator.yaml
       - chart: prometheus-community/prometheus-adapter
-        version: "{{ prometheus_adapter_chart_version }}"
+        version: 4.9.0
         valueFiles:
           - adapter.yaml
     kustomize:
@@ -65,7 +65,7 @@ apps:
     wave: "3"
     charts:
       - chart: cnpg/cloudnative-pg
-        version: "{{ cnpg_chart_version }}"
+        version: 0.20.0
     kustomize:
       resources:
         - ./cluster.yaml
@@ -93,7 +93,7 @@ apps:
     pv: true
     charts:
       - chart: bitnami/mysql
-        version: "{{ bitnami_mysql_chart_version }}"
+        version: 9.14.3
     kustomize:
       resources:
         - ./pvc.yaml
@@ -107,7 +107,7 @@ apps:
     wave: "1"
     charts:
       - chart: jetstack/cert-manager
-        version: "{{ cert_manager_version }}"
+        version: v1.13.3
 
   grocy:
     namespace: services
@@ -118,7 +118,7 @@ apps:
     wave: "1"
     charts:
       - chart: ingress-nginx/ingress-nginx
-        version: "{{ ingress_nginx_version }}"
+        version: 4.9.0
 
   metallb:
     path: infrastructure
@@ -126,14 +126,14 @@ apps:
     wave: "1"
     charts:
       - chart: metallb/metallb
-        version: "{{ metallb_version[1:] }}"
+        version: 0.13.12
 
   redis:
     namespace: db
     wave: "0"
     charts:
       - chart: bitnami/redis
-        version: "{{ bitnami_redis_chart_version }}"
+        version: 18.6.1
 
   rook-ceph:
     path: infrastructure
@@ -141,11 +141,11 @@ apps:
     wave: "2"
     charts:
       - chart: rook/rook-ceph
-        version: "{{ rook_ceph_version }}"
+        version: &rook v1.13.1
         valueFiles:
           - operator.yaml
       - chart: rook/rook-ceph-cluster
-        version: "{{ rook_ceph_version }}"
+        version: *rook
         valueFiles:
           - ceph-cluster.yaml
 
@@ -155,7 +155,7 @@ apps:
     wave: "3"
     charts:
       - chart: emberstack/reflector
-        version: "{{ kubernetes_reflector_version }}"
+        version: 7.1.238
         valueFiles: []
 
   paperless-ngx:
@@ -184,7 +184,7 @@ apps:
     wave: "4"
     charts:
       - chart: nextcloud/nextcloud
-        version: "{{ nextcloud_chart_version }}"
+        version: 4.5.10
     secrets:
       secret:
         data:
@@ -388,7 +388,7 @@ apps:
     namespace: infrastructure
     charts:
       - chart: bootc/netbox
-        version: "{{ netbox_chart_version }}"
+        version: 4.1.1
     kustomize:
       resources:
         - ./graphite/
@@ -424,7 +424,7 @@ apps:
     path: services
     charts:
       - chart: jameswynn/homepage
-        version: "{{ homepage_chart_version }}"
+        version: 1.2.3
     secrets:
       secret: {}
       app-keys: {}
@@ -471,3 +471,30 @@ apps:
     namespace: media
     charts:
       - chart: app-template
+
+  immich:
+    namespace: media
+    charts:
+      - chart: immich/immich
+        version: 0.3.1
+    secrets:
+      secret:
+        data:
+          DB_DATABASE_NAME: immich
+          DB_USERNAME: immich
+          DB_PASSWORD:
+            type: password
+            name: db
+
+  typesense:
+    namespace: db
+    charts:
+      - chart: app-template
+    secrets:
+      secret:
+        reflect:
+          - media
+        data:
+          TYPESENSE_API_KEY:
+            type: password
+            name: api

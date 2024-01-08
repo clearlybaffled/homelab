@@ -1,16 +1,24 @@
-image:
-  repository: docker.io/typesense/typesense
-  tag: 0.24.1
-  pullPolicy: IfNotPresent
-env:
-  TYPESENSE_DATA_DIR: /tsdata
-  TYPESENSE_API_KEY: typesense
+controllers:
+  main:
+    containers:
+      main:
+        nameOverride: typesense
+        image:
+          repository: docker.io/typesense/typesense
+          tag: 0.24.1
+          pullPolicy: IfNotPresent
+        env:
+          TYPESENSE_DATA_DIR: /tsdata
+        envFrom:
+          - secretRef:
+              name: typesense-secret
+
 persistence:
   tsdata:
     enabled: true
     accessMode: ReadWriteOnce
     size: 1Gi
-    storageClass: ceph-block
+    storageClass: ceph-fs-ssd
 
 service:
   main:

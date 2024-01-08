@@ -54,7 +54,6 @@ cert_manager_namespace: cert-manager
 # ArgoCD GitOps
 argocd_enabled: true
 argocd_version: v2.9.3
-argocd_chart_version: 5.51.6
 # Default password:
 #   - https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli
 #   ---
@@ -82,26 +81,12 @@ metallb_version: v0.13.12
 app_template_version: 2.4.0
 
 elastic_chart_version: 2.10.0
-netbox_chart_version: 4.1.1
-hajimari_version: 2.0.2
-homepage_chart_version: 1.2.3
-cnpg_chart_version: 0.20.0
-bitnami_mysql_chart_version: 9.14.3
 mysql_version: 8.0.35
-immich_chart_version: 0.3.1
-ingress_nginx_version: 4.9.0
-bitnami_redis_chart_version: 18.6.1
-redis_version: 7.2.3
-nextcloud_chart_version: 4.5.10
 prometheus_version: 2.47.0
 prometheus_operator_version: v0.70.0
 kube_prometheus_stack_chart_version: 55.5.0
-prometheus_adapter_chart_version: 4.9.0
-rook_ceph_version: v1.13.1
 vault_chart_version: 0.25.0
 keycloak_version: 23.0.1
-external_dns_chart_version: 1.13.1
-kubernetes_reflector_version: 7.1.238
 
 grafana_dashboards:
   - folder_name: Ceph
