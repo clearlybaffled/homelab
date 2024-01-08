@@ -18,8 +18,8 @@ layout: # key by group name in services.yaml
     # icon: home-assistant.png
   Downloads:
     style: row
-    columns: 4
+    columns: 1
     # icon: home-assistant.png
   Media:
     style: row
-    columns: 4
+    columns: 1

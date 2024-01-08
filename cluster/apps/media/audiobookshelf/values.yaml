@@ -34,6 +34,9 @@ ingress:
       gethomepage.dev/group: "Media"
       gethomepage.dev/icon: audiobookshelf.png
       gethomepage.dev/name: Audiobookshelf
+      gethomepage.dev/widget.type: audiobookshelf
+      gethomepage.dev/widget.url: http://audiobookshelf.media.svc
+      gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_AUDIOBOOKSHELF_API_KEY}}"
     hosts:
       - host: &host audiobookshelf.hermleigh.home
         paths:
