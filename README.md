@@ -160,7 +160,7 @@ This Git repository contains the following top level directories.
 |[<img width="32" src="https://github.com/kovidgoyal/calibre/blob/master/icons/calibre.png?raw=true">][calibre-uri] | [Calibre](./cluster/apps/media/calibre/) | `Books` | E-book collection manager | Deployed | [![][calibre-badge]][calibre-img] [![][calibre-web-badge]][calibre-web-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/advplyr/audiobookshelf/84160b2f07164605295d6cb6f7f7925cbdf538e4/client/static/icon.svg">][audiobookshelf-uri]| [Audiobookshelf](./cluster/apps/media/audiobookshelf) | `Audio Books` | Self-hosted audiobook and podcast server | Deployed | [![][audiobookshelf-badge]][audiobookshelf-img]
 |[<img width="32" src="https://raw.githubusercontent.com/jellyfin/jellyfin-web/master/src/assets/img/icon-transparent.png">][jellyfin-uri]|[Jellyfin](./cluster/apps/media/jellyfin/) | `Media Server` | The open source media server | Deployed | [![][jellyfin-badge]][jellyfin-img]
-|[<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/appicon.png">][immich-uri]|Immich| `Photos` | Photo Management | Planned | |
+|[<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/appicon.png">][immich-uri]|Immich| `Photos` | Photo Management | Deployed | [![][immich-badge]][immich-chart] |
 |[<img width="32" src="https://github.com/owntone/owntone-server/blob/master/docs/assets/logo.svg?raw=true">][owntone-uri]| OwnTone |`Audio` | DAAP Audio server| Deployed | [![][owntone-badge]][owntone-img] |
 |[<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">][listenbrainz-uri]|ListenBrainz| `Scrobble` | Open Source scrobbler | Planned | |
 
@@ -175,6 +175,7 @@ This Git repository contains the following top level directories.
 | [![](./cluster/apps/services/linkding/linkding.svg)][linkding-uri]  | [Linkding](./cluster/apps/services/linkding/) | `Bookmark Sharing`| Minimal bookmark Manager | Deployed | [![][linkding-badge]][linkding-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/Kovah/LinkAce/main/public/favicon.ico">][linkace-uri] | [LinkAce](./cluster/apps/services/linkace/) | `Bookmark Sharing` | Your self-hosted bookmark archive | Deployed | [![][linkace-badge]][linkace-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/linkwarden/linkwarden/4454e615b64f710d7104dd2042fbe97da3904f7e/public/favicon-32x32.png">][linkwarden-uri] |[Linkwarden](./cluster/apps/services/linkwarden/) | `Bookmark Sharing` | Collaborative Bookmark Manager | Deployed | [![][linkwarden-badge]][linkwarden-img] |
+|[<img width="32" src="https://raw.githubusercontent.com/Stirling-Tools/Stirling-PDF/main/docs/stirling.png">][stirling-pdf-uri] | [Stirling PDF](./cluster/apps/services/stirling-pdf/) | `Document Editing` | Self-hosted PDF editor | Deployed | [![][stirling-pdf-badge]][stirling-pdf-img]
 
 ### [Monitoring](./cluster/apps/monitoring/)
 
@@ -232,8 +233,8 @@ This Git repository contains the following top level directories.
 [redis-chart]: https://artifacthub.io/packages/helm/bitnami/redis
 
 [grocy-uri]: https://github.com/grocy/grocy
-[grocy-img]: https://hub.docker.com/r/linuxserver/grocy
-[grocy-badge]: https://img.shields.io/badge/linuxserver/grocy-v4.0.3-blue?logo=docker
+[grocy-img]: https://hub.docker.com/r/grocy/grocy-frontend
+[grocy-badge]: https://img.shields.io/badge/grocy/grocy--frontend-v4.0.3-blue?logo=docker
 
 [mealie-url]: https://mealie.io/
 [mealie-badge]: https://img.shields.io/badge/mealie-v1.0.0RC2-blue?logo=docker
@@ -329,6 +330,13 @@ This Git repository contains the following top level directories.
 [owntone-img]: https://lscr.io/linuxserver/daapd
 
 [immich-uri]: https://immich.app
+[immich-chart]: https://immich-app.github.io/immich-charts
+[immich-badge]: https://img.shields.io/badge/immich-0.3.1-blue?logo=helm
+
+[stirling-pdf-uri]: https://stirlingtools.com/
+[stirling-pdf-badge]: https://img.shields.io/badge/frooodle/s--pdf-0.19.0-blue?logo=docker
+[stirling-pdf-img]: https://hub.docker.com/r/frooodle/s-pdf
+
 [listenbrainz-uri]: https://listenbrainz.org
 
 [keycloak-url]: https://www.keycloak.org/

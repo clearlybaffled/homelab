@@ -498,3 +498,8 @@ apps:
           TYPESENSE_API_KEY:
             type: password
             name: api
+
+  stirling-pdf:
+    namespace: services
+    charts:
+      - chart: app-template
