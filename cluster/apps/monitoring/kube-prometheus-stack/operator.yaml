@@ -119,3 +119,17 @@ prometheus:
     tls:
       - secretName: prometheus-general-tls
         hosts: *prom-hosts
+
+prometheus-node-exporter:
+  prometheus:
+    monitor:
+      ## RelabelConfigs to apply to samples before scraping
+      ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#relabelconfig
+      ##
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_pod_node_name]
+          separator: ;
+          regex: ^(.*)$
+          targetLabel: nodename
+          replacement: $1
+          action: replace
