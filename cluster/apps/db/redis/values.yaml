@@ -13,12 +13,7 @@ master:
         value: "8"
 
 replica:
-  persistence:
-    enabled: false
-  dnsConfig:
-    options:
-      - name: ndots
-        value: "8"
+  replicaCount: 0
 
 metrics:
   enabled: true
