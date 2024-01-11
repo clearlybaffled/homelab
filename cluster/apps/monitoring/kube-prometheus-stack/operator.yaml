@@ -123,6 +123,9 @@ prometheus:
 prometheus-node-exporter:
   prometheus:
     monitor:
+      # from: https://github.com/prometheus-community/helm-charts/issues/3613#issuecomment-1837318437
+      attachMetadata:
+        node: true
       ## RelabelConfigs to apply to samples before scraping
       ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#relabelconfig
       ##
