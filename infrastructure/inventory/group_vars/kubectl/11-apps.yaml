@@ -486,19 +486,6 @@ apps:
             type: password
             name: db
 
-  typesense:
-    namespace: db
-    charts:
-      - chart: app-template
-    secrets:
-      secret:
-        reflect:
-          - media
-        data:
-          TYPESENSE_API_KEY:
-            type: password
-            name: api
-
   stirling-pdf:
     namespace: services
     charts:

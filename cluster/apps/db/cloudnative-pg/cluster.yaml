@@ -6,7 +6,7 @@ metadata:
 spec:
   instances: 1
 
-  imageName: ghcr.io/cloudnative-pg/postgresql:15.5-2
+  imageName: localhost/postgresql-vectors:15.5-2
 
   superuserSecret:
     name: cloudnative-pg-superuser
@@ -18,6 +18,14 @@ spec:
       owner: app
       secret:
         name: cloudnative-pg-app-user
+      postInitSQL:
+        - "CREATE EXTENSION cube;"
+        - "CREATE EXTENSION earthdistance;"
+        - "CREATE EXTENSION vectors;"
+
+  postgresql:
+    shared_preload_libraries:
+      - "vectors.so"
 
   storage:
     size: 10Gi

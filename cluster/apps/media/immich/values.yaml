@@ -6,20 +6,17 @@
 
 env:
   REDIS_HOSTNAME: redis-master.db.svc
-  DB_HOSTNAME: cnpg-cluster.rw.db.svc
-  TYPESENSE_ENABLED: true
-  TYPESENSE_HOST: typesense.db.svc
-  IMMICH_WEB_URL: '{{ printf "http://%s-web:3000" .Release.Name }}'
-  IMMICH_SERVER_URL: '{{ printf "http://%s-server:3001" .Release.Name }}'
+  DB_HOSTNAME: cnpg-cluster-rw.db.svc
+  DB_PASSWORD:
+  DB_DATABASE_NAME:
+  DB_USERNAME:
   IMMICH_MACHINE_LEARNING_URL: '{{ printf "http://%s-machine-learning:3003" .Release.Name }}'
 envFrom:
-  - secretRef:
-      name: typesense-secret
   - secretRef:
       name: immich-secret
 
 image:
-  tag: v1.53.0
+  tag: v1.92.1
 
 immich:
   persistence:
@@ -27,7 +24,7 @@ immich:
     library:
       # Automatically creating the library volume is not supported by this chart
       # You have to specify an existing PVC to use
-      existingClaim:
+      existingClaim: shared-files
 
 
 server:
@@ -35,6 +32,25 @@ server:
   image:
     repository: ghcr.io/immich-app/immich-server
     pullPolicy: IfNotPresent
+  ingress:
+    main:
+      enabled: true
+      annotations:
+        # proxy-body-size is set to 0 to remove the body limit on file uploads
+        nginx.ingress.kubernetes.io/proxy-body-size: "0"
+        cert-manager.io/cluster-issuer: ca-issuer
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: "Apps & Services"
+        gethomepage.dev/name: "Immich"
+        gethomepage.dev/icon: immich.png
+      hosts:
+        - host: &host immich.hermleigh.home
+          paths:
+            - path: "/"
+      tls:
+        - hosts:
+            - *host
+          secretName: immich-ingress-tls
 
 microservices:
   enabled: true
@@ -65,37 +81,3 @@ machine-learning:
       type: pvc
       accessMode: ReadWriteMany
       storageClass: ceph-fs-hdd
-
-web:
-  enabled: true
-  image:
-    repository: ghcr.io/immich-app/immich-web
-    pullPolicy: IfNotPresent
-  persistence:
-    library:
-      enabled: false
-
-proxy:
-  enabled: true
-  image:
-    repository: ghcr.io/immich-app/immich-proxy
-    pullPolicy: IfNotPresent
-
-  persistence:
-    library:
-      enabled: false
-
-  ingress:
-    main:
-      enabled: false
-      annotations:
-        # proxy-body-size is set to 0 to remove the body limit on file uploads
-        nginx.ingress.kubernetes.io/proxy-body-size: "0"
-      hosts:
-        - host: &host immich.hermleigh.home
-          paths:
-            - path: "/"
-      tls:
-        - hosts:
-            - *host
-          secretName: immich-ingress-tls
