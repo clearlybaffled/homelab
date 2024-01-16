@@ -46,8 +46,8 @@ ingress:
       cert-manager.io/cluster-issuer: ca-issuer
       cert-manager.io/common-name: Radarr - Movie Download Manager
       cert-manager.io/subject-countries: US
-      cert-manager.io/subject-organization: HERMLEIGH.HOME
-      cert-manager.io/subject-organizationalunits: Hermleigh House Network
+      cert-manager.io/subject-organizations: HERMLEIGH.HOME
+      cert-manager.io/subject-organizationalunits: "Hermleigh House Network,Seawolf Kubernetes Cluster,Downloads"
       cert-manager.io/private-key-algorithm: ECDSA
       cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
