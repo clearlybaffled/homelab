@@ -36,7 +36,7 @@ def helm_charts(charts, app, helm_repos, app_template_version):
             'name': chart_name,
             'repo_url': repo_url,
         }
-        
+
         if chart_name == 'app-template':
             c["version"] = app_template_version
         else:
@@ -59,7 +59,7 @@ def helm_charts(charts, app, helm_repos, app_template_version):
                 c['value_files'] = chart["valueFiles"]
         else:
             c['value_files'] = ['values.yaml']
-            
+
         if "skipCrds" in chart:
             c["skip_crds"] = bool(chart["skipCrds"])
         else:
@@ -143,12 +143,17 @@ def application(ctx, app):
                         ]
                     }
                 ]
+    if "ignoreDifferences" in app:
+        if "ignoreDifferences" in spec:
+            spec["ignoreDifferences"].append(app["ignoreDifferences"])
+        else:
+            spec["ignoreDifferences"] = app["ignoreDifferences"]
 
     spec["syncPolicy"] = {
                 "automated": {"prune": True, "selfHeal": True },
                 "syncOptions": ["CreateNamespace=true", "ServerSideApply=true"] }
 
-    if "pv" in app and app["pv"]:
+    if "ignoreDifferences" in spec:
         spec["syncPolicy"]["syncOptions"].append(
             "RespectIgnoreDifferences=true")
 

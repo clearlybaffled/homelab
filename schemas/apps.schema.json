@@ -28,7 +28,7 @@
             "pv": {
               "title": "pv",
               "type": "boolean",
-              "description": "If there is a pv.yaml file in the application's manifest directory so that it gets included in the kustomization.yaml, if we need one."
+              "description": "If there is a pv.yaml file in the application's manifest directory so that it gets included in the kustomization.yaml and ArgoCD ignore difference rules are applied, if we need one."
             },
             "namespace": {
               "title": "namespace",

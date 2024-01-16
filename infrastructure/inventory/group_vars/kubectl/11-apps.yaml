@@ -466,6 +466,10 @@ apps:
     namespace: media
     charts:
       - chart: app-template
+    ignoreDifferences:
+      - kind: StatefulSet
+        jsonPointers:
+          - "/spec/volumeClaimTemplates"
 
   owntone:
     namespace: media

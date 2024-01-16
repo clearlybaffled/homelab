@@ -22,6 +22,10 @@ spec:
   destination:
     name: in-cluster
     namespace: media
+  ignoreDifferences:
+  - kind: StatefulSet
+    jsonPointers:
+    - /spec/volumeClaimTemplates
   syncPolicy:
     automated:
       prune: true
@@ -29,3 +33,4 @@ spec:
     syncOptions:
     - CreateNamespace=true
     - ServerSideApply=true
+    - RespectIgnoreDifferences=true
