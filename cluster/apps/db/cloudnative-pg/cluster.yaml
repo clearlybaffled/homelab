@@ -6,7 +6,7 @@ metadata:
 spec:
   instances: 1
 
-  imageName: localhost/postgresql-vectors:15.5-2
+  imageName: localhost/postgresql-vectors:16.1-15
 
   superuserSecret:
     name: cloudnative-pg-superuser
@@ -28,7 +28,7 @@ spec:
       - "vectors.so"
 
   storage:
-    size: 10Gi
+    size: 50Gi
     storageClass: ceph-fs-ssd
   monitoring:
     enablePodMonitor: true
