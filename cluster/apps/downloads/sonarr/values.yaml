@@ -66,6 +66,7 @@ ingress:
     tls:
       - hosts:
           - *host
+        secretName: sonarr-tls-ingress
 
 persistence:
   config:

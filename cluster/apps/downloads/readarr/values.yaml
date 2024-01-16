@@ -11,7 +11,7 @@ controllers:
           READARR__INSTANCE_NAME: Readarr
           READARR__APPLICATION_URL: 'https://ebooks.hermleigh.home'
           READARR__LOG_LEVEL: info
-          READARR__POSTGRES_HOST: 10.233.1.99
+          READARR__POSTGRES_HOST: cnpg-cluster-rw.db.svc.seawolf
         envFrom:
           - secretRef:
               name: readarr-secret
@@ -62,6 +62,7 @@ ingress:
     tls:
       - hosts:
           - *host
+        secretName: readarr-tls-ingress
 
 persistence:
   config:
