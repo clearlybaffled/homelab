@@ -167,6 +167,7 @@ apps:
     kustomize:
       resources:
         - ./consume-volume.yaml
+        - ./hp-scan-to-cm.yaml
     secrets:
       secret:
         data:

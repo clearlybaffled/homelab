@@ -5,3 +5,4 @@ generators:
 - ./secret-generator.yaml
 resources:
 - ./consume-volume.yaml
+- ./hp-scan-to-cm.yaml

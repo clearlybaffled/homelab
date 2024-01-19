@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hp-scan-to-env
+  namespace: services
+data:
+  IP: 172.16.1.180
+  PATTERN: '"scan"_dd.mm.yyyy_hh:MM:ss'
+  PGID: "997"
+  PUID: "997"
+  RESOLUTION: "300"
+  TZ: America/New_York

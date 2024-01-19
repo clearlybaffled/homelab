@@ -13,6 +13,7 @@ controllers:
           PAPERLESS_CONSUMER_POLLING: 60
           PAPERLESS_CONSUMER_RECURSIVE: "true"
           PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
+          PAPERLESS_CONSUMER_ENABLE_COLLATE_DOUBLE_SIDED: "true"
           PAPERLESS_CONSUMPTION_DIR: /consume
           PAPERLESS_DBENGINE: postgresql
           PAPERLESS_DBHOST: cnpg-cluster-rw.db.svc
@@ -61,34 +62,37 @@ controllers:
         imagePullPolicy: IfNotPresent
 
       hp-scan-to:
-        image:
+        image: &hp-scan-to
           repository: manuc66/node-hp-scan-to
           tag: master
         env:
-          - name: IP
-            value: 172.16.1.180
-          - name: PATTERN
-            value: '"scan"_dd.mm.yyyy_hh:MM:ss'
-          - name: PGID
-            value: "997"
-          - name: PUID
-            value: "997"
           - name: LABEL
             value: paperless-ngx
-          - name: RESOLUTION
-            value: 300
           - name: DIR
             value: /consume
-          - name: TZ
-            value: *tz
           - name: CMDLINE
             value: "-D -l paperless-ngx -r 300 "
+        envFrom:
+          - configMapRef:
+              name: hp-scan-to-env
         resources:
           limits:
             memory: 256Mi
           requests:
             cpu: "0"
             memory: 64Mi
+      hp-scan-to-double-sided:
+        image: *hp-scan-to
+        envFrom:
+          - configMapRef:
+              name: hp-scan-to-env
+        env:
+          - name: LABEL
+            value: paperless-ngx (double sided)
+          - name: CMDLINE
+            value: '-D -l "paperless-ngx (double sided)" -r 300'
+          - name: DIR
+            value: /consume/double-sided
 
 service:
   main:
@@ -117,24 +121,29 @@ ingress:
       - hosts:
           - *host
           - paperless
-          - paperless.apps
-          - paperless.apps.svc
         secretName: paperless-tls-ingress
 
 persistence:
   library:
     enabled: true
     type: persistentVolumeClaim
-    mountPath: /library
     accessMode: ReadWriteMany
     size: 30Gi
     storageClass: ceph-fs-ssd
+    globalMounts:
+      - path: /library
   trash:
     enabled: true
     type: emptyDir
-    mountPath: /trash
+    globalMounts:
+      - path: /trash
   consume:
     existingClaim: paperless-consume
+  consume-double-sided:
+    enabled: true
+    type: emptyDir
+    globalMounts:
+      - path: /consume/double-sided
 
 defaultPodOptions:
   podSecurityContext:
