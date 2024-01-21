@@ -71,7 +71,7 @@ logLevel: info
 logFormat: text
 
 interval: 1h
-triggerLoopOnEvent: true
+triggerLoopOnEvent: false
 
 namespaced: false
 
