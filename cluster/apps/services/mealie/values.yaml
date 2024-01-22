@@ -4,7 +4,7 @@ controllers:
       main:
         image:
           repository: ghcr.io/mealie-recipes/mealie
-          tag: v1.0.0-RC2
+          tag: v1.0.0
           pullPolicy: IfNotPresent
         env:
           TZ: America/New_York
@@ -13,6 +13,7 @@ controllers:
           DB_ENGINE: postgres
           POSTGRES_SERVER: cnpg-cluster-rw.db.svc
           POSTGRES_DB: mealie
+          BASE_URL: https://mealie.hermleigh.home
         envFrom:
           - secretRef:
               name: mealie-secret
