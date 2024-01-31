@@ -23,6 +23,7 @@ helm_repositories:
   emberstack: https://emberstack.github.io/helm-charts
   kubeshark: https://helm.kubeshark.co
   oauth2-proxy: https://oauth2-proxy.github.io/manifests
+  grafana: https://grafana.github.io/helm-charts
 
 # Registry deployment
 registry_enabled: false

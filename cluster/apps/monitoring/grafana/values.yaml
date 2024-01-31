@@ -1,0 +1,131 @@
+defaultDashboardsTimezone: America/New_York
+persistence:
+  enabled: true
+  storageClassName: ceph-fs-ssd
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: ca-issuer
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/group: "Monitoring"
+    gethomepage.dev/icon: grafana.png
+    gethomepage.dev/name: Grafana
+  hosts: &grafana-hosts
+    - grafana.seawolf.hermleigh.home
+    - grafana.seawolf
+  tls:
+    - hosts: *grafana-hosts
+      secretName: grafana-ingress-cert
+sidecar:
+  dashboards:
+    enabled: true
+    label: grafana_dashboard
+    labelValue: "1"
+    # Allow discovery in all namespaces for dashboards
+    searchNamespace: ALL
+    folderAnnotation: grafana_folder
+    ## Annotations for Grafana dashboard configmaps
+    ##
+    annotations: {}
+    multicluster:
+      global:
+        enabled: false
+      etcd:
+        enabled: false
+    provider:
+      allowUiUpdates: true
+  datasources:
+    enabled: true
+    defaultDatasourceEnabled: true
+    isDefaultDatasource: true
+
+    uid: prometheus
+
+    ## URL of prometheus datasource
+    ##
+    # url: http://prometheus-stack-prometheus:9090/
+
+    ## Prometheus request timeout in seconds
+    # timeout: 30
+
+    # If not defined, will use prometheus.prometheusSpec.scrapeInterval or its default
+    # defaultDatasourceScrapeInterval: 15s
+
+    ## Annotations for Grafana datasource configmaps
+    ##
+    annotations: {}
+
+    ## Set method for HTTP to send query to datasource
+    httpMethod: POST
+
+    ## Create datasource for each Pod of Prometheus StatefulSet;
+    ## this uses headless service `prometheus-operated` which is
+    ## created by Prometheus Operator
+    ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/0fee93e12dc7c2ea1218f19ae25ec6b893460590/pkg/prometheus/statefulset.go#L255-L286
+    createPrometheusReplicasDatasources: false
+    label: grafana_datasource
+    labelValue: "1"
+
+    ## Field with internal link pointing to existing data source in Grafana.
+    ## Can be provisioned via additionalDataSources
+    exemplarTraceIdDestinations: {}
+      # datasourceUid: Jaeger
+      # traceIdLabelName: trace_id
+    alertmanager:
+      enabled: true
+      uid: alertmanager
+      handleGrafanaManagedAlerts: false
+      implementation: prometheus
+
+plugins:
+  - grafana-piechart-panel
+  - grafana-worldmap-panel
+  - grafana-clock-panel
+  - isovalent-hubble-datasource
+  - natel-discrete-panel
+  - pr0ps-trackmap-panel
+  - vonage-status-panel
+
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+      - name: default
+        orgId: 1
+        folder: ''
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/default
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    deleteDatasources:
+      - name: Loki
+        orgId: 1
+      - name: Alertmanager
+        orgId: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://thanos-query.observability.svc.cluster.local:9090/
+        isDefault: true
+        # (OPTIONAL) Only required when some dashboards don't correctly set the datasource and you want to override it using the dashboard's uid
+        # uid: "Prometheus"
+      - name: Loki
+        type: loki
+        access: proxy
+        url: http://loki-gateway.observability.svc.cluster.local:80
+        jsonData:
+          maxLines: 250
+      - name: Alertmanager
+        type: alertmanager
+        access: proxy
+        url: http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
+        jsonData:
+          implementation: prometheus
+
+dashboards:
