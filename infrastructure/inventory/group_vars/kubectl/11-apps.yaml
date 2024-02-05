@@ -65,13 +65,12 @@ apps:
     wave: "3"
     charts:
       - chart: cnpg/cloudnative-pg
-        version: 0.20.0
+        version: 0.20.1
     kustomize:
       resources:
         - ./cluster.yaml
         - ./service.yaml
         - https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/prometheusrule.yaml
-        - https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/grafana-configmap.yaml
     secrets:
       superuser:
         type: basic-auth

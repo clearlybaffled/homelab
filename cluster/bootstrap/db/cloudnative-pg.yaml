@@ -12,7 +12,7 @@ spec:
   sources:
   - chart: cloudnative-pg
     repoURL: https://cloudnative-pg.github.io/charts
-    targetRevision: 0.20.0
+    targetRevision: 0.20.1
     helm:
       valueFiles:
       - $repo/cluster/apps/db/cloudnative-pg/values.yaml

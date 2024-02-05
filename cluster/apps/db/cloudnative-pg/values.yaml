@@ -17,12 +17,8 @@ podSecurityContext:
     type: RuntimeDefault
   fsGroup: 997
 
-# -- Priority indicates the importance of a Pod relative to other Pods.
-priorityClassName: ""
-
-service:
-  type: ClusterIP
-  # -- DO NOT CHANGE THE SERVICE NAME as it is currently used to generate the certificate
-  # and can not be configured
-  name: cnpg-webhook-service
-  port: 443
+monitoring:
+  grafanaDashboard:
+    create: true
+    namespace: monitoring
+  podMonitorEnabled: true
