@@ -4,7 +4,7 @@ controllers:
       main:
         image:
           repository: ghcr.io/onedr0p/prowlarr
-          tag: 1.11.4
+          tag: 1.12.2
 
         env:
           TZ: America/New_York

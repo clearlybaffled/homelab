@@ -8,7 +8,7 @@ apps:
     kustomize:
       charts:
         - chart: argocd/argo-cd
-          version: 5.51.6
+          version: 5.53.13
           namespace: argocd
           release: argocd
       extras:
@@ -29,7 +29,7 @@ apps:
     wave: "1"
     charts:
       - chart: external-dns/external-dns
-        version: 1.13.1
+        version: 1.14.3
     secrets:
       secret: {}
 
@@ -106,7 +106,7 @@ apps:
     wave: "1"
     charts:
       - chart: jetstack/cert-manager
-        version: v1.13.3
+        version: v1.14.1
 
   grocy:
     namespace: services
@@ -117,7 +117,7 @@ apps:
     wave: "1"
     charts:
       - chart: ingress-nginx/ingress-nginx
-        version: 4.9.0
+        version: 4.9.1
 
   metallb:
     path: infrastructure
@@ -125,14 +125,14 @@ apps:
     wave: "1"
     charts:
       - chart: metallb/metallb
-        version: 0.13.12
+        version: 0.14.3
 
   redis:
     namespace: db
     wave: "0"
     charts:
       - chart: bitnami/redis
-        version: 18.6.1
+        version: 18.12.1
 
   rook-ceph:
     path: infrastructure
@@ -140,7 +140,7 @@ apps:
     wave: "2"
     charts:
       - chart: rook/rook-ceph
-        version: &rook v1.13.1
+        version: &rook v1.13.3
         valueFiles:
           - operator.yaml
       - chart: rook/rook-ceph-cluster
@@ -184,7 +184,7 @@ apps:
     wave: "4"
     charts:
       - chart: nextcloud/nextcloud
-        version: 4.5.10
+        version: 4.5.18
     secrets:
       secret:
         data:

@@ -8,7 +8,7 @@ controllers:
       main:
         image:
           repository: ghcr.io/paperless-ngx/paperless-ngx
-          tag: 1.17.4
+          tag: 2.4.3
         env:
           PAPERLESS_CONSUMER_POLLING: 60
           PAPERLESS_CONSUMER_RECURSIVE: "true"
@@ -49,7 +49,7 @@ controllers:
       gotenburg:
         image:
           repository: thecodingmachine/gotenberg
-          tag: 7.8.3
+          tag: 8.0.2
         imagePullPolicy: IfNotPresent
         env:
           - name: DISABLE_GOOGLE_CHROME
@@ -58,7 +58,7 @@ controllers:
       tika:
         image:
           repository: ghcr.io/paperless-ngx/tika
-          tag: 2.7.0-full
+          tag: 2.9.0-full
         imagePullPolicy: IfNotPresent
 
       hp-scan-to:

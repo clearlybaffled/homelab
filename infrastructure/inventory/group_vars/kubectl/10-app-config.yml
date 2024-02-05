@@ -83,10 +83,10 @@ app_template_version: 2.4.0
 elastic_chart_version: 2.10.0
 mysql_version: 8.0.35
 prometheus_version: 2.47.0
-prometheus_operator_version: v0.70.0
-kube_prometheus_stack_chart_version: 55.5.0
+prometheus_operator_version: v0.71.2
+kube_prometheus_stack_chart_version: 56.6.2
 vault_chart_version: 0.25.0
-keycloak_version: 23.0.1
+keycloak_version: 23.0.6
 
 grafana_dashboards:
   - folder_name: Ceph

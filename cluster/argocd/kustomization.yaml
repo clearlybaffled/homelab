@@ -4,7 +4,7 @@ namespace: argocd
 helmCharts:
 - name: argo-cd
   repo: https://argoproj.github.io/argo-helm
-  version: 5.52.0
+  version: 5.53.13
   namespace: argocd
   apiVersions:
   - v1
@@ -29,7 +29,19 @@ helmCharts:
   - discovery.k8s.io/v1
   - flowcontrol.apiserver.k8s.io/v1
   - flowcontrol.apiserver.k8s.io/v1beta3
+  - acme.cert-manager.io/v1
+  - ceph.rook.io/v1
+  - cert-manager.io/v1
   - monitoring.coreos.com/v1
+  - monitoring.coreos.com/v1alpha1
+  - postgresql.cnpg.io/v1
+  - argoproj.io/v1alpha1
+  - metallb.io/v1beta2
+  - metallb.io/v1beta1
+  - metallb.io/v1alpha1
+  - objectbucket.io/v1alpha1
+  - k8s.keycloak.org/v2alpha1
+  - metrics.k8s.io/v1beta1
   releaseName: argocd
   valuesFile: values.yaml
 patches:

@@ -4,7 +4,7 @@ controllers:
       main:
         image:
           repository: ghcr.io/mealie-recipes/mealie
-          tag: v1.0.0
+          tag: v1.1.1
           pullPolicy: IfNotPresent
         env:
           TZ: America/New_York
