@@ -1,0 +1,62 @@
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          repository: ghcr.io/home-assistant/home-assistant
+          tag: 2024.1.6
+        probes:
+          liveness:
+            enabled: false
+          readiness:
+            enabled: false
+          startup:
+            enabled: false
+        resources:
+          requests:
+            cpu: 47m
+            memory: 1254M
+          limits:
+            memory: 1254M
+
+service:
+  main:
+    ports:
+      http:
+        port: 8123
+
+ingress:
+  main:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: ca-issuer
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: "Home Assistant"
+      gethomepage.dev/icon: mealie.png
+      gethomepage.dev/group: "Apps & Services"
+      gethomepage.dev/name: Home Assistant
+    hosts:
+      - host: &host home-assistant.hermleigh.home
+        paths:
+          - path: /
+            service:
+              name: main
+              port: http
+    tls:
+      - hosts:
+          - *host
+        secretName: home-assistant-tls-ingress
+
+persistence:
+  config:
+    enabled: true
+    type: persistentVolumeClaim
+    accessMode: ReadWriteOnce
+    size: 10Gi
+    storageClass: ceph-fs-ssd
+    retain: true
+    advancedMounts:
+      main:
+        main:
+          - path: /config

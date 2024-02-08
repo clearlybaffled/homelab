@@ -1,0 +1,69 @@
+controllers:
+  main:
+    containers:
+      main:
+        nameOverride: wger
+        image: &image
+          repository: wger/server
+          tag: latest
+        envFrom:
+          - configMapRef:
+              name: wger-env
+          - secretRef:
+              name: wger-secret
+      wger-celery-worker:
+        image: *image
+        command: /start-worker
+        envFrom:
+          - configMapRef:
+              name: wger-env
+          - secretRef:
+              name: wger-secret
+      wger-celery-beat:
+        image: *image
+        command: /start-beat
+        envFrom:
+          - configMapRef:
+              name: wger-env
+          - secretRef:
+              name: wger-secret
+
+service:
+  main:
+    ports:
+      http:
+        port: 8000
+
+ingress:
+  main:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: ca-issuer
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/name: Wger
+      gethomepage.dev/description: "Personal workout/food tracker"
+      gethomepage.dev/icon: ""
+      gethomepage.dev/group: "Apps & Services"
+    hosts:
+      - host: &host wger.hermleigh.home
+        paths:
+          - path: "/"
+            pathType: "Prefix"
+            service:
+              name: main
+    tls:
+      - hosts:
+          - *host
+        secretName: wger-tls-ingress
+
+persistence:
+  media:
+    enabled: true
+    type: persistentVolumeClaim
+    accessMode: ReadWriteOnce
+    size: 10Gi
+    storageClass: ceph-fs-hdd
+    retain: true
+    globalMounts:
+      - path: /home/wger/media

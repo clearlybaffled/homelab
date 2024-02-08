@@ -494,3 +494,45 @@ apps:
     namespace: services
     charts:
       - chart: app-template
+
+  wger:
+    namespace: services
+    charts:
+      - chart: app-template
+    secrets:
+      secret:
+        data:
+          DJANGO_DB_USER: wger
+          DJANGO_DB_PASSWORD:
+            type: password
+            name: db
+          SECRET_KEY:
+            type: password
+            name: secret
+          SIGNING_KEY:
+            type: password
+            name: signing
+    kustomize:
+      extras:
+        configMapGenerator:
+          - name: wger-env
+            envs:
+              - config.env
+            options:
+              disableNameSuffixHash: true
+
+  home-assistant:
+    namespace: services
+    charts:
+      - chart: app-template
+
+  homebox:
+    namespace: services
+    charts:
+      - chart: app-template
+
+  kubeshark:
+    namespace: infrastructure
+    charts:
+      - chart: kubeshark/kubeshark
+        version: 52.1.9

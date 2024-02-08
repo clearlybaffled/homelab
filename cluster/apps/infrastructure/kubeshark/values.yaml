@@ -1,0 +1,8 @@
+tap:
+  ingress:
+    enabled: true
+    host: &host kubeshark.hermleigh.home
+    tls:
+      - hosts:
+          - *host
+        secretName: kubeshark-ingress-tls

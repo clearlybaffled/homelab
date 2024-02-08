@@ -1,0 +1,9 @@
+---
+- include_tasks: # noqa name
+    file: ../init-postgres.yml
+    apply:
+      vars:
+        db_user_var: DJANGO_DB_USER
+        db_pass_var: DJANGO_DB_PASSWORD
+        db_names:
+          - wger

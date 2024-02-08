@@ -1,0 +1,54 @@
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          repository: ghcr.io/hay-kot/homebox
+          tag: v0.10.3@sha256:b1fbca6fc1ad2bd3634d13056d1bc0242cf92e9bad4ca21ce57589be3fe4987e
+        env:
+          TZ: America/New_York
+          HBOX_LOG_LEVEL: info
+          HBOX_LOG_FORMAT: text
+          HBOX_MEB_MAX_UPLOAD_SIZE: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 52M
+          limits:
+            memory: 256M
+service:
+  main:
+    ports:
+      http:
+        port: 7745
+ingress:
+  main:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: ca-issuer
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/name: Homebox
+      gethomepage.dev/description: "Inventory management system"
+      gethomepage.dev/icon: "devices"
+      gethomepage.dev/group: "Apps & Services"
+    hosts:
+      - host: &host homebox.hermleigh.home
+        paths:
+          - path: "/"
+            pathType: "Prefix"
+            service:
+              name: main
+    tls:
+      - hosts:
+          - *host
+        secretName: homebox-tls-ingress
+
+persistence:
+  data:
+    enabled: true
+    type: persistentVolumeClaim
+    accessMode: ReadWriteOnce
+    size: 10Gi
+    storageClass: ceph-fs-ssd
+    retain: true

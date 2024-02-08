@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: home-assistant
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+  - chart: app-template
+    repoURL: https://bjw-s.github.io/helm-charts/
+    targetRevision: 2.4.0
+    helm:
+      valueFiles:
+      - $repo/cluster/apps/services/home-assistant/values.yaml
+      releaseName: home-assistant
+  - repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/apps/services/home-assistant
+    targetRevision: main
+    ref: repo
+  destination:
+    name: in-cluster
+    namespace: services
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
