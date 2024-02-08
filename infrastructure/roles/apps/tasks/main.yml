@@ -21,7 +21,7 @@
                 (
                   cluster_dir,
                   'bootstrap',
-                  ('path' in item.value) | ternary(item.value.path, item.value.namespace),
+                  item.value.namespace,
                   item.key+'.yaml'
                 ) | path_join
              })
