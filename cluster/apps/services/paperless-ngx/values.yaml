@@ -8,7 +8,7 @@ controllers:
       main:
         image:
           repository: ghcr.io/paperless-ngx/paperless-ngx
-          tag: 2.4.3
+          tag: 2.5.1
         env:
           PAPERLESS_CONSUMER_POLLING: 60
           PAPERLESS_CONSUMER_RECURSIVE: "true"
@@ -46,10 +46,10 @@ controllers:
           limits:
             memory: 5000Mi
 
-      gotenburg:
+      gotenberg:
         image:
-          repository: thecodingmachine/gotenberg
-          tag: 8.0.2
+          repository: gotenberg/gotenberg
+          tag: 8.0.3
         imagePullPolicy: IfNotPresent
         env:
           - name: DISABLE_GOOGLE_CHROME
@@ -68,10 +68,8 @@ controllers:
         env:
           - name: LABEL
             value: paperless-ngx
-          - name: DIR
-            value: /consume
           - name: CMDLINE
-            value: "-D -l paperless-ngx -r 300 "
+            value: "-D -l paperless-ngx -r 300 -d /consume"
         envFrom:
           - configMapRef:
               name: hp-scan-to-env
@@ -90,9 +88,7 @@ controllers:
           - name: LABEL
             value: paperless-ngx (double sided)
           - name: CMDLINE
-            value: '-D -l "paperless-ngx (double sided)" -r 300'
-          - name: DIR
-            value: /consume/double-sided
+            value: '-D -l paperless-ngx-double-sided -r 300 -d /consume/double-sided'
 
 service:
   main:
@@ -138,12 +134,17 @@ persistence:
     globalMounts:
       - path: /trash
   consume:
+    type: persistentVolumeClaim
     existingClaim: paperless-consume
-  consume-double-sided:
-    enabled: true
-    type: emptyDir
-    globalMounts:
-      - path: /consume/double-sided
+    advancedMounts:
+      main:
+        main:
+          - path: /consume
+        hp-scan-to:
+          - path: /scan
+        hp-scan-to-double-sided:
+          - path: /scan
+            subPath: double-sided
 
 defaultPodOptions:
   podSecurityContext:
