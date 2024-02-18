@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: oauth2-proxy
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+  - chart: oauth2-proxy
+    repoURL: https://oauth2-proxy.github.io/manifests
+    targetRevision: 6.24.1
+    helm:
+      valueFiles:
+      - $repo/cluster/apps/infrastructure/oauth2-proxy/values.yaml
+      releaseName: oauth2-proxy
+  - repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/apps/infrastructure/oauth2-proxy
+    targetRevision: main
+    ref: repo
+  destination:
+    name: in-cluster
+    namespace: infrastructure
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

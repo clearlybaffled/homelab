@@ -536,3 +536,11 @@ apps:
     charts:
       - chart: kubeshark/kubeshark
         version: 52.1.9
+
+  oauth2-proxy:
+    namespace: infrastructure
+    charts:
+      - chart: oauth2-proxy/oauth2-proxy
+        version: 6.24.1
+    secrets:
+      secret: {}

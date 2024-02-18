@@ -22,6 +22,7 @@ helm_repositories:
   external-dns: https://kubernetes-sigs.github.io/external-dns/
   emberstack: https://emberstack.github.io/helm-charts
   kubeshark: https://helm.kubeshark.co
+  oauth2-proxy: https://oauth2-proxy.github.io/manifests
 
 # Registry deployment
 registry_enabled: false

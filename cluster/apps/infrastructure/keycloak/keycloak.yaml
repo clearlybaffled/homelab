@@ -21,3 +21,5 @@ spec:
     hostname: keycloak.hermleigh.home
   ingress:
     enabled: false
+metrics:
+  enabled: true
