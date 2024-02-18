@@ -9,6 +9,11 @@ metadata:
     gethomepage.dev/group: "Apps & Services"
     gethomepage.dev/icon: grocy.png
     gethomepage.dev/description: "ERP beyond your Fridge"
+    nginx.ingress.kubernetes.io/auth-url: "https://oauth.sso.hermleigh.home/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://oauth.sso.hermleigh.home/oauth2/start?rd=$scheme://$best_http_host$request_uri"
+    nginx.ingress.kubernetes.io/auth-response-headers: "x-auth-request-user, x-auth-request-email, x-auth-request-access-token"
+    acme.cert-manager.io/http01-edit-in-place: "true"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "16k"
   labels:
     app.kubernetes.io/name: grocy
 spec:
