@@ -5,31 +5,53 @@ config:
     provider_display_name = "Keycloak"
     oidc_issuer_url = "https://keycloak.hermleigh.home/realms/hermleigh.home"
     email_domains = [ "*" ]
-    scope = "openid profile email"
     whitelist_domains = ".hermleigh.home"
     pass_authorization_header = true
     pass_access_token = true
     pass_user_headers = true
+    pass_host_header = true
     set_authorization_header = true
     set_xauthrequest = true
     use_system_trust_store = true
     reverse_proxy = true
-    redis_connection_url = "redis://redis-master.db"
+    redis_connection_url = "redis://redis-master.db.svc:6379"
     session_store_type = "redis"
     code_challenge_method = "S256"
+    show_debug_on_error = true
+    insecure_oidc_allow_unverified_email = true
+    cookie_csrf_per_request = true
+    cookie_csrf_expire = "5m"
+    cookie_domains = [".hermleigh.home"]
+    silence_ping_logging = true
 
 ingress:
   enabled: true
-  path: /
+  path: /oauth2
   hosts:
     - oauth.sso.hermleigh.home
   annotations:
     cert-manager.io/cluster-issuer: ca-issuer
-    nginx.ingress.kubernetes.io/proxy-buffer-size: "16k"
+    nginx.ingress.kubernetes.io/proxy-body-size: "2000m"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "32k"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
   tls:
     - secretName: oauth-proxy-tls
       hosts:
         - oauth.sso.hermleigh.home
 
 extraArgs:
-  - '--provider-ca-file=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt'
+  provider-ca-file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+  upstream: file:///dev/null
+  skip-provider-button: "true"
+
+sessionStorage:
+  type: redis
+  redis:
+    clientType: standalone
+    standalone:
+      connectionUrl: redis://redis-master.db.svc:6379
+redis:
+  enabled: false
+
+service:
+  portNumber: 4180

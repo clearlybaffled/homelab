@@ -82,10 +82,10 @@ Setting('DISABLE_AUTH', false);
 
 // Either "Grocy\Middleware\DefaultAuthMiddleware", "Grocy\Middleware\ReverseProxyAuthMiddleware"
 // or any class that implements Grocy\Middleware\AuthMiddleware
-Setting('AUTH_CLASS', 'Grocy\Middleware\DefaultAuthMiddleware');
+Setting('AUTH_CLASS', 'Grocy\Middleware\ReverseProxyAuthMiddleware');
 
 // Options when using ReverseProxyAuthMiddleware
-Setting('REVERSE_PROXY_AUTH_HEADER', 'REMOTE_USER'); // The name of the HTTP header which your reverse proxy uses to pass the username (on successful authentication)
+Setting('REVERSE_PROXY_AUTH_HEADER', 'X-Auth-Request-Preferred-Username'); // The name of the HTTP header which your reverse proxy uses to pass the username (on successful authentication)
 Setting('REVERSE_PROXY_AUTH_USE_ENV', false); // Set to true if the username is passed as environment variable
 
 // Options when using LdapAuthMiddleware

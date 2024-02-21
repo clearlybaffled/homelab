@@ -11,11 +11,12 @@ controller:
     enable-brotli: "true"
     enable-real-ip: "true"
     hsts-max-age: 31449600
+    hsts: "true"
     keep-alive-requests: 10000
     keep-alive: 120
     proxy-body-size: 0
     proxy-buffer-size: 16k
-    ssl-protocols: "TLSv1.3 TLSv1.2"
+    ssl-protocols: "TLSv1.3"
     allow-snippet-annotations: "true"
     use-forwarded-headers: "true"
     forwarded-for-header: "X-Forwarded-For"
