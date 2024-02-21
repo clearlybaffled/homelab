@@ -8,10 +8,6 @@ metadata:
     cert-manager.io/subject-organizationalunits: "Kubernetes Cluster Seawolf,Infrastructure"
     cert-manager.io/subject-countries: "US"
     nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-    nginx.ingress.kubernetes.io/auth-tls-verify-client: "optional_no_ca"
-    nginx.ingress.kubernetes.io/auth-tls-secret: infrastructure/kube-root-ca.crt
-    nginx.ingress.kubernetes.io/auth-tls-verify-depth: "1"
-    nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
     gethomepage.dev/enabled: "true"
     gethomepage.dev/icon: https://avatars.githubusercontent.com/u/4921466?s=48&v=4
     gethomepage.dev/name: Keycloak
