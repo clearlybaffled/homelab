@@ -23,3 +23,8 @@
     content: "{{ root_ca.crt | b64decode }}"
   notify:
     - "update ca truststore"
+
+- name: Ensure a locale exists
+  community.general.locale_gen:
+    name: en_US.UTF-8
+    state: present

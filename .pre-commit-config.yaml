@@ -73,10 +73,12 @@ repos:
         args:
           - -c
           - .github/linters/.ansible-lint
-          - --exclude
-          - cluster
         additional_dependencies:
           - netaddr
+        always_run: false
+        files: ^(infrastructure|playbooks)/
+        exclude: ^infrastructure/terraform
+        exclude_types: [markdown, shell]
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.37.0
@@ -87,9 +89,7 @@ repos:
           - .github/linters/.markdownlint.yaml
         exclude: "^.git"
 
-  # TODO: Figure out how to ignore sops encrypted files
-  #   (because its using the sopsdiffer to view the actual contents!)
-  # - repo: https://github.com/gitleaks/gitleaks
-  #   rev: v8.18.0
-  #   hooks:
-  #     - id: gitleaks
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.2
+    hooks:
+      - id: gitleaks

@@ -1,7 +1,7 @@
 ---
 parseable: true
 exclude_paths:
-  - ./references/
+  - cluster
 
 
 skip_list:
