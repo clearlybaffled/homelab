@@ -1,5 +1,9 @@
 installCRDs: false
 
+extraArgs:
+    - '--default-issuer-kind=ClusterIssuer'
+    - '--default-issuer-name=ca-issuer'
+
 prometheus:
     enabled: true
     servicemonitor:
