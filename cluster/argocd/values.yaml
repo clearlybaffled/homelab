@@ -67,23 +67,20 @@ server:
   ingress:
     enabled: true
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
+      cert-manager.io/common-name: &host argocd.seawolf.hermleigh.home
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+      cert-manager.io/subject-organizationalunits: "Kubernetes Cluster"
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/group: "Infrastructure"
       gethomepage.dev/icon: argocd.png
       gethomepage.dev/description: "GitOps Cluster Dashboard"
       gethomepage.dev/name: ArgoCD
     ingressClassName: nginx
-    hosts: &hosts
-      - argocd.seawolf.hermleigh.home
-      - argocd.seawolf
-    paths:
-      - /
-    pathType: Prefix
-
-    tls:
-      - secretName: argocd-ingress-cert
-        hosts: *hosts
+    hostname: *host
+    tls: true
 
 repoServer:
   metrics:
