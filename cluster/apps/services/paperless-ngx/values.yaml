@@ -8,35 +8,9 @@ controllers:
       main:
         image:
           repository: ghcr.io/paperless-ngx/paperless-ngx
-          tag: 2.5.1
-        env:
-          PAPERLESS_CONSUMER_POLLING: 60
-          PAPERLESS_CONSUMER_RECURSIVE: "true"
-          PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
-          PAPERLESS_CONSUMER_ENABLE_COLLATE_DOUBLE_SIDED: "true"
-          PAPERLESS_CONSUMPTION_DIR: /consume
-          PAPERLESS_DBENGINE: postgresql
-          PAPERLESS_DBHOST: cnpg-cluster-rw.db.svc
-          PAPERLESS_DATA_DIR: /library/data
-          PAPERLESS_EXPORT_DIR: /library/export
-          PAPERLESS_MEDIA_ROOT: /library/media
-          PAPERLESS_TRASH_DIR: /trash
-          PAPERLESS_OCR_LANGUAGE: eng
-          PAPERLESS_OCR_MODE: skip
-          PAPERLESS_OCR_ROTATE_PAGES: "true"
-          PAPERLESS_OCR_IMAGE_DPI: 300
-          PAPERLESS_PORT: &port 8080
-          PAPERLESS_TASK_WORKERS: 2
-          PAPERLESS_TIME_ZONE: &tz America/New_York
-          PAPERLESS_TIKA_ENABLED: 1
-          PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
-          PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
-          PAPERLESS_URL: https://paperless.hermleigh.home
-          PAPERLESS_REDIS: redis://redis-master.db.svc:6379
-          USERMAP_UID: 997
-          USERMAP_GID: 997
-          TZ: America/New_York
+          tag: 2.5.3
         envFrom:
+          - config: config
           - secretRef:
               name: paperless-ngx-secret
         resources:
@@ -49,7 +23,7 @@ controllers:
       gotenberg:
         image:
           repository: gotenberg/gotenberg
-          tag: 8.0.3
+          tag: 8.1.0
         imagePullPolicy: IfNotPresent
         env:
           - name: DISABLE_GOOGLE_CHROME
@@ -58,7 +32,7 @@ controllers:
       tika:
         image:
           repository: ghcr.io/paperless-ngx/tika
-          tag: 2.9.0-full
+          tag: 2.9.1-full
         imagePullPolicy: IfNotPresent
 
       hp-scan-to:
@@ -90,6 +64,41 @@ controllers:
           - name: CMDLINE
             value: '-D -l paperless-ngx-double-sided -r 300 -d /consume/double-sided'
 
+configMap:
+  config:
+    enabled: true
+    data:
+      PAPERLESS_CONSUMER_POLLING: 60
+      PAPERLESS_CONSUMER_RECURSIVE: "true"
+      PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
+      PAPERLESS_CONSUMER_ENABLE_COLLATE_DOUBLE_SIDED: "true"
+      PAPERLESS_CONSUMPTION_DIR: /consume
+      PAPERLESS_DBENGINE: postgresql
+      PAPERLESS_DBHOST: cnpg-cluster-rw.db.svc
+      PAPERLESS_DATA_DIR: /library/data
+      PAPERLESS_EXPORT_DIR: /library/export
+      PAPERLESS_MEDIA_ROOT: /library/media
+      PAPERLESS_TRASH_DIR: /trash
+      PAPERLESS_OCR_LANGUAGE: eng
+      PAPERLESS_OCR_MODE: skip
+      PAPERLESS_OCR_ROTATE_PAGES: "true"
+      PAPERLESS_OCR_IMAGE_DPI: 300
+      PAPERLESS_PORT: &port 8080
+      PAPERLESS_TASK_WORKERS: 2
+      PAPERLESS_TIME_ZONE: &tz America/New_York
+      PAPERLESS_TIKA_ENABLED: 1
+      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
+      PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
+      PAPERLESS_URL: https://paperless.hermleigh.home
+      PAPERLESS_REDIS: redis://redis-master.db.svc:6379
+      PAPERLESS_ENABLE_HTTP_REMOTE_USER: "true"
+      PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: "X-Auth-Request-Preferred-Username"
+      PAPERLESS_USE_X_FORWARD_HOST: "true"
+      PAPERLESS_USE_X_FORWARD_PORT: "true"
+      USERMAP_UID: 997
+      USERMAP_GID: 997
+      TZ: America/New_York
+
 service:
   main:
     ports:
@@ -100,14 +109,22 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
+      cert-manager.io/common-name: &host paperless.hermleigh.home
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "512"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/group: "Apps & Services"
       gethomepage.dev/icon: paperless-ngx.png
       gethomepage.dev/description: "Scan, index and archive all your physical documents"
       gethomepage.dev/name: Paperless-NGX
+      nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-Preferred-Username
+      nginx.ingress.kubernetes.io/auth-signin: https://oauth.sso.hermleigh.home/oauth2/start?rd=$scheme://$best_http_host$escaped_request_uri
+      nginx.ingress.kubernetes.io/auth-url: https://oauth.sso.hermleigh.home/oauth2/auth
     hosts:
-      - host: &host paperless.hermleigh.home
+      - host: *host
         paths:
           - path: /
             service:
@@ -148,6 +165,6 @@ persistence:
 
 defaultPodOptions:
   podSecurityContext:
-    # runAsUser: 997
-    # runAsGroup: 997
+    runAsUser: 997
+    runAsGroup: 997
     fsGroup: 997
