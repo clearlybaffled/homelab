@@ -39,14 +39,19 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
+      cert-manager.io/common-name: &host wger.hermleigh.home
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "512"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/name: Wger
       gethomepage.dev/description: "Personal workout/food tracker"
-      gethomepage.dev/icon: ""
+      gethomepage.dev/icon: "wger.svg"
       gethomepage.dev/group: "Apps & Services"
     hosts:
-      - host: &host wger.hermleigh.home
+      - host: *host
         paths:
           - path: "/"
             pathType: "Prefix"

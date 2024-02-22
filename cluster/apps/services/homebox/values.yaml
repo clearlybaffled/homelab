@@ -26,11 +26,15 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/name: Homebox
       gethomepage.dev/description: "Inventory management system"
-      gethomepage.dev/icon: "devices"
+      gethomepage.dev/icon: homebox.svg
       gethomepage.dev/group: "Apps & Services"
     hosts:
       - host: &host homebox.hermleigh.home

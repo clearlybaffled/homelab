@@ -4,7 +4,7 @@ controllers:
       main:
         image:
           repository: ghcr.io/home-assistant/home-assistant
-          tag: 2024.1.6
+          tag: 2024.2.2
         probes:
           liveness:
             enabled: false
@@ -30,14 +30,19 @@ ingress:
     enabled: true
     ingressClassName: nginx
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
+      cert-manager.io/common-name: &host home-assistant.hermleigh.home
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "512"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: "Home Assistant"
-      gethomepage.dev/icon: mealie.png
+      gethomepage.dev/icon: home-assistant.svg
       gethomepage.dev/group: "Apps & Services"
       gethomepage.dev/name: Home Assistant
     hosts:
-      - host: &host home-assistant.hermleigh.home
+      - host: *host
         paths:
           - path: /
             service:

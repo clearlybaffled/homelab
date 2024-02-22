@@ -111,6 +111,7 @@ This Git repository contains the following top level directories.
 |[<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/main/projects/kubernetes/icon/color/kubernetes-icon-color.svg">](https://kubernetes.io)|[Kubernetes](./infrastructure/roles/kubernetes/)|Container Orchestration|
 |[<img width="32" src="https://libvirt.org/logos/logo-square.svg">](https://www.libvirt.org) |Libvirt| Virtualization API |
 |[![](https://avatars.githubusercontent.com/u/60239468?s=32&v=4)](https://metallb.org)|[MetalLB](./cluster/apps/infrastructure/metallb/)|Bare metal load-balancer for Kubernetes|
+|[<img width="32" src="https://github.com/oauth2-proxy/oauth2-proxy/raw/master/docs/static/img/logos/OAuth2_Proxy_icon.svg">](https://oauth2-proxy.github.io/)|[OAuth2 Proxy](./cluster/apps/infrastructure/oauth2-proxy/) | Forward Auth for OpenID Connect|
 |[<img width="32" src="https://github.com/cncf/artwork/blob/aea0dcfe090b8f36d7ae1eb3d5fbe95cc77380d3/projects/prometheus/icon/color/prometheus-icon-color.png?raw=true">](https://prometheus.io)|[Prometheus](./cluster/apps/monitoring/kube-prometheus-stack/)|Systems monitoring and alerting toolkit|
 |[<img width="32" src="https://www.virt-tools.org/logo-qemu.png">](https://www.qemu.org)|QEMU|Open source machine emulator and virtualizer|
 |[<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/main/projects/rook/icon/color/rook-icon-color.png">](https://rook.io)|[Rook](./cluster/apps/infrastructure/rook-ceph/)|Cloud-native storage orchestrator for Ceph|
@@ -151,6 +152,7 @@ This Git repository contains the following top level directories.
 |--------|----------------|------------|---------------|----------|--------------------------|
 |[<img width="32" src="https://raw.githubusercontent.com/netbox-community/netbox/develop/netbox/project-static/img/netbox_icon.svg">][netbox-uri]|[NetBox](./cluster/apps/infrastructure/netbox/)| `Inventory`| Full-scale network inventory | Deployed | [![netbox-badge]][netbox-chart] |
 |[<img width="32" src="https://raw.githubusercontent.com/keycloak/keycloak/main/js/apps/admin-ui/public/icon.svg">][keycloak-url]|[Keycloak](./cluster/apps/infrastructure/keycloak)| `SSO` | Identity and Access Management solution | Deployed | [![keycloak-badge]][keycloak-operator] |
+|[<img width="32" src="https://avatars.githubusercontent.com/u/99263827?s=32&v=4">][kubeshark-uri] | [Kubeshark](./cluster/apps/infrastructure/kubeshark/) | `Network traffic` | API traffic analyzer for Kubernetes | | [![][kubeshark-badge]][kubeshark-chart] | 
 |[<img width="32" src="https://simpleicons.org/icons/vault.svg">][vault-uri]|Vault| `Services` | Secrets and encryption management| | |
 
 ### [Media](./cluster/apps/media/)
@@ -175,7 +177,10 @@ This Git repository contains the following top level directories.
 | [![](./cluster/apps/services/linkding/linkding.svg)][linkding-uri]  | [Linkding](./cluster/apps/services/linkding/) | `Bookmark Sharing`| Minimal bookmark Manager | Deployed | [![][linkding-badge]][linkding-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/Kovah/LinkAce/main/public/favicon.ico">][linkace-uri] | [LinkAce](./cluster/apps/services/linkace/) | `Bookmark Sharing` | Your self-hosted bookmark archive | Deployed | [![][linkace-badge]][linkace-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/linkwarden/linkwarden/4454e615b64f710d7104dd2042fbe97da3904f7e/public/favicon-32x32.png">][linkwarden-uri] |[Linkwarden](./cluster/apps/services/linkwarden/) | `Bookmark Sharing` | Collaborative Bookmark Manager | Deployed | [![][linkwarden-badge]][linkwarden-img] |
-|[<img width="32" src="https://raw.githubusercontent.com/Stirling-Tools/Stirling-PDF/main/docs/stirling.png">][stirling-pdf-uri] | [Stirling PDF](./cluster/apps/services/stirling-pdf/) | `Document Editing` | Self-hosted PDF editor | Deployed | [![][stirling-pdf-badge]][stirling-pdf-img]
+|[<img width="32" src="https://raw.githubusercontent.com/Stirling-Tools/Stirling-PDF/main/docs/stirling.png">][stirling-pdf-uri] | [Stirling PDF](./cluster/apps/services/stirling-pdf/) | `Document Editing` | Self-hosted PDF editor | Deployed | [![][stirling-pdf-badge]][stirling-pdf-img] |
+|[<img width="32" src="https://brands.home-assistant.io/homeassistant/icon.png">][home-assistant-uri] | [Home Assistant](./cluster/apps/services/home-assistant/) | `Home Automation` | Open source home automation | Broken | [![Home Assistant][home-assistant-badge]][home-assistant-img]  |
+|[<img width="32" src="https://hay-kot.github.io/homebox/assets/img/favicon.svg">][homebox-uri] | [Homebox](./cluster/apps/services/homebox/) | `Home inventory` | Inventory and organization for the Home User | Deployed | [![Homebox][homebox-badge]][homebox-img] |
+|[<img width="32" src="https://raw.githubusercontent.com/wger-project/wger/master/wger/core/static/images/logos/logo.png">][wger-uri] | [Wger](./cluster/apps/services/wger/) | `Health tracking` | Workout and food tracker | Broken| [![][wger-badge]][wger-img] |
 
 ### [Monitoring](./cluster/apps/monitoring/)
 
@@ -220,7 +225,7 @@ This Git repository contains the following top level directories.
 [argocd-uri]: https://argoproj.github.io
 
 [mysql-uri]: https://www.mysql.com
-[mysql-badge]: https://img.shields.io/badge/bitnami/mysql-v8.0.33-blue?logo=helm
+[mysql-badge]: https://img.shields.io/badge/bitnami/mysql-v9.14.3-blue?logo=helm
 [mysql-chart]: https://artifacthub.io/packages/helm/bitnami/mysql
 
 [postgres-uri]: https://www.postgresql.org
@@ -229,7 +234,7 @@ This Git repository contains the following top level directories.
 [cnpg-chart]: https://artifacthub.io/packages/helm/cloudnative-pg/cloudnative-pg
 
 [redis-uri]: https://redis.io
-[redis-badge]: https://img.shields.io/badge/bitnami/redis-v7.0.11-blue?logo=helm
+[redis-badge]: https://img.shields.io/badge/bitnami/redis-v18.12.1-blue?logo=helm
 [redis-chart]: https://artifacthub.io/packages/helm/bitnami/redis
 
 [grocy-uri]: https://github.com/grocy/grocy
@@ -237,15 +242,15 @@ This Git repository contains the following top level directories.
 [grocy-badge]: https://img.shields.io/badge/grocy/grocy--frontend-v4.0.3-blue?logo=docker
 
 [mealie-url]: https://mealie.io/
-[mealie-badge]: https://img.shields.io/badge/mealie-v1.0.0RC2-blue?logo=docker
-[mealie-docker]: https://hub.docker.com/r/hkotel/mealie
+[mealie-badge]: https://img.shields.io/badge/mealie-v1.2.0-blue?logo=docker
+[mealie-docker]: https://ghcr.io/mealie-recipes/mealie
 
 [mythtv-url]: https://www.mythtv.org
 [mythtv-badge]: https://img.shields.io/badge/mythtv-v0.33-blue?logo=github
 [mythtv-gh]: https://github.com/MythTV/MythTV
 
 [nextcloud-url]: https://www.nextcloud.com
-[nextcloud-badge]: https://img.shields.io/badge/nextcloud-v27.0.0-blue?logo=helm
+[nextcloud-badge]: https://img.shields.io/badge/nextcloud-v4.5.18-blue?logo=helm
 [nextcloud-chart]: https://nextcloud.github.io/helm/
 
 [homepage-uri]: https://gethomepage.dev/
@@ -257,7 +262,7 @@ This Git repository contains the following top level directories.
 [grafana-chart]: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
 
 [paperless-uri]: https://docs.paperless-ngx.com/
-[paperless-badge]: https://img.shields.io/badge/paperless--ngx-v1.17.4-blue?logo=docker
+[paperless-badge]: https://img.shields.io/badge/paperless--ngx-v2.5.3-blue?logo=docker
 [paperless-img]: https://ghcr.io/paperless-ngx/paperless-ngx
 [node-hp-scan-to-badge]: https://img.shields.io/badge/manuc66/node--hp--scan--to-v1.4.2-blue?logo=docker
 [node-hp-scan-to-img]: https://hub.docker.com/repository/docker/manuc66/node-hp-scan-to
@@ -331,11 +336,27 @@ This Git repository contains the following top level directories.
 
 [immich-uri]: https://immich.app
 [immich-chart]: https://immich-app.github.io/immich-charts
-[immich-badge]: https://img.shields.io/badge/immich-0.3.1-blue?logo=helm
+[immich-badge]: https://img.shields.io/badge/immich-v1.94.1-blue?logo=docker
 
 [stirling-pdf-uri]: https://stirlingtools.com/
 [stirling-pdf-badge]: https://img.shields.io/badge/frooodle/s--pdf-0.19.0-blue?logo=docker
 [stirling-pdf-img]: https://hub.docker.com/r/frooodle/s-pdf
+
+[home-assistant-uri]: https://www.home-assistant.io/
+[home-assistant-badge]: https://img.shields.io/badge/home--assistant-2024.2.2-blue?logo=docker
+[home-assistant-img]: https://ghcr.io/home-assistant/home-assistant
+
+[homebox-uri]: https://hay-kot.github.io/homebox/
+[homebox-badge]: https://img.shields.io/badge/hay--kot/homebox-0.13.2-blue?logo=docker
+[homebox-img]: https://ghcr.io/hay-kot/homebox
+
+[wger-uri]: https://wger.de/en/software/features
+[wger-badge]: https://img.shields.io/badge/wger/server-2.3--dev-blue?logo=docker
+[wger-img]: https://hub.docker.com/r/wger/server
+
+[kubeshark-uri]: https://www.kubeshark.co/
+[kubeshark-badge]: https://img.shields.io/badge/kubeshark-52.1.9-blue?logo=helm
+[kubeshark-chart]: https://artifacthub.io/packages/helm/kubeshark-helm-charts/kubeshark
 
 [listenbrainz-uri]: https://listenbrainz.org
 
