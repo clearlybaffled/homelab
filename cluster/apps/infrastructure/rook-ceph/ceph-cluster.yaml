@@ -73,17 +73,22 @@ ingress:
   # -- Enable an ingress for the ceph-dashboard
   dashboard:
     annotations:
-      cert-manager.io/cluster-issuer: 'ca-issuer'
+      cert-manager.io/common-name: &host ceph-dashboard.seawolf.hermleigh.home
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+      cert-manager.io/subject-organizationalunits: "Ceph Cluster"
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/icon: ceph.png
       gethomepage.dev/group: Monitoring
       gethomepage.dev/name: "Ceph Dashboard"
     host:
-      name: ceph-dashboard.seawolf.hermleigh.home
+      name: *host
       path: /
     tls:
     - hosts:
-        - ceph-dashboard.seawolf.hermleigh.home
+        - *host
         - ceph-dashboard.seawolf
       secretName: ceph-dashboard-tls
     # Note: Only one of ingress class annotation or the `ingressClassName:` can be used at a time
@@ -213,7 +218,7 @@ cephBlockPoolsVolumeSnapshotClass:
   enabled: false
 
 cephObjectStores:
-  - name: s3
+  - name: rgw
     spec:
       metadataPool:
         replicated:
@@ -236,19 +241,24 @@ cephObjectStores:
         dashboardEnabled: true
     storageClass:
       enabled: true
-      name: s3
+      name: ceph-rgw
       reclaimPolicy: Retain
     ingress:
       # Enable an ingress for the ceph-objectstore
       enabled: true
       annotations:
-        cert-manager.io/cluster-issuer: 'ca-issuer'
+        cert-manager.io/common-name: &host rgw.hermleigh.home
+        cert-manager.io/subject-countries: US
+        cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+        cert-manager.io/subject-organizationalunits: "Ceph Cluster"
+        cert-manager.io/private-key-algorithm: ECDSA
+        cert-manager.io/private-key-size: "384"
       host:
-        name: s3.hermleigh.home
+        name: *host
         path: /
       tls:
       - hosts:
-          - s3.hermleigh.home
-          - s3
+          - *host
+          - rgw
         secretName: ceph-objectstore-tls
       ingressClassName: nginx
