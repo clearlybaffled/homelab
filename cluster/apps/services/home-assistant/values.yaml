@@ -3,9 +3,13 @@ controllers:
     containers:
       main:
         image:
-          repository: ghcr.io/home-assistant/home-assistant
-          tag: 2024.2.2
-        probes:
+          repository: ghcr.io/onedr0p/home-assistant
+          tag: 2024.2.3@sha256:4880575480641e0f83618de45c27dd75ff9d413f092523a75b7ec1e825d22b1b
+        env:
+          TZ: America/New_York
+          HASS_HTTP_TRUSTED_PROXY_1: 10.0.0.0/8
+        nameOverride: home-assistant
+        probes: &probes
           liveness:
             enabled: false
           readiness:
@@ -14,16 +18,48 @@ controllers:
             enabled: false
         resources:
           requests:
-            cpu: 47m
+            cpu: 10m
             memory: 1254M
           limits:
             memory: 1254M
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities: { drop: ["ALL"] }
+      code:
+        image:
+          repository: ghcr.io/coder/code-server
+          tag: 4.21.1
+        env:
+          TZ: America/New_York
+        args: [
+          "--auth", "none",
+          "--user-data-dir", "/config/.vscode",
+          "--extensions-dir", "/config/.vscode",
+          "--port", "8080",
+          "/config"
+        ]
+        probes: *probes
+        resources:
+          requests:
+            cpu: 10m
+          limits:
+            memory: 512Mi
+    pod:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        runAsNonRoot: true
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
 
 service:
   main:
     ports:
       http:
         port: 8123
+      code:
+        port: 8080
 
 ingress:
   main:
@@ -52,6 +88,20 @@ ingress:
       - hosts:
           - *host
         secretName: home-assistant-tls-ingress
+  code:
+    enabled: true
+    className: nginx
+    hosts:
+      - host: &code-host hass-code.hermleigh.home
+        paths:
+          - path: /
+            service:
+              name: main
+              port: code
+    tls:
+      - hosts:
+          - *code-host
+        secretName: hass-code-tls-ingress
 
 persistence:
   config:
@@ -61,7 +111,5 @@ persistence:
     size: 10Gi
     storageClass: ceph-fs-ssd
     retain: true
-    advancedMounts:
-      main:
-        main:
-          - path: /config
+  tmp:
+    type: emptyDir
