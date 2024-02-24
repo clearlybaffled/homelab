@@ -102,95 +102,97 @@
       "type": "object",
       "title": "secrets",
       "description": "Have ansible manage generating secrets for this application. The application task will:\n - Generate any number of secrets defined in the below object\n - Generate a SOPS encrypted k8s Secret Opaque manifest file in the application directory\n - Put a secret-generator.yaml file in the application directory to tell KSOPS to decrypt and load the Secrets into the cluster when ArgoCD picks up the application\n - Add the secret-generator.yaml file as a generator in the Kustomization file",
-      "patternProperties": {
-        "^[a-zA-Z0-9-]+$": {
-          "title": "secret name",
-          "description": "Name of a secret to manage. Used to define the metadata name and file name in the format ${app_name}-${secret_name}.\n\nCan be completely overridden with the nameOverride option.",
-          "examples": ["secret"],
-          "anyOf": [
-            {
-              "type": "object",
-              "properties": {
-                "nameOverride": {
-                  "type": "string",
-                  "title": "nameOverride",
-                  "description": "Name the secret this, instead of using the naming convention."
-                },
-                "type": {
-                  "type": "string",
-                  "title": "The Kubernetes Secret type to define this object as",
-                  "enum": ["basic-auth"]
-                },
-                "reflect": {
-                  "title": "reflect",
-                  "description": "Whether to include the kubernetes-reflector annotations for this secret, and a list of namespaces to limit the reflection to. An empty array means all namespaces",
-                  "oneOf": [
-                    {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    { "type": "null" }
-                  ]
-                },
-                "data": {
-                  "type": "object",
-                  "title": "data",
-                  "description": "Fields to go into the \"data\" section of the Secret manifest",
-                  "patternProperties": {
-                    "^[a-zA-Z0-9-]+$": {
-                      "anyOf": [
-                        {
-                          "title": "generated secret",
-                          "description": "Ansible will generate a value for this individual secret",
-                          "type": "object",
-                          "properties": {
-                            "type": {
-                              "type": "string",
-                              "title": "type",
-                              "enum": ["password"],
-                              "description": "Type of secret to generate"
-                            },
-                            "name": {
-                              "title": "name",
-                              "type": "string",
-                              "description": "Name of the secret to generate, used by ansible and Secret template",
-                              "examples": ["db", "admin"]
-                            }
-                          }
-                        },
-                        {
-                          "type": "string",
-                          "title": "value",
-                          "description": "Raw string value to place into this field"
-                        }
-                      ]
-                    }
-                  }
-                },
-                "stringData": {
-                  "type": "object",
-                  "title": "stringData",
-                  "description": "Fields to go into the \"stringData\" section of a Secret",
-                  "patternProperties": {
-                    "^[a-zA-Z0-9-]+$": {
-                      "type": "string"
-                    }
-                  }
-                }
-              },
-              "additionalProperties": false
-            },
-            {
-              "type": "object",
-              "description": "There are already sops-encrypted secret file(s) in the application directory. Create the Kustomization file and secret-generator for KSOPS, but don't manage the secret files.",
-              "additionalProperties": false
-            }
-          ]
+      "properties": {
+        "generate":{
+          "type": "object",
+          "additionalProperties": {
+            "enum": ["password","key"]
+          }
         }
       },
-      "additionalProperties": true
+      "additionalProperties": {
+        "title": "secret name",
+        "description": "Name of a secret to manage. Used to define the metadata name and file name in the format ${app_name}-${secret_name}.\n\nCan be completely overridden with the nameOverride option.",
+        "examples": ["secret"],
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "nameOverride": {
+                "type": "string",
+                "title": "nameOverride",
+                "description": "Name the secret this, instead of using the naming convention."
+              },
+              "type": {
+                "type": "string",
+                "title": "The Kubernetes Secret type to define this object as",
+                "enum": ["basic-auth"]
+              },
+              "reflect": {
+                "title": "reflect",
+                "description": "Whether to include the kubernetes-reflector annotations for this secret, and a list of namespaces to limit the reflection to. An empty array means all namespaces",
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  { "type": "null" }
+                ]
+              },
+              "namespace": {
+                "title": "namespace",
+                "description": "Place the secret in a namespace different than that of the app",
+                "type": "string"
+              },
+              "additionalProperties": {
+                "type": "object",
+                "title": "data",
+                "description": "Fields to go into the \"data\" section of the Secret manifest",
+                "properties": {
+                  "var":{
+                    "title": "generated secret",
+                    "description": "Use the secret generated with name",
+                    "type": "string"
+                    },
+                  "string": {
+                    "type": "string",
+                    "title": "string",
+                    "description": "Raw string value to place into this field"
+                  },
+                  "secret": {
+                    "title": "secret",
+                    "type": "string",
+                    "description": "Reference to a secret from annother application in dotted form\n\n`${app_name}.${secret_name}.${var_name}`"
+                  }
+                },
+                "oneOf": [
+                  { "required": "var"},
+                  {"required": "string"},
+                  {"required": "secret"}
+                ]
+              },
+              "stringData": {
+                "type": "object",
+                "title": "stringData",
+                "description": "Fields to go into the \"stringData\" section of a Secret",
+                "patternProperties": {
+                  "^[a-zA-Z0-9-]+$": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+            
+          },
+          {
+            "type": "null",
+            "description": "There are already sops-encrypted secret file(s) in the application directory. Create the Kustomization file and secret-generator for KSOPS, but don't manage the secret files.",
+            "additionalProperties": false
+          }
+        ]
+      }
     },
     "Kustomize": {
       "$id": "/Kustomize",

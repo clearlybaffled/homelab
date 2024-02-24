@@ -4,11 +4,18 @@
   gather_facts: true
   roles:
     - apps
-  tasks:
-    - name: Bootstrap cluster
-      kubernetes.core.k8s:
-        src: "{{ (cluster_dir, 'cluster.yaml') | path_join }}"
-        server_side_apply:
-          field_manager: ansible
-      tags:
-        - bootstrap
+  vars:
+    app_no_loop_pause: false
+    app_deploy_list: []
+    app_reject_list: []
+    app_batch: false
+    # app_start_wave: 2
+
+  # tasks:
+  #   - name: Bootstrap cluster
+  #     kubernetes.core.k8s:
+  #       src: "{{ (cluster_dir, 'cluster.yaml') | path_join }}"
+  #       server_side_apply:
+  #         field_manager: ansible
+  #     tags:
+  #       - bootstrap

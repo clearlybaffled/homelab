@@ -7,12 +7,22 @@ argument_specs:
         description: A list of applications to deploy instead of the entire list
         required: false
         default: []
-      app_skip_list:
+      app_reject_list:
         type: list
         description: A list of applications to not deploy out of the entire list
         required: false
         default: []
-      start_at:
-        type: str
-        description: Name of the app to start deploying from
+      app_start_wave:
+        type: int
+        description: Wave number to start deploying from
         required: false
+      app_no_loop_pause:
+        type: bool
+        description: Skip the prompt between app deployments and proceed directly to the next app in the list
+        required: false
+        default: false
+      app_batch:
+        type: bool
+        description: Wait to commit all the changes until the enabled. Implies app_no_loop_pause
+        required: false
+        default: false

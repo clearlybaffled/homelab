@@ -1,0 +1,43 @@
+- name: Create and push git commit
+  tags:
+    - commit
+  block:
+    - name: Set commit facts
+      set_fact:
+        app_name: "{{ app.name | default(omit) }}"
+        app_dir: "{{ app.app_dir | default( (cluster_dir, 'apps') | path_join ) }}"
+        manifest_file: "{{ app.manifest_file | default( (cluster_dir, 'bootstrap') | path_join) }}"
+    - name: Commit changes to app files {{ '[' + app_name + ']' | default('') }}
+      lvrfrc87.git_acp.git_acp:
+        path: "{{ root_dir }}"
+        comment: "{{ '[' + app_name + ']' | default('') }} Updated application config files\n\n{{ files | to_nice_yaml }}"
+        add: "{{  files  }}"
+        url: "{{ git_repo_ssh_url }}"
+        push: "{{ git_push | default(true) }}"
+        branch: "{{ git_branch }}"
+      when:
+        - files | length > 0
+      register: git_commit
+      vars:
+        files: |-
+          {{ [
+              lookup('pipe','git status --porcelain -- ' ~ app_dir).splitlines()
+                | map('split',' ')
+                | map('last'),
+
+              lookup('pipe','git status --porcelain -- ' ~ manifest_file).split(' ')| last,
+
+              lookup('pipe','git status --porcelain').splitlines()
+                | map('list')
+                | rejectattr('0','eq', ' ')
+                | rejectattr('0', 'eq', '?')
+                | map('join')
+                | map('split', ' ')
+                | map('last')
+          ]  | reject('eq', '') | flatten}}
+
+    - name: Wait a minute for the commit to land in Github
+      pause:
+        seconds: 15
+      when:
+        - git_commit is not skipped

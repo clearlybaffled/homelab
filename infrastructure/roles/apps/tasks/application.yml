@@ -10,14 +10,6 @@
   block:
     - name: Generate secrets | {{ app.name }}
       include_tasks: generate_secret.yml
-      loop: "{{ app.secrets | dict2items(key_name='name') }}"
-      loop_control:
-        loop_var: secret
-      when:
-        - sops_file is not file
-        - secret.value != {}
-      vars:
-        sops_file: "{{ (app.app_dir, secret.name+'.sops.yaml')| path_join }}"
 
     - name: Render KSOPS generator template | {{ app.name }}
       template:
@@ -76,43 +68,10 @@
   tags:
     - app_tasks
 
-- name: Commit changes to app files | {{ app.name }}
-  lvrfrc87.git_acp.git_acp:
-    path: "{{ root_dir }}"
-    comment: "[{{ app.name }}] Updated application config files\n\n{{ files | to_nice_yaml }}"
-    add: "{{  files  }}"
-    url: "{{ git_repo_ssh_url }}"
-    push: "{{ git_push | default(true) }}"
-    branch: "{{ git_branch }}"
-  when:
-    - files | length > 0
-    - not batch_apps | default(false)
-  register: git_commit
-  tags: commit
-  vars:
-    files: |-
-      {{ [
-          lookup('pipe','git status --porcelain -- ' ~ app.app_dir).splitlines()
-            | map('split',' ')
-            | map('last'),
-
-          lookup('pipe','git status --porcelain -- ' ~ app.manifest_file).split(' ')| last,
-
-          lookup('pipe','git status --porcelain').splitlines()
-            | map('list')
-            | rejectattr('0','eq', ' ')
-            | rejectattr('0', 'eq', '?')
-            | map('join')
-            | map('split', ' ')
-            | map('last')
-      ]  | reject('eq', '') | flatten}}
-
-- name: Wait a minute for the commit to land in Github
-  pause:
-    seconds: 15
-  tags: commit
-  when:
-    - git_commit is not skipped
+- name: Create and push git commit
+  include_tasks: git-commit.yml
+  when: 
+    - not app_batch | default(false)
 
 - name: Launch application when wave is defined
   block:
@@ -141,4 +100,4 @@
   when:
     - not ansible_loop.last
     - not app_no_loop_pause|default(false)
-    - not batch_apps | default(false)
+    - not app_batch | default(false)

@@ -8,7 +8,7 @@
 
 - name: Do it
   vars:
-    secret: "{{ lookup('community.sops.sops', app.app_dir+'/secret.sops.yaml') | from_yaml }}"
+    secret: "{{ lookup('community.sops.sops', (app.app_dir, secret_name|default('secret')+'.sops.yaml')|path_join) | from_yaml }}"
   block:
     - name: Create PostgreSQL user | {{ app.name }}
       community.postgresql.postgresql_user:

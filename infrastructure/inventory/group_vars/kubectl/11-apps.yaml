@@ -31,7 +31,7 @@ apps:
       - chart: external-dns/external-dns
         version: 1.14.3
     secrets:
-      secret: {}
+      secret:
 
   kube-prometheus-stack:
     namespace: monitoring
@@ -98,7 +98,7 @@ apps:
         - ./pvc.yaml
         - ./pv.yaml
     secrets:
-      secret: {}
+      secret:
 
   cert-manager:
     path: infrastructure
@@ -350,17 +350,20 @@ apps:
     charts:
       - chart: app-template
     secrets:
+      generate:
+        api: password
+        postgres: password
       secret:
-        data:
-          LIDARR__API_KEY:
-            type: password
-            name: api
-          LIDARR__POSTGRES_MAIN_DB: lidarr_main
-          LIDARR__POSTGRES_LOG_DB: lidarr_log
-          LIDARR__POSTGRES_USER: lidarr
-          LIDARR__POSTGRES_PASSWORD:
-            type: password
-            name: postgres
+        LIDARR__API_KEY:
+          var: api
+        LIDARR__POSTGRES_PASSWORD:
+          var: postgres
+        LIDARR__POSTGRES_MAIN_DB:
+          string: lidarr_main
+        LIDARR__POSTGRES_LOG_DB:
+          string: lidarr_log
+        LIDARR__POSTGRES_USER:
+          string: lidarr
 
   bazarr:
     namespace: downloads
@@ -426,8 +429,10 @@ apps:
       - chart: jameswynn/homepage
         version: 1.2.3
     secrets:
-      secret: {}
-      app-keys: {}
+      secret:
+      app-keys:
+        HOMEPAGE_VAR_LIDARR_API_KEY:
+          secret: lidarr.secret.LIDARR__API_KEY
     kustomize:
       extras:
         configMapGenerator:
@@ -543,4 +548,4 @@ apps:
       - chart: oauth2-proxy/oauth2-proxy
         version: 6.24.1
     secrets:
-      secret: {}
+      secret:

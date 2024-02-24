@@ -87,3 +87,8 @@
           ) | path_join
         ) | from_yaml
       }}
+
+- name: Create batch git commit
+  include_tasks: git-commit.yml
+  when:
+    - app_batch | default(false)

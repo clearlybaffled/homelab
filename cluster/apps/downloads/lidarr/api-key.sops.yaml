@@ -1,0 +1,28 @@
+apiVersion: v1
+data:
+    HOMEPAGE_VAR_LIDARR_API_KEY: ENC[AES256_GCM,data:ZCVEqALjjAXLl/8aGaZibocLxMItutQ5SY8OdhdEySiWVDEFXQhMdg==,iv:p8lEAP7ZJEE5oNpAeSXamU8TZqA8QE1s4XMa4YEtko0=,tag:73kvj8kUyhIKeJrFurGqoQ==,type:str]
+kind: Secret
+metadata:
+    name: lidarr-api-key
+    namespace: homepage
+type: Opaque
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1e764qpphm5nlzp04qf6zcq8f400390d9wmzramq84hqp60k6qyvqsvgg45
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBOMThNMVpXbmpZczkydWdj
+            ZzcxVER3amlkTXNsbGkvK1FRTENPU1hSa1dRCm0xWDhhcjc4VWRpeG4rd2k5Nnhz
+            YXZwbWxzNDFFMzEzREtEbmNBbkVTT0EKLS0tIE1hemFxUHBKbkNmbG0wVmNEYWJF
+            RHRURW5qdXROOU1MVjAxeWQ2SHFuQVkKiZmv8pE4P9EnhA9aJh3KBlk7akr3Lx86
+            e1Us48yYtT0lOZ1xTwsXUbNpzB61J5snYcFBqQ22MSuUtq4LfCnJzg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-02-19T05:23:56Z"
+    mac: ENC[AES256_GCM,data:E6awPJ4KHxC+p+v5PLp6Q/JkJK+J9ELtlglU5K035wO41WOmXBWvIkaHcHJPcVmhsr2bX8vY35uytlNtUblVvD93qXiXG9MvC+T0cqYbDSL+uaD8Yth82ztoiCFEOJg3ABdTNAk6wStVcMcObBCC4EucjLV/n8AfQlQLwhTFWiQ=,iv:pH8f1Twy1HFxDMeER0XJsO331GPR6+51cFxlCpI5ro4=,tag:R4M1qUJgLklyYOGK1Rgrdg==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1
