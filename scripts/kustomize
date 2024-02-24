@@ -1,3 +1,3 @@
 #!/bin/bash
 
-/usr/local/bin/kustomize "$1" --enable-helm "$2"
+/usr/local/bin/kustomize "$1" --enable-helm --enable-alpha-plugins --enable-exec "$2"
