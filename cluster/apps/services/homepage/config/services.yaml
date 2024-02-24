@@ -7,8 +7,8 @@
         widget:
           type: opnsense
           url: *opnsense
-          username: {{HOMEPAGE_VAR_ADMIN_USER}}
-          password: {{HOMEPAGE_VAR_ADMIN_PWD}}
+          username: "{{HOMEPAGE_VAR_OPNSENSE_API_KEY}}"
+          password: "{{HOMEPAGE_VAR_OPNSENSE_API_SECRET}}"
     - AdGuard:
         href: &adguard http://adguard.hermleigh.home
         icon: adguard-home.png
@@ -16,8 +16,8 @@
         widget:
           type: adguard
           url: *adguard
-          username: {{HOMEPAGE_VAR_ADMIN_USER}}
-          password: {{HOMEPAGE_VAR_ADMIN_PWD}}
+          username: "{{HOMEPAGE_VAR_ADMIN_USER}}"
+          password: "{{HOMEPAGE_VAR_ADMIN_PWD}}"
     - Cloudflared:
         href: https://dash.cloudflare.com/
         icon: cloudflare-zero-trust.png
