@@ -6,5 +6,5 @@ metadata:
   name: cluster-admin
 spec:
   # Ref: https://rook.io/docs/rook/v1.13/Storage-Configuration/Object-Storage-RGW/object-storage/
-  store: ceph-objectstore
+  store: rgw
   displayName: Cluster Admin

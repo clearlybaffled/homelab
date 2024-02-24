@@ -71,7 +71,7 @@ ingress:
       cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
       cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
       cert-manager.io/private-key-algorithm: ECDSA
-      cert-manager.io/private-key-size: "512"
+      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: "Home Assistant"
       gethomepage.dev/icon: home-assistant.svg
