@@ -6,7 +6,7 @@ image:
 
 readinessProbe:
   enabled: true
-  initialDelaySeconds: 60
+  initialDelaySeconds: 120
   periodSeconds: 15
 
 postgresql:
@@ -79,11 +79,10 @@ ingress:
 
 resources:
   limits:
-    cpu: 250m
-    memory: 1500Mi
+    memory: 1Gi
   requests:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 200m
+    memory: 1Gi
 
 extraContainers:
   - name: graphite
