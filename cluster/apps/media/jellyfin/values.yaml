@@ -38,7 +38,6 @@ controllers:
             memory: 9248M
           limits:
             memory: 9248M
-            cpu: 250m
 
 service:
   main:
@@ -51,7 +50,6 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: "Free Software Media System"
       gethomepage.dev/icon: jellyfin.png

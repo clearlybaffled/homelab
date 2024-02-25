@@ -11,6 +11,12 @@ controllers:
               name: wger-env
           - secretRef:
               name: wger-secret
+        resources: &resources
+          requests:
+            cpu: 10m
+            memory: 256Mi
+          limits:
+            memory: 256Mi
       wger-celery-worker:
         image: *image
         command: /start-worker
@@ -19,6 +25,7 @@ controllers:
               name: wger-env
           - secretRef:
               name: wger-secret
+        resources: *resources
       wger-celery-beat:
         image: *image
         command: /start-beat
@@ -27,6 +34,7 @@ controllers:
               name: wger-env
           - secretRef:
               name: wger-secret
+        resources: *resources
 
 service:
   main:

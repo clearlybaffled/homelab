@@ -11,11 +11,10 @@ controllers:
           PUID: 997
         resources:
           requests:
-            cpu: 10m
+            cpu: 50m
             memory: 250Mi
           limits:
             memory: 2000Mi
-            cpu: 500m
 
 service:
   main:
@@ -28,7 +27,6 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: Open Source DAAP Server
       gethomepage.dev/group: Media

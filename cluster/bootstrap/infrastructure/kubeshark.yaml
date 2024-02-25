@@ -7,12 +7,18 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
-    chart: kubeshark
+  sources:
+  - chart: kubeshark
     repoURL: https://helm.kubeshark.co
     targetRevision: 52.1.9
     helm:
+      valueFiles:
+      - $repo/cluster/apps/infrastructure/kubeshark/values.yaml
       releaseName: kubeshark
+  - repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/apps/infrastructure/kubeshark
+    targetRevision: main
+    ref: repo
   destination:
     name: in-cluster
     namespace: infrastructure

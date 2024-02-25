@@ -12,8 +12,8 @@ controllers:
           HBOX_MEB_MAX_UPLOAD_SIZE: 10
         resources:
           requests:
-            cpu: 100m
-            memory: 52M
+            cpu: 10m
+            memory: 256M
           limits:
             memory: 256M
 service:

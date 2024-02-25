@@ -23,6 +23,7 @@ helm_repositories:
   emberstack: https://emberstack.github.io/helm-charts
   kubeshark: https://helm.kubeshark.co
   oauth2-proxy: https://oauth2-proxy.github.io/manifests
+  stakater: https://stakater.github.io/stakater-charts
 
 # Registry deployment
 registry_enabled: false
@@ -80,7 +81,7 @@ metallb_enabled: true
 metallb_speaker_enabled: "{{ metallb_enabled }}"
 metallb_version: v0.13.12
 
-app_template_version: 2.4.0
+app_template_version: 2.6.0
 
 elastic_chart_version: 2.10.0
 mysql_version: 8.0.35

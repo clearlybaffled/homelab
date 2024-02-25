@@ -6,19 +6,21 @@ controllers:
     type: deployment
     containers:
       main:
+        nameOverride: paperless-ngx
         image:
           repository: ghcr.io/paperless-ngx/paperless-ngx
           tag: 2.5.3
         envFrom:
-          - config: config
+          - configMapRef:
+              identifier: config
           - secretRef:
               name: paperless-ngx-secret
         resources:
           requests:
             cpu: 100m
-            memory: 1000Mi
+            memory: 1Gi
           limits:
-            memory: 5000Mi
+            memory: 1Gi
 
       gotenberg:
         image:
@@ -28,12 +30,24 @@ controllers:
         env:
           - name: DISABLE_GOOGLE_CHROME
             value: "1"
+        resources:
+          requests:
+            cpu: 10m
+            memory: 256Mi
+          limits:
+            memory: 256Mi
 
       tika:
         image:
           repository: ghcr.io/paperless-ngx/tika
           tag: 2.9.1-full
         imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 10m
+            memory: 256Mi
+          limits:
+            memory: 256Mi
 
       hp-scan-to:
         image: &hp-scan-to
@@ -47,11 +61,11 @@ controllers:
         envFrom:
           - configMapRef:
               name: hp-scan-to-env
-        resources:
+        resources: &scan-limits
           limits:
-            memory: 256Mi
+            memory: 64Mi
           requests:
-            cpu: "0"
+            cpu: 5m
             memory: 64Mi
       hp-scan-to-double-sided:
         image: *hp-scan-to
@@ -63,12 +77,13 @@ controllers:
             value: paperless-ngx (double sided)
           - name: CMDLINE
             value: '-D -l paperless-ngx-double-sided -r 300 -d /consume/double-sided'
+        resources: *scan-limits
 
-configMap:
+configMaps:
   config:
     enabled: true
     data:
-      PAPERLESS_CONSUMER_POLLING: 60
+      PAPERLESS_CONSUMER_POLLING: "60"
       PAPERLESS_CONSUMER_RECURSIVE: "true"
       PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
       PAPERLESS_CONSUMER_ENABLE_COLLATE_DOUBLE_SIDED: "true"
@@ -82,11 +97,11 @@ configMap:
       PAPERLESS_OCR_LANGUAGE: eng
       PAPERLESS_OCR_MODE: skip
       PAPERLESS_OCR_ROTATE_PAGES: "true"
-      PAPERLESS_OCR_IMAGE_DPI: 300
-      PAPERLESS_PORT: &port 8080
-      PAPERLESS_TASK_WORKERS: 2
+      PAPERLESS_OCR_IMAGE_DPI: "300"
+      PAPERLESS_PORT: &port "8080"
+      PAPERLESS_TASK_WORKERS: "2"
       PAPERLESS_TIME_ZONE: &tz America/New_York
-      PAPERLESS_TIKA_ENABLED: 1
+      PAPERLESS_TIKA_ENABLED: "1"
       PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
       PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
       PAPERLESS_URL: https://paperless.hermleigh.home
@@ -95,9 +110,9 @@ configMap:
       PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: "X-Auth-Request-Preferred-Username"
       PAPERLESS_USE_X_FORWARD_HOST: "true"
       PAPERLESS_USE_X_FORWARD_PORT: "true"
-      USERMAP_UID: 997
-      USERMAP_GID: 997
-      TZ: America/New_York
+      USERMAP_UID: "997"
+      USERMAP_GID: "997"
+      TZ: *tz
 
 service:
   main:
