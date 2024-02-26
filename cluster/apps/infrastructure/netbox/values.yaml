@@ -116,3 +116,13 @@ extraVolumes:
 extraVolumeMounts:
   - name: nrx-files
     mountPath: /graphite
+
+# Configuration of Cron settings
+housekeeping:
+  enabled: true
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 5
+  restartPolicy: OnFailure
+  schedule: '0 7 * * 0'
+  successfulJobsHistoryLimit: 2
+  suspend: false
