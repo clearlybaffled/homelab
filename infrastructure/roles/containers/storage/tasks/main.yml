@@ -10,6 +10,7 @@
       provisioner: kubernetes.io/no-provisioner
       volumeBindingMode: WaitForFirstConsumer
       reclaimPolicy: Retain
+      allowVolumeExpansion: true
 
 - name: Define local-storage PersistentVolumes for cross-namespace access
   kubernetes.core.k8s:
@@ -61,3 +62,6 @@
             requests:
               storage: "{{ item[1].size }}"
   loop: "{{ storage.namespaces | product(storage.volumes) }}"
+  when: 
+    - item[0] == (item[1].namespace|default(item[0]))
+    - not query('kubernetes.core.k8s', api_version='v1', namespace=item[0], kind='PersistentVolume', resource_name=item[1].name+'-'+item[0])

@@ -1,0 +1,26 @@
+#
+# Ansible managed
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: local-path-provisioner
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/apps/infrastructure/local-path-provisioner
+    targetRevision: main
+  destination:
+    name: in-cluster
+    namespace: local-path-provisioner
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

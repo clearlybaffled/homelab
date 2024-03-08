@@ -15,7 +15,7 @@
         loop_var: secret
       when:
         - sops_file is not file
-        - secret.value != {}
+        - secret.value
       vars:
         sops_file: "{{ (app.app_dir, secret.name+'.sops.yaml')| path_join }}"
 
@@ -41,14 +41,21 @@
   vars:
     k8s_apis: "{{ cluster_info.apis.keys() | list }}"
 
-- name: "Install PersistentVolumeClaim file | {{ app.name }}"
+- name: Configure Storage | {{ app.name }}
+  include_tasks: storage.yml
+  when: ('localStorage' in app)
+  with_items:
+   - "{{ app.localStorage }}"
+  vars:
+    path: "{{ (item.path|default('') is abs) | ternary(item.path|default(''), (local_storage_root_dir, app.namespace, app.name, item.path|default(app.name))) | path_join }}"
+
+- name: Generate storage manifest file
   template:
-    src: 'pvc.yaml.j2'
-    dest: "{{ app.app_dir }}/pvc.yaml"
+    src: storage.yaml.j2
+    dest: "{{ app.app_dir }}/storage.yaml"
     mode: "0644"
     force: true
-  when: app.pvc is defined and app.pvc
-  register: pvc
+  when: ('localStorage' in app)
 
 - name: Ensure cluster/bootstrap namespace dir exists
   file:
@@ -93,19 +100,17 @@
     files: |-
       {{ [
           lookup('pipe','git status --porcelain -- ' ~ app.app_dir).splitlines()
+            | reject('match','D')
             | map('split',' ')
             | map('last'),
 
           lookup('pipe','git status --porcelain -- ' ~ app.manifest_file).split(' ')| last,
 
           lookup('pipe','git status --porcelain').splitlines()
-            | map('list')
-            | rejectattr('0','eq', ' ')
-            | rejectattr('0', 'eq', '?')
-            | map('join')
+            | reject('match','[ D?]')
             | map('split', ' ')
             | map('last')
-      ]  | reject('eq', '') | flatten}}
+      ]  | reject('eq', '') | flatten }}
 
 - name: Wait a minute for the commit to land in Github
   pause:

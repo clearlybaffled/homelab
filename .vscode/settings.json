@@ -12,7 +12,7 @@
   "git.enableCommitSigning": true,
   "gitlens.currentLine.enabled": false,
   "python.terminal.activateEnvironment": true,
-  "sops.configPath": "./.sops.ysml",
+  "sops.configPath": "./.sops.yaml",
   "vscord.app.name": "Visual Studio Code",
   "vscord.behavoiur.prioritizeLanguagesOverExtensions": true,
   "vscord.status.idle.disconnectOnIdle": true,

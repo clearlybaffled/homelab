@@ -87,3 +87,35 @@
           ) | path_join
         ) | from_yaml
       }}
+
+- name: Commit changes to app files
+  lvrfrc87.git_acp.git_acp:
+    path: "{{ root_dir }}"
+    comment: "Updated application config files\n\n{{ files | to_nice_yaml }}"
+    add: "{{  files  }}"
+    url: "{{ git_repo_ssh_url }}"
+    push: "{{ git_push | default(true) }}"
+    branch: "{{ git_branch }}"
+  when:
+    - files | length > 0
+    - batch_apps | default(false)
+  tags: commit
+  vars:
+    files: |-
+      {{ [
+          lookup('pipe','git status --porcelain -- ' ~ cluster_dir).splitlines()
+            | map('split',' ')
+            | map('last'),
+
+          lookup('pipe','git status --porcelain -- ' ~ (inventory_dir, 'group_vars','all','kubectl')|path_join).splitlines()
+            | map('split',' ')
+            | map('last'),
+
+          lookup('pipe','git status --porcelain').splitlines()
+            | map('list')
+            | rejectattr('0','eq', ' ')
+            | rejectattr('0', 'eq', '?')
+            | map('join')
+            | map('split', ' ')
+            | map('last')
+      ]  | reject('eq', '') | flatten }}

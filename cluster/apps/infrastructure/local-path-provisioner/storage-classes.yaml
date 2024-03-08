@@ -1,0 +1,35 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-path
+  annotations:
+    storageclass.kubernetes.io/is-default-class: 'False'
+provisioner: rancher.io/local-path
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+  nodePath: /srv/cluster/volumes
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  annotations:
+    storageclass.kubernetes.io/is-default-class: 'False'
+  name: local-path-videos
+provisioner: rancher.io/local-path
+parameters:
+  nodePath: /videos/volumes
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Retain
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  annotations:
+    storageclass.kubernetes.io/is-default-class: 'False'
+  name: local-path-shared
+provisioner: rancher.io/local-path
+parameters:
+  nodePath: /shared/volumes
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Retain

@@ -7,7 +7,11 @@ storage:
   volumes:
     - name: shared-files
       path: /share
-      size: 5.5Ti
+      size: &shared 5.5Ti
     - name: videos
       path: /videos
       size: 7.5Ti
+    - name: pictures
+      path: /share/pictures
+      namespace: media
+      size: *shared

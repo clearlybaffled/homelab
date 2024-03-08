@@ -47,9 +47,3 @@
       tags: network
     - role: containers/storage
       tags: storage
-    - role: containers/storage/local_path_provisioner
-      tags: local-path-provisioner
-      vars:
-        local_path_provisioner_enabled: true
-        local_path_provisioner_claim_root: /srv/cluster/volumes
-        local_path_provisioner_is_default_storageclass: false

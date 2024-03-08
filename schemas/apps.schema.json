@@ -25,11 +25,6 @@
                 "$ref": "#/$defs/HelmChart"
               }
             },
-            "pv": {
-              "title": "pv",
-              "type": "boolean",
-              "description": "If there is a pv.yaml file in the application's manifest directory so that it gets included in the kustomization.yaml and ArgoCD ignore difference rules are applied, if we need one."
-            },
             "namespace": {
               "title": "namespace",
               "type": "string",
@@ -38,8 +33,8 @@
             "kustomize": {
               "$ref": "#/$defs/Kustomize"
             },
-            "pvc": {
-              "$ref": "#/$defs/PVC"
+            "localStorage": {
+              "$ref": "#/$defs/LocalStorage"
             },
             "secrets": {
               "$ref": "#/$defs/Secrets"
@@ -183,7 +178,7 @@
               "additionalProperties": false
             },
             {
-              "type": "object",
+              "type": "null",
               "description": "There are already sops-encrypted secret file(s) in the application directory. Create the Kustomization file and secret-generator for KSOPS, but don't manage the secret files.",
               "additionalProperties": false
             }
@@ -223,40 +218,41 @@
       },
       "additionalProperties": false
     },
-    "PVC": {
-      "$id": "/PVC",
-      "title": "pvc",
+    "LocalStorage": {
+      "$id": "/LocalStorage",
+      "title": "localStorage",
       "description": "PersistentVolumeClaim definitions, mostly to track dynamically provisioned CSI volumes so that the app can be destroyed and redeployed without losing storage.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "title": "name",
-            "type": "string",
-            "description": "Name of the PersistentVolumeClaim"
-          },
-          "storageClass": {
-            "title": "storageClass",
-            "type": "string"
-          },
-          "size": {
-            "title": "size",
-            "type": "string"
-          },
-          "volumeName": {
-            "title": "volumeName",
-            "type": "string"
-          },
-          "accessMode": {
-            "title": "accessMode",
-            "type": "string",
-            "enum": ["ReadWriteOnce", "ReadWriteMany"]
-          }
+      "oneOf": [
+        {
+          "type": "null"
         },
-        "additionalProperties": false,
-        "required": ["name", "size", "volumeName"]
-      }
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "title": "name",
+                "type": "string",
+                "description": "Name of the storage object"
+              },
+              "path": {
+                "title": "path",
+                "type": "string",
+                "description": "Path of the directory to use. Relative paths are placed under ansible variable `local_storage_root_dir`"
+              },
+              "modes": {
+                "title": "accessMode",
+                "type": "array",
+                "items": {
+                  "enum": ["ReadWriteOnce", "ReadWriteMany"]
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      ]      
     }
   }
 }

@@ -1,8 +1,13 @@
+#
+# ANSIBLE MANAGED FILE
+# template: {{ template_fullpath | relpath(root_dir) }}
+# date: 2024-03-06 20:04:30
+# user: {{ lookup('pipe', 'git config --get user.name') }}
+# host: tirante
+# commit: {{ lookup('pipe', 'git log --format="%h" -1 ' + template_fullpath|quote) }}
+#
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: db
 generators:
 - ./secret-generator.yaml
-resources:
-- ./pvc.yaml
-- ./pv.yaml

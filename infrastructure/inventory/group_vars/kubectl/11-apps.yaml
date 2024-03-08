@@ -544,3 +544,7 @@ apps:
         version: 6.24.1
     secrets:
       secret: {}
+
+  local-path-provisioner:
+    namespace: local-path-provisioner
+    path: infrastructure

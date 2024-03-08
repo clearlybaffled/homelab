@@ -12,7 +12,21 @@ argument_specs:
         description: A list of applications to not deploy out of the entire list
         required: false
         default: []
+      app_start_wave:
+        type: int
+        required: false
+        description: Wave number to start deployment from
       start_at:
         type: str
         description: Name of the app to start deploying from
         required: false
+      app_no_loop_pause:
+        type: bool
+        required: false
+        default: false
+        description: Wait for user input before proceeding to next app in deployment
+      batch_apps:
+        type: bool
+        required: false
+        default: false
+        description: Wait until deployment is complete to create a git commit instead of one per app. Implies c(app_no_loop_pause).

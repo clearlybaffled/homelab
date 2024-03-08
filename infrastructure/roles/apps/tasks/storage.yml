@@ -1,0 +1,23 @@
+---
+- name: Ensure target directory exists
+  delegate_to: parche
+  file:
+    path: "{{ path }}"
+    state: directory
+    recurse: true
+
+- name: Get filesystem size for directory
+  delegate_to: parche
+  command: "df -h {{ path }}"
+  register: fs_size
+
+- name: Parse local storage config 
+  set_fact:
+    storage_dirs: "{{ (storage_dirs | default([])) + 
+        [{ 
+          'path': path,
+          'modes': item.modes | default(['ReadWriteOnce']),
+          'name': item.name | default(app.name),
+          'size': (fs_size.stdout | community.general.jc('df'))[0].size
+        }]
+      }}"
