@@ -78,15 +78,15 @@ Setting('ENTRY_PAGE', 'stock');
 
 // Set this to true if you want to disable authentication / the login screen,
 // places where user context is needed will then use the default (first existing) user
-Setting('DISABLE_AUTH', false);
+Setting('DISABLE_AUTH', true);
 
 // Either "Grocy\Middleware\DefaultAuthMiddleware", "Grocy\Middleware\ReverseProxyAuthMiddleware"
 // or any class that implements Grocy\Middleware\AuthMiddleware
-Setting('AUTH_CLASS', 'Grocy\Middleware\ReverseProxyAuthMiddleware');
+//Setting('AUTH_CLASS', 'Grocy\Middleware\ReverseProxyAuthMiddleware');
 
 // Options when using ReverseProxyAuthMiddleware
-Setting('REVERSE_PROXY_AUTH_HEADER', 'X-Auth-Request-Preferred-Username'); // The name of the HTTP header which your reverse proxy uses to pass the username (on successful authentication)
-Setting('REVERSE_PROXY_AUTH_USE_ENV', false); // Set to true if the username is passed as environment variable
+//Setting('REVERSE_PROXY_AUTH_HEADER', 'X-Auth-Request-Preferred-Username'); // The name of the HTTP header which your reverse proxy uses to pass the username (on successful authentication)
+//Setting('REVERSE_PROXY_AUTH_USE_ENV', false); // Set to true if the username is passed as environment variable
 
 // Options when using LdapAuthMiddleware
 Setting('LDAP_ADDRESS', ''); // Example value "ldap://vm-dc2019.local.berrnd.net"

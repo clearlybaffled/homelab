@@ -111,6 +111,23 @@ apps:
   grocy:
     namespace: services
     wave: "4"
+    kustomize:
+      resources:
+        - ./cm.yaml
+        - ./deployment.yaml
+        - ./ingress.yaml
+        - ./svc.yaml
+      extras:
+        configMapGenerator:
+          - name: grocy-config
+            files:
+            - ./config.php
+            options:
+              disableNameSuffixHash: true
+              labels:
+                app.kubernetes.io/name: grocy
+                app.kubernetes.io/instance: grocy
+    localStorage:
 
   ingress-nginx:
     namespace: infrastructure
