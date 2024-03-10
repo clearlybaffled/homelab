@@ -3,8 +3,8 @@ controllers:
     containers:
       main:
         image:
-          repository: ghcr.io/onedr0p/home-assistant
-          tag: 2024.2.3@sha256:4880575480641e0f83618de45c27dd75ff9d413f092523a75b7ec1e825d22b1b
+          repository: ghcr.io/home-assistant/home-assistant
+          tag: 2024.2.5
         env:
           TZ: America/New_York
           HASS_HTTP_TRUSTED_PROXY_1: 10.0.0.0/8
@@ -46,13 +46,6 @@ controllers:
             memory: 512Mi
           limits:
             memory: 512Mi
-    pod:
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        runAsNonRoot: true
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
 
 service:
   main:
@@ -107,10 +100,8 @@ ingress:
 persistence:
   config:
     enabled: true
-    type: persistentVolumeClaim
-    accessMode: ReadWriteOnce
-    size: 10Gi
-    storageClass: ceph-fs-ssd
-    retain: true
+    existingClaim: home-assistant
   tmp:
+    type: emptyDir
+  run:
     type: emptyDir

@@ -31,7 +31,7 @@ apps:
       - chart: external-dns/external-dns
         version: 1.14.3
     secrets:
-      secret: {}
+      secret:
 
   kube-prometheus-stack:
     namespace: monitoring
@@ -93,12 +93,10 @@ apps:
     charts:
       - chart: bitnami/mysql
         version: 9.14.3
-    kustomize:
-      resources:
-        - ./pvc.yaml
-        - ./pv.yaml
     secrets:
-      secret: {}
+      secret:
+    localStorage:
+      - path: data
 
   cert-manager:
     path: infrastructure
@@ -150,6 +148,7 @@ apps:
     charts:
       - chart: bitnami/redis
         version: 18.12.1
+    localStorage:
 
   rook-ceph:
     path: infrastructure
@@ -278,7 +277,7 @@ apps:
           NEXTAUTH_SECRET:
             type: password
             name: nextauth
-      db_url: {}
+      db_url:
 
   calibre:
     namespace: media
@@ -443,8 +442,8 @@ apps:
       - chart: jameswynn/homepage
         version: 1.2.3
     secrets:
-      secret: {}
-      app-keys: {}
+      secret:
+      app-keys:
     kustomize:
       extras:
         configMapGenerator:
@@ -497,7 +496,11 @@ apps:
     namespace: media
     charts:
       - chart: immich/immich
-        version: 0.3.1
+        version: 0.4.0
+    pv: true
+    kustomize:
+      resources:
+        - ./storage.yaml
     secrets:
       secret:
         data:
@@ -542,6 +545,7 @@ apps:
     namespace: services
     charts:
       - chart: app-template
+    localStorage:
 
   homebox:
     namespace: services
@@ -560,7 +564,7 @@ apps:
       - chart: oauth2-proxy/oauth2-proxy
         version: 6.24.1
     secrets:
-      secret: {}
+      secret:
 
   local-path-provisioner:
     namespace: local-path-provisioner
