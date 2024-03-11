@@ -29,6 +29,6 @@ spec:
 
   storage:
     size: 50Gi
-    storageClass: ceph-fs-ssd
+    storageClass: local-path
   monitoring:
     enablePodMonitor: true
