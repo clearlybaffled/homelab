@@ -1,0 +1,94 @@
+#
+# Ansible managed
+#
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: paperless-consume
+  finalizers:
+  - kubernetes.io/pv-protection
+spec:
+  accessModes:
+  - ReadWriteMany
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: paperless-consume
+    namespace: services
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  capacity:
+    storage: 5.5T
+  local:
+    path: /share/Files/PaperlessNGX/consume
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - parche
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: paperless-library
+  finalizers:
+  - kubernetes.io/pv-protection
+spec:
+  accessModes:
+  - ReadWriteOnce
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: paperless-library
+    namespace: services
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  capacity:
+    storage: 5.5T
+  local:
+    path: /share/Files/PaperlessNGX
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - parche
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-consume
+  namespace: services
+  finalizers:
+  - kubernetes.io/pvc-protection
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 5.5T
+  storageClassName: local-storage
+  volumeName: paperless-consume
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-library
+  namespace: services
+  finalizers:
+  - kubernetes.io/pvc-protection
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5.5T
+  storageClassName: local-storage
+  volumeName: paperless-library

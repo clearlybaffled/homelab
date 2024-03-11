@@ -182,7 +182,6 @@ apps:
       - chart: app-template
     kustomize:
       resources:
-        - ./consume-volume.yaml
         - ./hp-scan-to-cm.yaml
     secrets:
       secret:
@@ -195,6 +194,13 @@ apps:
           PAPERLESS_ADMIN_PASSWORD:
             type: password
             name: admin
+    localStorage:
+      - name: paperless-consume
+        path: /share/Files/PaperlessNGX/consume
+        modes:
+          - ReadWriteMany
+      - name: paperless-library
+        path: /share/Files/PaperlessNGX
 
   nextcloud:
     namespace: services

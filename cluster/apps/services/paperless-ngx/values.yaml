@@ -9,7 +9,7 @@ controllers:
         nameOverride: paperless-ngx
         image:
           repository: ghcr.io/paperless-ngx/paperless-ngx
-          tag: 2.5.3
+          tag: 2.6.2
         envFrom:
           - configMapRef:
               identifier: config
@@ -87,7 +87,7 @@ configMaps:
       PAPERLESS_CONSUMER_RECURSIVE: "true"
       PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
       PAPERLESS_CONSUMER_ENABLE_COLLATE_DOUBLE_SIDED: "true"
-      PAPERLESS_CONSUMPTION_DIR: /consume
+      PAPERLESS_CONSUMPTION_DIR: /library/consume
       PAPERLESS_DBENGINE: postgresql
       PAPERLESS_DBHOST: cnpg-cluster-rw.db.svc
       PAPERLESS_DATA_DIR: /library/data
@@ -106,8 +106,6 @@ configMaps:
       PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
       PAPERLESS_URL: https://paperless.hermleigh.home
       PAPERLESS_REDIS: redis://redis-master.db.svc:6379
-      PAPERLESS_ENABLE_HTTP_REMOTE_USER: "true"
-      PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME: "X-Auth-Request-Preferred-Username"
       PAPERLESS_USE_X_FORWARD_HOST: "true"
       PAPERLESS_USE_X_FORWARD_PORT: "true"
       USERMAP_UID: "997"
@@ -135,9 +133,6 @@ ingress:
       gethomepage.dev/icon: paperless-ngx.png
       gethomepage.dev/description: "Scan, index and archive all your physical documents"
       gethomepage.dev/name: Paperless-NGX
-      nginx.ingress.kubernetes.io/auth-response-headers: X-Auth-Request-Preferred-Username
-      nginx.ingress.kubernetes.io/auth-signin: https://oauth.sso.hermleigh.home/oauth2/start?rd=$scheme://$best_http_host$escaped_request_uri
-      nginx.ingress.kubernetes.io/auth-url: https://oauth.sso.hermleigh.home/oauth2/auth
     hosts:
       - host: *host
         paths:
@@ -154,10 +149,7 @@ ingress:
 persistence:
   library:
     enabled: true
-    type: persistentVolumeClaim
-    accessMode: ReadWriteMany
-    size: 30Gi
-    storageClass: ceph-fs-ssd
+    existingClaim: paperless-library
     globalMounts:
       - path: /library
   trash:
@@ -170,8 +162,6 @@ persistence:
     existingClaim: paperless-consume
     advancedMounts:
       main:
-        main:
-          - path: /consume
         hp-scan-to:
           - path: /scan
         hp-scan-to-double-sided:
