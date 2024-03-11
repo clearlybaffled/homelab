@@ -5,7 +5,7 @@ metrics:
   enabled: true
 primary:
   persistence:
-    existingClaim: data-mysql-0
+    existingClaim: mysql
   podSecurityContext:
     enabled: true
     fsGroup: 997

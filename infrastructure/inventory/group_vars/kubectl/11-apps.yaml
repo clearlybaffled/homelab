@@ -98,7 +98,6 @@ apps:
     secrets:
       secret:
     localStorage:
-      - path: data
 
   cert-manager:
     path: infrastructure
