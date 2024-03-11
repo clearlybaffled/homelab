@@ -227,7 +227,8 @@ apps:
           POSTGRES_PASSWORD:
             type: password
             name: db
-
+    localStorage:
+      - name: mealie-api-data
 
   linkding:
     namespace: services
