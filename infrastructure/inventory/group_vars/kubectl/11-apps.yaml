@@ -59,6 +59,8 @@ apps:
         - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_scrapeconfigs.yaml"
         - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml"
         - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml"
+    localStorage:
+      - name: grafana
 
   cloudnative-pg:
     namespace: db
