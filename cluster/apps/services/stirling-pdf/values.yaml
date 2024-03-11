@@ -5,7 +5,7 @@ controllers:
         nameOverride: stirling-pdf
         image:
           repository: docker.io/frooodle/s-pdf
-          tag: 0.19.0
+          tag: 0.22.2
         resources:
           requests:
             cpu: 10m
