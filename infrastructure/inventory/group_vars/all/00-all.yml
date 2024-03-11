@@ -16,7 +16,7 @@ ansible_groups:
 ansible_homedir: /var/local/ansible
 
 # (string) Timezone for the servers
-timezone: "America/New_York"
+timezone: "America/Indiana/Indianapolis"
 
 _host_architecture_groups:
   x86_64: amd64

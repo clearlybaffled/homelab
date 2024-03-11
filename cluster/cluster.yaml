@@ -9,7 +9,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/clearlybaffled/homelab
+    repoURL: https://github.com/tsmilam/homelab
     path: cluster/bootstrap
     targetRevision: main
     directory:
