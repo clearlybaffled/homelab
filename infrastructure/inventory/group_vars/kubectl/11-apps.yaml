@@ -431,6 +431,8 @@ apps:
           redis_tasks_password: ''
           redis_cache_password: ''
           napalm_password: ''
+    localStorage:
+      - name: netbox-media
 
   audiobookshelf:
     namespace: media

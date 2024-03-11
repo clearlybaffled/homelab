@@ -1,3 +1,6 @@
+#
+# Ansible managed
+#
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: infrastructure
@@ -5,3 +8,4 @@ generators:
 - ./secret-generator.yaml
 resources:
 - ./graphite/
+- ./storage.yaml

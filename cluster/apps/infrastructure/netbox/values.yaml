@@ -2,7 +2,7 @@ image:
   repository: netboxcommunity/netbox
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: v3.7.1
+  tag: v3.7.3
 
 readinessProbe:
   enabled: true
@@ -57,7 +57,7 @@ cachingRedis:
 
 persistence:
   enabled: true
-  storageClass: ceph-fs-ssd
+  existingClaim: netbox-media
 
 ingress:
   enabled: true
