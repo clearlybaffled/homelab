@@ -31,3 +31,11 @@ patches:
               }
             ]
           }
+  - patch: |-
+      apiVersion: storage.k8s.io/v1
+      kind: StorageClass
+      metadata:
+        name: local-path
+      reclaimPolicy: Retain
+      parameters:
+        nodePath: /srv/cluster/volumes
