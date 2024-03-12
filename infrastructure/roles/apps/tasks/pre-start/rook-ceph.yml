@@ -1,5 +1,0 @@
----
-# Required prep steps for starting a fresh ceph cluster to make sure the drives aren't dirty
-# To be ansible-ized later
-# sgdisk -Z /dev/sdd
-# fdisk /dev/sdd -> w -> q

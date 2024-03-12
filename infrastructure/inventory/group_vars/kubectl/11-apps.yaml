@@ -151,20 +151,6 @@ apps:
         version: 18.12.1
     localStorage:
 
-  rook-ceph:
-    path: infrastructure
-    namespace: rook-ceph
-    wave: "2"
-    charts:
-      - chart: rook/rook-ceph
-        version: &rook v1.13.3
-        valueFiles:
-          - operator.yaml
-      - chart: rook/rook-ceph-cluster
-        version: *rook
-        valueFiles:
-          - ceph-cluster.yaml
-
   reflector:
     enable: false
     namespace: infrastructure
