@@ -81,7 +81,7 @@ metallb_enabled: true
 metallb_speaker_enabled: "{{ metallb_enabled }}"
 metallb_version: v0.13.12
 
-app_template_version: 2.6.0
+app_template_version: 3.0.2
 
 elastic_chart_version: 2.10.0
 mysql_version: 8.0.35
