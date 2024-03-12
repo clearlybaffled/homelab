@@ -1,7 +1,7 @@
 ---
 keys_groups: &default_keys
   - age:
-    - &age age1e764qpphm5nlzp04qf6zcq8f400390d9wmzramq84hqp60k6qyvqsvgg45
+    - &age age1nkwqeq4dng0tk065llulzad834fn3lmu8kmuyl4583vg0erhmq4q0udz3y
 
 creation_rules:
   - path_regex: .*\.sops\.yaml
