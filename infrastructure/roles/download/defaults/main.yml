@@ -138,6 +138,7 @@ skopeo_download_url: https://github.com/lework/skopeo-binary/releases/download/{
 argocd_download_url: https://github.com/argoproj/argo-cd/releases/download/{{ argocd_version }}/argocd-linux-{{ image_arch }}
 yq_download_url: https://github.com/mikefarah/yq/releases/download/{{ yq_version }}/yq_linux_{{ image_arch }}
 runc_download_url: "https://github.com/opencontainers/runc/releases/download/{{ runc_version }}/runc.{{ image_arch }}"
+kustomize_download_url: "https://githubc.com/kubernetes-sigs/kustomize/releases/download/{{ kustomize_version }}_linux_{{ image_arch }}.tar.gz"
 
 # Containers
 # In some cases, we need a way to set --registry-mirror or --insecure-registry for docker,
@@ -509,6 +510,19 @@ downloads:
     mode: "0755"
     groups:
       - kube_control_plane
+
+  kustomize:
+    enabled: "{{ kustomize_enabled }}"
+    file: true
+    version: "{{ kustomize_version }}"
+    dest: "{{ download_cache_dir }}/kustomize"
+    install: "{{ bin_dir }}/kustomize"
+    sha256: "{{ kustomize_binary_checksum|default(None) }}"
+    url: "{{ kustomize_download_url }}"
+    unarchive: false
+    mode: "0755"
+    groups:
+      - kubectl
 
 download_defaults:
   container: false
