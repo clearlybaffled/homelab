@@ -1,7 +1,7 @@
 # Url to access prometheus
 prometheus:
   # Value is templated
-  url: http://kube-prometheus-prometheus.monitoring
+  url: http://kube-prometheus-prometheus.monitoring.svc
   port: 9090
   path: ""
 
@@ -26,7 +26,7 @@ securityContext:
 
 
 rules:
-  default: true
+  default: false
 
   custom: []
     # - seriesQuery: '{__name__=~"^some_metric_count$"}'
@@ -54,11 +54,21 @@ rules:
     cpu:
       containerQuery: |
         sum by (<<.GroupBy>>) (
-          rate(container_cpu_usage_seconds_total{container!="",<<.LabelMatchers>>}[3m])
+          irate(container_cpu_usage_seconds_total{container!="",<<.LabelMatchers>>}[3m])
         )
       nodeQuery: |
-        sum  by (<<.GroupBy>>) (
-          rate(node_cpu_seconds_total{mode!="idle",mode!="iowait",mode!="steal",<<.LabelMatchers>>}[3m])
+        sum by (<<.GroupBy>>) (
+          1 - irate(
+            node_cpu_seconds_total{mode="idle"}[60s]
+          )
+          * on(namespace, pod) group_left(node) (
+            node_namespace_pod:kube_pod_info:{<<.LabelMatchers>>}
+          )
+        )
+        or sum by (<<.GroupBy>>) (
+          1 - irate(
+            windows_cpu_time_total{mode="idle", job="windows-exporter",<<.LabelMatchers>>}[4m]
+          )
         )
       resources:
         overrides:
@@ -72,13 +82,18 @@ rules:
     memory:
       containerQuery: |
         sum by (<<.GroupBy>>) (
-          avg_over_time(container_memory_working_set_bytes{container!="",<<.LabelMatchers>>}[3m])
+          container_memory_working_set_bytes{<<.LabelMatchers>>,container!="",pod!=""}
         )
       nodeQuery: |
         sum by (<<.GroupBy>>) (
-          avg_over_time(node_memory_MemTotal_bytes{<<.LabelMatchers>>}[3m])
+          node_memory_MemTotal_bytes{job="node-exporter",<<.LabelMatchers>>}
           -
-          avg_over_time(node_memory_MemAvailable_bytes{<<.LabelMatchers>>}[3m])
+          node_memory_MemAvailable_bytes{job="node-exporter",<<.LabelMatchers>>}
+        )
+        or sum by (<<.GroupBy>>) (
+          windows_cs_physical_memory_bytes{job="windows-exporter",<<.LabelMatchers>>}
+          -
+          windows_memory_available_bytes{job="windows-exporter",<<.LabelMatchers>>}
         )
       resources:
         overrides:

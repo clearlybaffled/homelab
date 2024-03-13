@@ -133,6 +133,6 @@ prometheus-node-exporter:
         - sourceLabels: [__meta_kubernetes_pod_node_name]
           separator: ;
           regex: ^(.*)$
-          targetLabel: nodename
+          targetLabel: node
           replacement: $1
           action: replace
