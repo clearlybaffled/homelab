@@ -8,7 +8,7 @@ apps:
     kustomize:
       charts:
         - chart: argocd/argo-cd
-          version: 6.2.3
+          version: 6.7.1
           namespace: argocd
           release: argocd
       extras:
