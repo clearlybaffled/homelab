@@ -6,3 +6,5 @@ kind: Kustomization
 namespace: media
 generators:
 - ./secret-generator.yaml
+resources:
+- ./storage.yaml

@@ -15,10 +15,13 @@ envFrom:
   - secretRef:
       name: immich-secret
 
+image:
+  tag: v1.98.2
+
 immich:
   persistence:
     library:
-      existingClaim: pictures
+      existingClaim: immich-library
 
 server:
   enabled: true
@@ -74,3 +77,9 @@ machine-learning:
       type: pvc
       accessMode: ReadWriteOnce
       storageClass: local-path-shared
+
+persistence:
+  pictures:
+    enabled: true
+    type: pvc
+    existingClaim: pictures
