@@ -518,10 +518,6 @@ apps:
     charts:
       - chart: immich/immich
         version: 0.4.0
-    pv: true
-    kustomize:
-      resources:
-        - ./storage.yaml
     secrets:
       secret:
         data:
