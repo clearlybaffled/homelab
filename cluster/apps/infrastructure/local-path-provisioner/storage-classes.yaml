@@ -19,6 +19,6 @@ metadata:
   name: local-path-shared
 provisioner: rancher.io/local-path
 parameters:
-  nodePath: /shared/volumes
+  nodePath: /share/volumes
 volumeBindingMode: WaitForFirstConsumer
 reclaimPolicy: Retain
