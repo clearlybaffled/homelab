@@ -5,13 +5,27 @@ storage:
     - media
     - downloads
   volumes:
-    - name: shared-files
-      path: /share
-      size: &shared 5.5Ti
-    - name: videos
-      path: /videos
-      size: 7.5Ti
+    - name: files
+      path: /share/Files
+      size: &share 5.5Ti
+    - name: books
+      path: /share/Books
+      size: *share
     - name: pictures
-      path: /share/pictures
-      namespace: media
-      size: *shared
+      path: /share/Pictures
+      size: *share
+    - name: movies
+      path: /videos/Movies
+      size: &videos 7.5Ti
+    - name: tv-shows
+      path: "/videos/TV Shows"
+      size: *videos
+    - name: audio
+      path: /share/Audio
+      size: *share
+    - name: downloads
+      path: /share/Downloads
+      size: *share
+    - name: music
+      path: /share/Music
+      size: *share

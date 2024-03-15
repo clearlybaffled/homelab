@@ -1,3 +1,6 @@
+#
+# Ansible managed
+#
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -9,21 +12,19 @@ metadata:
     argocd.argoproj.io/sync-wave: '4'
 spec:
   project: default
-  sources:
-  - chart: nextcloud
-    repoURL: https://nextcloud.github.io/helm/
-    targetRevision: 4.5.18
-    helm:
-      valueFiles:
-      - $repo/cluster/apps/services/nextcloud/values.yaml
-      releaseName: nextcloud
-  - repoURL: https://github.com/clearlybaffled/homelab
+  source:
+    repoURL: https://github.com/clearlybaffled/homelab
     path: cluster/apps/services/nextcloud
     targetRevision: main
-    ref: repo
   destination:
     name: in-cluster
     namespace: services
+  ignoreDifferences:
+  - kind: PersistentVolume
+    jsonPointers:
+    - /spec/claimRef/resourceVersion
+    - /spec/claimRef/uid
+    - /status/lastPhaseTransitionTime
   syncPolicy:
     automated:
       prune: true
@@ -31,3 +32,4 @@ spec:
     syncOptions:
     - CreateNamespace=true
     - ServerSideApply=true
+    - RespectIgnoreDifferences=true

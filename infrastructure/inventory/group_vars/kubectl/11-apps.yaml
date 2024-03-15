@@ -148,7 +148,7 @@ apps:
     wave: "0"
     charts:
       - chart: bitnami/redis
-        version: 18.12.1
+        version: 18.19.2
     localStorage:
 
   reflector:
@@ -191,9 +191,25 @@ apps:
   nextcloud:
     namespace: services
     wave: "4"
-    charts:
-      - chart: nextcloud/nextcloud
-        version: 4.5.18
+    kustomize:
+      charts:
+        - chart: nextcloud/nextcloud
+          version: 4.6.4
+      extras:
+        patchesStrategicMerge:
+          - |-
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: nextcloud-metrics
+              spec:
+                template:
+                  spec:
+                    containers:
+                      - name: metrics-exporter
+                        env:
+                          - name: NEXTCLOUD_SERVER
+                            value: "http://nextcloud.services.svc:8080"
     secrets:
       secret:
         data:
@@ -201,10 +217,19 @@ apps:
           nextcloud-password:
             type: password
             name: admin
+          nextcloud-token:
+            name: token
+            type: password
           db-username: nextcloud
           db-password:
             type: password
             name: db
+    localStorage:
+      - name: nextcloud
+      - name: nextcloud-data
+        path: /disks/sdg/nextcloud-data
+        modes:
+          - ReadWriteMany
 
   mealie:
     namespace: services

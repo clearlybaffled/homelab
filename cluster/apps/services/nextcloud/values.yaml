@@ -11,8 +11,17 @@ ingress:
   enabled: true
   className: nginx
   annotations:
-    cert-manager.io/cluster-issuer: ca-issuer
-    hajimari.io/icon: simple-icons:nextcloud
+    cert-manager.io/common-name: &host nextcloud.hermleigh.home
+    cert-manager.io/subject-countries: US
+    cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+    cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
+    cert-manager.io/private-key-algorithm: ECDSA
+    cert-manager.io/private-key-size: "384"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/description: "Personal Cloud storage and apps"
+    gethomepage.dev/icon: nextcloud.svg
+    gethomepage.dev/group: "Apps & Services"
+    gethomepage.dev/name: NextCloud
     nginx.ingress.kubernetes.io/proxy-body-size: "10G"
     nginx.ingress.kubernetes.io/proxy-buffering: "off"
     nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
@@ -43,7 +52,7 @@ ingress:
   tls:
     - secretName: nextcloud-tls
       hosts:
-        - &host nextcloud.hermleigh.home
+        - *host
         - nextcloud
   labels: {}
   path: /
@@ -57,6 +66,7 @@ nextcloud:
     secretName: nextcloud-secret
     usernameKey: nextcloud-username
     passwordKey: nextcloud-password
+    tokenKey: nextcloud-token
 
   # Default config files
   # IMPORTANT: Will be used only if you put extra configs, otherwise default will come from nextcloud itself
@@ -101,30 +111,40 @@ nextcloud:
   ##
   ## Extra environment variables
   extraEnv:
-    # - name: REDIS_HOST
-    #   value: redis.db
-    # - name: REDIS_HOST_PASSWORD
-    #   valueFrom:
-    #     secretKeyRef:
-    #       name: nextcloud-secret
-    #       key: redis-password
+    - name: REDIS_HOST
+      value: redis-master.db.svc
     - name: TZ
       value: America/New_York
 
   # Extra mounts for the pods. Example shown is for connecting a legacy NFS volume
   # to NextCloud pods in Kubernetes. This can then be configured in External Storage
   extraVolumes:
-  - name: shared
+  - name: files
     persistentVolumeClaim:
-      claimName: shared-files
-  - name: videos
+      claimName: files
+  - name: movies
     persistentVolumeClaim:
-      claimName: videos
+      claimName: movies
+  - name: pictures
+    persistentVolumeClaim:
+      claimName: pictures
+  - name: music
+    persistentVolumeClaim:
+      claimName: music
+  - name: books
+    persistentVolumeClaim:
+      claimName: books
   extraVolumeMounts:
-  - name: shared
-    mountPath: "/shared"
-  - name: videos
-    mountPath: /videos
+  - name: files
+    mountPath: "/Files"
+  - name: movies
+    mountPath: /movies
+  - name: pictures
+    mountPath: /Pictures
+  - name: music
+    mountPath: /Music
+  - name: books
+    mountPath: /Books
 
 internalDatabase:
   enabled: false
@@ -155,7 +175,7 @@ redis:
 persistence:
   # Nextcloud Data (/var/www/html)
   enabled: true
-  storageClass: ceph-fs-ssd
+  existingClaim: nextcloud
   accessMode: ReadWriteOnce
   size: 8Gi
 
@@ -163,7 +183,7 @@ persistence:
   ## Useful to store data on a different storageClass (e.g. on slower disks)
   nextcloudData:
     enabled: true
-    storageClass: ceph-fs-ssd
+    existingClaim: nextcloud-data
     accessMode: ReadWriteMany
     size: 50Gi
 
@@ -182,15 +202,19 @@ metrics:
   # Use API token if set, otherwise fall back to password authentication
   # https://github.com/xperimental/nextcloud-exporter#token-authentication
   # Currently you still need to set the token manually in your nextcloud install
-  token: ""
+  token: nextcloud-token
   timeout: 5s
   # if set to true, exporter skips certificate verification of Nextcloud server.
   tlsSkipVerify: false
 
   image:
     repository: xperimental/nextcloud-exporter
-    tag: 0.6.0
+    tag: 0.6.2
     pullPolicy: IfNotPresent
+
+  serviceMonitor:
+    enabled: true
+    namespace: monitoring
 
   service:
     type: ClusterIP
@@ -198,3 +222,6 @@ metrics:
       prometheus.io/scrape: "true"
       prometheus.io/port: "9205"
     labels: {}
+
+rbac:
+  enabled: true
