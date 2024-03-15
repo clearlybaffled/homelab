@@ -1,10 +1,10 @@
 controllers:
   main:
     containers:
-      main:
+      mealie:
         image:
           repository: ghcr.io/mealie-recipes/mealie
-          tag: v1.2.0
+          tag: v1.3.2
           pullPolicy: IfNotPresent
         env:
           TZ: America/New_York
@@ -25,7 +25,8 @@ controllers:
             memory: 512Mi
 
 service:
-  main:
+  mealie:
+    controller: main
     ports:
       http:
         port: 9000
@@ -48,7 +49,7 @@ ingress:
             pathType: Prefix
             service:
               port: http
-              name: main
+              identifier: mealie
     tls:
       - secretName: mealie-tls-ingress
         hosts:
@@ -57,9 +58,6 @@ ingress:
 persistence:
   api-data:
     enabled: true
-    accessMode: ReadWriteOnce
-    size: 10Gi
-    storageClass: ceph-fs-ssd
-    retain: true
+    existingClaim: mealie-api-data
     globalMounts:
       - path: /app/data
