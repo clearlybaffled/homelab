@@ -41,34 +41,70 @@
   vars:
     k8s_apis: "{{ cluster_info.apis.keys() | list }}"
 
-- name: Configure Storage | {{ app.name }}
-  include_tasks: storage.yml
+- name: Storage
   when: ('localStorage' in app)
-  with_items:
-   - "{{ app.localStorage }}"
   vars:
-    path: "{{ 
-      (item.path|default('') is abs) 
-        | ternary(
-            item.path|default(''),
-            (
-              local_storage_root_dir,
-              app.namespace, 
-              app.name, 
-              item.path | default(item.name) | default(app.name)
-            )
-          ) | path_join 
-      }}"
+    storage_dirs: []
+    paths: []
+  block:
+    - name: Find Storage Dirs | {{ app.name }}
+      set_fact: 
+        paths: "{{ paths + 
+            [ (item.path|default('') is abs) 
+                | ternary(
+                    item.path|default(''),
+                    (
+                      local_storage_root_dir,
+                      app.namespace, 
+                      app.name, 
+                      item.path | default(item.name) | default(app.name)
+                    )
+                ) | path_join ]
+          }}"
+      with_items:
+      - "{{ app.localStorage }}"
+      loop_control:
+        label: "{{ item.path | default(app.name) }}"
 
-- name: Generate storage manifest file
-  template:
-    src: storage.yaml.j2
-    dest: "{{ app.app_dir }}/storage.yaml"
-    mode: "0644"
-    force: true
-  when: ('localStorage' in app)
+    - name: Ensure target directories exist | {{ item }}
+      delegate_to: parche
+      become: true
+      file:
+        path: "{{ item }}"
+        state: directory
+        recurse: true
+        mode: "0775"
+        group: kube
+      loop: "{{ paths }}"
 
-- name: Ensure cluster/bootstrap namespace dir exists
+    - name: Get filesystem size for each directory | {{ item }}
+      delegate_to: parche
+      command: "df -h {{ item }}"
+      register: fs_sizes
+      loop: "{{ paths }}"
+
+    - name: Build storage_dirs | {{ app.name }}
+      set_fact:
+        storage_dirs: "{{ storage_dirs +
+            [{ 
+              'path': paths[i],
+              'modes': item.modes | default(['ReadWriteOnce']),
+              'name': item.name | default(app.name),
+              'size': (fs_sizes.results[i].stdout | community.general.jc('df'))[0].size
+            }]
+          }}"
+      loop: "{{ app.localStorage }}"
+      loop_control:
+        index_var: i
+
+    - name: Generate storage manifest file | {{ app.name }}
+      template:
+        src: storage.yaml.j2
+        dest: "{{ app.app_dir }}/storage.yaml"
+        mode: "0644"
+        force: true
+
+- name: Ensure cluster/bootstrap namespace dir exists | {{ app.name }}
   file:
     path: "{{ app.manifest_file | dirname }}"
     state: directory
