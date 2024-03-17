@@ -12,19 +12,21 @@
   gather_facts: false
   any_errors_fatal: true
   become: true
-  tags: node
   roles:
     - role: kubernetes/node
+      tags: node
     - role: download
       tags: download
       vars:
         download_container: false
       when: not skip_downloads
     - role: containers/runtime
+      tags: cri
     - role: download
       tags: download
       when: not skip_downloads
     - role: kubernetes/kubelet
+      tags: kubelet
 
 - name: Install control plane
   hosts: kube_control_plane

@@ -32,7 +32,7 @@ kube_api_anonymous_auth: true
 disable_swap: true
 
 ## Change this to use another Kubernetes version, e.g. a current beta release
-kube_version: v1.29.0
+kube_version: v1.29.2
 
 # Get kubernetes major version (i.e. 1.17.4 => 1.17)
 kube_major_version: "{{ kube_version | regex_replace('^v([0-9])+\\.([0-9]+)\\.[0-9]+', 'v\\1.\\2') }}"
@@ -214,17 +214,17 @@ podsecuritypolicy_enabled: false
 # kube_master_pid_reserved: "1000"
 
 ## Optionally reserve resources for OS system daemons.
-# system_reserved: true
+system_reserved: true
 ## Uncomment to override default values
 ## The following two items need to be set when system_reserved is true
-# system_reserved_cgroups_for_service_slice: system.slice
-# system_reserved_cgroups: "/{{ system_reserved_cgroups_for_service_slice }}"
+system_reserved_cgroups_for_service_slice: system.slice
+system_reserved_cgroups: "/{{ system_reserved_cgroups_for_service_slice }}"
 # system_memory_reserved: 512Mi
 # system_cpu_reserved: 500m
 # system_ephemeral_storage_reserved: 2Gi
 ## Reservation for master hosts
-# system_master_memory_reserved: 256Mi
-# system_master_cpu_reserved: 250m
+system_master_memory_reserved: 1Gi
+system_master_cpu_reserved: "1"
 # system_master_ephemeral_storage_reserved: 2Gi
 
 ## Eviction Thresholds to avoid system OOMs

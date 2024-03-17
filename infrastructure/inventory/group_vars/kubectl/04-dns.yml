@@ -12,7 +12,7 @@
 dns_mode: coredns
 
 # CoreDNS
-coredns_version: 'v1.11.1'
+coredns_version: 'v1.10.1'
 
 # Enable k8s_external plugin for CoreDNS
 enable_coredns_k8s_external: true
@@ -36,6 +36,5 @@ dns_domain: "{{ cluster_name }}"
 # Coredns version should be supported by corefile-migration (or at least work with)
 # bundle with kubeadm; if not 'basic' upgrade can sometimes fail
 
-coredns_image_is_namespaced: "{{ (coredns_version is version('v1.7.1','>=')) }}"
-coredns_image_repo: "{{ kube_image_repo }}{{'/coredns/coredns' if (coredns_image_is_namespaced | bool) else '/coredns' }}"
-coredns_image_tag: "{{ coredns_version if (coredns_image_is_namespaced | bool) else (coredns_version | regex_replace('^v', '')) }}"
+coredns_image_repo: "{{ kube_image_repo }}/coredns/coredns"
+coredns_image_tag: "{{ coredns_version }}"

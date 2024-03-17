@@ -4,6 +4,8 @@
   any_errors_fatal: true
   gather_facts: true
   become: true
+  tags:
+    - cluster
   tasks:
     - name: Run resets from relevant roles
       include_role:
@@ -17,6 +19,8 @@
 
 - name: Tear down terraform stacks
   hosts: localhost
+  tags:
+    - terraform
   tasks:
     - name: Tear down terraform stack
       community.general.terraform:

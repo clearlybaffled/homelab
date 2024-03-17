@@ -141,7 +141,7 @@ apps:
     wave: "1"
     charts:
       - chart: metallb/metallb
-        version: 0.14.3
+        version: "{{ metallb_version }}"
 
   redis:
     namespace: db
@@ -526,6 +526,8 @@ apps:
           DB_PASSWORD:
             type: password
             name: db
+    localStorage:
+      - name: immich-library
 
   stirling-pdf:
     namespace: services

@@ -1,5 +1,5 @@
 ---
-powershell_version: 7.3.3.0
+powershell_version: 7.4.1
 
 winget_packages:
   7z:
@@ -95,4 +95,12 @@ winget_packages:
   powertoys:
     Name: PowerToys (Preview) x64
     Id: XP89DCGQ3K6VLD
+    source: winget
+  openjdk:
+    Name: Microsoft Build of OpenJDK with Hotspot 21
+    Id: Microsoft.OpenJDK.21
+    source: winget
+  gpg4win:
+    Name: Gpg4win 
+    Id: GnuPG.Gpg4win
     source: winget

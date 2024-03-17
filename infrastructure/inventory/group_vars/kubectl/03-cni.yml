@@ -1,13 +1,13 @@
 ---
-flannel_backend_type: vxlan
+flannel_backend_type: host-gw
 flannel_interface: br0
 
-flannel_version: v0.24.0
-flannel_cni_version: v1.2.0
-cni_version: v1.4.0
+flannel_version: v0.24.3
+flannel_cni_version: v1.4.0-flannel1
+cni_version: v1.4.1
 pod_infra_version: 3.9
 
 flannel_image_repo: "{{ docker_image_repo }}/flannel/flannel"
 flannel_image_tag: "{{ flannel_version }}"
-flannel_init_image_repo: "{{ docker_image_repo }}/flannelcni/flannel-cni-plugin"
+flannel_init_image_repo: "{{ docker_image_repo }}/flannel/flannel-cni-plugin"
 flannel_init_image_tag: "{{ flannel_cni_version }}"

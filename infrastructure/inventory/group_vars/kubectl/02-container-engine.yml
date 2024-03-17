@@ -13,10 +13,10 @@ crun_enabled: false
 runc_enabled: true
 
 # Project versions
-crio_version: v1.29.0
+crio_version: v1.29.2
 crictl_version: v1.29.0
-runc_version: v1.1.10
-skopeo_version: v1.13.3
+runc_version: v1.1.12
+skopeo_version: v1.14.2
 
 # CRI socket path
 cri_socket_path: /var/run/crio/crio.sock
@@ -29,8 +29,7 @@ image_pull_command: "{{ bin_dir }}/crictl pull"
 image_arch: "{{host_architecture | default('amd64')}}"
 
 
-# gcr and kubernetes image repo define
-gcr_image_repo: gcr.io
+# kubernetes image repo define
 kube_image_repo: registry.k8s.io
 
 # docker image repo define

@@ -47,7 +47,18 @@
   with_items:
    - "{{ app.localStorage }}"
   vars:
-    path: "{{ (item.path|default('') is abs) | ternary(item.path|default(''), (local_storage_root_dir, app.namespace, app.name, item.path|default(app.name))) | path_join }}"
+    path: "{{ 
+      (item.path|default('') is abs) 
+        | ternary(
+            item.path|default(''),
+            (
+              local_storage_root_dir,
+              app.namespace, 
+              app.name, 
+              item.path | default(item.name) | default(app.name)
+            )
+          ) | path_join 
+      }}"
 
 - name: Generate storage manifest file
   template:
@@ -59,7 +70,7 @@
 
 - name: Ensure cluster/bootstrap namespace dir exists
   file:
-    path: "{{ (cluster_dir, 'bootstrap', app.namespace ) | path_join }}"
+    path: "{{ app.manifest_file | dirname }}"
     state: directory
 
 - name: ArgoCD application manifest | {{ app.name }}
@@ -91,6 +102,7 @@
     url: "{{ git_repo_ssh_url }}"
     push: "{{ git_push | default(true) }}"
     branch: "{{ git_branch }}"
+    push_force: "{{ git_push_force | default(false) }}"
   when:
     - files | length > 0
     - not batch_apps | default(false)
@@ -118,6 +130,7 @@
   tags: commit
   when:
     - git_commit is not skipped
+    - git_push | default(true) is true
 
 - name: Launch application when wave is defined
   block:

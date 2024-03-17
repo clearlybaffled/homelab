@@ -21,7 +21,7 @@
                 (
                   cluster_dir,
                   'bootstrap',
-                  item.value.namespace,
+                  ('path' in item.value) | ternary(item.value.path, item.value.namespace),
                   item.key+'.yaml'
                 ) | path_join
              })
@@ -73,7 +73,7 @@
           'community.sops.sops',
           (
             apps.mysql.app_dir,
-            apps.secrets.keys() | first ~ '.sops.yaml'
+            apps.mysql.secrets.keys() | first ~ '.sops.yaml'
           ) | path_join
         ) | from_yaml
       }}

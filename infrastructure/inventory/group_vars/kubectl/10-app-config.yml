@@ -1,9 +1,8 @@
 ---
 # Helm deployment
 helm_enabled: true
-helm_version: v3.13.0
+helm_version: v3.14.3
 helm_repositories:
-  hajimari: https://hajimari.io
   prometheus-community: https://prometheus-community.github.io/helm-charts
   traefik: https://traefik.github.io/charts
   argocd: https://argoproj.github.io/argo-helm
@@ -82,7 +81,7 @@ enable_network_policy: true
 # MetalLB deployment
 metallb_enabled: true
 metallb_speaker_enabled: "{{ metallb_enabled }}"
-metallb_version: v0.13.12
+metallb_version: v0.14.3
 
 app_template_version: 3.0.2
 
@@ -92,7 +91,7 @@ prometheus_version: 2.47.0
 prometheus_operator_version: v0.72.0
 kube_prometheus_stack_chart_version: 56.8.2
 vault_chart_version: 0.25.0
-keycloak_version: 23.0.6
+keycloak_version: 24.0.1
 
 grafana_dashboards:
   - folder_name: Ceph

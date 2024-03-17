@@ -41,7 +41,6 @@ download_always_pull: false
 
 # Some problems may occur when downloading files over https proxy due to ansible bug
 # https://github.com/ansible/ansible/issues/32750. Set this variable to False to disable
-# SSL validation of get_url module. Note that kubespray will still be performing checksum validation.
 download_validate_certs: true
 
 # Use the first kube_control_plane if download_localhost is not set
@@ -49,80 +48,6 @@ download_delegate: "{{ groups['kube_control_plane'][0] }}"
 
 # Allow control the times of download retries for files and containers
 download_retries: 4
-
-# Checksums
-crio_archive_checksums:
-  arm64: 8bd9c912de7f8805c162e089a34ca29e607c48a149940193466ccf7bdf74f606
-  amd64: 7e030b2e89d4eb2701d9164e67c804fcb872c29accd76f29bcc148a86a920531
-
-crictl_checksums:
-  arm64: cfa28be524b5da1a6dded455bb497dfead27b1fd089e1161eb008909509be585
-  amd64: 0c1a0f9900c15ee7a55e757bcdc220faca5dd2e1cfc120459ad1f04f08598127
-
-crun_checksums:
-  arm64: 5394336630618c724274bf3e5e0c8a64c2e67e4723f671029c4f57f459359f73
-  amd64: f82ccdc575a72fe2d91ea8d68161746a0e28898bc86a2a6f55eed00aa1d79afa
-
-skopeo_binary_checksums:
-  arm64: 693f7d2791e0549b173b2c16f1c3326328aa5e95bc2b4d71f5ecd35b6524b09d
-  amd64: 9aad99e41533800ce08526a602de2f87b8ce123ea9547358e2cccfa2f9c3a9e0
-
-# Kubernetes versions above Kubespray's current target version are untested and should be used with caution.
-kubelet_checksums:
-  arm64: d360f919c279a05441b27178030c3d17134c1f257c95f4b22bdb28c2290993e7
-  amd64: 992d6298bd494b65f54c838419773c4976aca72dfb36271c613537efae7ab7d2
-kubectl_checksums:
-  arm64: 0f62cbb6fafa109f235a08348d74499a57bb294c2a2e6ee34be1fa83432fec1d
-  amd64: 026c8412d373064ab0359ed0d1a25c975e9ce803a093d76c8b30c5996ad73e75
-kubeadm_checksums:
-  arm64: e9a7dbca77f9576a98af1db8747e9dc13e930e40295eaa259dd99fd6e17a173f
-  amd64: 87a1bf6603e252a8fa46be44382ea218cb8e4f066874d149dc589d0f3a405fed
-
-etcd_binary_checksums:
-  # Etcd does not have arm32 builds at the moment, having some dummy value is
-  # required to avoid "no attribute" error
-  arm64: 888e25c9c94702ac1254c7655709b44bb3711ebaabd3cb05439f3dd1f2b51a87
-  amd64: 4db32e3bc06dd0999e2171f76a87c1cffed8369475ec7aa7abee9023635670fb
-
-cni_binary_checksums:
-  arm64: fde5bf2da73995196d248177ee8deeafa8005f33cbe1ab33bd2d75c17ca5a99a
-  amd64: f3a841324845ca6bf0d4091b4fc7f97e18a623172158b72fc3fdcdb9d42d2d37
-
-krew_archive_checksums:
-  linux:
-    arm64: 0994923848882ad0d4825d5af1dc227687a10a02688f785709b03549dd34d71d
-    amd64: 5df32eaa0e888a2566439c4ccb2ef3a3e6e89522f2f2126030171e2585585e4f
-
-helm_archive_checksums:
-  arm64: 919173e8fb7a3b54d76af9feb92e49e86d5a80c5185020bae8c393fa0f0de1e8
-  amd64: 0b1be96b66fab4770526f136f5f1a385a47c41923d33aab0dcb500e0f6c1bf7c
-
-cri_dockerd_archive_checksums:
-  arm64: 2a7e5bb156b80f737ef07ae2e8050394ea3e47fb0b7055afac47a365eaa321fb
-  amd64: 8e6a445591e77b9570299d0afadeee26cb7aa23e4bfd7518baa6a3260b9ee889
-
-yq_checksums:
-  arm64: 40ee3000d5b65703caffb0263a7d5e75164f10afd2c9a3c879b6016f0300ac25
-  amd64: 2aabdd748d301fc2286ea9f73eb20477b4ce173fbf072e0102fff1fcbed05985
-
-argocd_checksums:
-  amd64: 81f7551b72f7ab9f834d8871e186bb6ae70000fa7a53f59296378c921779fd2d
-  arm64: 03e649483a8e121e4fac87127ee32485c7f26499fbed940738522cdba00bd20f
-
-etcd_binary_checksum: "{{ etcd_binary_checksums[image_arch] }}"
-cni_binary_checksum: "{{ cni_binary_checksums[image_arch] }}"
-kubelet_binary_checksum: "{{ kubelet_checksums[image_arch] }}"
-kubectl_binary_checksum: "{{ kubectl_checksums[image_arch] }}"
-kubeadm_binary_checksum: "{{ kubeadm_checksums[image_arch] }}"
-yq_binary_checksum: "{{ yq_checksums[image_arch] }}"
-crictl_binary_checksum: "{{ crictl_checksums[image_arch] }}"
-crio_archive_checksum: "{{ crio_archive_checksums[image_arch] }}"
-helm_archive_checksum: "{{ helm_archive_checksums[image_arch] }}"
-crun_binary_checksum: "{{ crun_checksums[image_arch] }}"
-krew_archive_checksum: "{{ krew_archive_checksums[host_os][image_arch] }}"
-containerd_archive_checksum: "{{ containerd_archive_checksums[image_arch] }}"
-skopeo_binary_checksum: "{{ skopeo_binary_checksums[image_arch] }}"
-argocd_binary_checksum: "{{ argocd_binary_checksums[image_arch] }}"
 
 # Download URLs
 kubelet_download_url: https://storage.googleapis.com/kubernetes-release/release/{{ kube_version }}/bin/linux/{{ image_arch }}/kubelet
@@ -138,7 +63,7 @@ skopeo_download_url: https://github.com/lework/skopeo-binary/releases/download/{
 argocd_download_url: https://github.com/argoproj/argo-cd/releases/download/{{ argocd_version }}/argocd-linux-{{ image_arch }}
 yq_download_url: https://github.com/mikefarah/yq/releases/download/{{ yq_version }}/yq_linux_{{ image_arch }}
 runc_download_url: "https://github.com/opencontainers/runc/releases/download/{{ runc_version }}/runc.{{ image_arch }}"
-kustomize_download_url: "https://githubc.com/kubernetes-sigs/kustomize/releases/download/{{ kustomize_version }}_linux_{{ image_arch }}.tar.gz"
+kustomize_download_url: "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F{{ kustomize_version}}/kustomize_{{ kustomize_version }}_linux_{{ image_arch }}.tar.gz"
 
 # Containers
 # In some cases, we need a way to set --registry-mirror or --insecure-registry for docker,
@@ -225,9 +150,6 @@ downloads:
     dest: "{{ download_cache_dir }}/etcd-{{ etcd_version }}-linux-{{ image_arch }}.tar.gz"
     repo: "{{ etcd_image_repo }}"
     tag: "{{ etcd_image_tag }}"
-    sha256: >-
-      {{ etcd_binary_checksum if (etcd_deployment_type == 'host')
-      else etcd_digest_checksum|d(None) }}
     url: "{{ etcd_download_url }}"
     unarchive: "{{ etcd_deployment_type == 'host' }}"
     mode: "0755"
@@ -240,7 +162,6 @@ downloads:
     version: "{{ cni_version }}"
     dest: "{{ download_cache_dir }}/cni-plugins-linux-{{ image_arch }}-{{ cni_version }}.tar.gz"
     install: /opt/cni/bin/
-    sha256: "{{ cni_binary_checksum }}"
     url: "{{ cni_download_url }}"
     unarchive: true
     owner: root
@@ -254,7 +175,6 @@ downloads:
     version: "{{ kubeadm_version }}"
     dest: "{{ download_cache_dir }}/kubeadm-{{ kubeadm_version }}-{{ image_arch }}"
     install: "{{ bin_dir }}/kubeadm"
-    sha256: "{{ kubeadm_binary_checksum }}"
     url: "{{ kubeadm_download_url }}"
     unarchive: false
     mode: "0755"
@@ -267,7 +187,6 @@ downloads:
     version: "{{ kube_version }}"
     dest: "{{ download_cache_dir }}/kubelet-{{ kube_version }}-{{ image_arch }}"
     install: "{{ bin_dir }}/kubelet"
-    sha256: "{{ kubelet_binary_checksum }}"
     url: "{{ kubelet_download_url }}"
     unarchive: false
     mode: "0755"
@@ -280,7 +199,6 @@ downloads:
     version: "{{ kube_version }}"
     dest: "{{ download_cache_dir }}/kubectl-{{ kube_version }}-{{ image_arch }}"
     install: "{{ bin_dir }}/kubectl"
-    sha256: "{{ kubectl_binary_checksum }}"
     url: "{{ kubectl_download_url }}"
     unarchive: false
     mode: "0755"
@@ -293,7 +211,6 @@ downloads:
     version: "{{ crictl_version }}"
     dest: "{{ download_cache_dir }}/crictl-{{ crictl_version }}-linux-{{ image_arch }}.tar.gz"
     install: "{{ bin_dir }}/crictl"
-    sha256: "{{ crictl_binary_checksum }}"
     url: "{{ crictl_download_url }}"
     unarchive: true
     mode: "0755"
@@ -305,7 +222,6 @@ downloads:
     enabled: "{{ container_manager == 'crio' }}"
     version: "{{ crio_version }}"
     dest: "{{ download_cache_dir }}/cri-o.{{ image_arch }}.{{ crio_version }}.tar.gz"
-    sha256: "{{ crio_archive_checksum }}"
     url: "{{ crio_download_url }}"
     unarchive: true
     mode: "0755"
@@ -331,7 +247,6 @@ downloads:
     version: "{{ skopeo_version }}"
     dest: "{{ download_cache_dir }}/skopeo"
     install: "{{ bin_dir }}/skopeo"
-    sha256: "{{ skopeo_binary_checksum }}"
     url: "{{ skopeo_download_url }}"
     unarchive: false
     mode: "0755"
@@ -344,7 +259,6 @@ downloads:
     container: true
     repo: "{{ flannel_image_repo }}"
     tag: "{{ flannel_image_tag }}"
-    sha256: "{{ flannel_digest_checksum|default(None) }}"
     groups:
       - k8s_cluster
 
@@ -353,7 +267,6 @@ downloads:
     container: true
     repo: "{{ flannel_init_image_repo }}"
     tag: "{{ flannel_init_image_tag }}"
-    sha256: "{{ flannel_init_digest_checksum|default(None) }}"
     groups:
       - k8s_cluster
   pod_infra:
@@ -361,7 +274,6 @@ downloads:
     container: true
     repo: "{{ pod_infra_image_repo }}"
     tag: "{{ pod_infra_image_tag }}"
-    sha256: "{{ pod_infra_digest_checksum|default(None) }}"
     groups:
       - k8s_cluster
 
@@ -370,7 +282,6 @@ downloads:
     container: true
     repo: "{{ kube_vip_image_repo }}"
     tag: "{{ kube_vip_image_tag }}"
-    sha256: "{{ kube_vip_digest_checksum|default(None) }}"
     groups:
       - kube_control_plane
 
@@ -379,7 +290,6 @@ downloads:
     container: true
     repo: "{{ coredns_image_repo }}"
     tag: "{{ coredns_image_tag }}"
-    sha256: "{{ coredns_digest_checksum|default(None) }}"
     groups:
       - k8s_cluster
 
@@ -389,7 +299,6 @@ downloads:
     version: "{{ helm_version }}"
     dest: "{{ download_cache_dir }}/helm-{{ helm_version }}-linux-{{ image_arch }}.tar.gz"
     install: "{{ bin_dir }}/helm"
-    sha256: "{{ helm_archive_checksum }}"
     url: "{{ helm_download_url }}"
     unarchive: true
     unarchive_extra_opts:
@@ -405,7 +314,6 @@ downloads:
     file: true
     version: "{{ krew_version }}"
     dest: "{{ download_cache_dir }}/krew-{{ host_os }}_{{ image_arch }}.tar.gz"
-    sha256: "{{ krew_archive_checksum }}"
     url: "{{ krew_download_url }}"
     install: "{{ bin_dir }}/krew"
     unarchive: true
@@ -418,7 +326,6 @@ downloads:
     container: true
     repo: "{{ registry_image_repo }}"
     tag: "{{ registry_image_tag }}"
-    sha256: "{{ registry_digest_checksum|default(None) }}"
     groups:
       - kube_node
 
@@ -427,7 +334,6 @@ downloads:
     container: true
     repo: "{{ cert_manager_controller_image_repo }}"
     tag: "{{ cert_manager_controller_image_tag }}"
-    sha256: "{{ cert_manager_controller_digest_checksum|default(None) }}"
     groups:
       - kube_node
 
@@ -436,7 +342,6 @@ downloads:
     container: true
     repo: "{{ cert_manager_cainjector_image_repo }}"
     tag: "{{ cert_manager_cainjector_image_tag }}"
-    sha256: "{{ cert_manager_cainjector_digest_checksum|default(None) }}"
     groups:
       - kube_node
 
@@ -445,7 +350,6 @@ downloads:
     container: true
     repo: "{{ cert_manager_webhook_image_repo }}"
     tag: "{{ cert_manager_webhook_image_tag }}"
-    sha256: "{{ cert_manager_webhook_digest_checksum|default(None) }}"
     groups:
       - kube_node
 
@@ -454,7 +358,6 @@ downloads:
     container: true
     repo: "{{ dashboard_image_repo }}"
     tag: "{{ dashboard_image_tag }}"
-    sha256: "{{ dashboard_digest_checksum|default(None) }}"
     groups:
       - kube_control_plane
 
@@ -463,7 +366,6 @@ downloads:
     container: true
     repo: "{{ dashboard_metrics_scraper_repo }}"
     tag: "{{ dashboard_metrics_scraper_tag }}"
-    sha256: "{{ dashboard_digest_checksum|default(None) }}"
     groups:
       - kube_control_plane
 
@@ -472,7 +374,6 @@ downloads:
     container: true
     repo: "{{ metallb_speaker_image_repo }}"
     tag: "{{ metallb_version }}"
-    sha256: "{{ metallb_speaker_digest_checksum|default(None) }}"
     groups:
       - kube_control_plane
 
@@ -481,7 +382,6 @@ downloads:
     container: true
     repo: "{{ metallb_controller_image_repo }}"
     tag: "{{ metallb_version }}"
-    sha256: "{{ metallb_controller_digest_checksum|default(None) }}"
     groups:
       - kube_control_plane
 
@@ -491,7 +391,6 @@ downloads:
     version: "{{ argocd_version }}"
     dest: "{{ download_cache_dir }}/argocd-linux-{{ image_arch }}"
     install: "{{ bin_dir }}/argocd"
-    sha256: "{{ argocd_binary_checksum|default(None) }}"
     url: "{{ argocd_download_url }}"
     unarchive: false
     mode: "0755"
@@ -504,7 +403,6 @@ downloads:
     version: "{{ yq_version }}"
     dest: "{{ download_cache_dir }}/yq"
     install: "{{ bin_dir }}/yq"
-    sha256: "{{ yq_binary_checksum|default(None) }}"
     url: "{{ yq_download_url }}"
     unarchive: false
     mode: "0755"
@@ -517,7 +415,6 @@ downloads:
     version: "{{ kustomize_version }}"
     dest: "{{ download_cache_dir }}/kustomize"
     install: "{{ bin_dir }}/kustomize"
-    sha256: "{{ kustomize_binary_checksum|default(None) }}"
     url: "{{ kustomize_download_url }}"
     unarchive: false
     mode: "0755"

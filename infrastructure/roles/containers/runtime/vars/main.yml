@@ -1,0 +1,2 @@
+crio_graphroot: /containers/storage
+crio_runroot: /containers/storage
