@@ -72,4 +72,5 @@ certificates_duration: 36500
 
 etcd_config_dir: /etc/ssl/etcd
 etcd_events_data_dir: "/var/lib/etcd-events"
-etcd_cert_dir: "{{ etcd_config_dir }}/ssl"
+# etcd_cert_dir: "{{ etcd_config_dir }}/ssl"
+etcd_cert_dir: "{{ kube_cert_dir }}/etcd"

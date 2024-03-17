@@ -14,8 +14,16 @@
       with_items:
         # - apps
         - kubernetes/control_plane
-        - containers/network
         - containers/runtime
+
+    - name: Reset | include file with reset tasks specific to the network_plugin if exists
+      include_role:
+        name: "containers/network/{{ kube_network_plugin }}"
+        tasks_from: reset
+      when:
+        - kube_network_plugin in ['flannel', 'cilium', 'kube-router', 'calico']
+      tags:
+        - network
 
 - name: Tear down terraform stacks
   hosts: localhost

@@ -14,6 +14,7 @@ kubeconfig_file: "{{ kube_config_dir }}/admin.conf"
 # Where the binaries will be downloaded.
 # Note: ensure that you've enough disk space (about 1G)
 download_cache_dir: /tmp/cluster_cache
+local_release_dir: "{{ download_cache_dir }}"
 
 # Kubectl command
 # This is for consistency when using kubectl command in roles, and ensure
@@ -93,12 +94,6 @@ credentials_dir: "{{ inventory_dir }}/credentials"
 # Choose network plugin (cilium, calico, kube-ovn, weave or flannel. Use cni for generic cni plugin)
 # Can also be set to 'cloud', which lets the cloud provider setup appropriate routing
 kube_network_plugin: flannel
-
-# Setting multi_networking to true will install Multus: https://github.com/k8snetworkplumbingwg/multus-cni
-kube_network_plugin_multus: false
-
-# Choose data store type for calico: "etcd" or "kdd" (kubernetes datastore)
-calico_datastore: "kdd"
 
 # Kubernetes internal network for services, unused block of space.
 kube_service_addresses: 10.233.0.0/18

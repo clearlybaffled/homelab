@@ -115,21 +115,3 @@
       environment:
         PATH: "{{ bin_dir }}:{{ ansible_env.PATH }}"
       notify: Kubelet | restart kubelet
-
-- name: Create cluster user for ansible
-  include_role:
-    name: user
-    tasks_from: kube-user.yml
-  vars:
-    kube_user: ansible-admin
-    username: "{{ ansible_user }}"
-    groupname: "{{ ansible_group }}"
-
-- name: Write kubeconfig
-  copy:
-    dest: "{{ ansible_homedir }}/.kube/config"
-    content: "{{ kubeconfig }}"
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_group }}"
-    mode: "0600"
-    force: true

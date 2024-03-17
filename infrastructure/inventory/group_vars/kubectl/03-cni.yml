@@ -1,4 +1,5 @@
 ---
+### Flannel
 flannel_backend_type: host-gw
 flannel_interface: br0
 
@@ -11,3 +12,42 @@ flannel_image_repo: "{{ docker_image_repo }}/flannel/flannel"
 flannel_image_tag: "{{ flannel_version }}"
 flannel_init_image_repo: "{{ docker_image_repo }}/flannel/flannel-cni-plugin"
 flannel_init_image_tag: "{{ flannel_cni_version }}"
+
+
+### Cilium
+cilium_version: "v1.15.2"
+cilium_cli_version: "v0.16.0"
+cilium_hubble_certgen_image_tag: "v0.1.8"
+cilium_hubble_version: "v0.13.2"
+cilium_hubble_ui_image_tag: "v0.13.0"
+cilium_hubble_ui_backend_image_tag: "v0.13.0"
+cilium_hubble_envoy_image_tag: "v1.29.2"
+
+cilium_image_repo: "{{ quay_image_repo }}/cilium/cilium"
+cilium_image_tag: "{{ cilium_version }}"
+cilium_operator_image_repo: "{{ quay_image_repo }}/cilium/operator"
+cilium_operator_image_tag: "{{ cilium_version }}"
+cilium_hubble_relay_image_repo: "{{ quay_image_repo }}/cilium/hubble-relay"
+cilium_hubble_relay_image_tag: "{{ cilium_version }}"
+cilium_hubble_certgen_image_repo: "{{ quay_image_repo }}/cilium/certgen"
+cilium_hubble_ui_image_repo: "{{ quay_image_repo }}/cilium/hubble-ui"
+cilium_hubble_ui_backend_image_repo: "{{ quay_image_repo }}/cilium/hubble-ui-backend"
+cilium_hubble_envoy_image_repo: "{{ docker_image_repo }}/envoyproxy/envoy"
+
+# Hubble
+### Enable Hubble without install
+cilium_enable_hubble: true
+### Enable Hubble Metrics
+cilium_enable_hubble_metrics: true
+### if cilium_enable_hubble_metrics: true
+cilium_hubble_metrics:
+- dns
+- drop
+- tcp
+- flow
+- icmp
+- http
+### Enable Hubble install
+cilium_hubble_install: true
+### Enable auto generate certs if cilium_hubble_install: true
+cilium_hubble_tls_generate: true

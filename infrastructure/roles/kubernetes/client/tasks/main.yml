@@ -47,3 +47,4 @@
     - helm
     - argocd
     - krew
+    - kustomize
