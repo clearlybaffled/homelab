@@ -35,12 +35,12 @@ defaultPodOptions:
     supplementalGroups: [10000]
 
 service:
-  main:
+  qbittorrent:
     controller: main
     ports:
       http:
         port: *port
-  bittorrent:
+  ext:
     enabled: true
     type: LoadBalancer
     controller: main
@@ -76,7 +76,7 @@ ingress:
           - path: /
             pathType: Prefix
             service:
-              identifier: main
+              identifier: qbittorrent
               port: http
     tls:
       - hosts:
