@@ -48,6 +48,10 @@ ingress:
       gethomepage.dev/icon: mealie.png
       gethomepage.dev/group: "Apps & Services"
       gethomepage.dev/name: Mealie
+      gethomepage.dev/widget.type: mealie
+      gethomepage.dev/widget.url: "http://mealie.services.svc:9000"
+      gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_MEALIE_API_KEY}}"
+      gethomepage.dev/widget.fields: '["recipes", "users", "categories", "tags"]'
     hosts:
       - host: *host
         paths:
