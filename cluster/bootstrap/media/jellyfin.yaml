@@ -26,7 +26,8 @@ spec:
     name: in-cluster
     namespace: media
   ignoreDifferences:
-  - kind: StatefulSet
+  - group: apps
+    kind: StatefulSet
     jsonPointers:
     - /spec/volumeClaimTemplates
   syncPolicy:

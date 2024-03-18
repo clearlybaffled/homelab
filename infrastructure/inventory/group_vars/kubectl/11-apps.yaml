@@ -488,9 +488,10 @@ apps:
     charts:
       - chart: app-template
     ignoreDifferences:
-      - kind: StatefulSet
+      - group: apps
+        kind: StatefulSet
         jsonPointers:
-          - "/spec/volumeClaimTemplates"
+          - /spec/volumeClaimTemplates
 
   immich:
     namespace: media
