@@ -560,7 +560,7 @@ apps:
         version: 52.1.9
 
   jellyseer:
-    namespace: downloads
+    namespace: media
     charts:
       - chart: app-template
     localStorage:
