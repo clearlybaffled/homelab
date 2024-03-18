@@ -81,7 +81,7 @@ enable_network_policy: true
 # MetalLB deployment
 metallb_enabled: true
 metallb_speaker_enabled: "{{ metallb_enabled }}"
-metallb_version: v0.14.3
+metallb_version: v0.13.11
 
 app_template_version: 3.0.2
 
