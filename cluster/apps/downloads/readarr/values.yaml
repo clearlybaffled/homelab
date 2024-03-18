@@ -1,7 +1,8 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
 controllers:
   main:
     containers:
-      main:
+      readarr:
         image:
           repository: ghcr.io/onedr0p/readarr-develop
           tag: 0.3.18
@@ -34,6 +35,7 @@ defaultPodOptions:
 
 service:
   main:
+    controller: main
     ports:
       http:
         port: 8787
@@ -43,6 +45,12 @@ ingress:
     enabled: true
     className: nginx
     annotations:
+      cert-manager.io/common-name: &host ebooks.hermleigh.home
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: E-Book Download Manager
       gethomepage.dev/icon: readarr.png
@@ -52,12 +60,12 @@ ingress:
       gethomepage.dev/widget.url: "http://readarr.downloads.svc:8787"
       gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_READARR_API_KEY}}"
     hosts:
-      - host: &host ebooks.hermleigh.home
+      - host: *host
         paths:
           - path: /
             pathType: Prefix
             service:
-              name: main
+              identifier: main
               port: http
     tls:
       - hosts:
@@ -67,8 +75,10 @@ ingress:
 persistence:
   config:
     enabled: true
-    storageClass: ceph-fs-ssd
-    size: 1Gi
-  media:
+    existingClaim: readarr-config
+  books:
     enabled: true
-    existingClaim: shared-files
+    existingClaim: books
+  downloads:
+    enabled: true
+    existingClaim: downloads

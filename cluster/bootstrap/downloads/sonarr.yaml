@@ -1,3 +1,6 @@
+#
+# Ansible managed
+#
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -10,7 +13,7 @@ spec:
   sources:
   - chart: app-template
     repoURL: https://bjw-s.github.io/helm-charts/
-    targetRevision: 2.6.0
+    targetRevision: 3.0.2
     helm:
       valueFiles:
       - $repo/cluster/apps/downloads/sonarr/values.yaml
@@ -22,6 +25,12 @@ spec:
   destination:
     name: in-cluster
     namespace: downloads
+  ignoreDifferences:
+  - kind: PersistentVolume
+    jsonPointers:
+    - /spec/claimRef/resourceVersion
+    - /spec/claimRef/uid
+    - /status/lastPhaseTransitionTime
   syncPolicy:
     automated:
       prune: true
@@ -29,3 +38,4 @@ spec:
     syncOptions:
     - CreateNamespace=true
     - ServerSideApply=true
+    - RespectIgnoreDifferences=true

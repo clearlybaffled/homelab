@@ -1,0 +1,48 @@
+#
+# Ansible managed
+#
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: lidarr-config
+  finalizers:
+  - kubernetes.io/pv-protection
+spec:
+  accessModes:
+  - ReadWriteOnce
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: lidarr-config
+    namespace: downloads
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  capacity:
+    storage: 153G
+  local:
+    path: /srv/cluster/volumes/downloads/lidarr/lidarr-config
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - parche
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: lidarr-config
+  namespace: downloads
+  finalizers:
+  - kubernetes.io/pvc-protection
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 153G
+  storageClassName: local-storage
+  volumeName: lidarr-config

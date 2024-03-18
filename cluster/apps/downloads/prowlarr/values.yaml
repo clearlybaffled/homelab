@@ -1,11 +1,11 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
 controllers:
   main:
     containers:
-      main:
+      prowlarr:
         image:
           repository: ghcr.io/onedr0p/prowlarr
           tag: 1.12.2
-
         env:
           TZ: America/New_York
           PROWLARR__INSTANCE_NAME: Prowlarr
@@ -63,6 +63,7 @@ defaultPodOptions:
 
 service:
   main:
+    controller: main
     ports:
       http:
         port: *port
@@ -77,7 +78,12 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
+      cert-manager.io/common-name: &host trackers.hermleigh.home
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: Torrent Tracker Manager
       gethomepage.dev/icon: prowlarr.png
@@ -87,12 +93,12 @@ ingress:
       gethomepage.dev/widget.url: "http://prowlarr.downloads.svc:9696"
       gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}"
     hosts:
-      - host: &host trackers.hermleigh.home
+      - host: *host
         paths:
           - path: /
             pathType: Prefix
             service:
-              name: main
+              identifier: main
               port: http
     tls:
       - hosts:
@@ -102,6 +108,4 @@ ingress:
 persistence:
   config:
     enabled: true
-    type: persistentVolumeClaim
-    size: 100Mi
-    storageClass: ceph-fs-ssd
+    existingClaim: prowlarr-config

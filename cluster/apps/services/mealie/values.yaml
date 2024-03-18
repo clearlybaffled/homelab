@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
 controllers:
   main:
     containers:
@@ -36,14 +37,19 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
+      cert-manager.io/common-name: &host mealie.hermleigh.home
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: "A self-hosted recipe manager and meal planner"
       gethomepage.dev/icon: mealie.png
       gethomepage.dev/group: "Apps & Services"
       gethomepage.dev/name: Mealie
     hosts:
-      - host: &host mealie.hermleigh.home
+      - host: *host
         paths:
           - path: /
             pathType: Prefix

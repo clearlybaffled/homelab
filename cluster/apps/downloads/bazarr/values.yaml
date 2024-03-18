@@ -1,7 +1,8 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
 controllers:
   main:
     containers:
-      main:
+      bazarr:
         image:
           repository: ghcr.io/onedr0p/bazarr
           tag: 1.4.1
@@ -65,23 +66,35 @@ controllers:
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 33
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: *port
+
 ingress:
   main:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
+      cert-manager.io/common-name: &host subtitles.hermleigh.home
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: Subtitle Downloader
       gethomepage.dev/icon: bazarr.png
       gethomepage.dev/group: Downloads
       gethomepage.dev/name: Bazarr
     hosts:
-      - host: &host subtitles.hermleigh.home
+      - host: *host
         paths:
           - path: /
             service:
-              name: main
+              identifier: main
               port: http
     tls:
       - hosts:
@@ -93,13 +106,11 @@ persistence:
     type: emptyDir
   config:
     enabled: true
-    size: 1Gi
-    type: persistentVolumeClaim
-    storageClass: ceph-fs-ssd
-  share:
-    existingClaim: shared-files
-  videos:
-    existingClaim: videos
+    existingClaim: bazarr-config
+  tv:
+    existingClaim: tv-shows
+  movies:
+    existingClaim: movies
   scripts:
     type: configMap
     name: bazarr-scripts
@@ -108,9 +119,3 @@ persistence:
       - readOnly: true
   tmp:
     type: emptyDir
-
-service:
-  main:
-    ports:
-      http:
-        port: *port

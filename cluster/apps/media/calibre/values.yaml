@@ -1,7 +1,8 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
 controllers:
   main:
     containers:
-      main:
+      calibre:
         image:
           repository: ghcr.io/linuxserver/calibre
           tag: 7.3.0
@@ -13,19 +14,36 @@ controllers:
             memory: 298M
           limits:
             memory: 298M
+      calibre-web:
+        image:
+          repository: ghcr.io/linuxserver/calibre-web
+          tag: version-0.6.21
+        env:
+          TZ: America/New_York
+          PGID: 997
+          DOCKER_MODS: "linuxserver/mods:universal-calibre"
+        resources:
+          requests:
+            cpu: 15m
+            memory: 164M
+          limits:
+            memory: 458M
 
 persistence:
   config:
     enabled: true
     type: persistentVolumeClaim
-    size: 100Mi
-  media:
+    existingClaim: calibre-config
+    globalMounts:
+      - path: /config
+  books:
     enabled: true
-    existingClaim: shared-files
-    mountPath: /media
+    existingClaim: books
+
 
 service:
-  main:
+  calibre:
+    controller: main
     ports:
       http:
         port: 8080
@@ -38,12 +56,22 @@ service:
         port: 8081
         protocol: TCP
         targetPort: 8081
+  web:
+    controller: main
+    ports:
+      http:
+        port: 8083
 
 ingress:
-  main:
+  calibre:
     enabled: true
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
+      cert-manager.io/common-name: &ui_host calibre.hermleigh.home
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/group: "Media"
       gethomepage.dev/icon: calibre.png
@@ -51,18 +79,46 @@ ingress:
       gethomepage.dev/name: Calibre
     className: nginx
     hosts:
-    - host: &ui_host calibre.hermleigh.home
+    - host: *ui_host
       paths:
       - path: /
         pathType: Prefix
         service:
-          name: main
+          identifier: calibre
           port: http
     tls:
     - hosts:
       - *ui_host
       secretName: calibre-tls-ingress
+  web:
+    enabled: true
+    annotations:
+      cert-manager.io/common-name: &host calibre-web.hermleigh.home
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "384"
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: "Media"
+      gethomepage.dev/icon: calibre-web.png
+      gethomepage.dev/description: "Web-based E-Book reader"
+      gethomepage.dev/name: Calibre-Web
+    className: nginx
+    hosts:
+    - host: *host
+      paths:
+      - path: /
+        pathType: Prefix
+        service:
+          identifier: web
+          port: http
+    tls:
+    - hosts:
+      - *host
+      - calibre-web
+      secretName: calibre-web-tls-ingress
 
 defaultPodOptions:
-  podSecurityContext:
+  securityContext:
     supplementalGroups: [33, 997]

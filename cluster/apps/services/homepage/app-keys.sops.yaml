@@ -5,6 +5,7 @@ data:
     HOMEPAGE_VAR_RADARR_API_KEY: ENC[AES256_GCM,data:ZqmGuxX5FF9StNxKFVI2911dxXiW7eELoZbbTxLe3m6gGVb3xWUElA==,iv:URkVoeR7/mxqtpAe3iiTMv8x7mx4Kx75CrAZjSRzKt0=,tag:umMP9Vl2jTDKqnWaoY4f/g==,type:str]
     HOMEPAGE_VAR_READARR_API_KEY: ENC[AES256_GCM,data:kUo+RiiTA2VRluuiNU1EFuaL5FEL8dLPJgSGgChbChDFTACcYRpe2Q==,iv:W11Xbk7uVPhDbC7ruyu5UE7LWEOC6KtUx30ILNOc5zM=,tag:mt2OV9AUZWJB3cEXCFyoPA==,type:str]
     HOMEPAGE_VAR_SONARR_API_KEY: ENC[AES256_GCM,data:JtmY545068ODFe2w2bZPQVs8LTHlrAR6ZBH7PYOhGh/ltZClHwYQ0Q==,iv:9vyuUJu3K3RhzS+KRxqPMMarbTVOn3tDvPBHP1AGR0c=,tag:OIyl2GbMYFPZyhGxbddPBw==,type:str]
+    HOMEPAGE_VAR_IMMICH_API_KEY: ENC[AES256_GCM,data:RnkwPtGWC8YpHQplB/vjvzKdSPexhD8jNXbKtpZQHg72iJE7h7HCp+MkidRiyU0qTm/KDyIp734=,iv:Zk2aQaf3lZLnUBzAlQRGo8PL5tCMl9H0YOUwKtx5Pmk=,tag:aDIRY/Y6AjH3OnMLDI5unw==,type:str]
 kind: Secret
 metadata:
     name: app-keys
@@ -25,8 +26,8 @@ sops:
             ZGQ1bXRlYTZZdklodHB0UzF1dkV1VEEKSC/V5zdU9qic9DJd8qBGdONrA7y9FtmZ
             q5x9vW/FavAsmIq2kvH2mUuixhvbP6UIP0u254/hu1qiXwG5gKeHkw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-01-06T17:38:09Z"
-    mac: ENC[AES256_GCM,data:GSNBnK4lXcw6UtVpe3TfSOY1qLbnvDsQOxuZPI0BaziesB3bWr+V+/YOWcI8fjxEjM2GI1E0jkxc3btuUPNxqOFEFm5xTM+Aozsjlhm7EgsMpy6Nm2ygx6ccMdvHe76otHEhTPwHZyssrrYXoI+w93QIGO/Ly9UimhIng4JEs0c=,iv:ibmJ353R2aXv7AgXr35VV2Fiu4uLFOL/DaaEQIjEJ8c=,tag:TzcLPojcb3TJu24nr+CXqg==,type:str]
+    lastmodified: "2024-03-18T08:20:57Z"
+    mac: ENC[AES256_GCM,data:5p9PmVJb+Et21iLFRhVnJGTT+r1xRtdauzvos8qpzesF0NWslzMSZW3UZmbUHQr8CvwKFjJ62M4hZyXbxp5FMwmPYHNllpLXlB2TW1qRDWR7Gpf6+6UlHCzYQ12rLV94cHUf08z18XVaeTpeztaMITIYPjIuN6ozLQsllcf3seM=,iv:MN/8PrpfXMC5F6xbdrrbhL/uOuTCmd4YMZqLAXJ1nuo=,tag:yB9zKyB8NCYin12p1TUk0A==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1

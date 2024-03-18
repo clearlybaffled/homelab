@@ -1,4 +1,8 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bitnami/charts/main/bitnami/redis/values.schema.json
 clusterDomain: seawolf
+
+architecture: standalone
+
 auth:
   enabled: false
 
@@ -12,13 +16,14 @@ master:
       - name: ndots
         value: "8"
 
-replica:
-  replicaCount: 0
-
 metrics:
   enabled: true
+  prometheusRule:
+    enabled: true
+    namespace: monitoring
   serviceMonitor:
     enabled: true
     interval: 1m
+
 useExternalDNS:
   enabled: true

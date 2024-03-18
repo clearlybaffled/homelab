@@ -1,7 +1,8 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
 controllers:
   main:
     containers:
-      main:
+      sonarr:
         image:
           repository: ghcr.io/onedr0p/sonarr-develop
           tag: 4.0.1.1047
@@ -33,6 +34,7 @@ defaultPodOptions:
 
 service:
   main:
+    controller: main
     ports:
       http:
         port: *port
@@ -42,7 +44,12 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
+      cert-manager.io/common-name: &host tv.hermleigh.home
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: TV Show Management
       gethomepage.dev/group: Downloads
@@ -51,17 +58,16 @@ ingress:
       gethomepage.dev/widget.type: "sonarr"
       gethomepage.dev/widget.url: "http://sonarr.downloads.svc:8989"
       gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_SONARR_API_KEY}}"
-      gethomepage.dev/pod-selector: ""
       nginx.ingress.kubernetes.io/configuration-snippet: |
         proxy_set_header Accept-Encoding "";
         sub_filter '<body>' '<body><link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/sonarr/nord.css">';
         sub_filter_once on;
     hosts:
-      - host: &host tv.hermleigh.home
+      - host: *host
         paths:
           - path: /
             service:
-              name: main
+              identifier: main
               port: http
     tls:
       - hosts:
@@ -71,14 +77,10 @@ ingress:
 persistence:
   config:
     enabled: true
-    size: 1Gi
-    type: persistentVolumeClaim
-    storageClass: ceph-fs-ssd
-  shared:
+    existingClaim: sonarr-config
+  tv:
     enabled: true
-    type: persistentVolumeClaim
-    existingClaim: shared-files
-  videos:
+    existingClaim: tv-shows
+  downloads:
     enabled: true
-    type: persistentVolumeClaim
-    existingClaim: videos
+    existingClaim: downloads

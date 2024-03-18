@@ -1,16 +1,18 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
 controllers:
   main:
     containers:
-      main:
+      audiobookshelf:
         image:
           repository: ghcr.io/advplyr/audiobookshelf
-          tag: 2.7.0
+          tag: 2.8.1
         env:
           TZ: "America/New_York"
           AUDIOBOOKSHELF_UID: 997
           AUDIOBOOKSHELF_GID: 997
           CONFIG_PATH: /config
           METADATA_PATH: /config/metadata
+          PORT: 8080
         resources:
           requests:
             memory: 100Mi
@@ -20,16 +22,22 @@ controllers:
 
 service:
   main:
+    controller: main
     ports:
       http:
-        port: 80
+        port: 8080
 
 ingress:
   main:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
+      cert-manager.io/common-name: &host audiobookshelf.hermleigh.home
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/group: "Media"
       gethomepage.dev/icon: audiobookshelf.png
@@ -38,12 +46,12 @@ ingress:
       gethomepage.dev/widget.url: http://audiobookshelf.media.svc
       gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_AUDIOBOOKSHELF_API_KEY}}"
     hosts:
-      - host: &host audiobookshelf.hermleigh.home
+      - host: *host
         paths:
           - path: /
             pathType: Prefix
             service:
-              name: main
+              identifier: main
               port: http
     tls:
       - hosts:
@@ -53,19 +61,20 @@ ingress:
 persistence:
   config:
     enabled: true
-    storageClass: ceph-fs-hdd
-    size: 5Gi
-    mountPath: /config
+    existingClaim: audiobookshelf-config
   media:
     enabled: true
-    existingClaim: shared-files
+    type: hostPath
+    hostPath: /share/Audiobooks
+    hostPathType: Directory
   cache:
     enabled: true
-    mountPath: /.npm
+    globalMounts:
+      - path: /.npm
     type: emptyDir
 
 defaultPodOptions:
-  podSecurityContext:
+  securityContext:
     runAsUser: 997
     runAsGroup: 997
     fsGroup: 997

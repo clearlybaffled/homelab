@@ -1,3 +1,6 @@
+#
+# Ansible managed
+#
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -12,7 +15,7 @@ spec:
   sources:
   - chart: redis
     repoURL: https://charts.bitnami.com/bitnami
-    targetRevision: 18.12.1
+    targetRevision: 18.19.2
     helm:
       valueFiles:
       - $repo/cluster/apps/db/redis/values.yaml
@@ -24,6 +27,12 @@ spec:
   destination:
     name: in-cluster
     namespace: db
+  ignoreDifferences:
+  - kind: PersistentVolume
+    jsonPointers:
+    - /spec/claimRef/resourceVersion
+    - /spec/claimRef/uid
+    - /status/lastPhaseTransitionTime
   syncPolicy:
     automated:
       prune: true
@@ -31,3 +40,4 @@ spec:
     syncOptions:
     - CreateNamespace=true
     - ServerSideApply=true
+    - RespectIgnoreDifferences=true

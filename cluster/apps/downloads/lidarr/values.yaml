@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
 controllers:
   main:
     containers:
@@ -23,6 +24,7 @@ controllers:
 
 service:
   main:
+    controller: main
     ports:
       http:
         port: *port
@@ -32,7 +34,12 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
+      cert-manager.io/common-name: &host music.hermleigh.home
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: Music Management
       gethomepage.dev/group: Downloads
@@ -47,12 +54,12 @@ ingress:
         sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/lidarr/nord.css"></head>';
         sub_filter_once on;
     hosts:
-      - host: &host music.hermleigh.home
+      - host: *host
         paths:
           - path: /
             pathType: Prefix
             service:
-              name: main
+              identifier: main
               port: http
     tls:
       - hosts:
@@ -60,7 +67,7 @@ ingress:
         secretName: lidarr-tls-ingress
 
 defaultPodOptions:
-  podSecurityContext:
+  securityContext:
     runAsUser: 568
     runAsGroup: 568
     fsGroup: 568
@@ -69,9 +76,8 @@ defaultPodOptions:
 
 persistence:
   config:
-    size: 1Gi
-    type: persistentVolumeClaim
-    storageClass: ceph-fs-ssd
-  media:
-    enabled: true
-    existingClaim: shared-files
+    existingClaim: lidarr-config
+  music:
+    existingClaim: music
+  downloads:
+    existingClaim: downloads

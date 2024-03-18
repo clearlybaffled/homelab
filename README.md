@@ -163,7 +163,6 @@ This Git repository contains the following top level directories.
 |[<img width="32" src="https://raw.githubusercontent.com/advplyr/audiobookshelf/84160b2f07164605295d6cb6f7f7925cbdf538e4/client/static/icon.svg">][audiobookshelf-uri]| [Audiobookshelf](./cluster/apps/media/audiobookshelf) | `Audio Books` | Self-hosted audiobook and podcast server | Deployed | [![][audiobookshelf-badge]][audiobookshelf-img]
 |[<img width="32" src="https://raw.githubusercontent.com/jellyfin/jellyfin-web/master/src/assets/img/icon-transparent.png">][jellyfin-uri]|[Jellyfin](./cluster/apps/media/jellyfin/) | `Media Server` | The open source media server | Deployed | [![][jellyfin-badge]][jellyfin-img]
 |[<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/appicon.png">][immich-uri]|Immich| `Photos` | Photo Management | Deployed | [![][immich-badge]][immich-chart] |
-|[<img width="32" src="https://github.com/owntone/owntone-server/blob/master/docs/assets/logo.svg?raw=true">][owntone-uri]| OwnTone |`Audio` | DAAP Audio server| Deployed | [![][owntone-badge]][owntone-img] |
 |[<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">][listenbrainz-uri]|ListenBrainz| `Scrobble` | Open Source scrobbler | Planned | |
 
 ### [Services](./cluster/apps/services/)
@@ -329,10 +328,6 @@ This Git repository contains the following top level directories.
 [jellyfin-uri]: https://jellyfin.org
 [jellyfin-img]: https://ghcr.io/onedr0p/jellyfin
 [jellyfin-badge]: https://img.shields.io/badge/onedr0p/jellyfin-10.8.11-blue?logo=docker
-
-[owntone-uri]: https://owntone.github.io/owntone-server/
-[owntone-badge]: https://img.shields.io/badge/daapd-v28.8-blue?logo=linuxserver
-[owntone-img]: https://lscr.io/linuxserver/daapd
 
 [immich-uri]: https://immich.app
 [immich-chart]: https://immich-app.github.io/immich-charts
