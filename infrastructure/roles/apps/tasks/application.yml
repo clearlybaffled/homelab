@@ -199,4 +199,4 @@
     prompt: "Continue to {{ ansible_loop.nextitem.name }}"
   when:
     - not ansible_loop.last
-    - app_loop_pause|default(true)
+    - not app_no_loop_pause|default(false)

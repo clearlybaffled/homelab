@@ -19,9 +19,9 @@ spec:
   volumeMode: Filesystem
   storageClassName: local-storage
   capacity:
-    storage: 5.5T
+    storage: 916G
   local:
-    path: /share/Pictures/immich
+    path: /containers/volumes/media/immich/immich-library
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -43,6 +43,6 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 5.5T
+      storage: 916G
   storageClassName: local-storage
   volumeName: immich-library

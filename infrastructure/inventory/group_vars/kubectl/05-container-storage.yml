@@ -1,2 +1,2 @@
 ---
-local_storage_root_dir: /srv/cluster/volumes
+local_storage_root_dir: /containers/volumes

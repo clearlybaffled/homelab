@@ -508,7 +508,6 @@ apps:
             name: db
     localStorage:
       - name: immich-library
-        path: /share/Pictures/immich
 
   stirling-pdf:
     namespace: services
