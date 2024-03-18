@@ -133,6 +133,10 @@ ingress:
       gethomepage.dev/icon: paperless-ngx.png
       gethomepage.dev/description: "Scan, index and archive all your physical documents"
       gethomepage.dev/name: Paperless-NGX
+      gethomepage.dev/widget.type: paperlessngx
+      gethomepage.dev/widget.url: http://paperless-ngx.services.svc:8080
+      gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_PAPERLESS_TOKEN}}"
+      gethomepage.dev/widget.fields: '["total", "inbox"]'
     hosts:
       - host: *host
         paths:
