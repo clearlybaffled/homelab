@@ -66,7 +66,7 @@
       loop_control:
         label: "{{ item.path | default(app.name) }}"
 
-    - name: Ensure target directories exist | {{ item }}
+    - name: Ensure target directories exist | {{ app.name }}
       delegate_to: parche
       become: true
       file:
@@ -77,7 +77,7 @@
         group: kube
       loop: "{{ paths }}"
 
-    - name: Get filesystem size for each directory | {{ item }}
+    - name: Get filesystem size for each directory | {{ app.name }}
       delegate_to: parche
       command: "df -h {{ item }}"
       register: fs_sizes
@@ -87,13 +87,13 @@
       set_fact:
         storage_dirs: "{{ storage_dirs +
             [{ 
-              'path': paths[i],
-              'modes': item.modes | default(['ReadWriteOnce']),
-              'name': item.name | default(app.name),
+              'path': item,
+              'modes': app.localStorage[i].modes | default(['ReadWriteOnce']),
+              'name': app.localStorage[i].name | default(app.name),
               'size': (fs_sizes.results[i].stdout | community.general.jc('df'))[0].size
             }]
           }}"
-      loop: "{{ app.localStorage }}"
+      loop: "{{ paths }}"
       loop_control:
         index_var: i
 
@@ -103,6 +103,11 @@
         dest: "{{ app.app_dir }}/storage.yaml"
         mode: "0644"
         force: true
+  always:
+    - name: Clear variables
+      set_fact:
+        storage_dirs: []
+        paths: []
 
 - name: Ensure cluster/bootstrap namespace dir exists | {{ app.name }}
   file:
@@ -189,10 +194,9 @@
       tags:
         - app_tasks
 
-- name: Check before continuing to next app | {{ app.name }}
+- name: Pause before continuing to next app | {{ ansible_loop.nextitem.name }}
   pause:
     prompt: "Continue to {{ ansible_loop.nextitem.name }}"
   when:
     - not ansible_loop.last
-    - not app_no_loop_pause|default(false)
-    - not batch_apps | default(false)
+    - app_loop_pause|default(true)

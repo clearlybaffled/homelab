@@ -1,7 +1,8 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
 controllers:
   main:
     containers:
-      main:
+      linkace:
         image:
           repository: linkace/linkace
           tag: v1.12.2-php-nginx
@@ -36,7 +37,7 @@ ingress:
           - path: /
             service:
               port: http
-              name: main
+              identifier: main
     tls:
       - hosts:
           - *host
@@ -44,6 +45,7 @@ ingress:
 
 service:
   main:
+    controller: main
     ports:
       http:
         port: 80

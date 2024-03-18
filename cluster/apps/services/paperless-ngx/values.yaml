@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
 global:
   nameOverride: paperless
 
@@ -5,8 +6,7 @@ controllers:
   main:
     type: deployment
     containers:
-      main:
-        nameOverride: paperless-ngx
+      paperless-ngx:
         image:
           repository: ghcr.io/paperless-ngx/paperless-ngx
           tag: 2.6.2
@@ -26,7 +26,6 @@ controllers:
         image:
           repository: gotenberg/gotenberg
           tag: 8.1.0
-        imagePullPolicy: IfNotPresent
         env:
           - name: DISABLE_GOOGLE_CHROME
             value: "1"
@@ -41,7 +40,6 @@ controllers:
         image:
           repository: ghcr.io/paperless-ngx/tika
           tag: 2.9.1-full
-        imagePullPolicy: IfNotPresent
         resources:
           requests:
             cpu: 10m
@@ -114,9 +112,11 @@ configMaps:
 
 service:
   main:
+    controller: main
     ports:
       http:
         port: *port
+
 ingress:
   main:
     enabled: true
@@ -127,7 +127,7 @@ ingress:
       cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
       cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
       cert-manager.io/private-key-algorithm: ECDSA
-      cert-manager.io/private-key-size: "512"
+      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/group: "Apps & Services"
       gethomepage.dev/icon: paperless-ngx.png
@@ -138,7 +138,7 @@ ingress:
         paths:
           - path: /
             service:
-              name: main
+              identifier: main
               port: http
     tls:
       - hosts:
@@ -167,9 +167,3 @@ persistence:
         hp-scan-to-double-sided:
           - path: /scan
             subPath: double-sided
-
-defaultPodOptions:
-  podSecurityContext:
-    runAsUser: 997
-    runAsGroup: 997
-    fsGroup: 997

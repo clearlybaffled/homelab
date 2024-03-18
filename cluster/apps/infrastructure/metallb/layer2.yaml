@@ -7,3 +7,8 @@ spec:
   ipAddressPools:
   - ingress-pool
   - general-pool
+  interfaces:
+  - br0
+  nodeSelectors:
+  - matchLabels:
+      kubernetes.io/hostname: parche

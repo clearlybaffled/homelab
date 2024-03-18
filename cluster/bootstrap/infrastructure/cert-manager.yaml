@@ -1,27 +1,32 @@
+#
+# Ansible managed
+#
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: homepage
+  name: cert-manager
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: '1'
 spec:
   project: default
   sources:
-  - chart: homepage
-    repoURL: http://jameswynn.github.io/helm-charts
-    targetRevision: 1.2.3
+  - chart: cert-manager
+    repoURL: https://charts.jetstack.io
+    targetRevision: v1.14.1
     helm:
       valueFiles:
-      - $repo/cluster/apps/services/homepage/values.yaml
-      releaseName: homepage
+      - $repo/cluster/apps/infrastructure/cert-manager/values.yaml
+      releaseName: cert-manager
   - repoURL: https://github.com/clearlybaffled/homelab
-    path: cluster/apps/services/homepage
+    path: cluster/apps/infrastructure/cert-manager
     targetRevision: main
     ref: repo
   destination:
     name: in-cluster
-    namespace: homepage
+    namespace: cert-manager
   syncPolicy:
     automated:
       prune: true

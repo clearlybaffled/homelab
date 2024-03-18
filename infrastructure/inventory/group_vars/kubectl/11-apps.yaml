@@ -24,14 +24,16 @@ apps:
               name: argocd-application-controller
               labelSelector: "app.kubernetes.io/name=argocd-application-controller"
 
-  external-dns:
-    namespace: infrastructure
-    wave: "1"
+  local-path-provisioner:
+    namespace: local-path-provisioner
+    path: infrastructure
+
+  redis:
+    namespace: db
+    wave: "0"
     charts:
-      - chart: external-dns/external-dns
-        version: 1.14.3
-    secrets:
-      secret:
+      - chart: bitnami/redis
+        version: 18.19.2
 
   kube-prometheus-stack:
     namespace: monitoring
@@ -61,6 +63,39 @@ apps:
         - "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{ prometheus_operator_version }}/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml"
     localStorage:
       - name: grafana
+
+  cert-manager:
+    path: infrastructure
+    namespace: cert-manager
+    wave: "1"
+    charts:
+      - chart: jetstack/cert-manager
+        version: v1.14.1
+
+  ingress-nginx:
+    namespace: infrastructure
+    wave: "1"
+    charts:
+      - chart: ingress-nginx/ingress-nginx
+        version: 4.9.1
+
+  metallb:
+    path: infrastructure
+    namespace: metallb-system
+    wave: "1"
+    charts:
+      - chart: metallb/metallb
+        version: "{{ metallb_version }}"
+
+
+  external-dns:
+    namespace: infrastructure
+    wave: "1"
+    charts:
+      - chart: external-dns/external-dns
+        version: 1.14.3
+    secrets:
+      secret:
 
   cloudnative-pg:
     namespace: db
@@ -99,13 +134,65 @@ apps:
       secret:
     localStorage:
 
-  cert-manager:
-    path: infrastructure
-    namespace: cert-manager
-    wave: "1"
+  reflector:
+    enable: false
+    namespace: infrastructure
+    wave: "3"
     charts:
-      - chart: jetstack/cert-manager
-        version: v1.14.1
+      - chart: emberstack/reflector
+        version: 7.1.238
+        valueFiles: []
+
+  keycloak:
+    namespace: infrastructure
+    kustomize:
+      resources:
+        - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/{{ keycloak_version }}/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
+        - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/{{ keycloak_version }}/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml
+        - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/{{ keycloak_version }}/kubernetes/kubernetes.yml
+        - ./keycloak.yaml
+        - ./ingress.yaml
+    secrets:
+      secret:
+        data:
+          username: keycloak
+          password:
+            type: password
+            name: db
+
+  oauth2-proxy:
+    namespace: infrastructure
+    charts:
+      - chart: oauth2-proxy/oauth2-proxy
+        version: 6.24.1
+    secrets:
+      secret:
+
+  homepage:
+    namespace: homepage
+    path: services
+    charts:
+      - chart: jameswynn/homepage
+        version: 1.2.3
+    secrets:
+      secret:
+      app-keys:
+    kustomize:
+      extras:
+        configMapGenerator:
+          - name: homepage-config
+            files:
+              - ./config/bookmarks.yaml
+              - ./config/docker.yaml
+              - ./config/kubernetes.yaml
+              - ./config/services.yaml
+              - ./config/settings.yaml
+              - ./config/widgets.yaml
+            options:
+              disableNameSuffixHash: true
+              labels:
+                app.kubernetes.io/name: homepage
+                app.kubernetes.io/instance: homepage
 
   grocy:
     namespace: services
@@ -127,38 +214,6 @@ apps:
                 app.kubernetes.io/name: grocy
                 app.kubernetes.io/instance: grocy
     localStorage:
-
-  ingress-nginx:
-    namespace: infrastructure
-    wave: "1"
-    charts:
-      - chart: ingress-nginx/ingress-nginx
-        version: 4.9.1
-
-  metallb:
-    path: infrastructure
-    namespace: metallb-system
-    wave: "1"
-    charts:
-      - chart: metallb/metallb
-        version: "{{ metallb_version }}"
-
-  redis:
-    namespace: db
-    wave: "0"
-    charts:
-      - chart: bitnami/redis
-        version: 18.19.2
-    localStorage:
-
-  reflector:
-    enable: false
-    namespace: infrastructure
-    wave: "3"
-    charts:
-      - chart: emberstack/reflector
-        version: 7.1.238
-        valueFiles: []
 
   paperless-ngx:
     namespace: services
@@ -188,49 +243,6 @@ apps:
       - name: paperless-library
         path: /share/Files/PaperlessNGX
 
-  nextcloud:
-    namespace: services
-    wave: "4"
-    kustomize:
-      charts:
-        - chart: nextcloud/nextcloud
-          version: 4.6.4
-      extras:
-        patchesStrategicMerge:
-          - |-
-              apiVersion: apps/v1
-              kind: Deployment
-              metadata:
-                name: nextcloud-metrics
-              spec:
-                template:
-                  spec:
-                    containers:
-                      - name: metrics-exporter
-                        env:
-                          - name: NEXTCLOUD_SERVER
-                            value: "http://nextcloud.services.svc:8080"
-    secrets:
-      secret:
-        data:
-          nextcloud-username: admin
-          nextcloud-password:
-            type: password
-            name: admin
-          nextcloud-token:
-            name: token
-            type: password
-          db-username: nextcloud
-          db-password:
-            type: password
-            name: db
-    localStorage:
-      - name: nextcloud
-      - name: nextcloud-data
-        path: /disks/sdg/nextcloud-data
-        modes:
-          - ReadWriteMany
-
   mealie:
     namespace: services
     wave: "4"
@@ -245,6 +257,38 @@ apps:
             name: db
     localStorage:
       - name: mealie-api-data
+
+  netbox:
+    namespace: infrastructure
+    charts:
+      - chart: bootc/netbox
+        version: 4.1.1
+    kustomize:
+      resources:
+        - ./graphite/
+    secrets:
+      secret:
+        data:
+          db_user: netbox
+          db_password:
+            type: password
+            name: db
+          secret_key:
+            type: key
+            name: api
+          superuser_password:
+            type: password
+            name: superuser
+          superuser_api_token:
+            type: key
+            name: superuser_api
+          ldap_bind_password: ''
+          email_password: ''
+          redis_tasks_password: ''
+          redis_cache_password: ''
+          napalm_password: ''
+    localStorage:
+      - name: netbox-media
 
   linkding:
     namespace: services
@@ -297,21 +341,22 @@ apps:
             type: password
             name: nextauth
       db_url:
+    localStorage:
 
   calibre:
     namespace: media
     charts:
       - chart: app-template
         release: calibre
-      - chart: app-template
-        release: calibre-web
-        valueFiles:
-          - values-web.yaml
+    localStorage:
+      - name: calibre-config
 
   qbittorrent:
     namespace: downloads
     charts:
       - chart: app-template
+    localStorage:
+      - name: qbittorrent-config
 
   sonarr:
     namespace: downloads
@@ -329,6 +374,9 @@ apps:
             name: pgpass
           SONARR__POSTGRES_MAIN_DB: sonarr_main
           SONARR__POSTGRES_LOG_DB: sonarr_log
+    localStorage:
+      - name: sonarr-config
+
   radarr:
     namespace: downloads
     charts:
@@ -345,6 +393,8 @@ apps:
             name: pgpass
           RADARR__POSTGRES_MAIN_DB: radarr_main
           RADARR__POSTGRES_LOG_DB: radarr_log
+    localStorage:
+      - name: radarr-config
 
   readarr:
     namespace: downloads
@@ -362,6 +412,8 @@ apps:
             name: pgpass
           READARR__POSTGRES_MAIN_DB: readarr_main
           READARR__POSTGRES_LOG_DB: readarr_log
+    localStorage:
+      - name: readarr-config
 
   prowlarr:
     namespace: downloads
@@ -379,6 +431,8 @@ apps:
             name: pgpass
           PROWLARR__POSTGRES_MAIN_DB: prowlarr_main
           PROWLARR__POSTGRES_LOG_DB: prowlarr_log
+    localStorage:
+      - name: prowlarr-config
 
   lidarr:
     namespace: downloads
@@ -396,6 +450,8 @@ apps:
           LIDARR__POSTGRES_PASSWORD:
             type: password
             name: postgres
+    localStorage:
+      - name: lidarr-config
 
   bazarr:
     namespace: downloads
@@ -409,7 +465,8 @@ apps:
               - ./scripts/post-process.sh
         generatorOptions:
           disableNameSuffixHash: true
-
+    localStorage:
+      - name: bazarr-config
     secrets:
       secret:
         data:
@@ -419,85 +476,12 @@ apps:
             type: password
             name: postgres
 
-  netbox:
-    namespace: infrastructure
-    charts:
-      - chart: bootc/netbox
-        version: 4.1.1
-    kustomize:
-      resources:
-        - ./graphite/
-    secrets:
-      secret:
-        data:
-          db_user: netbox
-          db_password:
-            type: password
-            name: db
-          secret_key:
-            type: key
-            name: api
-          superuser_password:
-            type: password
-            name: superuser
-          superuser_api_token:
-            type: key
-            name: superuser_api
-          ldap_bind_password: ''
-          email_password: ''
-          redis_tasks_password: ''
-          redis_cache_password: ''
-          napalm_password: ''
-    localStorage:
-      - name: netbox-media
-
   audiobookshelf:
     namespace: media
     charts:
       - chart: app-template
-
-  homepage:
-    namespace: homepage
-    path: services
-    charts:
-      - chart: jameswynn/homepage
-        version: 1.2.3
-    secrets:
-      secret:
-      app-keys:
-    kustomize:
-      extras:
-        configMapGenerator:
-          - name: homepage-config
-            files:
-              - ./config/bookmarks.yaml
-              - ./config/docker.yaml
-              - ./config/kubernetes.yaml
-              - ./config/services.yaml
-              - ./config/settings.yaml
-              - ./config/widgets.yaml
-            options:
-              disableNameSuffixHash: true
-              labels:
-                app.kubernetes.io/name: homepage
-                app.kubernetes.io/instance: homepage
-
-  keycloak:
-    namespace: infrastructure
-    kustomize:
-      resources:
-        - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/{{ keycloak_version }}/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
-        - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/{{ keycloak_version }}/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml
-        - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/{{ keycloak_version }}/kubernetes/kubernetes.yml
-        - ./keycloak.yaml
-        - ./ingress.yaml
-    secrets:
-      secret:
-        data:
-          username: keycloak
-          password:
-            type: password
-            name: db
+    localStorage:
+      - name: audiobookshelf-config
 
   jellyfin:
     namespace: media
@@ -507,11 +491,6 @@ apps:
       - kind: StatefulSet
         jsonPointers:
           - "/spec/volumeClaimTemplates"
-
-  owntone:
-    namespace: media
-    charts:
-      - chart: app-template
 
   immich:
     namespace: media
@@ -528,6 +507,7 @@ apps:
             name: db
     localStorage:
       - name: immich-library
+        path: /share/Pictures/immich
 
   stirling-pdf:
     namespace: services
@@ -559,6 +539,7 @@ apps:
               - config.env
             options:
               disableNameSuffixHash: true
+    localStorage:
 
   home-assistant:
     namespace: services
@@ -570,6 +551,7 @@ apps:
     namespace: services
     charts:
       - chart: app-template
+    localStorage:
 
   kubeshark:
     namespace: infrastructure
@@ -577,14 +559,9 @@ apps:
       - chart: kubeshark/kubeshark
         version: 52.1.9
 
-  oauth2-proxy:
-    namespace: infrastructure
+  jellyseer:
+    namespace: downloads
     charts:
-      - chart: oauth2-proxy/oauth2-proxy
-        version: 6.24.1
-    secrets:
-      secret:
-
-  local-path-provisioner:
-    namespace: local-path-provisioner
-    path: infrastructure
+      - chart: app-template
+    localStorage:
+      - name: jellyseer-config

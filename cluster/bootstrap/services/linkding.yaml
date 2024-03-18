@@ -1,3 +1,6 @@
+#
+# Ansible managed
+#
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -10,7 +13,7 @@ spec:
   sources:
   - chart: app-template
     repoURL: https://bjw-s.github.io/helm-charts/
-    targetRevision: 2.6.0
+    targetRevision: 3.0.2
     helm:
       valueFiles:
       - $repo/cluster/apps/services/linkding/values.yaml

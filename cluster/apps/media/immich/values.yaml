@@ -39,6 +39,9 @@ server:
         gethomepage.dev/group: "Apps & Services"
         gethomepage.dev/name: "Immich"
         gethomepage.dev/icon: immich.png
+        gethomepage.dev/widget.type: immich
+        gethomepage.dev/widget.url: "http://immich.media.svc:3001"
+        gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_IMMICH_API_KEY}}"
       hosts:
         - host: &host immich.hermleigh.home
           paths:

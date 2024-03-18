@@ -1,41 +1,41 @@
 ---
-- name: Create Grafana Dashboard Folders
-  community.grafana.grafana_folder:
-    url: &url https://grafana.seawolf.hermleigh.home
-    url_username: &user admin
-    url_password: &password prom-operator
-    name: "{{ item.folder_name }}"
-    state: present
-  loop: "{{ grafana_dashboards }}"
+# - name: Create Grafana Dashboard Folders
+#   community.grafana.grafana_folder:
+#     url: &url https://grafana.seawolf.hermleigh.home
+#     url_username: &user admin
+#     url_password: &password prom-operator
+#     name: "{{ item.folder_name }}"
+#     state: present
+#   loop: "{{ grafana_dashboards }}"
 
-- name: Add Grafana Dashboards
-  community.grafana.grafana_dashboard:
-    url: *url
-    url_username: *user
-    url_password: *password
-    dashboard_id: "{{ item.1 }}"
-    folder: "{{ item.0.folder_name }}"
-  failed_when: true
-  with_subelements:
-    - "{{ grafana_dashboards }}"
-    - dashboards
+# - name: Add Grafana Dashboards
+#   community.grafana.grafana_dashboard:
+#     url: *url
+#     url_username: *user
+#     url_password: *password
+#     dashboard_id: "{{ item.1 }}"
+#     folder: "{{ item.0.folder_name }}"
+#   failed_when: true
+#   with_subelements:
+#     - "{{ grafana_dashboards }}"
+#     - dashboards
 
-- name: Create Redis Datasource
-  community.grafana.grafana_datasource:
-    url: *url
-    url_username: *user
-    url_password: *password
-    ds_type: redis-datasource
-    ds_url: redis://redis-master.db:26379
-    name: Redis
+# - name: Create Redis Datasource
+#   community.grafana.grafana_datasource:
+#     url: *url
+#     url_username: *user
+#     url_password: *password
+#     ds_type: redis-datasource
+#     ds_url: redis://redis-master.db:26379
+#     name: Redis
 
 
-- name: CRI-O Metrics Dashboard
-  community.grafana.grafana_dashboard:
-    url: *url
-    url_username: *user
-    url_password: *password
-    path: https://raw.githubusercontent.com/cri-o/cri-o/main/contrib/metrics-exporter/dashboard.json
+# - name: CRI-O Metrics Dashboard
+#   community.grafana.grafana_dashboard:
+#     url: *url
+#     url_username: *user
+#     url_password: *password
+#     path: https://raw.githubusercontent.com/cri-o/cri-o/main/contrib/metrics-exporter/dashboard.json
 
 - name: Start CRI-O Metrics Exporter
   kubernetes.core.k8s:

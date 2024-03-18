@@ -13,6 +13,7 @@ metadata:
     gethomepage.dev/name: Keycloak
     gethomepage.dev/description: "Single-Sign On Provider"
     gethomepage.dev/group: Infrastructure
+    gethomepage.dev/href: "https://keycloak.hermleigh.home"
   labels:
     app: keycloak
     app.kubernetes.io/instance: keycloak

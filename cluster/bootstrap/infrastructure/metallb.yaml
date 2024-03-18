@@ -1,7 +1,10 @@
+#
+# Ansible managed
+#
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
+  name: metallb
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -10,20 +13,20 @@ metadata:
 spec:
   project: default
   sources:
-  - chart: cert-manager
-    repoURL: https://charts.jetstack.io
-    targetRevision: v1.14.1
+  - chart: metallb
+    repoURL: https://metallb.github.io/metallb
+    targetRevision: v0.14.3
     helm:
       valueFiles:
-      - $repo/cluster/apps/infrastructure/cert-manager/values.yaml
-      releaseName: cert-manager
+      - $repo/cluster/apps/infrastructure/metallb/values.yaml
+      releaseName: metallb
   - repoURL: https://github.com/clearlybaffled/homelab
-    path: cluster/apps/infrastructure/cert-manager
+    path: cluster/apps/infrastructure/metallb
     targetRevision: main
     ref: repo
   destination:
     name: in-cluster
-    namespace: cert-manager
+    namespace: metallb-system
   syncPolicy:
     automated:
       prune: true

@@ -1,7 +1,8 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
 controllers:
   main:
     containers:
-      main:
+      radarr:
         image:
           repository: ghcr.io/onedr0p/radarr
           tag: 5.2.6
@@ -34,6 +35,7 @@ defaultPodOptions:
 
 service:
   main:
+    controller: main
     ports:
       http:
         port: 7878
@@ -43,8 +45,7 @@ ingress:
     enabled: true
     className: 'nginx'
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
-      cert-manager.io/common-name: Radarr - Movie Download Manager
+      cert-manager.io/common-name: &host movies.hermleigh.home
       cert-manager.io/subject-countries: US
       cert-manager.io/subject-organizations: HERMLEIGH.HOME
       cert-manager.io/subject-organizationalunits: "Hermleigh House Network,Seawolf Kubernetes Cluster,Downloads"
@@ -59,12 +60,12 @@ ingress:
       gethomepage.dev/widget.url: "http://radarr.downloads.svc:7878"
       gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
     hosts:
-      - host: &host movies.hermleigh.home
+      - host: *host
         paths:
           - path: /
             pathType: Prefix
             service:
-              name: main
+              identifier: main
               port: http
     tls:
       - hosts:
@@ -74,13 +75,12 @@ ingress:
 persistence:
   config:
     enabled: true
-    size: 1Gi
-    storageClass: ceph-fs-ssd
-  videos:
+    existingClaim: radarr-config
+  movies:
     enabled: true
     type: persistentVolumeClaim
-    existingClaim: videos
-  shared:
+    existingClaim: movies
+  downloads:
     enabled: true
     type: persistentVolumeClaim
-    existingClaim: shared-files
+    existingClaim: downloads

@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
 controllers:
   main:
     type: statefulset
@@ -7,7 +8,7 @@ controllers:
         - name: config
           accessMode: ReadWriteOnce
           size: 30Gi
-          storageClass: ceph-fs-hdd
+          storageClass: local-path
           globalMounts:
             - path: /config
 
@@ -23,7 +24,7 @@ controllers:
           - 109
 
     containers:
-      main:
+      jellyfin:
         image:
           repository: ghcr.io/onedr0p/jellyfin
           tag: 10.8.11@sha256:926e2a9f6677a0c7b12feba29f36c954154869318d6a52df72f72ff9c74cf494
@@ -40,16 +41,29 @@ controllers:
             memory: 9248M
 
 service:
-  main:
-    ports:
+  jellyfin:
+    controller: main
+    ports: &ports
       http:
         port: 8096
+  ext:
+    controller: main
+    type: LoadBalancer
+    externalIPs:
+      - *ip
+    ports: *ports
 
 ingress:
   main:
     enabled: true
     className: nginx
     annotations:
+      cert-manager.io/common-name: &host jellyfin.hermleigh.home
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: "Free Software Media System"
       gethomepage.dev/icon: jellyfin.png
@@ -60,11 +74,11 @@ ingress:
       gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}"
       gethomepage.dev/widget.enableBlocks: "true"
     hosts:
-      - host: &host jellyfin.hermleigh.home
+      - host: *host
         paths:
           - path: /
             service:
-              name: main
+              identifier: jellyfin
               port: http
     tls:
       - hosts:
@@ -72,20 +86,15 @@ ingress:
         secretName: jellyfin-ingress-tls
 
 persistence:
-  shared:
-    existingClaim: shared-files
-    globalMounts:
-      - path: /shared
-  videos:
-    existingClaim: videos
-    globalMounts:
-      - path: /videos
+  music:
+    existingClaim: music
+  movies:
+    existingClaim: movies
+  audio:
+    existingClaim: audio
+  tv-shows:
+    existingClaim: tv-shows
   transcode:
     type: emptyDir
-    globalMounts:
-      - path: /transcode
   cache:
-    enabled: true
     type: emptyDir
-    globalMounts:
-      - path: /cache

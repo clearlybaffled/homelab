@@ -1,11 +1,14 @@
+#
+# Ansible managed
+#
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: infrastructure
 generators:
 - ./secret-generator.yaml
 resources:
-- https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/23.0.6/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
-- https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/23.0.6/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml
-- https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/23.0.6/kubernetes/kubernetes.yml
-- ./keycloak.yaml
 - ./ingress.yaml
+- ./keycloak.yaml
+- https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/24.0.1/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml
+- https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/24.0.1/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
+- https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/24.0.1/kubernetes/kubernetes.yml

@@ -31,35 +31,9 @@
   loop_control:
     label: "{{ item.key }}"
 
-- name: Make app loop
-  set_fact:
-    app_loop: "{{ app_loop | default([]) + [app] }}"
-  loop: >-
-    {{
-      (
-        (apps.values() | selectattr('1.wave','defined') | sort(attribute='1.wave')) +
-        (apps.values() | rejectattr('1.wave','defined'))
-      )
-    }}
-  loop_control:
-    loop_var: app
-    label: "{{ app.name }}"
-  when:
-    # Don't include if app.enable is false
-    - app.enable | default(true)
-    # Start deploying when argument app_start_wave is app.wave
-    - app.wave|default(10)|int >= app_start_wave|default(omit)|int
-    # If there's an argument called app_deploy_list, only include the app if its present
-    - app.name in app_deploy_list|default(apps.keys())
-    # If there's an argument called app_reject_list, don't include this app if its present
-    - app.name not in app_reject_list|default(omit)
-    # Use the argument start_at to get the name of an app to start processing at
-    #- ansible_loop.index0 >=  (app_list | map(attribute='name')).index(start_at )
-  tags: always
-
 - name: Install Application specific configurations and files
   include_tasks: application.yml
-  loop: "{{ app_loop }}"
+  loop: "{{ apps.values() }}"
   loop_control:
     loop_var: app
     label: "{{ app.name }}"
@@ -87,6 +61,17 @@
           ) | path_join
         ) | from_yaml
       }}
+  when:
+    # Don't include if app.enable is false
+    - app.enable | default(true)
+    # Start deploying when argument app_start_wave is app.wave
+    - app.wave|default(10)|int >= app_start_wave|default(omit)|int
+    # If there's an argument called app_deploy_list, only include the app if its present
+    - app.name in app_deploy_list|default(apps.keys())
+    # If there's an argument called app_reject_list, don't include this app if its present
+    - app.name not in app_reject_list|default(omit)
+    # Use the argument app_start_at to get the name of an app to start processing at
+    # - ansible_loop.index0 >=  (apps.values() | map(attribute='name')).index(app_start_at)
 
 - name: Commit changes to app files
   lvrfrc87.git_acp.git_acp:
@@ -118,4 +103,4 @@
             | map('join')
             | map('split', ' ')
             | map('last')
-      ]  | reject('eq', '') | flatten }}
+      ]  | reject('eq', '') | flatten | unique }}
