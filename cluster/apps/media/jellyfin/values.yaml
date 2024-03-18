@@ -32,7 +32,7 @@ controllers:
           DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
           JELLYFIN_FFmpeg__probesize: 50000000
           JELLYFIN_FFmpeg__analyzeduration: 500000000
-          JELLYFIN_PublishedServerUrl: &ip 172.16.1.39
+          JELLYFIN_PublishedServerUrl: 172.16.1.24
         resources:
           requests:
             cpu: 100m
@@ -46,12 +46,6 @@ service:
     ports: &ports
       http:
         port: 8096
-  ext:
-    controller: main
-    type: LoadBalancer
-    externalIPs:
-      - *ip
-    ports: *ports
 
 ingress:
   main:
