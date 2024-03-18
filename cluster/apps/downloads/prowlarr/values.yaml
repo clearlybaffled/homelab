@@ -53,6 +53,8 @@ controllers:
         securityContext:
           readOnlyRootFilesystem: false
           runAsUser: 0
+        ports:
+          - containerPort: 8191
 
 defaultPodOptions:
   securityContext:
@@ -67,11 +69,7 @@ service:
     ports:
       http:
         port: *port
-  flaresolverr:
-    controller: main
-    ports:
-      http:
-        port: 8191
+
 
 ingress:
   main:
