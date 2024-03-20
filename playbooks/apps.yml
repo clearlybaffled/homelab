@@ -18,7 +18,7 @@
     git_push: true
     app_no_loop_pause: false
     batch_apps: false
-    # app_skip_list: []
-    # app_deploy_list: []
+    # app_skip_list:
+    # app_deploy_list:
       # - immich
 
