@@ -143,6 +143,12 @@ apps:
         version: 7.1.238
         valueFiles: []
 
+  reloader:
+    namespace: infrastructure
+    charts:
+      - chart: stakater/reloader
+        version: 1.0.69
+
   keycloak:
     namespace: infrastructure
     kustomize:
