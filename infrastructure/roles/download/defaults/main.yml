@@ -410,7 +410,7 @@ downloads:
     dest: "{{ download_cache_dir }}/kustomize"
     install: "{{ bin_dir }}/kustomize"
     url: "{{ kustomize_download_url }}"
-    unarchive: false
+    unarchive: true
     mode: "0755"
     groups:
       - kubectl
