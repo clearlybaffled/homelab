@@ -1,0 +1,13 @@
+reloader:
+  reloadStrategy: annotations
+  readOnlyRootFilesystem: true
+  deployment:
+    resources:
+      limits:
+        memory: "512Mi"
+      requests:
+        cpu: "10m"
+        memory: "512Mi"
+  podMonitor:
+    enabled: true
+    namespace: monitoring
