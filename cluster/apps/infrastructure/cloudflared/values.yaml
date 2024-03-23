@@ -1,6 +1,5 @@
 controllers:
   cloudflared:
-    replicas: 2
     strategy: RollingUpdate
     annotations:
       reloader.stakater.com/auto: "true"
@@ -21,7 +20,6 @@ controllers:
           - --config
           - /etc/cloudflared/config/config.yaml
           - run
-          - "${CLUSTER_CLOUDFLARE_TUNNEL_ID}"
         probes:
           liveness: &probes
             enabled: true
@@ -46,16 +44,9 @@ controllers:
             memory: 256Mi
     pod:
       securityContext:
-        runAsUser: 568
-        runAsGroup: 568
+        runAsUser: 997
+        runAsGroup: 997
         runAsNonRoot: true
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: cloudflared
 service:
   app:
     controller: cloudflared
@@ -81,7 +72,7 @@ persistence:
         readOnly: true
   creds:
     type: secret
-    name: cloudflared-tunnel-secret
+    name: cloudflared-secret
     globalMounts:
       - path: /etc/cloudflared/creds/credentials.json
         subPath: credentials.json
