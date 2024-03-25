@@ -174,13 +174,6 @@ apps:
     secrets:
       secret:
 
-  cloudflared:
-    namespace: infrastructure
-    charts:
-      - chart: app-template
-    secrets:
-      secret:
-
   homepage:
     namespace: homepage
     path: services
@@ -578,15 +571,3 @@ apps:
       - chart: app-template
     localStorage:
       - name: jellyseer-config
-
-  photoprism:
-    namespace: media
-    charts:
-      - chart: app-template
-    secrets:
-      secret:
-        data:
-          PHOTOPRISM_ADMIN_PASSWORD:
-            type: password
-            name: admin
-    localStorage:
