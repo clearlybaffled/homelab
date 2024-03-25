@@ -4,10 +4,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: home-assistant
+  name: mealie
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: '4'
 spec:
   project: default
   sources:
@@ -16,15 +18,15 @@ spec:
     targetRevision: 3.0.2
     helm:
       valueFiles:
-      - $repo/cluster/apps/services/home-assistant/values.yaml
-      releaseName: home-assistant
+      - $repo/cluster/apps/home/mealie/values.yaml
+      releaseName: mealie
   - repoURL: https://github.com/clearlybaffled/homelab
-    path: cluster/apps/services/home-assistant
+    path: cluster/apps/home/mealie
     targetRevision: main
     ref: repo
   destination:
     name: in-cluster
-    namespace: services
+    namespace: home
   ignoreDifferences:
   - kind: PersistentVolume
     jsonPointers:
