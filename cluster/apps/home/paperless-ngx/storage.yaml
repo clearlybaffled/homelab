@@ -14,12 +14,12 @@ spec:
     apiVersion: v1
     kind: PersistentVolumeClaim
     name: paperless-consume
-    namespace: services
+    namespace: home
   persistentVolumeReclaimPolicy: Retain
   volumeMode: Filesystem
   storageClassName: local-storage
   capacity:
-    storage: 5.5T
+    storage: 5.5Ti
   local:
     path: /share/Files/PaperlessNGX/consume
   nodeAffinity:
@@ -44,12 +44,12 @@ spec:
     apiVersion: v1
     kind: PersistentVolumeClaim
     name: paperless-library
-    namespace: services
+    namespace: home
   persistentVolumeReclaimPolicy: Retain
   volumeMode: Filesystem
   storageClassName: local-storage
   capacity:
-    storage: 5.5T
+    storage: 5.5Ti
   local:
     path: /share/Files/PaperlessNGX
   nodeAffinity:
@@ -65,7 +65,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: paperless-consume
-  namespace: services
+  namespace: home
   finalizers:
   - kubernetes.io/pvc-protection
 spec:
@@ -73,7 +73,7 @@ spec:
   - ReadWriteMany
   resources:
     requests:
-      storage: 5.5T
+      storage: 5.5Ti
   storageClassName: local-storage
   volumeName: paperless-consume
 ---
@@ -81,7 +81,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: paperless-library
-  namespace: services
+  namespace: home
   finalizers:
   - kubernetes.io/pvc-protection
 spec:
@@ -89,6 +89,6 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 5.5T
+      storage: 5.5Ti
   storageClassName: local-storage
   volumeName: paperless-library

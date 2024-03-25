@@ -72,12 +72,19 @@
     - app.name not in app_reject_list|default(omit)
     # Use the argument app_start_at to get the name of an app to start processing at
     # - ansible_loop.index0 >=  (apps.values() | map(attribute='name')).index(app_start_at)
+  register: application_configuration
 
 - name: Commit changes to app files
   lvrfrc87.git_acp.git_acp:
     path: "{{ root_dir }}"
-    comment: "Updated application config files\n\n{{ files | to_nice_yaml }}"
-    add: "{{  files  }}"
+    comment: |-
+      Updated applications:
+      {{ applied_apps | map(attribute='name') | to_nice_yaml }}
+      
+      Updated Files:
+      {{ ([files[1]] + [files[2]]) | flatten | to_nice_yaml }}
+
+    add: "{{  files | flatten | unique }}"
     url: "{{ git_repo_ssh_url }}"
     push: "{{ git_push | default(true) }}"
     branch: "{{ git_branch }}"
@@ -86,21 +93,20 @@
     - batch_apps | default(false)
   tags: commit
   vars:
+    applied_apps: "{{ application_configuration.results | reject('skipped') | map(attribute='app') }}"
     files: |-
       {{ [
-          lookup('pipe','git status --porcelain -- ' ~ cluster_dir).splitlines()
+          lookup('pipe','git status --porcelain -- ' ~ (applied_apps | map(attribute='app_dir') + (applied_apps | map(attribute='manifest_file'))) | flatten  | join(' ')).splitlines()
+            | reject('match','D')
             | map('split',' ')
             | map('last'),
 
-          lookup('pipe','git status --porcelain -- ' ~ (inventory_dir, 'group_vars','all','kubectl')|path_join).splitlines()
+          lookup('pipe','git status --porcelain -- ' ~ (inventory_dir, 'group_vars','kubectl')|path_join).splitlines()
             | map('split',' ')
             | map('last'),
 
           lookup('pipe','git status --porcelain').splitlines()
-            | map('list')
-            | rejectattr('0','eq', ' ')
-            | rejectattr('0', 'eq', '?')
-            | map('join')
+            | reject('match','[ D?]')
             | map('split', ' ')
             | map('last')
-      ]  | reject('eq', '') | flatten | unique }}
+      ]  | reject('eq', '') }}

@@ -221,7 +221,7 @@
     "LocalStorage": {
       "$id": "/LocalStorage",
       "title": "localStorage",
-      "description": "PersistentVolumeClaim definitions, mostly to track dynamically provisioned CSI volumes so that the app can be destroyed and redeployed without losing storage.",
+      "description": "Definitions for creating PV/PVCs from rancher's local-path-provisioner.\n\nDefaults to a PV/PVC in the default storage directory defined by ansible variable {local_storage_root_dir}/{app.namespace}/{app.name}/{app.name}",
       "oneOf": [
         {
           "type": "null"

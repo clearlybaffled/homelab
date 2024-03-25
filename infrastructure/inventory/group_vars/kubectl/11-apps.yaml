@@ -201,7 +201,7 @@ apps:
                 app.kubernetes.io/instance: homepage
 
   grocy:
-    namespace: services
+    namespace: home
     wave: "4"
     kustomize:
       resources:
@@ -222,7 +222,7 @@ apps:
     localStorage:
 
   paperless-ngx:
-    namespace: services
+    namespace: home
     wave: "4"
     pv: true
     charts:
@@ -250,7 +250,7 @@ apps:
         path: /share/Files/PaperlessNGX
 
   mealie:
-    namespace: services
+    namespace: home
     wave: "4"
     charts:
       - chart: app-template
@@ -548,13 +548,13 @@ apps:
     localStorage:
 
   home-assistant:
-    namespace: services
+    namespace: home
     charts:
       - chart: app-template
     localStorage:
 
   homebox:
-    namespace: services
+    namespace: home
     charts:
       - chart: app-template
     localStorage:

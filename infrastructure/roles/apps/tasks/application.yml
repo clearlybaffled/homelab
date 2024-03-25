@@ -90,7 +90,7 @@
               'path': item,
               'modes': app.localStorage[i].modes | default(['ReadWriteOnce']),
               'name': app.localStorage[i].name | default(app.name),
-              'size': (fs_sizes.results[i].stdout | community.general.jc('df'))[0].size
+              'size': (fs_sizes.results[i].stdout | community.general.jc('df'))[0].size ~ 'i'
             }]
           }}"
       loop: "{{ paths }}"
