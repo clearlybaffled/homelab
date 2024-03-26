@@ -86,7 +86,11 @@ apps:
     charts:
       - chart: metallb/metallb
         version: "{{ metallb_version }}"
-
+    ignoreDifferences:
+      - group: apiextensions.k8s.io
+        kind: CustomResourceDefinition
+        jsonPointers:
+          - /spec/conversion/webhook/clientConfig/caBundle
 
   external-dns:
     namespace: infrastructure

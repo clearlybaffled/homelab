@@ -47,6 +47,13 @@
               "title": "enable",
               "type": "boolean",
               "description": "Whether or not to actually create this application"
+            },
+            "ignoreDifferences": {
+              "title": "ignoreDifferences",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/IgnoreDifferences"
+              }
             }
           },
           "additionalProperties": true,
@@ -252,7 +259,59 @@
             }
           }
         }
-      ]      
+      ]
+    },
+    "IgnoreDifferences": {
+      "$id": "/IgnoreDifferences",
+      "title": "ignoreDifferences",
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "jsonPointers": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            { "type": "string" }
+          ]
+        },
+        "jqPathExpressions": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            { "type": "string" }
+          ]
+        },
+        "managedFieldsManagers": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            { "type": "string" }
+          ]
+        }
+      }
     }
   }
 }
