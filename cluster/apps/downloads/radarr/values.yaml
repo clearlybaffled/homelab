@@ -5,7 +5,7 @@ controllers:
       radarr:
         image:
           repository: ghcr.io/onedr0p/radarr
-          tag: 5.2.6
+          tag: 5.3.6
 
         env:
           TZ: "America/New_York"

@@ -5,7 +5,7 @@ controllers:
       prowlarr:
         image:
           repository: ghcr.io/onedr0p/prowlarr
-          tag: 1.12.2
+          tag: 1.15.0
         env:
           TZ: America/New_York
           PROWLARR__INSTANCE_NAME: Prowlarr
