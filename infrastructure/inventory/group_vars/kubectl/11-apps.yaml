@@ -178,6 +178,18 @@ apps:
     secrets:
       secret:
 
+  mosquitto:
+    namespace: db
+    charts:
+      - chart: app-template
+    kustomize:
+      extras:
+        configMapGenerator:
+          - name: mosquitto-configmap
+            files: ./mosquitto.conf
+    secrets:
+      secret:
+
   homepage:
     namespace: homepage
     path: services
@@ -203,6 +215,7 @@ apps:
               labels:
                 app.kubernetes.io/name: homepage
                 app.kubernetes.io/instance: homepage
+
 
   grocy:
     namespace: home
@@ -502,6 +515,7 @@ apps:
         kind: StatefulSet
         jsonPointers:
           - /spec/volumeClaimTemplates
+    localStorage:
 
   immich:
     namespace: media
@@ -556,6 +570,13 @@ apps:
     charts:
       - chart: app-template
     localStorage:
+
+  zwave-js-ui:
+    namespace: home
+    charts:
+      - chart: app-template
+    localStorage:
+      - name: zwave-app-store
 
   homebox:
     namespace: home

@@ -1,0 +1,82 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
+controllers:
+  main:
+    type: deployment
+    annotations:
+      reloader.stakater.com/auto: "true"
+    containers:
+      main:
+        image:
+          repository: ghcr.io/zwave-js/zwave-js-ui
+          tag: 9.9.1
+        env:
+          TZ: America/New_York
+        probes:
+          liveness: &probes
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /health
+                port: &port 8091
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 1
+              failureThreshold: 3
+          readiness: *probes
+          startup:
+            enabled: false
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            memory: 512Mi
+    pod:
+      nodeSelector:
+        zoos.feature.node.kubernetes.io/zwave: "true"
+
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: *port
+      websocket:
+        port: 3000
+
+# serviceMonitor:
+#   main:
+#     endpoints:
+#     serviceName: main
+#     enabled: true # requires https://github.com/kvaster/zwavejs-prom
+
+ingress:
+  main:
+    enabled: true
+    className: nginx
+    hosts:
+      - host: &host "zwave.hermleigh.home"
+        paths:
+          - path: /
+            service:
+              identifier: main
+              port: http
+    tls:
+      - hosts:
+          - *host
+        secretName: zwave-tls-ingress
+
+persistence:
+  usb:
+    type: hostPath
+    hostPath: /dev/serial/by-id/usb-Zooz_800_Z-Wave_Stick_533D004242-if00
+    hostPathType: CharDevice
+    globalMounts:
+      - path: /dev/zwave
+  apps:
+    existingClaim: zwave-app-store
+    globalMounts:
+      - path: /usr/src/app/store
