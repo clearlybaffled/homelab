@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/main/traefik.io/tlsstore_v1alpha1.json
+apiVersion: traefik.io/v1alpha1
+kind: TLSStore
+metadata:
+  name: default
+spec:
+  defaultCertificate:
+    secretName: external-wildcard-certificate

@@ -71,6 +71,13 @@ apps:
     charts:
       - chart: jetstack/cert-manager
         version: v1.14.1
+    secrets:
+      cloudflare-api-token:
+    kustomize:
+      resources:
+        - ./cluster-issuer.yaml
+        - ./issuer-letsencrypt-prod.yaml
+        - ./issuer-letsencrypt-staging.yaml
 
   ingress-nginx:
     namespace: infrastructure
@@ -78,6 +85,14 @@ apps:
     charts:
       - chart: ingress-nginx/ingress-nginx
         version: 4.9.1
+
+  traefik:
+    namespace: traefik-system
+    path: infrastructure
+    wave: "1"
+    charts:
+      - chart: traefik/traefik
+        version: v26.1.0
 
   metallb:
     path: infrastructure

@@ -78,6 +78,7 @@ namespaced: false
 sources:
   - service
   - ingress
+  - traefik-proxy
 
 policy: sync
 

@@ -4,7 +4,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: metallb
+  name: traefik
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -13,25 +13,20 @@ metadata:
 spec:
   project: default
   sources:
-  - chart: metallb
-    repoURL: https://metallb.github.io/metallb
-    targetRevision: v0.13.11
+  - chart: traefik
+    repoURL: https://traefik.github.io/charts
+    targetRevision: v26.1.0
     helm:
       valueFiles:
-      - $repo/cluster/apps/infrastructure/metallb/values.yaml
-      releaseName: metallb
+      - $repo/cluster/apps/infrastructure/traefik/values.yaml
+      releaseName: traefik
   - repoURL: https://github.com/clearlybaffled/homelab
-    path: cluster/apps/infrastructure/metallb
+    path: cluster/apps/infrastructure/traefik
     targetRevision: main
     ref: repo
   destination:
     name: in-cluster
-    namespace: metallb-system
-  ignoreDifferences:
-  - group: apiextensions.k8s.io
-    kind: CustomResourceDefinition
-    jsonPointers:
-    - /spec/conversion/webhook/clientConfig/caBundle
+    namespace: traefik-system
   syncPolicy:
     automated:
       prune: true
@@ -39,4 +34,3 @@ spec:
     syncOptions:
     - CreateNamespace=true
     - ServerSideApply=true
-    - RespectIgnoreDifferences=true

@@ -17,6 +17,6 @@ metadata:
   name: ingress-pool
 spec:
   addresses:
-  - 172.16.1.24/32
+  - 172.16.1.24/31
   autoAssign: true
   avoidBuggyIPs: true

@@ -1,0 +1,12 @@
+#
+# Ansible managed
+#
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: cert-manager
+generators:
+- ./secret-generator.yaml
+resources:
+- ./cluster-issuer.yaml
+- ./issuer-letsencrypt-prod.yaml
+- ./issuer-letsencrypt-staging.yaml
