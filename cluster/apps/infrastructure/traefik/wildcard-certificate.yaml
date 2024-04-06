@@ -7,7 +7,7 @@ spec:
   secretName: external-wildcard-certificate
   issuerRef:
     kind: ClusterIssuer
-    name: letsencrypt-staging
+    name: letsencrypt-production
   commonName: hermleigh.cc
   subject:
     organizations:
