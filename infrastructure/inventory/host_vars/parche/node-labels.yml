@@ -1,4 +1,7 @@
 ---
 node_labels:
-  - 'hermleigh.home/dvb=installed'
-  - 'hermleigh.home/jbod=true'
+  - hermleigh.home/dvb: installed
+  - hermleigh.home/jbod: "true"
+  - intel.feature.node.kubernetes.io/gpu: "true"
+  - zoos.feature.node.kubernetes.io/zwave: "true"
+  - google.feature.node.kubernetes.io/coral: "true"
