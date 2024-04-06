@@ -102,7 +102,7 @@
         content: |-
           auto bond0
           iface bond0 inet manual
-            bond-slaves enp9s0 enp10s0
+            bond-slaves enp11s0 enp12s0
             bond-mode 802.3ad
             bond-miimon 100
             bond-downdelay 200
