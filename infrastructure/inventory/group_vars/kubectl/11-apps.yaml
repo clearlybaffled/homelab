@@ -194,16 +194,31 @@ apps:
       secret:
 
   mosquitto:
-    namespace: db
+    namespace: home
     charts:
       - chart: app-template
     kustomize:
       extras:
         configMapGenerator:
           - name: mosquitto-configmap
-            files: ./mosquitto.conf
+            files:
+              - ./mosquitto.conf
+            options:
+              disableNameSuffixHash: true
     secrets:
       secret:
+      frigate-secret:
+        data:
+          MOSQUITTO_FRIGATE_USERNAME: frigate
+          MOSQUITTO_FRIGATE_PASSWORD:
+            type: key
+            name: frigate
+      home-assistant-secret:
+        data:
+          MOSQUITTO_HOME_ASSISTANT_USERNAME: home-assistant
+          MOSQUITTO_HOME_ASSISTANT_PASSWORD:
+            type: key
+            name: hass
 
   homepage:
     namespace: homepage

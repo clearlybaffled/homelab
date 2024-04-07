@@ -1,0 +1,71 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
+controllers:
+  mosquitto:
+    type: statefulset
+    annotations:
+      reloader.stakater.com/auto: "true"
+    initContainers:
+      init-config:
+        image: &image
+          repository: public.ecr.aws/docker/library/eclipse-mosquitto
+          tag: 2.0.18
+          pullPolicy: IfNotPresent
+        command: ["/bin/sh", "-c"]
+        args:
+          [
+            "cp /tmp/secret/* /mosquitto/external_config/ && chmod 700 /mosquitto/external_config/mosquitto_pwd && mosquitto_passwd -U /mosquitto/external_config/mosquitto_pwd",
+          ]
+    containers:
+      mosquitto:
+        image: *image
+        resources:
+          requests:
+            cpu: 5m
+            memory: 4Mi
+          limits:
+            memory: 16Mi
+    pod:
+      securityContext:
+        runAsUser: 997
+        runAsGroup: 997
+        fsGroup: 997
+        fsGroupChangePolicy: OnRootMismatch
+    statefulset:
+      volumeClaimTemplates:
+        - name: data
+          accessMode: ReadWriteOnce
+          size: 512Mi
+          storageClass: local-path
+          globalMounts:
+            - path: /data
+service:
+  mqtt:
+    controller: mosquitto
+    type: LoadBalancer
+    annotations:
+    externalTrafficPolicy: Cluster
+    ports:
+      http:
+        port: 1883
+
+persistence:
+  config-file:
+    type: configMap
+    name: mosquitto-configmap
+    advancedMounts:
+      mosquitto:
+        mosquitto:
+          - path: /mosquitto/config/mosquitto.conf
+            subPath: mosquitto.conf
+  secret-file:
+    type: secret
+    name: mosquitto-secret
+    advancedMounts:
+      mosquitto:
+        init-config:
+          - path: /tmp/secret
+  external-config:
+    type: emptyDir
+    globalMounts:
+      - path: /mosquitto/external_config

@@ -1,0 +1,14 @@
+#
+# Ansible managed
+#
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: home
+generators:
+- ./secret-generator.yaml
+configMapGenerator:
+- name: mosquitto-configmap
+  files:
+  - ./mosquitto.conf
+  options:
+    disableNameSuffixHash: true

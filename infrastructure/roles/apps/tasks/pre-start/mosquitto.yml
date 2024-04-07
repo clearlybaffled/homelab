@@ -1,0 +1,37 @@
+---
+- name: Create mosquitto secrets
+  vars:
+    credentials:
+      mosquitto: "{{ lookup('password','/dev/null', length=60) }}"
+  block:
+  - name: Generate mosquitto secret values
+    set_fact: 
+      credentials: "{{ credentials | combine({ secret.data[username]|b64decode : secret.data[password]|b64decode }) }}"
+    loop:
+      - home-assistant
+      - frigate
+    vars:
+      itemname: "{{ item | upper | regex_replace('-','_') }}"
+      username: "{{ ['MOSQUITTO' , itemname, 'USERNAME'] | join('_') }}"
+      password: "{{ ['MOSQUITTO' , itemname, 'PASSWORD'] | join('_')  }}"
+      secret: "{{ lookup('community.sops.sops', (app.app_dir, item ~ '-secret.sops.yaml') | path_join) | from_yaml }}"
+
+  - name: Write out secret sops file
+    community.sops.sops_encrypt:
+      path: "{{ (app.app_dir, 'secret.sops.yaml') | path_join }}"
+      encrypted_regex: "^(data|stringData)$"
+      content_yaml: "{{ lookup('template', 'secret.yaml.j2', convert_data=false) | from_yaml }}"
+    vars:
+      generated_credentials: {}
+      secret:
+        name: secret
+        value:
+          data:
+            mosquitto_pwd: |
+              {{ credentials | items | map('join',':') | join('
+              ')}}
+
+  always:
+    - name: Clear credentials
+      set_fact:
+        credentials:

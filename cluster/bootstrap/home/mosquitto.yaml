@@ -1,0 +1,40 @@
+#
+# Ansible managed
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mosquitto
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+  - chart: app-template
+    repoURL: https://bjw-s.github.io/helm-charts/
+    targetRevision: 3.0.2
+    helm:
+      valueFiles:
+      - $repo/cluster/apps/home/mosquitto/values.yaml
+      releaseName: mosquitto
+  - repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/apps/home/mosquitto
+    targetRevision: main
+    ref: repo
+  destination:
+    name: in-cluster
+    namespace: home
+  ignoreDifferences:
+  - group: apps
+    kind: StatefulSet
+    jsonPointers:
+    - /spec/volumeClaimTemplates
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
+    - RespectIgnoreDifferences=true
