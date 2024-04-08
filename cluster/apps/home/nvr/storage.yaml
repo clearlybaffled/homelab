@@ -1,0 +1,48 @@
+#
+# Ansible managed
+#
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: frigate
+  finalizers:
+  - kubernetes.io/pv-protection
+spec:
+  accessModes:
+  - ReadWriteOnce
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: frigate
+    namespace: home
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: local-storage
+  capacity:
+    storage: 153Gi
+  local:
+    path: /srv/cluster/volumes/home/nvr/frigate
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - parche
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: frigate
+  namespace: home
+  finalizers:
+  - kubernetes.io/pvc-protection
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 153Gi
+  storageClassName: local-storage
+  volumeName: frigate

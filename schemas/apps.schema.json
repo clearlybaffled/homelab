@@ -3,63 +3,57 @@
   "title": "Cluster Application",
   "description": "Definitions used by ansible to generate K8S manifest files",
   "type": "object",
-  "properties": {
-    "apps": {
-      "title": "apps",
+  "patternProperties": {
+    "^[a-zA-Z0-9-]+$": {
       "type": "object",
-      "patternProperties": {
-        "^[a-zA-Z0-9-]+$": {
-          "type": "object",
-          "description": "Application Name. Used to build application path (cluster/$namespace/$app_name), generating names for secrets, PVCs, etc.",
-          "properties": {
-            "path": {
-              "title": "path",
-              "type": "string",
-              "description": "Path to the application directory cluster/, not include the app name itself.\n\nDefaults to value of $namespace in this app.\n\nExample: cluster/db/sql/mysql, path is db/sql"
-            },
-            "charts": {
-              "title": "charts",
-              "type": "array",
-              "description": "List of Helm Charts to deploy with this application.",
-              "items": {
-                "$ref": "#/$defs/HelmChart"
-              }
-            },
-            "namespace": {
-              "title": "namespace",
-              "type": "string",
-              "description": "The namespace to deploy this application to"
-            },
-            "kustomize": {
-              "$ref": "#/$defs/Kustomize"
-            },
-            "localStorage": {
-              "$ref": "#/$defs/LocalStorage"
-            },
-            "secrets": {
-              "$ref": "#/$defs/Secrets"
-            },
-            "wave": {
-              "title": "wave",
-              "type": "string"
-            },
-            "enable": {
-              "title": "enable",
-              "type": "boolean",
-              "description": "Whether or not to actually create this application"
-            },
-            "ignoreDifferences": {
-              "title": "ignoreDifferences",
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/IgnoreDifferences"
-              }
-            }
-          },
-          "additionalProperties": true,
-          "required": ["namespace"]
+      "description": "Application Name. Used to build application path (cluster/$namespace/$app_name), generating names for secrets, PVCs, etc.",
+      "properties": {
+        "path": {
+          "title": "path",
+          "type": "string",
+          "description": "Path to the application directory cluster/, not include the app name itself.\n\nDefaults to value of $namespace in this app.\n\nExample: cluster/db/sql/mysql, path is db/sql"
+        },
+        "charts": {
+          "title": "charts",
+          "type": "array",
+          "description": "List of Helm Charts to deploy with this application.",
+          "items": {
+            "$ref": "#/$defs/HelmChart"
+          }
+        },
+        "namespace": {
+          "title": "namespace",
+          "type": "string",
+          "description": "The namespace to deploy this application to"
+        },
+        "kustomize": {
+          "$ref": "#/$defs/Kustomize"
+        },
+        "localStorage": {
+          "$ref": "#/$defs/LocalStorage"
+        },
+        "secrets": {
+          "$ref": "#/$defs/Secrets"
+        },
+        "wave": {
+          "title": "wave",
+          "type": "string"
+        },
+        "enable": {
+          "title": "enable",
+          "type": "boolean",
+          "description": "Whether or not to actually create this application"
+        },
+        "ignoreDifferences": {
+          "title": "ignoreDifferences",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IgnoreDifferences"
+          }
         }
-      }
+      },
+      "additionalProperties": true,
+      "required": ["namespace"]
     }
   },
   "$defs": {
@@ -151,7 +145,7 @@
                             "type": {
                               "type": "string",
                               "title": "type",
-                              "enum": ["password"],
+                              "enum": ["password", "key"],
                               "description": "Type of secret to generate"
                             },
                             "name": {

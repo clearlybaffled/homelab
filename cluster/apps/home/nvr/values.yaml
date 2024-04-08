@@ -1,0 +1,190 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
+controllers:
+  frigate:
+    annotations:
+      reloader.stakater.com/auto: "true"
+    containers:
+      frigate:
+        image:
+          repository: ghcr.io/blakeblackshear/frigate
+          tag: 0.13.2@sha256:2906991ccad85035b176941f9dedfd35088ff710c39d45ef1baa9a49f2b16734
+        envFrom:
+          - configMapRef:
+              name: global-env
+          - secretRef:
+              name: mosquitto-frigate-secret
+        probes:
+          liveness: &probes
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /api/version
+                port: &port 5000
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 1
+              failureThreshold: 3
+          readiness: *probes
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            cpu: 100m
+            memory: 2Gi
+            gpu.intel.com/i915: "1"
+          limits:
+            gpu.intel.com/i915: "1"
+            memory: 8Gi
+    pod:
+      nodeSelector:
+        google.feature.node.kubernetes.io/coral: "true"
+
+  wyze:
+    annotations:
+      reloader.stakater.com/auto: "true"
+    containers:
+      wyze-bridge:
+        image:
+          repository: mrlt8/wyze-bridge
+          tag: 2.5.1-qsv
+        envFrom:
+          - configMapRef:
+              name: global-env
+          - configMapRef:
+              name: wyze-configmap
+          - secretRef:
+              name: wyze-secret
+
+        securityContext:
+          privileged: true
+
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 500Mi
+            gpu.intel.com/i915: 1
+          limits:
+            memory: 2Gi
+            gpu.intel.com/i915: 1
+
+defaultPodOptions:
+  nodeSelector:
+    intel.feature.node.kubernetes.io/gpu: "true"
+
+service:
+  frigate:
+    controller: frigate
+    ports:
+      http:
+        port: *port
+      rtsp:
+        port: 8554
+  wyze:
+    controller: wyze
+    ports:
+      http:
+        enabled: true
+        port: 5000
+      rtmp:
+        enabled: true
+        port: 1935
+        protocol: TCP
+      rstp:
+        enabled: true
+        port: 8554
+        protocol: TCP
+      hls:
+        enabled: true
+        port: 8888
+        protocol: TCP
+      webrtc:
+        enabled: true
+        port: 8889
+        protocol: TCP
+      webrtc-udp:
+        enabled: true
+        port: 8889
+        protocol: UDP
+
+
+ingress:
+  app:
+    className: nginx
+    hosts:
+      - host: &host "frigate.hermleigh.home"
+        paths:
+          - path: /
+            service:
+              identifier: frigate
+              port: http
+    tls:
+      - hosts:
+          - *host
+
+persistence:
+  frigate-data:
+    existingClaim: frigate
+    advancedMounts:
+      frigate:
+        frigate:
+          - path: /data
+  frigate-config-file:
+    type: configMap
+    name: frigate-configmap
+    advancedMounts:
+      frigate:
+        frigate:
+        - path: /config/config.yaml
+          subPath: config.yaml
+          readOnly: true
+  cache:
+    type: emptyDir
+    medium: Memory
+    sizeLimit: 4Gi
+    globalMounts:
+      - path: /dev/shm
+  usb:
+    type: hostPath
+    hostPath: /dev/bus/usb
+    hostPathType: Directory
+    advancedMounts:
+      frigate:
+        frigate:
+          - path: /dev/bus/usb
+  media:
+    type: persistentVolumeClaim
+    storageClass: local-path-videos
+    accessMode: ReadWriteOnce
+    size: 20Gi
+    globalMounts:
+      - path: /media
+
+configMaps:
+  global-env:
+    data:
+      TZ: America/New_York
+      LIBVA_DRIVER_NAME: i965
+  wyze-configmap:
+    data:
+      NET_MODE: "ANY" # or LAN
+      ENABLE_AUDIO: "True"
+      RTSP_FW: "force"
+      SNAPSHOT: "RTSP30"
+      IMG_DIR: "/img/"
+      IMG_TYPE: "png"
+      RECORD_ALL: "False"
+      CONNECT_TIMEOUT: "60"
+      OFFLINE_TIME: "30"
+      FRESH_DATA: "True"
+      FPS_FIX: "True"
+      LLHLS: "True"
+      MOTION_API: "True"
+      MOTION_INT: "3"
+      MOTION_START: "True"
+      H264_ENC: "h264_nvenc" # or h264_qsv
+      ROTATE_DOOR: "True"
+      ON_DEMAND: "False"
+      SUBSTREAM: "True"
+      WB_IP: "10.43.214.110"

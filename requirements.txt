@@ -16,3 +16,4 @@ libvirt-python
 pre-commit
 jc
 checkov
+httpx

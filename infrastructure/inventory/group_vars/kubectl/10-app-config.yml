@@ -23,6 +23,8 @@ helm_repositories:
   kubeshark: https://helm.kubeshark.co
   oauth2-proxy: https://oauth2-proxy.github.io/manifests
   stakater: https://stakater.github.io/stakater-charts
+  nfd: https://kubernetes-sigs.github.io/node-feature-discovery/charts
+  intel: https://intel.github.io/helm-charts/
 
 # Registry deployment
 registry_enabled: false

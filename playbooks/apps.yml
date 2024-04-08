@@ -1,24 +1,16 @@
 ---
-- name: Generate application manifest files
+- name: Manage ArgoCD Application(s)
   hosts: localhost
   gather_facts: true
   roles:
     - apps
-  tasks:
-    - name: Bootstrap cluster
-      kubernetes.core.k8s:
-        src: "{{ (cluster_dir, 'cluster.yaml') | path_join }}"
-        server_side_apply:
-          field_manager: ansible
-      tags:
-        - bootstrap
   vars:
     # see ./infrastructure/roles/apps/meta/argument_specs.yaml for definitions
     git_push_force: false
-    git_push: true
-    app_no_loop_pause: false
-    batch_apps: false
+    git_push: false
+    app_no_loop_pause: true
+    app_tasks: true
+    batch_apps: true
     # app_skip_list:
-    # app_deploy_list:
-      # - immich
-
+    app_deploy_list:
+      - intel-device-plugin

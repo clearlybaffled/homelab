@@ -49,3 +49,21 @@
       tags: network
     - role: containers/storage
       tags: storage
+
+- name: Startup Cluster applications
+  hosts: localhost
+  gather_facts: true
+  tags:
+    - bootstrap
+  tasks:
+    - name: Start ArgoCD
+      include_role:
+        name: apps
+      vars:
+        app_deploy_list:
+          - argocd
+    - name: Bootstrap cluster as ArgoCD App-of-Apps 
+      kubernetes.core.k8s:
+        src: "{{ (cluster_dir, 'cluster.yaml') | path_join }}"
+        server_side_apply:
+          field_manager: ansible

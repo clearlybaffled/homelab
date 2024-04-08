@@ -1,4 +1,9 @@
 ---
+- name: Load application vars file
+  include_vars:
+    file: apps.yaml
+    name: apps
+
 - name: Build up app_list to include some conventions for file locations and sort by wave
   tags: always
   set_fact:

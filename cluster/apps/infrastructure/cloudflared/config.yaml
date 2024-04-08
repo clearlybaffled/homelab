@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudflared-configmap
+  namespace: infrastructure
+data:
+  config.yaml: |
+    ---
+    tunnel: 8b18a8e8-a189-45f0-a88d-5b38ee7086c4
+
+    ingress:
+      - hostname: hermleigh.cc
+        service: &svc https://ingress-nginx-controller.infrastructure.svc
+      - hostname: "*.hermleigh.cc"
+        service: *svc
+      - service: http_status:404
