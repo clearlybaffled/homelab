@@ -10,8 +10,15 @@
       "properties": {
         "path": {
           "title": "path",
-          "type": "string",
-          "description": "Path to the application directory cluster/, not include the app name itself.\n\nDefaults to value of $namespace in this app.\n\nExample: cluster/db/sql/mysql, path is db/sql"
+          "description": "Path to the application directory cluster/, not include the app name itself.\n\nDefaults to value of $namespace in this app.\n\nExample: cluster/db/sql/mysql, path is db/sql",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type":"null"
+            }
+          ]
         },
         "charts": {
           "title": "charts",

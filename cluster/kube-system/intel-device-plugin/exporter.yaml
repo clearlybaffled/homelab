@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
+---
+controllers:
+  main:
+    type: daemonset
+    containers:
+      intel-gpu-exporter:
+        image:
+          repository: ghcr.io/onedr0p/intel-gpu-exporter
+          tag: rolling@sha256:db18b372824a3940b7733d11286070439d47eb22bc4bc1471a4c754ba977f665
+        resources:
+          requests:
+            gpu.intel.com/i915_monitoring: 1
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            gpu.intel.com/i915_monitoring: 1
+            memory: 500Mi
+        securityContext:
+          privileged: true
+
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: 8080
+
+serviceMonitor:
+  main:
+    serviceName: intel-gpu-exporter
+    enabled: true
+    endpoints:
+      - port: http
+        scheme: http
+        path: /metrics
+        interval: 1m
+        scrapeTimeout: 10s
+        relabelings:
+          - action: replace
+            sourceLabels: [__meta_kubernetes_pod_node_name]
+            targetLabel: node
+
+defaultPodOptions:
+  nodeSelector:
+    intel.feature.node.kubernetes.io/gpu: "true"

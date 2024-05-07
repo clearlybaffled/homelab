@@ -17,7 +17,7 @@
                   cluster_dir,
                   ('path' in item.value) |
                     ternary(
-                      item.value.path|default(omit) if (item.value.path|default(omit) == '') else ('apps', item.value.path|default(omit)),
+                      item.value.path|default(item.value.namespace,true) if (item.value.path|default('', true) == '') else ('apps', item.value.path|default(omit,true)),
                       ('apps', item.value.namespace)
                     ),
                   item.key
@@ -26,7 +26,7 @@
                 (
                   cluster_dir,
                   'bootstrap',
-                  ('path' in item.value) | ternary(item.value.path, item.value.namespace),
+                  item.value.path|default(item.value.namespace,true),
                   item.key+'.yaml'
                 ) | path_join
              })

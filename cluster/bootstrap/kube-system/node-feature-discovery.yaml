@@ -1,0 +1,34 @@
+#
+# Ansible managed
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: node-feature-discovery
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+  - chart: node-feature-discovery
+    repoURL: https://kubernetes-sigs.github.io/node-feature-discovery/charts
+    targetRevision: 0.15.4
+    helm:
+      valueFiles:
+      - $repo/cluster/kube-system/node-feature-discovery/values.yaml
+      releaseName: node-feature-discovery
+  - repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/kube-system/node-feature-discovery
+    targetRevision: main
+    ref: repo
+  destination:
+    name: in-cluster
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
