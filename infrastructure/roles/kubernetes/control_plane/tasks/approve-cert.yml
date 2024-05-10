@@ -1,0 +1,37 @@
+---
+- name: kubernetes | Ensure CSR is provided
+  assert:
+    that:
+      - csr is defined and csr
+      - name is defined and name != ""
+
+- name: kubernetes | Submit CSR
+  delegate_to: "{{ groups['kube_control_plane'][0] }}"
+  connection: ssh
+  become: true
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_file }}"
+    template: csr.yml.j2
+    ca_cert: "{{ kube_cluster_cacerts }}"
+
+- name: kubernetes | Approve CSR
+  delegate_to: "{{ groups['kube_control_plane'][0] }}"
+  connection: ssh
+  become: true
+  command: "{{ kubectl }} certificate approve {{ name }}"
+  register: approve_csr
+  failed_when: approve_csr.rc != 0
+
+- name: kubernetes | Get Signed certificate
+  delegate_to: "{{ groups['kube_control_plane'][0] }}"
+  connection: ssh
+  become: true
+  command: "{{ kubectl }} get csr {{ name }} -o jsonpath='{.status.certificate}'"
+  register: crt
+  until: crt.stdout is ne ""
+  retries: 10
+  delay: 5
+
+- name: kubernetes | Return signed certificate
+  set_fact:
+    certificate: "{{ crt.stdout }}"

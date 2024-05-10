@@ -5,7 +5,7 @@
   become: true
   kubernetes.core.k8s_info:
     kind: CertificateSigningRequest
-    name: "{{ kube_user }}-csr"
+    name: "{{ kube_user }}"
     api_version: certificates.k8s.io/v1
     kubeconfig: "{{ kubeconfig_file }}"
     ssl_ca_cert: "{{ kube_cluster_cacerts }}"
@@ -26,38 +26,26 @@
         organization_name: service:masters
       register: csr
 
-    - name: user | Process user request on control plane
-      delegate_to: "{{ groups['kube_control_plane'][0] }}"
-      connection: ssh
-      become: true
-      block:
-        - name: user | Create ClusterRoleBinding and submit CSR
-          kubernetes.core.k8s:
-            kubeconfig: "{{ kubeconfig_file }}"
-            template: create-user.yml.j2
-            ca_cert: "/etc/ssl/certs/ca-certificates.crt"
+    - name: user | Create ClusterRoleBinding
+      kubernetes.core.k8s:
+        template: crb.yml.j2
+        
+    - name: user | Send CSR to Kubernetes
+      include_role:
+        name: kuberenetes/control_plane
+        tasks_from: approve-cert.yml
+      vars:
+        name: "{{ kube_user }}"
 
-        - name: user | Approve CSR
-          command: "{{ kubectl }} certificate approve {{ kube_user }}-csr"
-          register: approve_csr
-          failed_when: approve_csr.rc != 0
-
-        - name: user | Get Signed certificate
-          command: "{{ kubectl }} get csr {{ kube_user }}-csr -o jsonpath='{.status.certificate}'"
-          register: crt
-          until: crt.stdout is ne ""
-          retries: 10
-          delay: 5
-
-        - name: user | Create kubeconfig file
-          set_fact:
-            kubeconfig_str: "{{ lookup('ansible.builtin.template', 'kubeconfig.yml.j2') }}"
+    - name: user | Create kubeconfig file
+      set_fact:
+        kubeconfig_str: "{{ lookup('ansible.builtin.template', 'kubeconfig.yml.j2') }}"
   always:
     - name: Make sure that output (which contains the private key) is overwritten
       set_fact:
         private_key: ''
         csr: ''
-        crt: ''
+        certificate: ''
 
 - name: Make sure kubeconfig is set
   set_fact:

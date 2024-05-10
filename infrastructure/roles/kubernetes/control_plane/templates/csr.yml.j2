@@ -1,0 +1,15 @@
+---
+apiVersion: certificates.k8s.io/v1
+kind: CertificateSigningRequest
+metadata:
+  name: {{ name }}
+spec:
+  groups:
+  - system:authenticated
+  - system:masters
+  request: {{ csr.csr | b64encode | replace('\n','') }}
+  signerName: kubernetes.io/kube-apiserver-client
+  usages:
+  - digital signature
+  - key encipherment
+  - client auth
