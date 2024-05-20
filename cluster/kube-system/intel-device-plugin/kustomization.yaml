@@ -1,0 +1,19 @@
+#
+# Ansible managed
+#
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: kube-system
+helmCharts:
+- name: intel-device-plugins-gpu
+  repo: https://intel.github.io/helm-charts/
+  version: 0.29.0
+  namespace: kube-system
+  releaseName: intel-device-plugins-gpu
+  valuesFile: values.yaml
+patches:
+- patch: "- op: remove\n  path: /spec/resourceManager\n- op: remove\n  path: /metadata/annotations"
+  target:
+    version: v1
+    group: deviceplugin.intel.com
+    kind: GpuDevicePlugin

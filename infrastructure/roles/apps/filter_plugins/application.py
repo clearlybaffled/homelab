@@ -220,8 +220,10 @@ def kustomization(ctx, app):
                     "repo": chart["repo_url"],
                     "version": chart["version"],
                     "namespace": chart["namespace"],
-                    "apiVersions": ctx.get("k8s_apis"),
                 }
+                
+                if "apiVersions" in chart and chart["apiVersions"]: 
+                    c["apiVersions"] = ctx.get("k8s_apis")
 
                 if "release_name" in chart:
                     c["releaseName"] = chart["release_name"]

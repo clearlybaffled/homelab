@@ -95,6 +95,12 @@
         "version": {
           "title": "version",
           "type": "string"
+        },
+        "apiVersions": {
+          "title": "apiVersions",
+          "type": "boolean",
+          "default": false,
+          "description": "Include a list of API versions in Kustomization file to pass to Capabilities.APIVersions"
         }
       },
       "additionalProperties": true,

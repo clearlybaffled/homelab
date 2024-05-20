@@ -10,6 +10,7 @@ argocd:
         version: 6.7.1
         namespace: argocd
         release: argocd
+        apiVersions: true
     extras:
       patches:
         - patch: |-
@@ -37,18 +38,26 @@ intel-device-plugin:
     - chart: intel/intel-device-plugins-operator
       version: &intel-version 0.29.0
       valueFiles: []
-    - chart: intel/intel-device-plugins-gpu
-      version: *intel-version
+
     - chart: app-template
       release: intel-gpu-exporter
       valueFiles:
         - exporter.yaml
-  ignoreDifferences:
-    - group: deviceplugin.intel.com/v1
-      kind: GpuDevicePlugin
-      jsonPointers:
-        - /spec/resourceManager
-        - /metadata/annotations
+  kustomize:
+    charts:
+      - chart: intel/intel-device-plugins-gpu
+        version: *intel-version
+    extras:
+      patches:
+        - patch: |-
+            - op: remove
+              path: /spec/resourceManager
+            - op: remove
+              path: /metadata/annotations
+          target:
+            version: v1
+            group: deviceplugin.intel.com
+            kind: GpuDevicePlugin
 
 local-path-provisioner:
   namespace: local-path-provisioner

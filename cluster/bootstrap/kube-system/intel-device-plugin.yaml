@@ -16,13 +16,6 @@ spec:
     targetRevision: 0.29.0
     helm:
       releaseName: intel-device-plugins-operator
-  - chart: intel-device-plugins-gpu
-    repoURL: https://intel.github.io/helm-charts/
-    targetRevision: 0.29.0
-    helm:
-      valueFiles:
-      - $repo/cluster/kube-system/intel-device-plugin/values.yaml
-      releaseName: intel-device-plugins-gpu
   - chart: app-template
     repoURL: https://bjw-s.github.io/helm-charts/
     targetRevision: 3.0.2
@@ -37,12 +30,6 @@ spec:
   destination:
     name: in-cluster
     namespace: kube-system
-  ignoreDifferences:
-  - group: deviceplugin.intel.com/v1
-    kind: GpuDevicePlugin
-    jsonPointers:
-    - /spec/resourceManager
-    - /metadata/annotations
   syncPolicy:
     automated:
       prune: true
@@ -50,4 +37,3 @@ spec:
     syncOptions:
     - CreateNamespace=true
     - ServerSideApply=true
-    - RespectIgnoreDifferences=true
