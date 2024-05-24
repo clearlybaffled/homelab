@@ -9,7 +9,7 @@ controllers:
       paperless-ngx:
         image:
           repository: ghcr.io/paperless-ngx/paperless-ngx
-          tag: 2.6.2
+          tag: 2.8.6
         envFrom:
           - configMapRef:
               identifier: config
@@ -25,7 +25,7 @@ controllers:
       gotenberg:
         image:
           repository: gotenberg/gotenberg
-          tag: 8.1.0
+          tag: 8.5.1
         env:
           - name: DISABLE_GOOGLE_CHROME
             value: "1"
@@ -50,12 +50,12 @@ controllers:
       hp-scan-to:
         image: &hp-scan-to
           repository: manuc66/node-hp-scan-to
-          tag: master
+          tag: master@sha256:0b0abb2cb7035a6b3f754b1255abc1270905bc13e05ae12077f1a7029f1ee826
         env:
           - name: LABEL
             value: paperless-ngx
           - name: CMDLINE
-            value: "-D -l paperless-ngx -r 300 -d /consume"
+            value: "-D -l paperless-ngx -r 300 -d /library/consume"
         envFrom:
           - configMapRef:
               name: hp-scan-to-env
@@ -74,7 +74,7 @@ controllers:
           - name: LABEL
             value: paperless-ngx (double sided)
           - name: CMDLINE
-            value: '-D -l paperless-ngx-double-sided -r 300 -d /consume/double-sided'
+            value: '-D -l paperless-ngx-double-sided -r 300 -d /library/consume/double-sided'
         resources: *scan-limits
 
 configMaps:
@@ -161,13 +161,3 @@ persistence:
     type: emptyDir
     globalMounts:
       - path: /trash
-  consume:
-    type: persistentVolumeClaim
-    existingClaim: paperless-consume
-    advancedMounts:
-      main:
-        hp-scan-to:
-          - path: /scan
-        hp-scan-to-double-sided:
-          - path: /scan
-            subPath: double-sided

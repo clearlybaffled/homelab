@@ -329,10 +329,6 @@ paperless-ngx:
           type: password
           name: admin
   localStorage:
-    - name: paperless-consume
-      path: /share/Files/PaperlessNGX/consume
-      modes:
-        - ReadWriteMany
     - name: paperless-library
       path: /share/Files/PaperlessNGX
 
