@@ -29,7 +29,7 @@
     - name: user | Create ClusterRoleBinding
       kubernetes.core.k8s:
         template: crb.yml.j2
-        
+
     - name: user | Send CSR to Kubernetes
       include_role:
         name: kuberenetes/control_plane

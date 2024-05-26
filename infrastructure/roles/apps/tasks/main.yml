@@ -85,7 +85,7 @@
     comment: |-
       Updated applications:
       {{ applied_apps | map(attribute='name') | to_nice_yaml }}
-      
+
       Updated Files:
       {{ ([files[1]] + [files[2]]) | flatten | to_nice_yaml }}
 

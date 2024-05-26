@@ -48,15 +48,15 @@
     paths: []
   block:
     - name: Find Storage Dirs | {{ app.name }}
-      set_fact: 
-        paths: "{{ paths + 
-            [ (item.path|default('') is abs) 
+      set_fact:
+        paths: "{{ paths +
+            [ (item.path|default('') is abs)
                 | ternary(
                     item.path|default(''),
                     (
                       local_storage_root_dir,
-                      app.namespace, 
-                      app.name, 
+                      app.namespace,
+                      app.name,
                       item.path | default(item.name) | default(app.name)
                     )
                 ) | path_join ]
@@ -86,13 +86,13 @@
     - name: Build storage_dirs | {{ app.name }}
       set_fact:
         storage_dirs: "{{ storage_dirs +
-            [{ 
+            [{
               'path': item,
               'modes': app.localStorage[i].modes | default(['ReadWriteOnce']),
               'name': app.localStorage[i].name | default(app.name),
               'size': (fs_sizes.results[i].stdout | community.general.jc('df'))[0].size ~ 'i'
             }]
-          }}"
+          }}" # noqa jinja[invalid]
       loop: "{{ paths }}"
       loop_control:
         index_var: i

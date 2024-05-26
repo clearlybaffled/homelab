@@ -1,3 +1,4 @@
+<!-- markdownlint-disable-next-line MD013 -->
 <h1 tabindex="-1" dir="auto" style="bottom-border:none;"><img src="https://camo.githubusercontent.com/0b88a728a74d44cb11f842cbed1cacb61f4d67f09b3dcf5926ac4767a1bb1c27/68747470733a2f2f692e696d6775722e636f6d2f7031527a586a512e706e67" width="144px" height="144px" align="left"/>
 
 <!-- markdownlint-disable-next-line MD013 -->
@@ -106,7 +107,6 @@ This Git repository contains the following top level directories.
 |[<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/main/projects/helm/icon/color/helm-icon-color.png">](https://helm.sh)|Helm|The package manager for Kubernetes|
 |[<img width="32" src="https://docs.nginx.com/nginx-ingress-controller/images/icons/NGINX-Ingress-Controller-product-icon.svg">](https://kubernetes.github.io/ingress-nginx/)|[Ingress-nginx](./cluster/apps/infrastructure/ingress-nginx/)| Ingress controller for Kubernetes using NGINX as a reverse proxy and load balancer|
 |[<img width="32" src="https://kubernetes.io/images/kubeadm-stacked-color.png">](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/)|[kubeadm](./infrastructure/roles/kubernetes/control_plane/)| Official command-line cluster management tool |
-|[<img width="32" src="https://avatars.githubusercontent.com/u/33608853?s=32&v=4">](https://github.com/EmberStack/kubernetes-reflector)|[kubernetes-reflector](./cluster/bootstrap/infrastructure/reflector.yaml)| Custom Kubernetes controller that can be used to replicate secrets, configmaps and certificates |
 |[<img width="32" src="https://www.virt-tools.org/logo-kvm.png">](https://www.linux-kvm.org)|[KVM](./infrastructure/roles/server/kvm/) | Linux Kernel Virtual Machine Hypervisor |
 |[<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/main/projects/kubernetes/icon/color/kubernetes-icon-color.svg">](https://kubernetes.io)|[Kubernetes](./infrastructure/roles/kubernetes/)|Container Orchestration|
 |[<img width="32" src="https://libvirt.org/logos/logo-square.svg">](https://www.libvirt.org) |Libvirt| Virtualization API |
@@ -124,15 +124,15 @@ This Git repository contains the following top level directories.
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
-|[<img width="32" src="https://raw.githubusercontent.com/gethomepage/homepage/main/docs/assets/favicon.ico">][homepage-uri]|[Homepage](./cluster/apps/services/homepage)| `Home` | Landing page for exploring the cluster, with live widgets! | Deployed | [![][homepage-badge]][homepage-chart]
+|[<img width="32" src="https://raw.githubusercontent.com/gethomepage/homepage/main/docs/assets/favicon.ico">][homepage-uri]|[Homepage](./cluster/apps/services/homepage)| `Home` | Landing page for exploring the cluster, with live widgets! | Deployed | [![][homepage-badge]][homepage-chart] |
 
 ### [Database](./cluster/apps/db/)
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
-|[<img width="32" src="https://www.mysql.com/common/logos/logo-mysql-170x115.png">][mysql-uri]|[MySQL](./cluster/apps/db/mysql/)| `Relational DB` | SQL Database | Deployed | [![][mysql-badge]][mysql-chart]
-|[<img width="32" src="https://cloudnative-pg.io/images/hero_image.svg">][postgres-uri]| [PostgreSQL](./cluster/apps/db/cloudnative-pg/) | `Relational DB` | via [Cloudnative-PG][cnpg-uri] operator | Deployed | [![][cnpg-badge]][cnpg-chart]
-|[![](https://raw.githubusercontent.com/redis/docs/main/static/images/icon-redis.svg)][redis-uri]| [Redis](./cluster/apps/db/redis/) | `Caching` | In-memory Key-Value store | Deployed | [![][redis-badge]][redis-chart]
+|[<img width="32" src="https://www.mysql.com/common/logos/logo-mysql-170x115.png">][mysql-uri]|[MySQL](./cluster/apps/db/mysql/)| `Relational DB` | SQL Database | Deployed | [![][mysql-badge]][mysql-chart] |
+|[<img width="32" src="https://cloudnative-pg.io/images/hero_image.svg">][postgres-uri]| [PostgreSQL](./cluster/apps/db/cloudnative-pg/) | `Relational DB` | via [Cloudnative-PG][cnpg-uri] operator | Deployed | [![][cnpg-badge]][cnpg-chart] |
+|[![](https://raw.githubusercontent.com/redis/docs/main/static/images/icon-redis.svg)][redis-uri]| [Redis](./cluster/apps/db/redis/) | `Caching` | In-memory Key-Value store | Deployed | [![][redis-badge]][redis-chart] |
 
 ### [Downloads](./cluster/apps/downloads/)
 
@@ -144,16 +144,17 @@ This Git repository contains the following top level directories.
 |[![](https://github.com/Lidarr/Lidarr/blob/develop/Logo/32.png?raw=true)][lidarr-uri]|[Lidarr](./cluster/apps/downloads/lidarr/)| `Music` | Music Collection manager | Deployed | [![][lidarr-badge]][lidarr-img] |
 |[![](https://github.com/Readarr/Readarr/blob/develop/Logo/32.png?raw=true)][readarr-uri]|[Readarr](./cluster/apps/downloads/readarr/)| `Ebooks` | Ebook and audiobook collection manager | Deployed | [![][readarr-badge]][readarr-img] |
 |[![](https://github.com/Prowlarr/Prowlarr/blob/develop/Logo/32.png?raw=true)][prowlarr-uri]|[Prowlarr](./cluster/apps/downloads/prowlarr/)| `Tracker` | Tracker manager | Deployed | [![][prowlarr-badge]][prowlarr-img] |
-|[<img width="32" src="https://raw.githubusercontent.com/bazarr/wiki/main/docs/img/logo.png">][bazarr-uri]|[Bazarr](./cluster/apps/downloads/bazaar/)| `Subtitles` | Subtitle download manager | | [![][bazarr-badge]][bazarr-img] |
+|[<img width="32" src="https://raw.githubusercontent.com/bazarr/wiki/main/docs/img/logo.png">][bazarr-uri]|[Bazarr](./cluster/apps/downloads/bazarr/)| `Subtitles` | Subtitle download manager | | [![][bazarr-badge]][bazarr-img] |
 
 ### [Home](./cluster/apps/home)
+
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
-|[<img width="32" src="https://raw.githubusercontent.com/grocy/grocy/master/public/img/icon.svg">][grocy-uri]| [Grocy](./cluster/apps/services/grocy/) | `Services` | ERP Beyond your fridge | Deployed | [![][grocy-badge]][grocy-img] |
-|[<img width="32" src="https://github.com/hay-kot/mealie/raw/mealie-next/docs/docs/assets/img/favicon.png">][mealie-url] | [Mealie](./cluster/apps/services/mealie/) | `Services` | Recipe Manager | Deployed | [![][mealie-badge]][mealie-docker] |
-|[<img width="32" src="https://github.com/paperless-ngx/paperless-ngx/raw/dev/docs/assets/favicon.png">][paperless-uri] |[Paperless-ngx](./cluster/apps/services/paperless-ngx/) | `File Sharing` | Document Management System | Deployed| [![][paperless-badge]][paperless-img] [![][node-hp-scan-to-badge]][node-hp-scan-to-img] |
-|[<img width="32" src="https://brands.home-assistant.io/homeassistant/icon.png">][home-assistant-uri] | [Home Assistant](./cluster/apps/services/home-assistant/) | `Home Automation` | Open source home automation | Deployed | [![Home Assistant][home-assistant-badge]][home-assistant-img]  |
-|[<img width="32" src="https://hay-kot.github.io/homebox/assets/img/favicon.svg">][homebox-uri] | [Homebox](./cluster/apps/services/homebox/) | `Home inventory` | Inventory and organization for the Home User | Deployed | [![Homebox][homebox-badge]][homebox-img] |
+|[<img width="32" src="https://raw.githubusercontent.com/grocy/grocy/master/public/img/icon.svg">][grocy-uri]| [Grocy](./cluster/apps/home/grocy/) | `Services` | ERP Beyond your fridge | Deployed | [![][grocy-badge]][grocy-img] |
+|[<img width="32" src="https://github.com/hay-kot/mealie/raw/mealie-next/docs/docs/assets/img/favicon.png">][mealie-url] | [Mealie](./cluster/apps/home/mealie/) | `Services` | Recipe Manager | Deployed | [![][mealie-badge]][mealie-docker] |
+|[<img width="32" src="https://github.com/paperless-ngx/paperless-ngx/raw/dev/docs/assets/favicon.png">][paperless-uri] |[Paperless-ngx](./cluster/apps/home/paperless-ngx/) | `File Sharing` | Document Management System | Deployed| [![][paperless-badge]][paperless-img] [![][node-hp-scan-to-badge]][node-hp-scan-to-img] |
+|[<img width="32" src="https://brands.home-assistant.io/homeassistant/icon.png">][home-assistant-uri] | [Home Assistant](./cluster/apps/home/home-assistant/) | `Home Automation` | Open source home automation | Deployed | [![Home Assistant][home-assistant-badge]][home-assistant-img]  |
+|[<img width="32" src="https://hay-kot.github.io/homebox/assets/img/favicon.svg">][homebox-uri] | [Homebox](./cluster/apps/home/homebox/) | `Home inventory` | Inventory and organization for the Home User | Deployed | [![Homebox][homebox-badge]][homebox-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/eclipse/mosquitto/master/logo/mosquitto-logo-min.svg">][mosquitto-uri]|[Mosquitto](./cluster/apps/home/mosquitto) | `MQTT Broker` | Eclipse-foundation MQTT broker implementation | Deployed | [![Mosquitto][mosquitto-badge]][mosquitto-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/blakeblackshear/frigate/dev/docs/static/img/logo.svg">][frigate-uri]|[Frigate NVR](./cluster/apps/home/nvr) | `NVR` | Home video monitoring | Planned | [![Frigate][frigate-badge]][frigate-img] [![Wyze-Bridge][wyze-bridge-badge]][wyze-bridge-img] |
 
@@ -163,7 +164,7 @@ This Git repository contains the following top level directories.
 |--------|----------------|------------|---------------|----------|--------------------------|
 |[<img width="32" src="https://raw.githubusercontent.com/netbox-community/netbox/develop/netbox/project-static/img/netbox_icon.svg">][netbox-uri]|[NetBox](./cluster/apps/infrastructure/netbox/)| `Inventory`| Full-scale network inventory | Deployed | [![netbox-badge]][netbox-chart] |
 |[<img width="32" src="https://raw.githubusercontent.com/keycloak/keycloak/main/js/apps/admin-ui/public/icon.svg">][keycloak-url]|[Keycloak](./cluster/apps/infrastructure/keycloak)| `SSO` | Identity and Access Management solution | Deployed | [![keycloak-badge]][keycloak-operator] |
-|[<img width="32" src="https://avatars.githubusercontent.com/u/99263827?s=32&v=4">][kubeshark-uri] | [Kubeshark](./cluster/apps/infrastructure/kubeshark/) | `Network traffic` | API traffic analyzer for Kubernetes | | [![][kubeshark-badge]][kubeshark-chart] | 
+|[<img width="32" src="https://avatars.githubusercontent.com/u/99263827?s=32&v=4">][kubeshark-uri] | [Kubeshark](./cluster/apps/infrastructure/kubeshark/) | `Network traffic` | API traffic analyzer for Kubernetes | | [![][kubeshark-badge]][kubeshark-chart] |
 |[<img width="32" src="https://simpleicons.org/icons/vault.svg">][vault-uri]|Vault| `Services` | Secrets and encryption management| | |
 
 ### [Media](./cluster/apps/media/)
@@ -171,8 +172,8 @@ This Git repository contains the following top level directories.
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
 |[<img width="32" src="https://github.com/kovidgoyal/calibre/blob/master/icons/calibre.png?raw=true">][calibre-uri] | [Calibre](./cluster/apps/media/calibre/) | `Books` | E-book collection manager | Deployed | [![][calibre-badge]][calibre-img] [![][calibre-web-badge]][calibre-web-img] |
-|[<img width="32" src="https://raw.githubusercontent.com/advplyr/audiobookshelf/84160b2f07164605295d6cb6f7f7925cbdf538e4/client/static/icon.svg">][audiobookshelf-uri]| [Audiobookshelf](./cluster/apps/media/audiobookshelf) | `Audio Books` | Self-hosted audiobook and podcast server | Deployed | [![][audiobookshelf-badge]][audiobookshelf-img]
-|[<img width="32" src="https://raw.githubusercontent.com/jellyfin/jellyfin-web/master/src/assets/img/icon-transparent.png">][jellyfin-uri]|[Jellyfin](./cluster/apps/media/jellyfin/) | `Media Server` | The open source media server | Deployed | [![][jellyfin-badge]][jellyfin-img]
+|[<img width="32" src="https://raw.githubusercontent.com/advplyr/audiobookshelf/84160b2f07164605295d6cb6f7f7925cbdf538e4/client/static/icon.svg">][audiobookshelf-uri]| [Audiobookshelf](./cluster/apps/media/audiobookshelf) | `Audio Books` | Self-hosted audiobook and podcast server | Deployed | [![][audiobookshelf-badge]][audiobookshelf-img] |
+|[<img width="32" src="https://raw.githubusercontent.com/jellyfin/jellyfin-web/master/src/assets/img/icon-transparent.png">][jellyfin-uri]|[Jellyfin](./cluster/apps/media/jellyfin/) | `Media Server` | The open source media server | Deployed | [![][jellyfin-badge]][jellyfin-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/immich-logo.png">][immich-uri]|[Immich](./cluster/apps/media/immich/)| `Photos` | Photo Management | Deployed | [![][immich-badge]][immich-chart] |
 |[<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">][listenbrainz-uri]|ListenBrainz| `Scrobble` | Open Source scrobbler | Planned | |
 |[<img src="https://raw.githubusercontent.com/photoprism/photoprism/develop/assets/static/icons/logo/32.png">][photoprism-uri]|Photoprism| `Photos` | Photo Management | Planned | |

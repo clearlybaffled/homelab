@@ -10,12 +10,12 @@ injector:
     tag: "latest"
 
   resources:
-      requests:
-        memory: 256Mi
-        cpu: 250m
-      limits:
-        memory: 256Mi
-        cpu: 250m
+    requests:
+      memory: 256Mi
+      cpu: 250m
+    limits:
+      memory: 256Mi
+      cpu: 250m
 
 server:
   # Use the Enterprise Image

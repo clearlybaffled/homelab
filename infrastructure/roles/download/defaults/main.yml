@@ -310,7 +310,7 @@ downloads:
     tag: "{{ flannel_init_image_tag }}"
     groups:
       - k8s_cluster
-  
+
   pod_infra:
     enabled: true
     container: true

@@ -15,6 +15,6 @@ collections:
   - community.grafana
   - kubernetes.core
   - cisco.ios
-roles:
-  - name: xanmanning.k3s
-    version: v3.4.2
+  - name: ansibleguy.opnsense
+    type: galaxy
+    version: 1.2.9

@@ -47,7 +47,7 @@ I also have names of two boats that did not meet the requirements of being comma
 |`tirante` [<sup>4</sup>][tirante-moh]|Workstation|Ubuntu 22.04 LTS| WSL version 2 on `barb`| 32GB | 375MB | |
 |`sculpin` [<sup>5</sup>][sculpin-moh]|Workstation|Windows 10 Home|Dell XPS 13|16GB|250GB HDD||
 |`tang` [<sup>6</sup>][tang-moh]|Server|Fedora 38 (Cloud)|Qemu Virtual Host|4GB|5GB qcow2||
-| `harder` [<sup>7</sup>][harder-moh]|Server||Raspberry Pi 3B A1.2GhZ|1GB|16GB SDCard|
+| `harder` [<sup>7</sup>][harder-moh]|Server||Raspberry Pi 3B A1.2GhZ|1GB|16GB SDCard||
 
 ### Network/Other Devices
 
@@ -56,9 +56,9 @@ It harkens back to a time when I had delusions of grandeur of having network dev
 
 |Hostname|Use(s)|Operating System|Hardware|
 |:---------|:-----|:---------------|:-------|
-|br-1-off| Border Router | |
-|cor-1-off| Core Switch | Cisco IOS 12.2.1 | Cisco Catalyst 3750X
-|ap-1-off| Access Point | DD-WRT v3.0-r35030M | Netgear R6700||
+|br-1-off| Border Router | | |
+|cor-1-off| Core Switch | Cisco IOS 12.2.1 | Cisco Catalyst 3750X |
+|ap-1-off| Access Point | DD-WRT v3.0-r35030M | Netgear R6700|
 |ups| UPS| | APC |
 |pdu-1-off| Power Distribution Unit| | APC|
 

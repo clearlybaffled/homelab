@@ -221,8 +221,8 @@ def kustomization(ctx, app):
                     "version": chart["version"],
                     "namespace": chart["namespace"],
                 }
-                
-                if "apiVersions" in chart and chart["apiVersions"]: 
+
+                if "apiVersions" in chart and chart["apiVersions"]:
                     c["apiVersions"] = ctx.get("k8s_apis")
 
                 if "release_name" in chart:
@@ -240,7 +240,7 @@ def kustomization(ctx, app):
 
         if "extras" in app["kustomize"]:
             kustomize.update(app["kustomize"]["extras"])
-    
+
     if "localStorage" in app:
         resources.append("./storage.yaml")
     resources.sort()
@@ -265,7 +265,7 @@ def pvc(app, dir):
         "apiVersion": "v1",
         "kind": "PersistentVolumeClaim",
         "metadata": {
-            "name": dir["name"], 
+            "name": dir["name"],
             "namespace": app["namespace"],
             "finalizers": ["kubernetes.io/pvc-protection"]
         },

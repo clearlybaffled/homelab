@@ -5,11 +5,12 @@ exclude: |
   (?x)^(
       docs/_assets/.*
     | .*\.sops\.(toml|yaml)
+    | .*\.drawio
   )$
 
 repos:
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.32.0
+    rev: v1.35.1
     hooks:
       - id: yamllint
         args:
@@ -18,7 +19,7 @@ repos:
           - --no-warnings
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v4.6.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -31,7 +32,7 @@ repos:
       - id: detect-private-key
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.5.4
+    rev: v1.5.5
     hooks:
       - id: remove-crlf
       - id: remove-tabs
@@ -48,7 +49,7 @@ repos:
       - id: forbid-binary
         exclude: >
           (?x)^(
-            docs/
+            docs/.*
           )$
       # - id: shellcheck
       # - id: shfmt
@@ -59,7 +60,7 @@ repos:
       - id: forbid-secrets
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.83.4
+    rev: v1.90.0
     hooks:
       - id: terraform_fmt
       - id: terraform_docs
@@ -67,7 +68,7 @@ repos:
       - id: terraform_tflint
 
   - repo: https://github.com/ansible/ansible-lint
-    rev: v6.20.3
+    rev: v24.5.0
     hooks:
       - id: ansible-lint
         args:
@@ -81,7 +82,7 @@ repos:
         exclude_types: [markdown, shell]
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.37.0
+    rev: v0.41.0
     hooks:
       - id: markdownlint
         args:

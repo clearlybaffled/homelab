@@ -62,7 +62,7 @@
       vars:
         app_deploy_list:
           - argocd
-    - name: Bootstrap cluster as ArgoCD App-of-Apps 
+    - name: Bootstrap cluster as ArgoCD App-of-Apps
       kubernetes.core.k8s:
         src: "{{ (cluster_dir, 'cluster.yaml') | path_join }}"
         server_side_apply:

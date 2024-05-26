@@ -101,6 +101,6 @@ winget_packages:
     Id: Microsoft.OpenJDK.21
     source: winget
   gpg4win:
-    Name: Gpg4win 
+    Name: Gpg4win
     Id: GnuPG.Gpg4win
     source: winget

@@ -114,7 +114,7 @@ persistence:
   scripts:
     type: configMap
     name: bazarr-scripts
-    defaultMode: 0775
+    defaultMode: 0775 # yamllint disable-line rule:octal-values
     globalMounts:
       - readOnly: true
   tmp:
