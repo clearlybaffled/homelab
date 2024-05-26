@@ -158,7 +158,8 @@ def application(ctx, app):
         ]
     if "ignoreDifferences" in app:
         if "ignoreDifferences" in spec:
-            spec["ignoreDifferences"].append(app["ignoreDifferences"])
+            for i in app["ignoreDifferences"]:
+                spec["ignoreDifferences"].append(i)
         else:
             spec["ignoreDifferences"] = app["ignoreDifferences"]
 

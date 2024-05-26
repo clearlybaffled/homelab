@@ -27,7 +27,7 @@ controllers:
       jellyfin:
         image:
           repository: docker.io/jellyfin/jellyfin
-          tag: 2024032802-amd64
+          tag: 10.9.2
         env:
           DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
           JELLYFIN_FFmpeg__probesize: 50000000
@@ -39,16 +39,35 @@ controllers:
             memory: 9248M
           limits:
             memory: 9248M
+      jellyseer:
+        image:
+          repository: docker.io/fallenbagel/jellyseerr
+          tag: 1.7.0
+        env:
+          TZ: America/New_York
+          LOG_LEVEL: "info"
+          PORT: &port 8080
+        resources:
+          requests:
+            cpu: 15m
+            memory: 324M
+          limits:
+            memory: 324M
 
 service:
   jellyfin:
     controller: main
-    ports: &ports
+    ports:
       http:
         port: 8096
+  jellyseer:
+    controller: main
+    ports:
+      http:
+        port: *port
 
 ingress:
-  main:
+  jellyfin:
     enabled: true
     className: nginx
     annotations:
@@ -78,6 +97,33 @@ ingress:
       - hosts:
           - *host
         secretName: jellyfin-ingress-tls
+  jellyseer:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/common-name: &jellyseer-host jellyseer.hermleigh.home
+      cert-manager.io/subject-countries: US
+      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
+      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
+      cert-manager.io/private-key-algorithm: ECDSA
+      cert-manager.io/private-key-size: "384"
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/name: "Jellyseerr"
+      gethomepage.dev/group: "Downloads"
+      gethomepage.dev/icon: "jellyseerr"
+      gethomepage.dev/description: "Request management and media discovery tool."
+    hosts:
+      - host: *jellyseer-host
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              identifier: jellyseer
+              port: http
+    tls:
+      - hosts:
+          - *jellyseer-host
+        secretName: jellyseer-tls
 
 persistence:
   config:
@@ -94,3 +140,10 @@ persistence:
     type: emptyDir
   cache:
     type: emptyDir
+  jellyseer-config:
+    enabled: true
+    existingClaim: jellyseer-config
+    advancedMounts:
+      main:
+        jellyseer:
+          - path: /app/config

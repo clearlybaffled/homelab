@@ -19,9 +19,9 @@ spec:
   volumeMode: Filesystem
   storageClassName: local-storage
   capacity:
-    storage: 153G
+    storage: 153.0Gi
   local:
-    path: /srv/cluster/volumes/media/jellyseer/jellyseer-config
+    path: /srv/cluster/volumes/media/jellyfin/jellyseer-config
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -43,6 +43,6 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 153G
+      storage: 153.0Gi
   storageClassName: local-storage
   volumeName: jellyseer-config

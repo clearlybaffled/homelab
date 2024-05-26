@@ -26,6 +26,11 @@ spec:
     name: in-cluster
     namespace: media
   ignoreDifferences:
+  - kind: PersistentVolume
+    jsonPointers:
+    - /spec/claimRef/resourceVersion
+    - /spec/claimRef/uid
+    - /status/lastPhaseTransitionTime
   - group: apps
     kind: StatefulSet
     jsonPointers:

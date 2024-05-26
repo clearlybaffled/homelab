@@ -582,6 +582,7 @@ jellyfin:
       jsonPointers:
         - /spec/volumeClaimTemplates
   localStorage:
+    - name: jellyseer-config
 
 immich:
   namespace: media
@@ -655,13 +656,6 @@ kubeshark:
   charts:
     - chart: kubeshark/kubeshark
       version: 52.1.9
-
-jellyseer:
-  namespace: media
-  charts:
-    - chart: app-template
-  localStorage:
-    - name: jellyseer-config
 
 nvr:
   namespace: home
