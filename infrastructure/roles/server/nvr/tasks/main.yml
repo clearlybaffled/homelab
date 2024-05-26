@@ -1,0 +1,3 @@
+- name: nvr | Install coral driver
+  include_tasks:
+    file: coral.yml

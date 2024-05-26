@@ -1,0 +1,59 @@
+- name: coral | Debian/Ubuntu
+  become: true
+  when:
+    - ansible_os_family == "Debian"
+  block:
+    - name: coral | Install apt repository
+      blockinfile:
+        path: /etc/apt/sources.list.d/coral-edgetpu.list
+        block: deb https://packages.cloud.google.com/apt coral-edgetpu-stable main
+    - name: coral | add apt repo key
+      uri:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        dest: /etc/apt/trusted.gpg.d/coral-apt-key.asc
+        status_code:
+          - 200
+          - 304
+
+    - name: packages | Update apt repo and cache on all Debian/Ubuntu machines
+      package:
+        update_cache: true
+        force_apt_get: true
+        cache_valid_time: 3600
+      changed_when: false
+
+    - name: coral | add udev rule
+      blockinfile:
+        path: /etc/udev/rules.d/65-apex.rules
+        block: SUBSYSTEM==\"apex\", MODE=\"0660\", GROUP=\"apex\"
+        create: true
+
+    - name: coral | ensure apex group exists
+      group:
+        name: apex
+        system: true
+
+    - name: coral | add kube user to apex group
+      user:
+        name: "{{ kube_owner }}"
+        groups:
+          - apex
+        append: true
+
+    - name: coral | install coral drivers
+      apt:
+        name:
+          - gasket-dkms
+          - libedgetpu1-std
+      notify:
+        - Reboot System
+
+    - name: coral | check for accelerator module
+      command: lspci -nn
+      register: accel_check
+      failed_when: '"089a" not in accel_check.stdout'
+
+    - name: coral | check for pcie dev file
+      command: ls /dev/apex_0
+      register: apex_dev
+      failed_when: apex_dev.rc != 0

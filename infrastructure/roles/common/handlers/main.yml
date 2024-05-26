@@ -1,4 +1,7 @@
 ---
+- name: Reboot system
+  reboot:
+
 - name: Reload systemd
   systemd:
     daemon_reload: true

@@ -1,0 +1,90 @@
+---
+env:
+  TZ: America/New_York
+  LIBVA_DRIVER_NAME: i965
+
+envFromSecrets:
+  - mosquitto-frigate-secret
+
+coral:
+  enabled: true
+  hostPath: /dev/apex_0
+
+extraVolumeMounts:
+  - name: dri
+    mountPath: /dev/dri/renderD128
+
+extraVolumes:
+  - name: dri
+    hostPath:
+      path: /dev/dri/renderD128
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 4Gi
+    gpu.intel.com/i915: "1"
+  limits:
+    gpu.intel.com/i915: "1"
+    memory: 8Gi
+
+podAnnotations:
+  reloader.stakater.com/auto: "true"
+
+nodeSelector:
+  intel.feature.node.kubernetes.io/gpu: "true"
+  google.feature.node.kubernetes.io/coral: "true"
+
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/group: "Apps & Services"
+    gethomepage.dev/icon: frigate.png
+    gethomepage.dev/description: "Network Video Recorder (NVR)"
+    gethomepage.dev/name: Frigate
+  hosts:
+    - host: &host "frigate.hermleigh.home"
+      paths:
+        - '/'
+  tls:
+    - hosts:
+        - *host
+      secretName: frigate-ingress-tls
+
+persistence:
+  media:
+    enabled: true
+    storageClass: local-path-videos
+    accessMode: ReadWriteOnce
+    size: 20Gi
+
+config: |
+  mqtt:
+    host: mosquitto.home.svc
+    topic_prefix: frigate
+    user: '{FRIGATE_MQTT_USERNAME}'
+    password: '{FRIGATE_MQTT_PASSWORD}'
+
+  database:
+    path: /config/frigate.db
+
+  detectors:
+    coral:
+      type: edgetpu
+      device: pci
+
+  ffmpeg:
+    hwaccel_args: preset-vaapi
+    output_args:
+      record: preset-record-generic-audio-aac
+
+  cameras:
+    dummy_camera: # <--- this will be changed to your actual camera later
+      enabled: False
+      ffmpeg:
+        inputs:
+          - path: rtsp://127.0.0.1:554/rtsp
+            roles:
+              - detect

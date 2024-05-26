@@ -1,0 +1,41 @@
+#
+# Ansible managed
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nvr
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+  - chart: frigate
+    repoURL: https://blakeblackshear.github.io/blakeshome-charts/
+    targetRevision: 7.5.1
+    helm:
+      valueFiles:
+      - $repo/cluster/apps/home/nvr/frigate.yaml
+      releaseName: frigate
+  - chart: app-template
+    repoURL: https://bjw-s.github.io/helm-charts/
+    targetRevision: 3.0.2
+    helm:
+      valueFiles:
+      - $repo/cluster/apps/home/nvr/wyze-bridge.yaml
+      releaseName: wyze-bridge
+  - repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/apps/home/nvr
+    targetRevision: main
+    ref: repo
+  destination:
+    name: in-cluster
+    namespace: home
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

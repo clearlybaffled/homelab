@@ -1,0 +1,107 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
+controllers:
+  wyze:
+    annotations:
+      reloader.stakater.com/auto: "true"
+    containers:
+      wyze-bridge:
+        image:
+          repository: mrlt8/wyze-bridge
+          tag: 2.9.3
+        env:
+          TZ: America/New York
+          LIBVA_DRIVER_NAME: i965
+          NET_MODE: LAN
+          ON_DEMAND: "False"
+          SUBSTREAM: "True"
+        envFrom:
+          - configMapRef:
+              name: wyze-bridge-config
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 500Mi
+            gpu.intel.com/i915: 1
+          limits:
+            memory: 2Gi
+            gpu.intel.com/i915: 1
+
+defaultPodOptions:
+  nodeSelector:
+    intel.feature.node.kubernetes.io/gpu: "true"
+
+service:
+  wyze:
+    controller: wyze
+    ports:
+      http:
+        enabled: true
+        port: 5000
+      rtmp:
+        enabled: true
+        port: 1935
+        protocol: TCP
+      rstp:
+        enabled: true
+        port: 8554
+        protocol: TCP
+      hls:
+        enabled: true
+        port: 8888
+        protocol: TCP
+      webrtc:
+        enabled: true
+        port: 8889
+        protocol: TCP
+      webrtc-udp:
+        enabled: true
+        port: 8889
+        protocol: UDP
+
+ingress:
+  wyze:
+    enabled: true
+    className: nginx
+    annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: "A viewer for Wyze video cameras"
+      gethomepage.dev/icon: si-wyze
+      gethomepage.dev/group: "Apps & Services"
+      gethomepage.dev/name: Wyze Cameras
+    hosts:
+      - host: &host wyze.hermleigh.home
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              port: http
+              identifier: wyze
+    tls:
+      - hosts:
+          - *host
+        secretName: wyze-ingress-tls
+
+configMaps:
+  config:
+    data:
+      NET_MODE: "ANY" # or LAN
+      ENABLE_AUDIO: "True"
+      RTSP_FW: "force"
+      SNAPSHOT: "RTSP30"
+      IMG_DIR: "/img/"
+      IMG_TYPE: "png"
+      RECORD_ALL: "False"
+      CONNECT_TIMEOUT: "60"
+      OFFLINE_TIME: "30"
+      FRESH_DATA: "True"
+      FPS_FIX: "True"
+      LLHLS: "True"
+      MOTION_API: "True"
+      MOTION_INT: "3"
+      MOTION_START: "True"
+      H264_ENC: "h264_nvenc" # or h264_qsv
+      ROTATE_DOOR: "True"
+      ON_DEMAND: "False"
+      SUBSTREAM: "True"
+      WB_IP: "10.43.214.110"

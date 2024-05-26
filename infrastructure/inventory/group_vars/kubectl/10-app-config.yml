@@ -25,6 +25,8 @@ helm_repositories:
   stakater: https://stakater.github.io/stakater-charts
   nfd: https://kubernetes-sigs.github.io/node-feature-discovery/charts
   intel: https://intel.github.io/helm-charts/
+  blakeblackshear: https://blakeblackshear.github.io/blakeshome-charts/
+
 
 # Registry deployment
 registry_enabled: false

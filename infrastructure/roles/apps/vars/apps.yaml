@@ -666,14 +666,12 @@ jellyseer:
 nvr:
   namespace: home
   charts:
+    - chart: blakeblackshear/frigate
+      version: 7.5.1
+      release: frigate
+      valueFiles:
+        - frigate.yaml
     - chart: app-template
-  localStorage:
-    - name: frigate
-  kustomize:
-    extras:
-      configMapGenerator:
-        - name: frigate-configmap
-          files:
-            - ./config.yaml
-          options:
-            disableNameSuffixHash: true
+      release: wyze-bridge
+      valueFiles:
+        - wyze-bridge.yaml
