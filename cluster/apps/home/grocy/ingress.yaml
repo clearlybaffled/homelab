@@ -4,7 +4,6 @@ metadata:
   name: grocy
   namespace: services
   annotations:
-    cert-manager.io/cluster-issuer: ca-issuer
     gethomepage.dev/enabled: "true"
     gethomepage.dev/group: "Apps & Services"
     gethomepage.dev/icon: grocy.png
@@ -12,9 +11,9 @@ metadata:
   labels:
     app.kubernetes.io/name: grocy
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   rules:
-  - host: grocy.hermleigh.home
+  - host: grocy.hermleigh.cc
     http:
       paths:
       - path: /
@@ -23,9 +22,4 @@ spec:
           service:
             name: grocy
             port:
-              number: 8080
-  tls:
-    - hosts:
-      - grocy.hermleigh.home
-      - grocy
-      secretName: grocy-ingress-cert
+              number: 80
