@@ -41,7 +41,7 @@ spec:
               name: grocy-config
       containers:
         - name: grocy-frontend
-          image: docker.io/grocy/frontend:v4.0.3
+          image: docker.io/grocy/frontend:v4.2.0
           envFrom:
             - configMapRef:
                 name: grocy-cm
@@ -60,7 +60,7 @@ spec:
             - mountPath: /tmp
               name: grocy-tmpfs0
         - name: grocy-backend
-          image: docker.io/grocy/backend:v4.0.3
+          image: docker.io/grocy/backend:v4.2.0
           envFrom:
             - configMapRef:
                 name: grocy-cm
