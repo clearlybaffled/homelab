@@ -5,7 +5,7 @@ controllers:
       sonarr:
         image:
           repository: ghcr.io/onedr0p/sonarr
-          tag: 4.0.2
+          tag: 4.0.5
         env:
           SONARR__INSTANCE_NAME: Sonarr
           SONARR__PORT: &port 8989

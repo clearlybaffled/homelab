@@ -13,7 +13,7 @@ spec:
   sources:
   - chart: oauth2-proxy
     repoURL: https://oauth2-proxy.github.io/manifests
-    targetRevision: 6.24.1
+    targetRevision: 7.7.1
     helm:
       valueFiles:
       - $repo/cluster/apps/infrastructure/oauth2-proxy/values.yaml

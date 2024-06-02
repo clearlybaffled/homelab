@@ -3,9 +3,9 @@ config:
   configFile: |-
     provider = "keycloak-oidc"
     provider_display_name = "Keycloak"
-    oidc_issuer_url = "https://keycloak.hermleigh.home/realms/hermleigh.home"
+    oidc_issuer_url = "https://keycloak.hermleigh.cc/realms/hermleigh.cc"
     email_domains = [ "*" ]
-    whitelist_domains = ".hermleigh.home"
+    whitelist_domains = ".hermleigh.cc"
     pass_authorization_header = true
     pass_access_token = true
     pass_user_headers = true
@@ -21,14 +21,16 @@ config:
     insecure_oidc_allow_unverified_email = true
     cookie_csrf_per_request = true
     cookie_csrf_expire = "5m"
-    cookie_domains = [".hermleigh.home"]
+    cookie_domains = [".hermleigh.cc"]
     silence_ping_logging = true
+    redirect_url = "https://sso.hermleigh.cc/oauth2/callback"
 
 ingress:
   enabled: true
   path: /oauth2
+  ingressClass: nginx
   hosts:
-    - &host sso.hermleigh.home
+    - &host sso.hermleigh.cc
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "2000m"
     nginx.ingress.kubernetes.io/proxy-buffer-size: "32k"

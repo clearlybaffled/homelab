@@ -27,7 +27,7 @@ controllers:
       jellyfin:
         image:
           repository: docker.io/jellyfin/jellyfin
-          tag: 10.9.2
+          tag: 10.9.4
         env:
           DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
           JELLYFIN_FFmpeg__probesize: 50000000
@@ -42,7 +42,7 @@ controllers:
       jellyseer:
         image:
           repository: docker.io/fallenbagel/jellyseerr
-          tag: 1.7.0
+          tag: 1.9.0
         env:
           TZ: America/New_York
           LOG_LEVEL: "info"

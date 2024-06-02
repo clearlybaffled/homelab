@@ -24,7 +24,7 @@ controllers:
 
       gotenberg:
         image:
-          repository: gotenberg/gotenberg
+          repository: docker.io/gotenberg/gotenberg
           tag: 8.5.1
         env:
           - name: DISABLE_GOOGLE_CHROME
@@ -38,8 +38,8 @@ controllers:
 
       tika:
         image:
-          repository: ghcr.io/paperless-ngx/tika
-          tag: 2.9.1-full
+          repository: docker.io/apache/tika
+          tag: 2.9.2.1-full
         resources:
           requests:
             cpu: 10m
@@ -49,8 +49,8 @@ controllers:
 
       hp-scan-to:
         image: &hp-scan-to
-          repository: manuc66/node-hp-scan-to
-          tag: master@sha256:0b0abb2cb7035a6b3f754b1255abc1270905bc13e05ae12077f1a7029f1ee826
+          repository: docker.io/manuc66/node-hp-scan-to
+          tag: master
         env:
           - name: LABEL
             value: paperless-ngx

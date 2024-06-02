@@ -34,7 +34,6 @@ server:
       annotations:
         # proxy-body-size is set to 0 to remove the body limit on file uploads
         nginx.ingress.kubernetes.io/proxy-body-size: "0"
-        cert-manager.io/cluster-issuer: ca-issuer
         gethomepage.dev/enabled: "true"
         gethomepage.dev/group: "Apps & Services"
         gethomepage.dev/name: "Immich"

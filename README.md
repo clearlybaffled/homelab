@@ -114,7 +114,6 @@ This Git repository contains the following top level directories.
 |[<img width="32" src="https://github.com/oauth2-proxy/oauth2-proxy/raw/master/docs/static/img/logos/OAuth2_Proxy_icon.svg">](https://oauth2-proxy.github.io/)|[OAuth2 Proxy](./cluster/apps/infrastructure/oauth2-proxy/) | Forward Auth for OpenID Connect|
 |[<img width="32" src="https://github.com/cncf/artwork/blob/aea0dcfe090b8f36d7ae1eb3d5fbe95cc77380d3/projects/prometheus/icon/color/prometheus-icon-color.png?raw=true">](https://prometheus.io)|[Prometheus](./cluster/apps/monitoring/kube-prometheus-stack/)|Systems monitoring and alerting toolkit|
 |[<img width="32" src="https://www.virt-tools.org/logo-qemu.png">](https://www.qemu.org)|QEMU|Open source machine emulator and virtualizer|
-|[<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/main/projects/rook/icon/color/rook-icon-color.png">](https://rook.io)|[Rook](./cluster/apps/infrastructure/rook-ceph/)|Cloud-native storage orchestrator for Ceph|
 |[<img width="32" src="https://api.iconify.design/logos/terraform-icon.svg">](https://www.terraform.io/)|[Terraform](./infrastructure/terraform/)|Infrastructure provisioning automation|
 |[<img width="32" src="https://docs.zerotier.com/img/ZeroTierIcon.png">](https://zerotier.com)|ZeroTier|Virtual Networking that just works|
 
@@ -153,10 +152,10 @@ This Git repository contains the following top level directories.
 |[<img width="32" src="https://raw.githubusercontent.com/grocy/grocy/master/public/img/icon.svg">][grocy-uri]| [Grocy](./cluster/apps/home/grocy/) | `Services` | ERP Beyond your fridge | Deployed | [![][grocy-badge]][grocy-img] |
 |[<img width="32" src="https://github.com/hay-kot/mealie/raw/mealie-next/docs/docs/assets/img/favicon.png">][mealie-url] | [Mealie](./cluster/apps/home/mealie/) | `Services` | Recipe Manager | Deployed | [![][mealie-badge]][mealie-docker] |
 |[<img width="32" src="https://github.com/paperless-ngx/paperless-ngx/raw/dev/docs/assets/favicon.png">][paperless-uri] |[Paperless-ngx](./cluster/apps/home/paperless-ngx/) | `File Sharing` | Document Management System | Deployed| [![][paperless-badge]][paperless-img] [![][node-hp-scan-to-badge]][node-hp-scan-to-img] |
-|[<img width="32" src="https://brands.home-assistant.io/homeassistant/icon.png">][home-assistant-uri] | [Home Assistant](./cluster/apps/home/home-assistant/) | `Home Automation` | Open source home automation | Deployed | [![Home Assistant][home-assistant-badge]][home-assistant-img]  |
+|[<img width="32" src="https://brands.home-assistant.io/homeassistant/icon.png">][home-assistant-uri] | [Home Assistant](./cluster/apps/home/home-assistant/) | `Home Automation` | Open source home automation | Deployed | [![Home Assistant][home-assistant-badge]][home-assistant-img] [![Code Server][code-server-badge]][code-server-img] |
 |[<img width="32" src="https://hay-kot.github.io/homebox/assets/img/favicon.svg">][homebox-uri] | [Homebox](./cluster/apps/home/homebox/) | `Home inventory` | Inventory and organization for the Home User | Deployed | [![Homebox][homebox-badge]][homebox-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/eclipse/mosquitto/master/logo/mosquitto-logo-min.svg">][mosquitto-uri]|[Mosquitto](./cluster/apps/home/mosquitto) | `MQTT Broker` | Eclipse-foundation MQTT broker implementation | Deployed | [![Mosquitto][mosquitto-badge]][mosquitto-img] |
-|[<img width="32" src="https://raw.githubusercontent.com/blakeblackshear/frigate/dev/docs/static/img/logo.svg">][frigate-uri]|[Frigate NVR](./cluster/apps/home/nvr) | `NVR` | Home video monitoring | Planned | [![Frigate][frigate-badge]][frigate-img] [![Wyze-Bridge][wyze-bridge-badge]][wyze-bridge-img] |
+|[<img width="32" src="https://raw.githubusercontent.com/blakeblackshear/frigate/dev/docs/static/img/logo.svg">][frigate-uri]|[Frigate NVR](./cluster/apps/home/nvr) | `NVR` | Home video monitoring | Planned | [![Frigate][frigate-badge]][frigate-chart] [![Wyze-Bridge][wyze-bridge-badge]][wyze-bridge-img] |
 
 ### [Infrastructure Services](./cluster/apps/infrastructure)
 
@@ -173,7 +172,7 @@ This Git repository contains the following top level directories.
 |--------|----------------|------------|---------------|----------|--------------------------|
 |[<img width="32" src="https://github.com/kovidgoyal/calibre/blob/master/icons/calibre.png?raw=true">][calibre-uri] | [Calibre](./cluster/apps/media/calibre/) | `Books` | E-book collection manager | Deployed | [![][calibre-badge]][calibre-img] [![][calibre-web-badge]][calibre-web-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/advplyr/audiobookshelf/84160b2f07164605295d6cb6f7f7925cbdf538e4/client/static/icon.svg">][audiobookshelf-uri]| [Audiobookshelf](./cluster/apps/media/audiobookshelf) | `Audio Books` | Self-hosted audiobook and podcast server | Deployed | [![][audiobookshelf-badge]][audiobookshelf-img] |
-|[<img width="32" src="https://raw.githubusercontent.com/jellyfin/jellyfin-web/master/src/assets/img/icon-transparent.png">][jellyfin-uri]|[Jellyfin](./cluster/apps/media/jellyfin/) | `Media Server` | The open source media server | Deployed | [![][jellyfin-badge]][jellyfin-img] |
+|[<img width="32" src="https://raw.githubusercontent.com/jellyfin/jellyfin-web/master/src/assets/img/icon-transparent.png">][jellyfin-uri]|[Jellyfin](./cluster/apps/media/jellyfin/) | `Media Server` | The open source media server | Deployed | [![][jellyfin-badge]][jellyfin-img] [![Jellyseer][jellyseer-badge]][jellyseer-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/immich-logo.png">][immich-uri]|[Immich](./cluster/apps/media/immich/)| `Photos` | Photo Management | Deployed | [![][immich-badge]][immich-chart] |
 |[<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">][listenbrainz-uri]|ListenBrainz| `Scrobble` | Open Source scrobbler | Planned | |
 |[<img src="https://raw.githubusercontent.com/photoprism/photoprism/develop/assets/static/icons/logo/32.png">][photoprism-uri]|Photoprism| `Photos` | Photo Management | Planned | |
@@ -244,11 +243,11 @@ This Git repository contains the following top level directories.
 [redis-chart]: https://artifacthub.io/packages/helm/bitnami/redis
 
 [grocy-uri]: https://github.com/grocy/grocy
-[grocy-img]: https://hub.docker.com/r/grocy/grocy-frontend
-[grocy-badge]: https://img.shields.io/badge/grocy/grocy--frontend-v4.0.3-blue?logo=docker
+[grocy-img]: https://hub.docker.com/r/grocy/frontend
+[grocy-badge]: https://img.shields.io/badge/grocy/grocy-v4.2.0-blue?logo=docker
 
 [mealie-url]: https://mealie.io/
-[mealie-badge]: https://img.shields.io/badge/mealie-v1.3.2-blue?logo=docker
+[mealie-badge]: https://img.shields.io/badge/mealie-v1.7.0-blue?logo=docker
 [mealie-docker]: https://ghcr.io/mealie-recipes/mealie
 
 [mythtv-url]: https://www.mythtv.org
@@ -264,10 +263,10 @@ This Git repository contains the following top level directories.
 [grafana-chart]: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
 
 [paperless-uri]: https://docs.paperless-ngx.com/
-[paperless-badge]: https://img.shields.io/badge/paperless--ngx-v2.6.2-blue?logo=docker
+[paperless-badge]: https://img.shields.io/badge/paperless--ngx-v2.8.6-blue?logo=docker
 [paperless-img]: https://ghcr.io/paperless-ngx/paperless-ngx
-[node-hp-scan-to-badge]: https://img.shields.io/badge/manuc66/node--hp--scan--to-v1.4.2-blue?logo=docker
-[node-hp-scan-to-img]: https://hub.docker.com/repository/docker/manuc66/node-hp-scan-to
+[node-hp-scan-to-badge]: https://img.shields.io/badge/manuc66/node--hp--scan--to-v1.4.3-blue?logo=docker
+[node-hp-scan-to-img]: https://hub.docker.com/r/manuc66/node-hp-scan-to
 
 [linkding-uri]: https://github.com/sissbruecker/linkding
 [linkding-badge]: https://img.shields.io/badge/linkding-1.19.1-blue?logo=docker
@@ -292,45 +291,47 @@ This Git repository contains the following top level directories.
 
 [qbittorrent-uri]: https://www.qbittorrent.org/
 [qbittorrent-img]: https://ghcr.io/onedr0p/qbittorrent
-[qbittorrent-badge]: https://img.shields.io/badge/onedr0p/qbittorrent-4.6.2-blue?logo=docker
+[qbittorrent-badge]: https://img.shields.io/badge/onedr0p/qbittorrent-4.6.5-blue?logo=docker
 
 [lidarr-uri]: https://lidarr.audio
 [lidarr-img]: https://ghcr.io/onedr0p/lidarr
-[lidarr-badge]: https://img.shields.io/badge/onedr0p/lidarr-2.0.7-blue?logo=docker
+[lidarr-badge]: https://img.shields.io/badge/onedr0p/lidarr-2.3.3-blue?logo=docker
 
 [radarr-uri]: https://radarr.video
 [radarr-img]: https://ghcr.io/onedr0p/radarr
-[radarr-badge]: https://img.shields.io/badge/onedr0p/radarr-5.2.6-blue?logo=docker
+[radarr-badge]: https://img.shields.io/badge/onedr0p/radarr-5.6.0-blue?logo=docker
 
 [sonarr-uri]: https://sonarr.tv
 [sonarr-img]: https://ghcr.io/onedr0p/sonarr
-[sonarr-badge]: https://img.shields.io/badge/onedr0p/sonarr--develop-4.0.0.725-blue?logo=docker
+[sonarr-badge]: https://img.shields.io/badge/onedr0p/sonarr--develop-4.0.5-blue?logo=docker
 
 [prowlarr-uri]: https://github.com/Prowlarr/Prowlarr
 [prowlarr-img]: https://ghcr.io/onedr0p/prowlarr
-[prowlarr-badge]: https://img.shields.io/badge/onedr0p/prowlarr-1.11.4-blue?logo=docker
+[prowlarr-badge]: https://img.shields.io/badge/onedr0p/prowlarr-1.18.0-blue?logo=docker
 
 [readarr-uri]: https://readarr.com
 [readarr-img]: https://ghcr.io/onedr0p/readarr-develop
-[readarr-badge]: https://img.shields.io/badge/onedr0p/readarr--develop-0.3.14-blue?logo=docker
+[readarr-badge]: https://img.shields.io/badge/onedr0p/readarr--develop-0.3.27-blue?logo=docker
 
 [bazarr-uri]: https://www.bazarr.media/
 [bazarr-img]: https://ghcr.io/onedr0p/bazarr
-[bazarr-badge]: https://img.shields.io/badge/onedr0p/bazarr-1.4.0-blue?logo=docker
+[bazarr-badge]: https://img.shields.io/badge/onedr0p/bazarr-1.4.2-blue?logo=docker
 
 [calibre-uri]: https://calibre-ebook.com/
 [calibre-img]: https://ghcr.io/linuxserver/calibre
 [calibre-web-img]: https://ghcr.io/linuxserver/calibre-web
-[calibre-badge]:https://img.shields.io/badge/calibre-version--v7.3.0-blue?logo=linuxserver
+[calibre-badge]:https://img.shields.io/badge/calibre-version--v7.12.0-blue?logo=linuxserver
 [calibre-web-badge]: https://img.shields.io/badge/calibre--web-version--0.6.21-blue?logo=linuxserver
 
 [audiobookshelf-uri]: https://www.audiobookshelf.org/
 [audiobookshelf-img]: https://ghcr.io/advplyr/audiobookshelf
-[audiobookshelf-badge]: https://img.shields.io/badge/advplyr/audiobookshelf-2.7.0-blue?logo=docker
+[audiobookshelf-badge]: https://img.shields.io/badge/advplyr/audiobookshelf-2.10.1-blue?logo=docker
 
 [jellyfin-uri]: https://jellyfin.org
-[jellyfin-img]: https://ghcr.io/onedr0p/jellyfin
-[jellyfin-badge]: https://img.shields.io/badge/onedr0p/jellyfin-10.8.11-blue?logo=docker
+[jellyfin-img]: https://hub.docker.com/r/jellyfin/jellyfin
+[jellyfin-badge]: https://img.shields.io/badge/jellyfin/jellyfin-10.9.4-blue?logo=docker
+[jellyseer-img]: https://hub.docker.com/r/fallenbagel/jellyseerr
+[jellyseer-badge]: https://img.shields.io/badge/fallenbagel/jellyseer-1.9.0-blue?logo=docker
 
 [immich-uri]: https://immich.app
 [immich-chart]: https://immich-app.github.io/immich-charts
@@ -343,8 +344,10 @@ This Git repository contains the following top level directories.
 [stirling-pdf-img]: https://hub.docker.com/r/frooodle/s-pdf
 
 [home-assistant-uri]: https://www.home-assistant.io/
-[home-assistant-badge]: https://img.shields.io/badge/home--assistant-2024.2.2-blue?logo=docker
+[home-assistant-badge]: https://img.shields.io/badge/home--assistant-2024.2.5-blue?logo=docker
 [home-assistant-img]: https://ghcr.io/home-assistant/home-assistant
+[code-server-badge]: https://img.shields.io/badge/coder/code--server-4.89.1-blue?logo=docker
+[code-server-img]: https://ghcr.io/coder/code-server
 
 [homebox-uri]: https://hay-kot.github.io/homebox/
 [homebox-badge]: https://img.shields.io/badge/hay--kot/homebox-0.13.2-blue?logo=docker
@@ -361,9 +364,9 @@ This Git repository contains the following top level directories.
 [listenbrainz-uri]: https://listenbrainz.org
 
 [frigate-uri]: https://frigate.video/
-[frigate-badge]: https://img.shields.io/badge/blakeblackshear/frigate-0.13.2-blue?logo=docker
-[frigate-img]: https://ghcr.io/blakeblackshear/frigate
-[wyze-bridge-badge]: https://img.shields.io/badge/mrtl8/wyze--bridge-2.5.1--qsv-blue?logo=docker
+[frigate-badge]: https://img.shields.io/badge/blakeblackshear/frigate-7.5.1-blue?logo=helm
+[frigate-chart]: https://github.com/blakeblackshear/blakeshome-charts/tree/master/charts/frigate
+[wyze-bridge-badge]: https://img.shields.io/badge/mrtl8/wyze--bridge-2.9.4-blue?logo=docker
 [wyze-bridge-img]: https://hub.docker.com/r/mrlt8/wyze-bridge
 
 [mosquitto-uri]: https://mosquitto.org/
