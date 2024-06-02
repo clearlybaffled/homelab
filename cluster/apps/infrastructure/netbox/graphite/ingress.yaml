@@ -5,11 +5,9 @@ metadata:
   namespace: infrastructure
   labels:
     name: graphite
-  annotations:
-    cert-manager.io/cluster-issuer: ca-issuer
 spec:
   rules:
-  - host: graphite.hermleigh.home
+  - host: &host graphite.hermleigh.cc
     http:
       paths:
       - pathType: Prefix
@@ -21,5 +19,5 @@ spec:
               number: 80
   tls:
     - hosts:
-        - graphite.hermleigh.home
-      secretName: graphite-ingress-tls
+        - *host
+      secretName: external-wildcard-certificate

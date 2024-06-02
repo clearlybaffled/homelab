@@ -66,12 +66,6 @@ ingress:
   calibre:
     enabled: true
     annotations:
-      cert-manager.io/common-name: &ui_host calibre.hermleigh.home
-      cert-manager.io/subject-countries: US
-      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
-      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
-      cert-manager.io/private-key-algorithm: ECDSA
-      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/group: "Media"
       gethomepage.dev/icon: calibre.png
@@ -79,7 +73,7 @@ ingress:
       gethomepage.dev/name: Calibre
     className: nginx
     hosts:
-    - host: *ui_host
+    - host: &ui_host calibre.hermleigh.cc
       paths:
       - path: /
         pathType: Prefix
@@ -89,16 +83,10 @@ ingress:
     tls:
     - hosts:
       - *ui_host
-      secretName: calibre-tls-ingress
+      secretName: external-wildcard-certificate
   web:
     enabled: true
     annotations:
-      cert-manager.io/common-name: &host calibre-web.hermleigh.home
-      cert-manager.io/subject-countries: US
-      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
-      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
-      cert-manager.io/private-key-algorithm: ECDSA
-      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/group: "Media"
       gethomepage.dev/icon: calibre-web.png
@@ -106,7 +94,7 @@ ingress:
       gethomepage.dev/name: Calibre-Web
     className: nginx
     hosts:
-    - host: *host
+    - host: &web-host calibre-web.hermleigh.cc
       paths:
       - path: /
         pathType: Prefix
@@ -115,9 +103,8 @@ ingress:
           port: http
     tls:
     - hosts:
-      - *host
-      - calibre-web
-      secretName: calibre-web-tls-ingress
+      - *web-host
+      secretName: external-wildcard-certificate
 
 defaultPodOptions:
   securityContext:

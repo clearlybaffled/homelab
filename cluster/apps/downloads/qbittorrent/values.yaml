@@ -57,12 +57,6 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/common-name: &host torrent.hermleigh.home
-      cert-manager.io/subject-countries: US
-      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
-      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
-      cert-manager.io/private-key-algorithm: ECDSA
-      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: Torrent Management
       gethomepage.dev/group: Downloads
@@ -71,7 +65,7 @@ ingress:
       gethomepage.dev/widget.type: "qbittorrent"
       gethomepage.dev/widget.url: "http://qbittorrent.downloads.svc:8080"
     hosts:
-      - host: *host
+      - host: &host torrent.hermleigh.cc
         paths:
           - path: /
             pathType: Prefix
@@ -81,7 +75,7 @@ ingress:
     tls:
       - hosts:
           - *host
-        secretName: qbittorrent-tls-ingress
+        secretName: external-wildcard-certificate
 
 # Note: If downloading very large torrents it might be worth using NFS for your download directory.
 # Beware if you are downloading torrents directly to a ZFS dataset that dataset will accrue fragmentation.

@@ -58,7 +58,7 @@ ingress:
     enabled: true
     className: nginx
     hosts:
-      - host: &host "zwave.hermleigh.home"
+      - host: &host "zwave.hermleigh.cc"
         paths:
           - path: /
             service:
@@ -67,7 +67,7 @@ ingress:
     tls:
       - hosts:
           - *host
-        secretName: zwave-tls-ingress
+        secretName: external-wildcard-certificate
 
 persistence:
   usb:

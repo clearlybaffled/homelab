@@ -28,19 +28,13 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/common-name: &host homebox.hermleigh.home
-      cert-manager.io/subject-countries: US
-      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
-      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
-      cert-manager.io/private-key-algorithm: ECDSA
-      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/name: Homebox
       gethomepage.dev/description: "Inventory management system"
       gethomepage.dev/icon: homebox.svg
       gethomepage.dev/group: "Apps & Services"
     hosts:
-      - host: *host
+      - host: &host homebox.hermleigh.cc
         paths:
           - path: "/"
             pathType: "Prefix"
@@ -50,7 +44,7 @@ ingress:
     tls:
       - hosts:
           - *host
-        secretName: homebox-tls-ingress
+        secretName: external-wildcard-certificate
 
 persistence:
   data:

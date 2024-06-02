@@ -37,12 +37,6 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/common-name: &host mealie.hermleigh.home
-      cert-manager.io/subject-countries: US
-      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
-      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
-      cert-manager.io/private-key-algorithm: ECDSA
-      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: "A self-hosted recipe manager and meal planner"
       gethomepage.dev/icon: mealie.png
@@ -53,7 +47,7 @@ ingress:
       gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_MEALIE_API_KEY}}"
       gethomepage.dev/widget.fields: '["recipes", "users", "categories", "tags"]'
     hosts:
-      - host: *host
+      - host: &host mealie.hermleigh.cc
         paths:
           - path: /
             pathType: Prefix
@@ -61,7 +55,7 @@ ingress:
               port: http
               identifier: mealie
     tls:
-      - secretName: mealie-tls-ingress
+      - secretName: external-wildcard-certificate
         hosts:
           - *host
 

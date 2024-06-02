@@ -122,12 +122,6 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/common-name: &host paperless.hermleigh.home
-      cert-manager.io/subject-countries: US
-      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
-      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
-      cert-manager.io/private-key-algorithm: ECDSA
-      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/group: "Apps & Services"
       gethomepage.dev/icon: paperless-ngx.png
@@ -138,7 +132,7 @@ ingress:
       gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_PAPERLESS_TOKEN}}"
       gethomepage.dev/widget.fields: '["total", "inbox"]'
     hosts:
-      - host: *host
+      - host: &host paperless.hermleigh.cc
         paths:
           - path: /
             service:
@@ -147,8 +141,7 @@ ingress:
     tls:
       - hosts:
           - *host
-          - paperless
-        secretName: paperless-tls-ingress
+        secretName: external-wildcard-certificate
 
 persistence:
   library:

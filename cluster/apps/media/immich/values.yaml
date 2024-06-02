@@ -43,13 +43,13 @@ server:
         gethomepage.dev/widget.url: "http://immich.media.svc:3001"
         gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_IMMICH_API_KEY}}"
       hosts:
-        - host: &host immich.hermleigh.home
+        - host: &host immich.hermleigh.cc
           paths:
             - path: "/"
       tls:
         - hosts:
             - *host
-          secretName: immich-ingress-tls
+          secretName: external-wildcard-certificate
 
 microservices:
   enabled: true

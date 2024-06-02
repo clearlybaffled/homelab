@@ -71,12 +71,6 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/common-name: &host jellyfin.hermleigh.home
-      cert-manager.io/subject-countries: US
-      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
-      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
-      cert-manager.io/private-key-algorithm: ECDSA
-      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: "Free Software Media System"
       gethomepage.dev/icon: jellyfin.png
@@ -87,7 +81,7 @@ ingress:
       gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}"
       gethomepage.dev/widget.enableBlocks: "true"
     hosts:
-      - host: *host
+      - host: &host jellyfin.hermleigh.cc
         paths:
           - path: /
             service:
@@ -96,24 +90,18 @@ ingress:
     tls:
       - hosts:
           - *host
-        secretName: jellyfin-ingress-tls
+        secretName: external-wildcard-certificate
   jellyseer:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/common-name: &jellyseer-host jellyseer.hermleigh.home
-      cert-manager.io/subject-countries: US
-      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
-      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
-      cert-manager.io/private-key-algorithm: ECDSA
-      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/name: "Jellyseerr"
       gethomepage.dev/group: "Downloads"
       gethomepage.dev/icon: "jellyseerr"
       gethomepage.dev/description: "Request management and media discovery tool."
     hosts:
-      - host: *jellyseer-host
+      - host: &jellyseer-host jellyseer.hermleigh.cc
         paths:
           - path: /
             pathType: Prefix
@@ -123,7 +111,7 @@ ingress:
     tls:
       - hosts:
           - *jellyseer-host
-        secretName: jellyseer-tls
+        secretName: external-wildcard-certificate
 
 persistence:
   config:

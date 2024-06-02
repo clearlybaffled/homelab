@@ -2,18 +2,13 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    cert-manager.io/cluster-issuer: ca-issuer
-    cert-manager.io/common-name: "Keycloak"
-    cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
-    cert-manager.io/subject-organizationalunits: "Kubernetes Cluster Seawolf,Infrastructure"
-    cert-manager.io/subject-countries: "US"
     nginx.ingress.kubernetes.io/backend-protocol: HTTPS
     gethomepage.dev/enabled: "true"
     gethomepage.dev/icon: https://avatars.githubusercontent.com/u/4921466?s=48&v=4
     gethomepage.dev/name: Keycloak
     gethomepage.dev/description: "Single-Sign On Provider"
     gethomepage.dev/group: Infrastructure
-    gethomepage.dev/href: "https://keycloak.hermleigh.home"
+    gethomepage.dev/href: "https://keycloak.hermleigh.cc"
   labels:
     app: keycloak
     app.kubernetes.io/instance: keycloak
@@ -23,7 +18,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: &host keycloak.hermleigh.home
+  - host: &host keycloak.hermleigh.cc
     http:
       paths:
       - backend:
@@ -40,4 +35,4 @@ spec:
   tls:
     - hosts:
         - *host
-      secretName: keycloak-tls-ingress
+      secretName: external-wildcard-certificate

@@ -34,12 +34,6 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/common-name: &host music.hermleigh.home
-      cert-manager.io/subject-countries: US
-      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
-      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
-      cert-manager.io/private-key-algorithm: ECDSA
-      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: Music Management
       gethomepage.dev/group: Downloads
@@ -54,7 +48,7 @@ ingress:
         sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/lidarr/nord.css"></head>';
         sub_filter_once on;
     hosts:
-      - host: *host
+      - host: &host music.hermleigh.cc
         paths:
           - path: /
             pathType: Prefix
@@ -64,7 +58,7 @@ ingress:
     tls:
       - hosts:
           - *host
-        secretName: lidarr-tls-ingress
+        secretName: external-wildcard-certificate
 
 defaultPodOptions:
   securityContext:

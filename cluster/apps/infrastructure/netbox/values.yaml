@@ -63,17 +63,16 @@ ingress:
   enabled: true
   className: nginx
   annotations:
-    cert-manager.io/cluster-issuer: ca-issuer
     gethomepage.dev/enabled: "true"
     gethomepage.dev/group: "Apps & Services"
     gethomepage.dev/icon: netbox.png
     gethomepage.dev/description: "Infrastructure inventory and IPAM solution"
   hosts:
-    - host: &host netbox.hermleigh.home
+    - host: &host netbox.hermleigh.cc
       paths:
         - /
   tls:
-    - secretName: netbox-ingress-tls
+    - secretName: external-wildcard-certificate
       hosts:
         - *host
 

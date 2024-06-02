@@ -19,13 +19,12 @@ ingress:
   main:
     enabled: true
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
       gethomepage.dev/enabled: "true"
       gethomepage.dev/group: "Apps & Services"
       gethomepage.dev/icon: linkwarden.png
       gethomepage.dev/name: Linkwarden
     hosts:
-      - host: &host "linkwarden.hermleigh.home"
+      - host: &host linkwarden.hermleigh.cc
         paths:
           - path: /
             service:
@@ -34,7 +33,7 @@ ingress:
     tls:
       - hosts:
           - *host
-        secretName: linkwarden-ingress-cert
+        secretName: external-wildcard-certificate
 
 service:
   main:

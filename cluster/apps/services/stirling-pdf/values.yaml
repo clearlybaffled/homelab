@@ -23,18 +23,12 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/common-name: &host pdf.hermleigh.home
-      cert-manager.io/subject-countries: US
-      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
-      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
-      cert-manager.io/private-key-algorithm: ECDSA
-      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/group: "Apps & Services"
       gethomepage.dev/name: Stirling PDF
       gethomepage.dev/icon: stirling-pdf.png
     hosts:
-      - host: *host
+      - host: &host pdf.hermleigh.cc
         paths:
           - path: /
             service:
@@ -43,4 +37,4 @@ ingress:
     tls:
       - hosts:
           - *host
-        secretName: stirling-pdf-ingress-tls
+        secretName: external-wildcard-certificate

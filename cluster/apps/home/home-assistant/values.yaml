@@ -67,19 +67,13 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/common-name: &host home-assistant.hermleigh.home
-      cert-manager.io/subject-countries: US
-      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
-      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
-      cert-manager.io/private-key-algorithm: ECDSA
-      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: "Home Assistant"
       gethomepage.dev/icon: home-assistant.svg
       gethomepage.dev/group: "Apps & Services"
       gethomepage.dev/name: Home Assistant
     hosts:
-      - host: *host
+      - host: &host home-assistant.hermleigh.cc
         paths:
           - path: /
             service:
@@ -88,24 +82,18 @@ ingress:
     tls:
       - hosts:
           - *host
-        secretName: home-assistant-tls-ingress
+        secretName: external-wildcard-certificate
   code:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/common-name: &code-host hass-code.hermleigh.home
-      cert-manager.io/subject-countries: US
-      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
-      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
-      cert-manager.io/private-key-algorithm: ECDSA
-      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: "VSCode Editor for Home Assistant"
       gethomepage.dev/icon: coder.svg
       gethomepage.dev/group: "Apps & Services"
       gethomepage.dev/name: Home Assistant Coder
     hosts:
-      - host: *code-host
+      - host: &code-host hass-code.hermleigh.cc
         paths:
           - path: /
             service:
@@ -114,7 +102,7 @@ ingress:
     tls:
       - hosts:
           - *code-host
-        secretName: hass-code-tls-ingress
+        secretName: external-wildcard-certificate
 
 persistence:
   config:

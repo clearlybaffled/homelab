@@ -10,7 +10,7 @@ controllers:
         env:
           TZ: "America/New_York"
           RADARR__INSTANCE_NAME: Radarr
-          RADARR__APPLICATION_URL: 'https://movies.hermleigh.home'
+          RADARR__APPLICATION_URL: 'https://movies.hermleigh.cc'
           RADARR__LOG_LEVEL: info
           RADARR__POSTGRES_HOST: cnpg-cluster-rw.db.svc.seawolf
         envFrom:
@@ -45,12 +45,6 @@ ingress:
     enabled: true
     className: 'nginx'
     annotations:
-      cert-manager.io/common-name: &host movies.hermleigh.home
-      cert-manager.io/subject-countries: US
-      cert-manager.io/subject-organizations: HERMLEIGH.HOME
-      cert-manager.io/subject-organizationalunits: "Hermleigh House Network,Seawolf Kubernetes Cluster,Downloads"
-      cert-manager.io/private-key-algorithm: ECDSA
-      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: Movie Download Manager
       gethomepage.dev/icon: radarr.png
@@ -60,7 +54,7 @@ ingress:
       gethomepage.dev/widget.url: "http://radarr.downloads.svc:7878"
       gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
     hosts:
-      - host: *host
+      - host: &host movies.hermleigh.cc
         paths:
           - path: /
             pathType: Prefix
@@ -70,7 +64,7 @@ ingress:
     tls:
       - hosts:
         - *host
-        secretName: radarr-tls-ingress
+        secretName: external-wildcard-certificate
 
 persistence:
   config:

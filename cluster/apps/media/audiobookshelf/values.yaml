@@ -32,12 +32,6 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/common-name: &host audiobookshelf.hermleigh.home
-      cert-manager.io/subject-countries: US
-      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
-      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
-      cert-manager.io/private-key-algorithm: ECDSA
-      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/group: "Media"
       gethomepage.dev/icon: audiobookshelf.png
@@ -46,7 +40,7 @@ ingress:
       gethomepage.dev/widget.url: http://audiobookshelf.media.svc
       gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_AUDIOBOOKSHELF_API_KEY}}"
     hosts:
-      - host: *host
+      - host: &host audiobookshelf.hermleigh.cc
         paths:
           - path: /
             pathType: Prefix
@@ -56,7 +50,7 @@ ingress:
     tls:
       - hosts:
         - *host
-        secretName: audiobookshelf-ingress-tls
+        secretName: external-wildcard-certificate
 
 persistence:
   config:

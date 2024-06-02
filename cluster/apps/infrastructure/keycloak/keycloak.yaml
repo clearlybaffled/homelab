@@ -16,8 +16,8 @@ spec:
       name: keycloak-db-secret
       key: password
   http:
-    tlsSecret: keycloak-tls-ingress
+    tlsSecret: external-wildcard-certificate
   hostname:
-    hostname: keycloak.hermleigh.home
+    hostname: keycloak.hermleigh.cc
   ingress:
     enabled: false

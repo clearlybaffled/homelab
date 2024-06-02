@@ -28,19 +28,17 @@ ingress:
   enabled: true
   path: /oauth2
   hosts:
-    - oauth.sso.hermleigh.home
+    - &host sso.hermleigh.home
   annotations:
-    cert-manager.io/cluster-issuer: ca-issuer
     nginx.ingress.kubernetes.io/proxy-body-size: "2000m"
     nginx.ingress.kubernetes.io/proxy-buffer-size: "32k"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
   tls:
-    - secretName: oauth-proxy-tls
+    - secretName: external-wildcard-certificate
       hosts:
-        - oauth.sso.hermleigh.home
+        - *host
 
 extraArgs:
-  provider-ca-file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
   upstream: file:///dev/null
   skip-provider-button: "true"
 

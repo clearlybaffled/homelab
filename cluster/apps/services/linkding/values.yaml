@@ -35,14 +35,13 @@ ingress:
   main:
     enabled: true
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: "A bookmark manager with read-it-later and archiving functionality"
       gethomepage.dev/icon: linkding.png
       gethomepage.dev/group: "Apps & Services"
       gethomepage.dev/name: Linkding
     hosts:
-      - host: &host "linkding.seawolf.hermleigh.home"
+      - host: &host linkding.hermleigh.cc
         paths:
           - path: /
             service:
@@ -51,4 +50,4 @@ ingress:
     tls:
       - hosts:
           - *host
-        secretName: linkding-ingress-cert
+        secretName: external-wildcard-certificate

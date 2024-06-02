@@ -9,7 +9,7 @@ controllers:
         env:
           SONARR__INSTANCE_NAME: Sonarr
           SONARR__PORT: &port 8989
-          SONARR__APPLICATION_URL: https://tv.hermleigh.home
+          SONARR__APPLICATION_URL: https://tv.hermleigh.cc
           SONARR__LOG_LEVEL: info
           SONARR__POSTGRES_HOST: cnpg-cluster-rw.db.svc.seawolf
         envFrom:
@@ -44,12 +44,6 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/common-name: &host tv.hermleigh.home
-      cert-manager.io/subject-countries: US
-      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
-      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
-      cert-manager.io/private-key-algorithm: ECDSA
-      cert-manager.io/private-key-size: "384"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/description: TV Show Management
       gethomepage.dev/group: Downloads
@@ -63,7 +57,7 @@ ingress:
         sub_filter '<body>' '<body><link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/sonarr/nord.css">';
         sub_filter_once on;
     hosts:
-      - host: *host
+      - host: &host tv.hermleigh.cc
         paths:
           - path: /
             service:
@@ -72,7 +66,7 @@ ingress:
     tls:
       - hosts:
           - *host
-        secretName: sonarr-tls-ingress
+        secretName: external-wildcard-certificate
 
 persistence:
   config:

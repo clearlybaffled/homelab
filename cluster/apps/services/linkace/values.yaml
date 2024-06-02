@@ -26,13 +26,12 @@ ingress:
   main:
     enabled: true
     annotations:
-      cert-manager.io/cluster-issuer: ca-issuer
       gethomepage.dev/enabled: "true"
       gethomepage.dev/group: "Apps & Services"
       gethomepage.dev/name: Linkace
       gethomepage.dev/icon: linkace.png
     hosts:
-      - host: &host linkace.hermleigh.home
+      - host: &host linkace.hermleigh.cc
         paths:
           - path: /
             service:
@@ -41,7 +40,7 @@ ingress:
     tls:
       - hosts:
           - *host
-        secretName: linkace-ingress-cert
+        secretName: external-wildcard-certificate
 
 service:
   main:
