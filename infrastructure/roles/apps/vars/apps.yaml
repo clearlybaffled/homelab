@@ -189,12 +189,12 @@ mysql:
   localStorage:
 
 reflector:
-  enable: false
+  enable: true
   namespace: infrastructure
   wave: "3"
   charts:
     - chart: emberstack/reflector
-      version: 7.1.238
+      version: 7.1.262
       valueFiles: []
 
 reloader:
@@ -669,3 +669,15 @@ nvr:
       release: wyze-bridge
       valueFiles:
         - wyze-bridge.yaml
+
+photoprism:
+  namespace: media
+  charts:
+    - chart: app-template
+  secrets:
+    secret:
+      data:
+        PHOTOPRISM_ADMIN_PASSWORD:
+          type: password
+          name: admin
+  localStorage:
