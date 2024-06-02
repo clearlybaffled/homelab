@@ -78,7 +78,7 @@ Setting('ENTRY_PAGE', 'stock');
 
 // Set this to true if you want to disable authentication / the login screen,
 // places where user context is needed will then use the default (first existing) user
-Setting('DISABLE_AUTH', true);
+Setting('DISABLE_AUTH', false);
 
 // Either "Grocy\Middleware\DefaultAuthMiddleware", "Grocy\Middleware\ReverseProxyAuthMiddleware"
 // or any class that implements Grocy\Middleware\AuthMiddleware

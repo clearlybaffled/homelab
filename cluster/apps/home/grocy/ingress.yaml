@@ -11,15 +11,19 @@ metadata:
   labels:
     app.kubernetes.io/name: grocy
 spec:
-  ingressClassName: traefik
+  ingressClassName: nginx
   rules:
-  - host: grocy.hermleigh.cc
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: grocy
-            port:
-              number: 80
+    - host: &host grocy.hermleigh.cc
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: grocy
+              port:
+                number: 8080
+  tls:
+    - hosts:
+        - *host
+      secretName: external-wildcard-certificate

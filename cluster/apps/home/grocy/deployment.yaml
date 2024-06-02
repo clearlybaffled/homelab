@@ -6,6 +6,7 @@ metadata:
   labels:
     app.kubernetes.io/name: grocy
   annotations:
+    configmap.reloader.stakater.com/reload: "grocy-config,grocy-cm"
     kompose.cmd: kompose convert -n services -f docker-compose.yml --service-group-mode label
     kompose.controller.type: Deployment
     kompose.service.expose: grocy.hermleigh.home, grocy
