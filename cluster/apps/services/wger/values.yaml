@@ -1,6 +1,8 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
 controllers:
   main:
+    annotations:
+      configmap.reloader.stakater.com/reload: wger-env
     containers:
       wger:
         image: &image
@@ -48,19 +50,13 @@ ingress:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/common-name: &host wger.hermleigh.home
-      cert-manager.io/subject-countries: US
-      cert-manager.io/subject-organizations: "HERMLEIGH.HOME"
-      cert-manager.io/subject-organizationalunits: "Kubernetes - Services"
-      cert-manager.io/private-key-algorithm: ECDSA
-      cert-manager.io/private-key-size: "512"
       gethomepage.dev/enabled: "true"
       gethomepage.dev/name: Wger
       gethomepage.dev/description: "Personal workout/food tracker"
       gethomepage.dev/icon: "wger.svg"
       gethomepage.dev/group: "Apps & Services"
     hosts:
-      - host: *host
+      - host: &host wger.hermleigh.cc
         paths:
           - path: "/"
             pathType: "Prefix"
@@ -70,11 +66,11 @@ ingress:
     tls:
       - hosts:
           - *host
-        secretName: wger-tls-ingress
+        secretName: external-wildcard-certificate
 
 persistence:
   media:
     enabled: true
     existingClaim: wger
     globalMounts:
-      - path: /home/wger/media
+      - path: /home/wger/src/media
