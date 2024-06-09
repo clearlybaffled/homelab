@@ -5,17 +5,18 @@
     kind: Namespace
     name: "{{ app.namespace }}"
 
+- name: Set secret fact | {{ app.name }}
+  set_fact:
+    secrets: {}
+
 - name: Manage app secrets | {{ app.name }}
   when: app.secrets is defined
   block:
-    - name: Generate secrets | {{ app.name }}
-      include_tasks: generate_secret.yml
+    - name: Manage app secrets | {{ app.name }}
+      include_tasks: manage_secret.yml
       loop: "{{ app.secrets | dict2items(key_name='name') }}"
       loop_control:
         loop_var: secret
-      when:
-        - sops_file is not file
-        - secret.value
       vars:
         sops_file: "{{ (app.app_dir, secret.name+'.sops.yaml')| path_join }}"
 

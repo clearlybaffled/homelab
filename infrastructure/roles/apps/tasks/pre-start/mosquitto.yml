@@ -1,28 +1,47 @@
 ---
 - name: Create mosquitto secrets
   vars:
-    credentials:
-      mosquitto: "{{ lookup('password','/dev/null', length=60) }}"
+    mapping:
+      home-assistant:
+        username: MOSQUITTO_HOME_ASSISTANT_USERNAME
+        password: MOSQUITTO_HOME_ASSISTANT_PASSWORD
+      frigate:
+        username: FRIGATE_MQTT_USERNAME
+        password: FRIGATE_MQTT_PASSWORD
+      owntracks:
+        username: OTC_USER
+        password: OTC_PASS
   block:
+  - name: Initialize mosquitto secret
+    set_fact:
+      credentials:
+        mosquitto: >-
+          {{ (secrets.secret.mosquitto_pwd | split | map('split',':') | selectattr(0, 'equalto', 'mosquitto'))[0][1] }}
+    when:
+      - "'secret' in secrets"
   - name: Generate mosquitto secret values
     set_fact:
-      credentials: "{{ credentials | combine({ secret.data[username]|b64decode : secret.data[password]|b64decode }) }}"
+      credentials: >-
+        {{ credentials
+          | default({'mosquitto': lookup('password','/dev/null', length=60) })
+          | combine({ secrets[secretname][username] : secrets[secretname][password] })
+        }}
     loop:
       - home-assistant
       - frigate
+      - owntracks
     vars:
-      itemname: "{{ item | upper | regex_replace('-','_') }}"
-      username: "{{ ['MOSQUITTO' , itemname, 'USERNAME'] | join('_') }}"
-      password: "{{ ['MOSQUITTO' , itemname, 'PASSWORD'] | join('_')  }}"
-      secret: "{{ lookup('community.sops.sops', (app.app_dir, item ~ '-secret.sops.yaml') | path_join) | from_yaml }}"
+      secretname: "{{ item ~ '-secret' }}"
+      username: "{{ mapping[item]['username'] }}"
+      password: "{{ mapping[item]['password'] }}"
 
   - name: Write out secret sops file
     community.sops.sops_encrypt:
       path: "{{ (app.app_dir, 'secret.sops.yaml') | path_join }}"
       encrypted_regex: "^(data|stringData)$"
       content_yaml: "{{ lookup('template', 'secret.yaml.j2', convert_data=false) | from_yaml }}"
+      force: true
     vars:
-      generated_credentials: {}
       secret:
         name: secret
         value:
