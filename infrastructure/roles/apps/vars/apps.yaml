@@ -244,16 +244,19 @@ mosquitto:
     secret:
     frigate-secret:
       data:
-        MOSQUITTO_FRIGATE_USERNAME: frigate
-        MOSQUITTO_FRIGATE_PASSWORD:
+        FRIGATE_MQTT_USERNAME: frigate
+        FRIGATE_MQTT_PASSWORD:
           type: key
-          name: frigate
     home-assistant-secret:
       data:
         MOSQUITTO_HOME_ASSISTANT_USERNAME: home-assistant
         MOSQUITTO_HOME_ASSISTANT_PASSWORD:
           type: key
-          name: hass
+    owntracks-secret:
+      data:
+        OTR_USER: owntracks
+        OTR_PASS:
+          type: key
   ignoreDifferences:
     - group: apps
       kind: StatefulSet
@@ -681,3 +684,8 @@ photoprism:
           type: password
           name: admin
   localStorage:
+
+owntracks:
+  namespace: home
+  charts:
+    - chart: app-template

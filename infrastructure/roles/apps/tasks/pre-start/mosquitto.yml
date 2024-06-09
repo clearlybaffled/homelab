@@ -9,8 +9,8 @@
         username: FRIGATE_MQTT_USERNAME
         password: FRIGATE_MQTT_PASSWORD
       owntracks:
-        username: OTC_USER
-        password: OTC_PASS
+        username: OTR_USER
+        password: OTR_PASS
   block:
   - name: Initialize mosquitto secret
     set_fact:
@@ -42,13 +42,14 @@
       content_yaml: "{{ lookup('template', 'secret.yaml.j2', convert_data=false) | from_yaml }}"
       force: true
     vars:
+      generated_credentials: {}
       secret:
         name: secret
         value:
           data:
-            mosquitto_pwd: |
+            mosquitto_pwd: |-
               {{ credentials | items | map('join',':') | join('
-              ')}}
+              ') }}
 
   always:
     - name: Clear credentials

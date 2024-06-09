@@ -1,0 +1,82 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
+controllers:
+  main:
+    annotations:
+      configmap.reloader.stakater.com/reload: "mosquitto-owntracks-secret"
+    containers:
+      recorder:
+        image:
+          repository: docker.io/owntracks/recorder
+          tag: 0.9.7
+        env:
+          OTR_HOST: mosquitto.home.svc
+        envFrom:
+          - secretRef:
+              name: mosquitto-owntracks-secret
+      frontend:
+        image:
+          repository: docker.io/owntracks/frontend
+          tag: 2.13.1
+        env:
+          SERVER_HOST: localhost
+          SERVER_PORT: 8083
+        ports:
+          - containerPort: 80
+            name: http
+
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: 80
+        protocol: HTTP
+  recorder:
+    controller: main
+    ports:
+      http:
+        port: 8083
+        protocol: HTTP
+
+ingress:
+  owntracks:
+    className: nginx
+    annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/icon: owntracks.svg
+      gethomepage.dev/group: "Apps & Services"
+      gethomepage.dev/name: Own Tracks
+    hosts:
+      - host: &host owntracks.hermleigh.cc
+        paths:
+          - path: /
+            service:
+              identifier: main
+              port: http
+            pathType: Prefix
+    tls:
+      - hosts:
+        - *host
+        secretName: external-wildcard-certificate
+  recorder:
+    className: nginx
+    hosts:
+      - host: &otr owntracks-recorder.hermleigh.cc
+        paths:
+          - path: /
+            service:
+              identifier: recorder
+              port: http
+    tls:
+      - hosts:
+        - *otr
+        secretName: external-wildcard-certificate
+
+persistence:
+  store:
+    type: persistentVolumeClaim
+    accessMode: ReadWriteOnce
+    size: 20Gi
+    storageClass: local-path
+    globalMounts:
+      - path: /store
