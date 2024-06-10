@@ -689,3 +689,14 @@ owntracks:
   namespace: home
   charts:
     - chart: app-template
+
+wallabag:
+  namespace: services
+  charts:
+    - chart: app-template
+  secrets:
+    secret:
+      data:
+        SYMFONY__ENV__DATABASE_USER: wallabag
+        SYMFONY__ENV__DATABASE_PASSWORD:
+          type: password

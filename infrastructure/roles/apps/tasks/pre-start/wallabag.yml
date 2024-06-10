@@ -1,0 +1,9 @@
+---
+- include_tasks: # noqa name
+    file: ../init-postgres.yml
+    apply:
+      vars:
+        db_user_var: SYMFONY__ENV__DATABASE_USER
+        db_pass_var: SYMFONY__ENV__DATABASE_PASSWORD
+        db_names:
+          - wallabag
