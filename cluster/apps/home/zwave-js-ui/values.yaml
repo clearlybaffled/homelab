@@ -8,7 +8,7 @@ controllers:
       main:
         image:
           repository: ghcr.io/zwave-js/zwave-js-ui
-          tag: 9.9.1
+          tag: 9.14.6
         env:
           TZ: America/New_York
         probes:

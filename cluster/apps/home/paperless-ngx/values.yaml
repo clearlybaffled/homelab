@@ -9,7 +9,7 @@ controllers:
       paperless-ngx:
         image:
           repository: ghcr.io/paperless-ngx/paperless-ngx
-          tag: 2.8.6
+          tag: 2.11.0
         envFrom:
           - configMapRef:
               identifier: config
@@ -25,7 +25,7 @@ controllers:
       gotenberg:
         image:
           repository: docker.io/gotenberg/gotenberg
-          tag: 8.5.1
+          tag: 8.8.0
         env:
           - name: DISABLE_GOOGLE_CHROME
             value: "1"
@@ -51,6 +51,7 @@ controllers:
         image: &hp-scan-to
           repository: docker.io/manuc66/node-hp-scan-to
           tag: master
+          pullPolicy: Always
         env:
           - name: LABEL
             value: paperless-ngx

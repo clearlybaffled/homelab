@@ -105,7 +105,7 @@ cert-manager:
   wave: "1"
   charts:
     - chart: jetstack/cert-manager
-      version: v1.14.1
+      version: v1.15.1
   secrets:
     cloudflare-api-token:
   kustomize:
@@ -611,7 +611,8 @@ stirling-pdf:
 wger:
   namespace: services
   charts:
-    - chart: app-template
+    - chart: wger/wger
+      version: 0.2.0
   secrets:
     secret:
       data:
@@ -625,15 +626,6 @@ wger:
         SIGNING_KEY:
           type: password
           name: signing
-  kustomize:
-    extras:
-      configMapGenerator:
-        - name: wger-env
-          envs:
-            - config.env
-          options:
-            disableNameSuffixHash: true
-  localStorage:
 
 home-assistant:
   namespace: home
@@ -700,3 +692,8 @@ wallabag:
         SYMFONY__ENV__DATABASE_USER: wallabag
         SYMFONY__ENV__DATABASE_PASSWORD:
           type: password
+
+change-detection:
+  namespace: services
+  charts:
+    - chart: app-template
