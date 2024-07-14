@@ -103,7 +103,7 @@ configMaps:
       PAPERLESS_TIKA_ENABLED: "1"
       PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
       PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
-      PAPERLESS_URL: https://paperless.hermleigh.home
+      PAPERLESS_URL: https://paperless.hermleigh.cc
       PAPERLESS_REDIS: redis://redis-master.db.svc:6379
       PAPERLESS_USE_X_FORWARD_HOST: "true"
       PAPERLESS_USE_X_FORWARD_PORT: "true"
