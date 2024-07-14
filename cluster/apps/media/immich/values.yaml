@@ -16,7 +16,7 @@ envFrom:
       name: immich-secret
 
 image:
-  tag: v1.98.2
+  tag: v1.108.0
 
 immich:
   persistence:

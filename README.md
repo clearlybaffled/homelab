@@ -336,7 +336,7 @@ This Git repository contains the following top level directories.
 
 [immich-uri]: https://immich.app
 [immich-chart]: https://immich-app.github.io/immich-charts
-[immich-badge]: https://img.shields.io/badge/immich-v1.94.1-blue?logo=docker
+[immich-badge]: https://img.shields.io/badge/immich-v1.108.0-blue?logo=docker
 
 [photoprism-uri]: https://www.photoprism.app/
 

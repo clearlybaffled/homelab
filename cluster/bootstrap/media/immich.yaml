@@ -13,7 +13,7 @@ spec:
   sources:
   - chart: immich
     repoURL: https://immich-app.github.io/immich-charts
-    targetRevision: 0.4.0
+    targetRevision: 0.7.0
     helm:
       valueFiles:
       - $repo/cluster/apps/media/immich/values.yaml
