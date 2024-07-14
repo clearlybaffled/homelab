@@ -186,6 +186,7 @@ This Git repository contains the following top level directories.
 |[<img width="32" src="https://raw.githubusercontent.com/linkwarden/linkwarden/4454e615b64f710d7104dd2042fbe97da3904f7e/public/favicon-32x32.png">][linkwarden-uri] |[Linkwarden](./cluster/apps/services/linkwarden/) | `Bookmark Sharing` | Collaborative Bookmark Manager | Deployed | [![][linkwarden-badge]][linkwarden-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/Stirling-Tools/Stirling-PDF/main/docs/stirling.png">][stirling-pdf-uri] | [Stirling PDF](./cluster/apps/services/stirling-pdf/) | `Document Editing` | Self-hosted PDF editor | Deployed | [![][stirling-pdf-badge]][stirling-pdf-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/wger-project/wger/master/wger/core/static/images/logos/logo.png">][wger-uri] | [Wger](./cluster/apps/services/wger/) | `Health tracking` | Workout and food tracker | Broken| [![][wger-badge]][wger-img] |
+|[<img width="32" src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/changedetection-io.png">][changedetection-io-url] | [Change Detection](./cluster/apps/services/change-detection/) | `Website Monitoring` | Website Change Detection ... For Clever People | Deployed | [![changedetection-io-badge]][changedetection-io-img] |
 
 ### [Monitoring](./cluster/apps/monitoring/)
 
@@ -372,6 +373,10 @@ This Git repository contains the following top level directories.
 [mosquitto-uri]: https://mosquitto.org/
 [mosquitto-img]: https://public.ecr.aws/docker/library/eclipse-mosquitto
 [mosquitto-badge]: https://img.shields.io/badge/eclipse--mosquitto-2.0.18-blue?logo=docker
+
+[changedetection-io-url]: https://changedetection.io/
+[changedetection-io-img]: https://ghcr.io/dgtlmoon/changedetection.io
+[changedetection-io-badge]: https://img.shields.io/badge/dgtlmoon/changedetection.io-0.45.26-blue?logo=docker
 
 [keycloak-url]: https://www.keycloak.org/
 [keycloak-operator]: https://operatorhub.io/operator/keycloak-operator

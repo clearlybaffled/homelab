@@ -1,0 +1,34 @@
+#
+# Ansible managed
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: change-detection
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+  - chart: app-template
+    repoURL: https://bjw-s.github.io/helm-charts/
+    targetRevision: 3.0.2
+    helm:
+      valueFiles:
+      - $repo/cluster/apps/services/change-detection/values.yaml
+      releaseName: change-detection
+  - repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/apps/services/change-detection
+    targetRevision: main
+    ref: repo
+  destination:
+    name: in-cluster
+    namespace: services
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

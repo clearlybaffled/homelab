@@ -9,6 +9,7 @@ data:
     HOMEPAGE_VAR_MEALIE_API_KEY: ENC[AES256_GCM,data:xV+ifWucRZsjIUF8pq8YmhlDF8DYFBOdPm3OQqaGNuMPfI6byb9wFKGzeh8Dd52tj7RlqOp19lr7+NnZsh1PDIf/V2oz6BrqGJIbedP3Ushmgc2Qe6qWyoanquYK8UUwTS4gqi7O11Io5zGqWrDBG97NGW7uSoeaTxcpxcxtYLt4vLWpb1zT4jhSbZiP2pmhKLJQa5xqggaDF1MuDo//7vwgh0v23vt/b4C8rlF4iYISGOd3VhfQ5OUTCkgsn6CjtkdhATcIYZi4e/WUvUUD5pwiSmOjAVGLJByLiFXP4xvav7+Nhed6hSI1RWz5Qwki2Jw52FSMoSc5M8MEjPpXIaUA0ANheJEHjlP9tIli1A5pxfgOK0ljLIt7VakPXBWFX5skRM+H4UTvvx7eG6wt3a6Q8Lr74VInDo9XybUd82QzgRJUUL4V/UL0M6c=,iv:yMqN17LFftkeIzpTjKTr5VnUpIqtK9icjXXN67qNWzU=,tag:wFs86b+c4o2s/GPK1MWZLg==,type:str]
     HOMEPAGE_VAR_AUDIOBOOKSHELF_API_KEY: ENC[AES256_GCM,data:jmxDxVpcFB8pLsI17sfVt84/tg2rQI50rTeywQucV03o72xHRYB8qPI6NGYYB3kGP1TOp/0SwqJjWJ7S0tSvTiHtTcjK0bLCgmVjBZOlascMs1ymPhDOBclKcxrgM60KP+HnZI4P7IbBoOGJ2s7rbWPeawk3VItco8JeHNfYFS9FLEuJnIFntBOekqgPSlCfzFV8F41Z6NcqYvDee3V9b6k2wFY/7mfghX71x1l2xPwftkF+6WByw/tDHTiYUaNfaBWMgTdyNOHwb8+EFCcw3vQmJYWj7P5p5mFpLLL/NH/2lb+bXXdcolhtLGbNy1YCIkGVecfv6aHNUH2xtFiaGvFSJUY=,iv:QGVyNrnPB9AXHuRCXT+NsKX4Obwl9GZXth+ojUj/rfc=,tag:+C/AxklvC+vIliKnnjC1jA==,type:str]
     HOMEPAGE_VAR_PAPERLESS_TOKEN: ENC[AES256_GCM,data:qnOeS+fzZBQAu3Oafz8iolTwGirdYB3VVC0fIz5rrzMilMidqMjUpflTl9X7PVAmhy5nXMpK9ug=,iv:469P4GcL+9BBrYlZcMsqRxQGfstMwQdb1o30ptw29S0=,tag:vVIV2xuXLOoT9ziUhCfEUw==,type:str]
+    HOMEPAGE_VAR_CHANGEDETECTION_API_TOKEN: ENC[AES256_GCM,data:K4yimEuuDWVQnQ/RwDbSX1cCIRJhigqelQiuKo+LTXpyFG4ooU1GYq71S8A=,iv:RFifIB1Dr8+ypsKXtUMMllnyoLLfQjVlCnkSqhk/Yb8=,tag:v3VEUpWF46Zr4iVq3Eg5+w==,type:str]
 kind: Secret
 metadata:
     name: app-keys
@@ -29,8 +30,8 @@ sops:
             ZGQ1bXRlYTZZdklodHB0UzF1dkV1VEEKSC/V5zdU9qic9DJd8qBGdONrA7y9FtmZ
             q5x9vW/FavAsmIq2kvH2mUuixhvbP6UIP0u254/hu1qiXwG5gKeHkw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-03-18T21:22:42Z"
-    mac: ENC[AES256_GCM,data:YR3TmFNtlbMKckQe5FQz1OkkgcCVO2hhraXQbeiGE4ioAAtb44xXpHUWN+zqT/y+WyKZJ/Ef7VNlHdy1W/bDZfbk7xl8g9o3kQuoPr7ml7AmJz1SxfZHxQY2o/gq4f1F4NXcgddX6j0BEZrutMMxk1iVnTOoI5BFklsF6S5uMmE=,iv:YRm60Uh5kavXY4lEF79s6GzKuo17Zx/wFoA+dbxqNB4=,tag:lLAuyXH+dI4W13q/G0IBKg==,type:str]
+    lastmodified: "2024-07-14T22:31:50Z"
+    mac: ENC[AES256_GCM,data:AZT99Cyp1QlyOPHCUViL8gVKPgEgv74B/4a3x68+OdaCytbRGE5m92+7r47vGjqVr7xZjqZPzbk7k3UPYcSjc9rLqrPJeK2qaR87tjOFzQJ5g1EyRm3/jfZToRlJrZo/Pu+N8qSD5JLlQ3BIQ4aIoJaDEo9yuUKGABG2DPzZOug=,iv:UkqpsxOoeH8Ok3ChLixALqQR19lVD+JGnvcmZjGD19Q=,tag:gv5HQBIHOm71lYjJncnV8w==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1
