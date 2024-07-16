@@ -47,36 +47,36 @@ controllers:
           limits:
             memory: 256Mi
 
-      hp-scan-to:
-        image: &hp-scan-to
-          repository: docker.io/manuc66/node-hp-scan-to
-          tag: master
-          pullPolicy: Always
-        env:
-          - name: LABEL
-            value: paperless-ngx
-          - name: CMDLINE
-            value: "-D -l paperless-ngx -r 300 -d /library/consume"
-        envFrom:
-          - configMapRef:
-              name: hp-scan-to-env
-        resources: &scan-limits
-          limits:
-            memory: 64Mi
-          requests:
-            cpu: 5m
-            memory: 64Mi
-      hp-scan-to-double-sided:
-        image: *hp-scan-to
-        envFrom:
-          - configMapRef:
-              name: hp-scan-to-env
-        env:
-          - name: LABEL
-            value: paperless-ngx (double sided)
-          - name: CMDLINE
-            value: '-D -l paperless-ngx-double-sided -r 300 -d /library/consume/double-sided'
-        resources: *scan-limits
+      # hp-scan-to:
+      #   image: &hp-scan-to
+      #     repository: docker.io/manuc66/node-hp-scan-to
+      #     tag: master
+      #     pullPolicy: Always
+      #   env:
+      #     - name: LABEL
+      #       value: paperless-ngx
+      #     - name: CMDLINE
+      #       value: "-D -l paperless-ngx -r 300 -d /library/consume"
+      #   envFrom:
+      #     - configMapRef:
+      #         name: hp-scan-to-env
+      #   resources: &scan-limits
+      #     limits:
+      #       memory: 64Mi
+      #     requests:
+      #       cpu: 5m
+      #       memory: 64Mi
+      # hp-scan-to-double-sided:
+      #   image: *hp-scan-to
+      #   envFrom:
+      #     - configMapRef:
+      #         name: hp-scan-to-env
+      #   env:
+      #     - name: LABEL
+      #       value: paperless-ngx (double sided)
+      #     - name: CMDLINE
+      #       value: '-D -l paperless-ngx-double-sided -r 300 -d /library/consume/double-sided'
+      #   resources: *scan-limits
 
 configMaps:
   config:
