@@ -8,7 +8,7 @@ controllers:
       main:
         image:
           repository: docker.io/photoprism/photoprism
-          tag: latest@sha256:cbaf35b067efc179dee68ab703db8911c2ad306830831458abb369542ee4cf12
+          tag: 240711
         env:
           PHOTOPRISM_STORAGE_PATH: &storage /config
           PHOTOPRISM_ORIGINALS_PATH: &originals /pictures
@@ -37,8 +37,17 @@ ingress:
     className: "nginx"
     annotations:
       nginx.ingress.kubernetes.io/proxy-body-size: 4G
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/description: "AI-Powered Photos App for the Decentralized Web"
+      gethomepage.dev/icon: photoprism.png
+      gethomepage.dev/group: "Media"
+      gethomepage.dev/name: Photoprism
+      gethomepage.dev/widget.type: photoprism
+      gethomepage.dev/widget.url: "http://photoprism.media.svc:2342"
+      gethomepage.dev/widget.username: '{{HOMEPAGE_VAR_PHOTOPRISM_USERNAME}}'
+      gethomepage.dev/widget.password: '{{HOMEPAGE_VAR_PHOTOPRISM_PASSWORD}}'
     hosts:
-      - host: &host photos.hermleigh.home
+      - host: &host photos.hermleigh.cc
         paths:
           - path: /
             service:
@@ -47,6 +56,7 @@ ingress:
     tls:
       - hosts:
           - *host
+        secretName: external-wildcard-certificate
 
 persistence:
   config:

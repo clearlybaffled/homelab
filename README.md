@@ -175,7 +175,7 @@ This Git repository contains the following top level directories.
 |[<img width="32" src="https://raw.githubusercontent.com/jellyfin/jellyfin-web/master/src/assets/img/icon-transparent.png">][jellyfin-uri]|[Jellyfin](./cluster/apps/media/jellyfin/) | `Media Server` | The open source media server | Deployed | [![][jellyfin-badge]][jellyfin-img] [![Jellyseer][jellyseer-badge]][jellyseer-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/immich-logo.png">][immich-uri]|[Immich](./cluster/apps/media/immich/)| `Photos` | Photo Management | Deployed | [![][immich-badge]][immich-chart] |
 |[<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">][listenbrainz-uri]|ListenBrainz| `Scrobble` | Open Source scrobbler | Planned | |
-|[<img src="https://raw.githubusercontent.com/photoprism/photoprism/develop/assets/static/icons/logo/32.png">][photoprism-uri]|Photoprism| `Photos` | Photo Management | Planned | |
+|[<img src="https://raw.githubusercontent.com/photoprism/photoprism/develop/assets/static/icons/logo/32.png">][photoprism-uri]|[Photoprism](./cluster/apps/media/photoprism/)| `Photos` | Photo Management | Deployed | [![][photoprism-badge]][photoprism-img]  |
 
 ### [Services](./cluster/apps/services/)
 
@@ -339,6 +339,8 @@ This Git repository contains the following top level directories.
 [immich-badge]: https://img.shields.io/badge/immich-v1.108.0-blue?logo=docker
 
 [photoprism-uri]: https://www.photoprism.app/
+[photoprism-badge]: https://img.shields.io/badge/photopirms-240711-blue?logo=docker
+[photoprism-img]: https://hub.docker.com/r/photoprism/photoprism
 
 [stirling-pdf-uri]: https://stirlingtools.com/
 [stirling-pdf-badge]: https://img.shields.io/badge/frooodle/s--pdf-0.22.2-blue?logo=docker

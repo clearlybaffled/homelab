@@ -1,0 +1,41 @@
+#
+# Ansible managed
+#
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: photoprism
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+  - chart: app-template
+    repoURL: https://bjw-s.github.io/helm-charts/
+    targetRevision: 3.0.2
+    helm:
+      valueFiles:
+      - $repo/cluster/apps/media/photoprism/values.yaml
+      releaseName: photoprism
+  - repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/apps/media/photoprism
+    targetRevision: main
+    ref: repo
+  destination:
+    name: in-cluster
+    namespace: media
+  ignoreDifferences:
+  - kind: PersistentVolume
+    jsonPointers:
+    - /spec/claimRef/resourceVersion
+    - /spec/claimRef/uid
+    - /status/lastPhaseTransitionTime
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
+    - RespectIgnoreDifferences=true
