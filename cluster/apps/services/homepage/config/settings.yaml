@@ -7,19 +7,23 @@ layout: # key by group name in services.yaml
   Apps & Services:
     style: row
     columns: 4
-    # icon: home-assistant.png
-  Infrastructure:
-    style: row
-    columns: 4
-    # icon: home-assistant.png
-  Monitoring:
-    style: row
-    columns: 4
-    # icon: home-assistant.png
-  Downloads:
-    style: row
-    columns: 4
-    # icon: home-assistant.png
+    tab: Apps
+    icon: mdi-application
   Media:
     style: row
     columns: 4
+    tab: Apps
+    icon: mdi-movie-open
+  Downloads:
+    style: row
+    columns: 4
+    tab: Apps
+    icon: mdi-download
+  Infrastructure:
+    style: row
+    columns: 4
+    tab: Infrastructure
+  Monitoring:
+    style: row
+    columns: 4
+    tab: Infrastructure
