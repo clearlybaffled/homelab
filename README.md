@@ -321,8 +321,8 @@ This Git repository contains the following top level directories.
 [calibre-uri]: https://calibre-ebook.com/
 [calibre-img]: https://ghcr.io/linuxserver/calibre
 [calibre-web-img]: https://ghcr.io/linuxserver/calibre-web
-[calibre-badge]:https://img.shields.io/badge/calibre-version--v7.12.0-blue?logo=linuxserver
-[calibre-web-badge]: https://img.shields.io/badge/calibre--web-version--0.6.21-blue?logo=linuxserver
+[calibre-badge]:https://img.shields.io/badge/calibre-version--v7.15.0-blue?logo=linuxserver
+[calibre-web-badge]: https://img.shields.io/badge/calibre--web-version--0.6.22-blue?logo=linuxserver
 
 [audiobookshelf-uri]: https://www.audiobookshelf.org/
 [audiobookshelf-img]: https://ghcr.io/advplyr/audiobookshelf

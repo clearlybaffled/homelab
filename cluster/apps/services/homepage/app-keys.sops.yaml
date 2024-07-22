@@ -12,6 +12,8 @@ data:
     HOMEPAGE_VAR_CHANGEDETECTION_API_TOKEN: ENC[AES256_GCM,data:K4yimEuuDWVQnQ/RwDbSX1cCIRJhigqelQiuKo+LTXpyFG4ooU1GYq71S8A=,iv:RFifIB1Dr8+ypsKXtUMMllnyoLLfQjVlCnkSqhk/Yb8=,tag:v3VEUpWF46Zr4iVq3Eg5+w==,type:str]
     HOMEPAGE_VAR_PHOTOPRISM_USERNAME: ENC[AES256_GCM,data:4LikOy5nbOg=,iv:W+O/OiMjlaVRCfhl8rN5KYgAc8MEaWuF5rIAO3nb7wI=,tag:RmUpHydA07QDtLvE3/SuPA==,type:str]
     HOMEPAGE_VAR_PHOTOPRISM_PASSWORD: ENC[AES256_GCM,data:fU2b9lgZX9Rpbv6eeQXO4gztrxJl185gpqRQXog5UgYeagUJ01VG4Q==,iv:dpLjjgK6l4l9rTFVvFJ3SEZFleME5XBIXj7roMnd020=,tag:h9BUSZMWfsna8ke4xvIP8A==,type:str]
+    HOMEPAGE_VAR_CALIBREWEB_USERNAME: ENC[AES256_GCM,data:MR+4MQtfpJ4=,iv:lywqj+cLnFoqRFS0HiMXHWaNIDlpvu07XNfJNXy0oFQ=,tag:h7XgTK20IECjEFcsODZpmQ==,type:str]
+    HOMEPAGE_VAR_CALIBREWEB_PASSWORD: ENC[AES256_GCM,data:wdAj9b4kom2LyMtr,iv:FfdTg4GI5ZbmsoG7RCiFHQ0d0Be6u5TE1RsFtU3fBp8=,tag:4PyH2Jp6dZKepKyPBeAKKw==,type:str]
 kind: Secret
 metadata:
     name: app-keys
@@ -32,8 +34,8 @@ sops:
             ZGQ1bXRlYTZZdklodHB0UzF1dkV1VEEKSC/V5zdU9qic9DJd8qBGdONrA7y9FtmZ
             q5x9vW/FavAsmIq2kvH2mUuixhvbP6UIP0u254/hu1qiXwG5gKeHkw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-07-22T01:11:21Z"
-    mac: ENC[AES256_GCM,data:Ir23Zi/oXYX2I6RAagmQWa1lrnfSmJcmmuiXTV1c5hxHxIKp61IOg/DD8cFBHHcAYDHszFBssh2xzAAuDTtWxBzFQe9KLpxQzVpdNwKKzu7kxir4S2YCXG7eB+HhQoZx5jx7p1NIsWQpcJ/FDjUopmpioAqkroIDlrkgaG894Jg=,iv:QnpiSqsIDzIAqQUc8XuN8DfbfIeFssHcuMlp7wqbh4Q=,tag:7bso9p51+7z726xU/fgZyQ==,type:str]
+    lastmodified: "2024-07-22T02:27:28Z"
+    mac: ENC[AES256_GCM,data:jkbje9MHEKWRjpKqZkHuMP9NqXbP0uXHvh9IaJqRrB6yfZKtXGIowtOaFZqXH1oCzFuHhxofRbWsllXZyN2i4vSOBj4gK3HQs+6TLxE9PIMulNbI6XB2vVBC/k+kGZKbxLv+l5tb1JikLSs822RA7PfR/KHaLMP43rYa3zce/M0=,iv:nSPJHTMmYvOTmjrGlBnWG5tQ5qCJzh6A4B6ez8n/ps4=,tag:aPb7+f8ASyOFcH9WJHw7xw==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.8.1

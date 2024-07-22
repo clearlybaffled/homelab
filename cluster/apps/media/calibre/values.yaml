@@ -5,7 +5,7 @@ controllers:
       calibre:
         image:
           repository: ghcr.io/linuxserver/calibre
-          tag: 7.12.0
+          tag: 7.15.0
         env:
           TZ: America/New_York
         resources:
@@ -17,7 +17,7 @@ controllers:
       calibre-web:
         image:
           repository: ghcr.io/linuxserver/calibre-web
-          tag: version-0.6.21
+          tag: version-0.6.22
         env:
           TZ: America/New_York
           PGID: 997
@@ -92,6 +92,10 @@ ingress:
       gethomepage.dev/icon: calibre-web.png
       gethomepage.dev/description: "Web-based E-Book reader"
       gethomepage.dev/name: Calibre-Web
+      gethomepage.dev/widget.type: calibreweb
+      gethomepage.dev/widget.url: "http://calibre-web.media.svc:8083"
+      gethomepage.dev/widget.username: '{{HOMEPAGE_VAR_CALIBREWEB_USERNAME}}'
+      gethomepage.dev/widget.password: '{{HOMEPAGE_VAR_CALIBREWEB_PASSWORD}}'
     className: nginx
     hosts:
     - host: &web-host calibre-web.hermleigh.cc
