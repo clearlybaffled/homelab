@@ -19,9 +19,9 @@ spec:
   volumeMode: Filesystem
   storageClassName: local-storage
   capacity:
-    storage: 1530Gi
+    storage: 9100.0Gi
   local:
-    path: /srv/cluster/volumes/media/photoprism/photoprism
+    path: /disks/sdg/photoprism
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -43,6 +43,6 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 1530Gi
+      storage: 9100.0Gi
   storageClassName: local-storage
   volumeName: photoprism
