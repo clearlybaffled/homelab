@@ -7,7 +7,7 @@ controllers:
       recorder:
         image:
           repository: docker.io/owntracks/recorder
-          tag: 0.9.7
+          tag: 0.9.8-39
         env:
           OTR_HOST: mosquitto.home.svc
         envFrom:
@@ -16,7 +16,7 @@ controllers:
       frontend:
         image:
           repository: docker.io/owntracks/frontend
-          tag: 2.13.1
+          tag: 2.15.3
         env:
           SERVER_HOST: localhost
           SERVER_PORT: 8083

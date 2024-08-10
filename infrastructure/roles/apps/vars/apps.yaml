@@ -7,7 +7,7 @@ argocd:
   kustomize:
     charts:
       - chart: argocd/argo-cd
-        version: 6.7.1
+        version: 7.4.2
         namespace: argocd
         release: argocd
         apiVersions: true
@@ -201,7 +201,7 @@ reloader:
   namespace: infrastructure
   charts:
     - chart: stakater/reloader
-      version: 1.0.69
+      version: 1.0.121
 
 keycloak:
   namespace: infrastructure
@@ -676,6 +676,8 @@ photoprism:
           type: password
           name: admin
   localStorage:
+    - name: photoprism
+      path: /disks/sdg/photoprism
 
 owntracks:
   namespace: home

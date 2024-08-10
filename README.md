@@ -97,25 +97,25 @@ This Git repository contains the following top level directories.
 
 |Logo|Name|Description|
 |:----|:----|:--------|
-|[<img width="32" src="https://simpleicons.org/icons/ansible.svg">][ansible-uri]|[Ansible](./infrastructure/)|Automate bare metal provisioning and configuration|
-|[<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/master/projects/argo/icon/color/argo-icon-color.svg">][argocd-uri]|[ArgoCD](./cluster/argocd/)|GitOps tool built to deploy applications to Kubernetes|
-|[<img width="32" src="https://github.com/jetstack/cert-manager/raw/master/logo/logo.png">](https://cert-manager.io)|[cert-manager](./cluster/apps/infrastructure/cert-manager/)|Cloud native certificate management|
-|[<img width="32" src="https://raw.github.com/cncf/artwork/master/projects/crio/icon/color/crio-icon-color.png">](https://www.cri-o.io)|[CRI-O](./infrastructure/roles/containers/runtime/)|OCI - Container Runtime|
-|[<img width="32" src="https://www.debian.org/logos/openlogo-nd.svg">](https://debian.org)|Debian|Base OS for Kubernetes nodes|
+|[<img width="32" src="https://simpleicons.org/icons/ansible.svg">][ansible-uri] | [Ansible](./infrastructure/) | Automate bare metal provisioning and configuration|
+|[<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/master/projects/argo/icon/color/argo-icon-color.svg">][argocd-uri] | [ArgoCD](./cluster/argocd/) | GitOps tool built to deploy applications to Kubernetes|
+|[<img width="32" src="https://github.com/jetstack/cert-manager/raw/master/logo/logo.png">](https://cert-manager.io) | [cert-manager](./cluster/apps/infrastructure/cert-manager/) | Cloud native certificate management|
+|[<img width="32" src="https://raw.github.com/cncf/artwork/master/projects/crio/icon/color/crio-icon-color.png">](https://www.cri-o.io) | [CRI-O](./infrastructure/roles/containers/runtime/) | OCI - Container Runtime|
+|[<img width="32" src="https://www.debian.org/logos/openlogo-nd.svg">](https://debian.org) | Debian | Base OS for Kubernetes nodes|
 |[<img width="32" src="https://github.com/kubernetes-sigs/external-dns/raw/master/docs/img/external-dns.png">](https://github.com/kubernetes-sigs/external-dns) | [External DNS](./cluster/apps/infrastructure/external-dns/) | Synchronize exposed services and ingresses with DNS providers |
-|[<img width="32" src="https://raw.githubusercontent.com/flannel-io/flannel/master/logos/flannel-glyph-color.svg">](https://www.github.com/flannel-io/flannel)|[Flannel](./infrastructure/roles/containers/network/)|Kubernetes Network Plugin|
-|[<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/main/projects/helm/icon/color/helm-icon-color.png">](https://helm.sh)|Helm|The package manager for Kubernetes|
-|[<img width="32" src="https://docs.nginx.com/nginx-ingress-controller/images/icons/NGINX-Ingress-Controller-product-icon.svg">](https://kubernetes.github.io/ingress-nginx/)|[Ingress-nginx](./cluster/apps/infrastructure/ingress-nginx/)| Ingress controller for Kubernetes using NGINX as a reverse proxy and load balancer|
-|[<img width="32" src="https://kubernetes.io/images/kubeadm-stacked-color.png">](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/)|[kubeadm](./infrastructure/roles/kubernetes/control_plane/)| Official command-line cluster management tool |
-|[<img width="32" src="https://www.virt-tools.org/logo-kvm.png">](https://www.linux-kvm.org)|[KVM](./infrastructure/roles/server/kvm/) | Linux Kernel Virtual Machine Hypervisor |
-|[<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/main/projects/kubernetes/icon/color/kubernetes-icon-color.svg">](https://kubernetes.io)|[Kubernetes](./infrastructure/roles/kubernetes/)|Container Orchestration|
+|[<img width="32" src="https://raw.githubusercontent.com/flannel-io/flannel/master/logos/flannel-glyph-color.svg">](https://www.github.com/flannel-io/flannel) | [Flannel](./infrastructure/roles/containers/network/) | Kubernetes Network Plugin|
+|[<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/main/projects/helm/icon/color/helm-icon-color.png">](https://helm.sh) | Helm | The package manager for Kubernetes|
+|[<img width="32" src="https://docs.nginx.com/nginx-ingress-controller/images/icons/NGINX-Ingress-Controller-product-icon.svg">](https://kubernetes.github.io/ingress-nginx/) | [Ingress-nginx](./cluster/apps/infrastructure/ingress-nginx/)| Ingress controller for Kubernetes using NGINX as a reverse proxy and load balancer|
+|[<img width="32" src="https://kubernetes.io/images/kubeadm-stacked-color.png">](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/) | [kubeadm](./infrastructure/roles/kubernetes/control_plane/)| Official command-line cluster management tool |
+|[<img width="32" src="https://www.virt-tools.org/logo-kvm.png">](https://www.linux-kvm.org) | [KVM](./infrastructure/roles/server/kvm/) | Linux Kernel Virtual Machine Hypervisor |
+|[<img width="32" src="https://raw.githubusercontent.com/cncf/artwork/main/projects/kubernetes/icon/color/kubernetes-icon-color.svg">](https://kubernetes.io) | [Kubernetes](./infrastructure/roles/kubernetes/) | Container Orchestration|
 |[<img width="32" src="https://libvirt.org/logos/logo-square.svg">](https://www.libvirt.org) |Libvirt| Virtualization API |
-|[![](https://avatars.githubusercontent.com/u/60239468?s=32&v=4)](https://metallb.org)|[MetalLB](./cluster/apps/infrastructure/metallb/)|Bare metal load-balancer for Kubernetes|
-|[<img width="32" src="https://github.com/oauth2-proxy/oauth2-proxy/raw/master/docs/static/img/logos/OAuth2_Proxy_icon.svg">](https://oauth2-proxy.github.io/)|[OAuth2 Proxy](./cluster/apps/infrastructure/oauth2-proxy/) | Forward Auth for OpenID Connect|
-|[<img width="32" src="https://github.com/cncf/artwork/blob/aea0dcfe090b8f36d7ae1eb3d5fbe95cc77380d3/projects/prometheus/icon/color/prometheus-icon-color.png?raw=true">](https://prometheus.io)|[Prometheus](./cluster/apps/monitoring/kube-prometheus-stack/)|Systems monitoring and alerting toolkit|
-|[<img width="32" src="https://www.virt-tools.org/logo-qemu.png">](https://www.qemu.org)|QEMU|Open source machine emulator and virtualizer|
-|[<img width="32" src="https://api.iconify.design/logos/terraform-icon.svg">](https://www.terraform.io/)|[Terraform](./infrastructure/terraform/)|Infrastructure provisioning automation|
-|[<img width="32" src="https://docs.zerotier.com/img/ZeroTierIcon.png">](https://zerotier.com)|ZeroTier|Virtual Networking that just works|
+|[![](https://avatars.githubusercontent.com/u/60239468?s=32&v=4)](https://metallb.org) | [MetalLB](./cluster/apps/infrastructure/metallb/) | Bare metal load-balancer for Kubernetes|
+|[<img width="32" src="https://github.com/oauth2-proxy/oauth2-proxy/raw/master/docs/static/img/logos/OAuth2_Proxy_icon.svg">](https://oauth2-proxy.github.io/) | [OAuth2 Proxy](./cluster/apps/infrastructure/oauth2-proxy/) | Forward Auth for OpenID Connect|
+|[<img width="32" src="https://github.com/cncf/artwork/blob/aea0dcfe090b8f36d7ae1eb3d5fbe95cc77380d3/projects/prometheus/icon/color/prometheus-icon-color.png?raw=true">](https://prometheus.io) | [Prometheus](./cluster/apps/monitoring/kube-prometheus-stack/) | Systems monitoring and alerting toolkit|
+|[<img width="32" src="https://www.virt-tools.org/logo-qemu.png">](https://www.qemu.org) | QEMU | Open source machine emulator and virtualizer|
+|[<img width="32" src="https://api.iconify.design/logos/terraform-icon.svg">](https://www.terraform.io/) | [Terraform](./infrastructure/terraform/) | Infrastructure provisioning automation|
+|[<img width="32" src="https://docs.zerotier.com/img/ZeroTierIcon.png">](https://zerotier.com) | ZeroTier | Virtual Networking that just works|
 
 ## Applications (by namespace)
 
@@ -123,13 +123,13 @@ This Git repository contains the following top level directories.
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
-|[<img width="32" src="https://raw.githubusercontent.com/gethomepage/homepage/main/docs/assets/favicon.ico">][homepage-uri]|[Homepage](./cluster/apps/services/homepage)| `Home` | Landing page for exploring the cluster, with live widgets! | Deployed | [![][homepage-badge]][homepage-chart] |
+|[<img width="32" src="https://raw.githubusercontent.com/gethomepage/homepage/main/docs/assets/favicon.ico">][homepage-uri] | [Homepage](./cluster/apps/services/homepage)| `Home` | Landing page for exploring the cluster, with live widgets! | Deployed | [![][homepage-badge]][homepage-chart] |
 
 ### [Database](./cluster/apps/db/)
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
-|[<img width="32" src="https://www.mysql.com/common/logos/logo-mysql-170x115.png">][mysql-uri]|[MySQL](./cluster/apps/db/mysql/)| `Relational DB` | SQL Database | Deployed | [![][mysql-badge]][mysql-chart] |
+|[<img width="32" src="https://www.mysql.com/common/logos/logo-mysql-170x115.png">][mysql-uri] | [MySQL](./cluster/apps/db/mysql/)| `Relational DB` | SQL Database | Deployed | [![][mysql-badge]][mysql-chart] |
 |[<img width="32" src="https://cloudnative-pg.io/images/hero_image.svg">][postgres-uri]| [PostgreSQL](./cluster/apps/db/cloudnative-pg/) | `Relational DB` | via [Cloudnative-PG][cnpg-uri] operator | Deployed | [![][cnpg-badge]][cnpg-chart] |
 |[![](https://raw.githubusercontent.com/redis/docs/main/static/images/icon-redis.svg)][redis-uri]| [Redis](./cluster/apps/db/redis/) | `Caching` | In-memory Key-Value store | Deployed | [![][redis-badge]][redis-chart] |
 
@@ -138,33 +138,36 @@ This Git repository contains the following top level directories.
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
 |[![](https://avatars.githubusercontent.com/u/2131270?s=32&v=4)][qbittorrent-uri]| [qBittorrent](./cluster/apps/downloads/qbittorrent/)| `Downloader` | BitTorrent client | Deployed |[![][qbittorrent-badge]][qbittorrent-img] |
-|[![](https://github.com/Radarr/Radarr/blob/develop/Logo/32.png?raw=true)][radarr-uri]|[Radarr](./cluster/apps/downloads/radarr/)| `Movies` | Movie Collection manager | Deployed |[![][radarr-badge]][radarr-img] |
-|[![](https://github.com/Sonarr/Sonarr/blob/develop/Logo/32.png?raw=true)][sonarr-uri]|[Sonarr](./cluster/apps/downloads/sonarr/)| `TV` | TV Series Collection manager | Deployed |[![][sonarr-badge]][sonarr-img] |
-|[![](https://github.com/Lidarr/Lidarr/blob/develop/Logo/32.png?raw=true)][lidarr-uri]|[Lidarr](./cluster/apps/downloads/lidarr/)| `Music` | Music Collection manager | Deployed | [![][lidarr-badge]][lidarr-img] |
-|[![](https://github.com/Readarr/Readarr/blob/develop/Logo/32.png?raw=true)][readarr-uri]|[Readarr](./cluster/apps/downloads/readarr/)| `Ebooks` | Ebook and audiobook collection manager | Deployed | [![][readarr-badge]][readarr-img] |
-|[![](https://github.com/Prowlarr/Prowlarr/blob/develop/Logo/32.png?raw=true)][prowlarr-uri]|[Prowlarr](./cluster/apps/downloads/prowlarr/)| `Tracker` | Tracker manager | Deployed | [![][prowlarr-badge]][prowlarr-img] |
-|[<img width="32" src="https://raw.githubusercontent.com/bazarr/wiki/main/docs/img/logo.png">][bazarr-uri]|[Bazarr](./cluster/apps/downloads/bazarr/)| `Subtitles` | Subtitle download manager | | [![][bazarr-badge]][bazarr-img] |
+|[![](https://github.com/Radarr/Radarr/blob/develop/Logo/32.png?raw=true)][radarr-uri] | [Radarr](./cluster/apps/downloads/radarr/)| `Movies` | Movie Collection manager | Deployed |[![][radarr-badge]][radarr-img] |
+|[![](https://github.com/Sonarr/Sonarr/blob/develop/Logo/32.png?raw=true)][sonarr-uri] | [Sonarr](./cluster/apps/downloads/sonarr/)| `TV` | TV Series Collection manager | Deployed |[![][sonarr-badge]][sonarr-img] |
+|[![](https://github.com/Lidarr/Lidarr/blob/develop/Logo/32.png?raw=true)][lidarr-uri] | [Lidarr](./cluster/apps/downloads/lidarr/)| `Music` | Music Collection manager | Deployed | [![][lidarr-badge]][lidarr-img] |
+|[![](https://github.com/Readarr/Readarr/blob/develop/Logo/32.png?raw=true)][readarr-uri] | [Readarr](./cluster/apps/downloads/readarr/)| `Ebooks` | Ebook and audiobook collection manager | Deployed | [![][readarr-badge]][readarr-img] |
+|[![](https://github.com/Prowlarr/Prowlarr/blob/develop/Logo/32.png?raw=true)][prowlarr-uri] | [Prowlarr](./cluster/apps/downloads/prowlarr/)| `Tracker` | Tracker manager | Deployed | [![][prowlarr-badge]][prowlarr-img] |
+|[<img width="32" src="https://raw.githubusercontent.com/bazarr/wiki/main/docs/img/logo.png">][bazarr-uri] | [Bazarr](./cluster/apps/downloads/bazarr/)| `Subtitles` | Subtitle download manager | | [![][bazarr-badge]][bazarr-img] |
 
 ### [Home](./cluster/apps/home)
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
-|[<img width="32" src="https://raw.githubusercontent.com/grocy/grocy/master/public/img/icon.svg">][grocy-uri]| [Grocy](./cluster/apps/home/grocy/) | `Services` | ERP Beyond your fridge | Deployed | [![][grocy-badge]][grocy-img] |
+|[<img width="32" src="https://raw.githubusercontent.com/grocy/grocy/master/public/img/icon.svg">][grocy-uri] | [Grocy](./cluster/apps/home/grocy/) | `Services` | ERP Beyond your fridge | Deployed | [![][grocy-badge]][grocy-img] |
 |[<img width="32" src="https://github.com/hay-kot/mealie/raw/mealie-next/docs/docs/assets/img/favicon.png">][mealie-url] | [Mealie](./cluster/apps/home/mealie/) | `Services` | Recipe Manager | Deployed | [![][mealie-badge]][mealie-docker] |
 |[<img width="32" src="https://github.com/paperless-ngx/paperless-ngx/raw/dev/docs/assets/favicon.png">][paperless-uri] |[Paperless-ngx](./cluster/apps/home/paperless-ngx/) | `File Sharing` | Document Management System | Deployed| [![][paperless-badge]][paperless-img] [![][node-hp-scan-to-badge]][node-hp-scan-to-img] |
 |[<img width="32" src="https://brands.home-assistant.io/homeassistant/icon.png">][home-assistant-uri] | [Home Assistant](./cluster/apps/home/home-assistant/) | `Home Automation` | Open source home automation | Deployed | [![Home Assistant][home-assistant-badge]][home-assistant-img] [![Code Server][code-server-badge]][code-server-img] |
 |[<img width="32" src="https://hay-kot.github.io/homebox/assets/img/favicon.svg">][homebox-uri] | [Homebox](./cluster/apps/home/homebox/) | `Home inventory` | Inventory and organization for the Home User | Deployed | [![Homebox][homebox-badge]][homebox-img] |
-|[<img width="32" src="https://raw.githubusercontent.com/eclipse/mosquitto/master/logo/mosquitto-logo-min.svg">][mosquitto-uri]|[Mosquitto](./cluster/apps/home/mosquitto) | `MQTT Broker` | Eclipse-foundation MQTT broker implementation | Deployed | [![Mosquitto][mosquitto-badge]][mosquitto-img] |
-|[<img width="32" src="https://raw.githubusercontent.com/blakeblackshear/frigate/dev/docs/static/img/logo.svg">][frigate-uri]|[Frigate NVR](./cluster/apps/home/nvr) | `NVR` | Home video monitoring | Planned | [![Frigate][frigate-badge]][frigate-chart] [![Wyze-Bridge][wyze-bridge-badge]][wyze-bridge-img] |
+|[<img width="32" src="https://raw.githubusercontent.com/eclipse/mosquitto/master/logo/mosquitto-logo-min.svg">][mosquitto-uri] | [Mosquitto](./cluster/apps/home/mosquitto) | `MQTT Broker` | Eclipse-foundation MQTT broker implementation | Deployed | [![Mosquitto][mosquitto-badge]][mosquitto-img] |
+|[<img width="32" src="https://avatars.githubusercontent.com/u/6574523?s=200&v=4">][owntracks-uri] | [Owntracks](./cluster/apps/home/owntracks) | `Location Tracking` | Keep track of your own location | Deployed | [![owntracks-badge]][owntracks-img] [![owntracks-fe-badge]][owntracks-fe-img] |
+|[<img width="32" src="https://raw.githubusercontent.com/blakeblackshear/frigate/dev/docs/static/img/logo.svg">][frigate-uri] | [Frigate NVR](./cluster/apps/home/nvr) | `NVR` | Home video monitoring | In Progress | [![Frigate][frigate-badge]][frigate-chart] [![Wyze-Bridge][wyze-bridge-badge]][wyze-bridge-img] |
+|[<img width="32" src="https://raw.githubusercontent.com/zwave-js/zwave-js-ui/master/public/logo.svg">][zwave-js-uri] | [Z-Wave JS](./cluster/apps/home/zwave-js-ui) | `Z-Wave Controller` | Z-Wave Controller written in javascript | Deployed | [![zwave-js=badge]][zwave-js-img] |
 
 ### [Infrastructure Services](./cluster/apps/infrastructure)
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
-|[<img width="32" src="https://raw.githubusercontent.com/netbox-community/netbox/develop/netbox/project-static/img/netbox_icon.svg">][netbox-uri]|[NetBox](./cluster/apps/infrastructure/netbox/)| `Inventory`| Full-scale network inventory | Deployed | [![netbox-badge]][netbox-chart] |
-|[<img width="32" src="https://raw.githubusercontent.com/keycloak/keycloak/main/js/apps/admin-ui/public/icon.svg">][keycloak-url]|[Keycloak](./cluster/apps/infrastructure/keycloak)| `SSO` | Identity and Access Management solution | Deployed | [![keycloak-badge]][keycloak-operator] |
+|[<img width="32" src="https://raw.githubusercontent.com/netbox-community/netbox/develop/netbox/project-static/img/netbox_icon.svg">][netbox-uri] | [NetBox](./cluster/apps/infrastructure/netbox/)| `Inventory`| Full-scale network inventory | Deployed | [![netbox-badge]][netbox-chart] |
+|[<img width="32" src="https://raw.githubusercontent.com/keycloak/keycloak/main/js/apps/admin-ui/public/icon.svg">][keycloak-url] | [Keycloak](./cluster/apps/infrastructure/keycloak)| `SSO` | Identity and Access Management solution | Deployed | [![keycloak-badge]][keycloak-operator] |
 |[<img width="32" src="https://avatars.githubusercontent.com/u/99263827?s=32&v=4">][kubeshark-uri] | [Kubeshark](./cluster/apps/infrastructure/kubeshark/) | `Network traffic` | API traffic analyzer for Kubernetes | | [![][kubeshark-badge]][kubeshark-chart] |
-|[<img width="32" src="https://simpleicons.org/icons/vault.svg">][vault-uri]|Vault| `Services` | Secrets and encryption management| | |
+|[<img width="32" src="https://github.com/stakater/Reloader/blob/master/assets/web/reloader-round-100px.png?raw=true">][reloader-uri]| [Reloader](./cluster/apps/infrastructure/reloader/) | `Configuration Management` | Controller for rolling upgrades when ConfigMaps or Secret s hange | Deployed | [![][reloader-badge]][reloader-chart] |
+|[<img width="32" src="https://simpleicons.org/icons/vault.svg">][vault-uri] | Vault| `Services` | Secrets and encryption management| | |
 
 ### [Media](./cluster/apps/media/)
 
@@ -172,34 +175,35 @@ This Git repository contains the following top level directories.
 |--------|----------------|------------|---------------|----------|--------------------------|
 |[<img width="32" src="https://github.com/kovidgoyal/calibre/blob/master/icons/calibre.png?raw=true">][calibre-uri] | [Calibre](./cluster/apps/media/calibre/) | `Books` | E-book collection manager | Deployed | [![][calibre-badge]][calibre-img] [![][calibre-web-badge]][calibre-web-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/advplyr/audiobookshelf/84160b2f07164605295d6cb6f7f7925cbdf538e4/client/static/icon.svg">][audiobookshelf-uri]| [Audiobookshelf](./cluster/apps/media/audiobookshelf) | `Audio Books` | Self-hosted audiobook and podcast server | Deployed | [![][audiobookshelf-badge]][audiobookshelf-img] |
-|[<img width="32" src="https://raw.githubusercontent.com/jellyfin/jellyfin-web/master/src/assets/img/icon-transparent.png">][jellyfin-uri]|[Jellyfin](./cluster/apps/media/jellyfin/) | `Media Server` | The open source media server | Deployed | [![][jellyfin-badge]][jellyfin-img] [![Jellyseer][jellyseer-badge]][jellyseer-img] |
-|[<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/immich-logo.png">][immich-uri]|[Immich](./cluster/apps/media/immich/)| `Photos` | Photo Management | Deployed | [![][immich-badge]][immich-chart] |
-|[<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">][listenbrainz-uri]|ListenBrainz| `Scrobble` | Open Source scrobbler | Planned | |
-|[<img src="https://raw.githubusercontent.com/photoprism/photoprism/develop/assets/static/icons/logo/32.png">][photoprism-uri]|[Photoprism](./cluster/apps/media/photoprism/)| `Photos` | Photo Management | Deployed | [![][photoprism-badge]][photoprism-img]  |
+|[<img width="32" src="https://raw.githubusercontent.com/jellyfin/jellyfin-web/master/src/assets/img/icon-transparent.png">][jellyfin-uri] | [Jellyfin](./cluster/apps/media/jellyfin/) | `Media Server` | The open source media server | Deployed | [![][jellyfin-badge]][jellyfin-img] [![Jellyseer][jellyseer-badge]][jellyseer-img] |
+|[<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/immich-logo.png">][immich-uri] | [Immich](./cluster/apps/media/immich/)| `Photos` | Photo Management | Deployed | [![][immich-badge]][immich-chart] |
+|[<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">][listenbrainz-uri] | ListenBrainz| `Scrobble` | Open Source scrobbler | Planned | |
+|[<img src="https://raw.githubusercontent.com/photoprism/photoprism/develop/assets/static/icons/logo/32.png">][photoprism-uri] | [Photoprism](./cluster/apps/media/photoprism/)| `Photos` | Photo Management | Deployed | [![][photoprism-badge]][photoprism-img]  |
 
 ### [Services](./cluster/apps/services/)
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
+|[<img width="32" src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/changedetection-io.png">][changedetection-io-url] | [Change Detection](./cluster/apps/services/change-detection/) | `Website Monitoring` | Website Change Detection ... For Clever People | Deployed | [![changedetection-io-badge]][changedetection-io-img] |
 | [![](./cluster/apps/services/linkding/linkding.svg)][linkding-uri]  | [Linkding](./cluster/apps/services/linkding/) | `Bookmark Sharing`| Minimal bookmark Manager | Deployed | [![][linkding-badge]][linkding-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/Kovah/LinkAce/main/public/favicon.ico">][linkace-uri] | [LinkAce](./cluster/apps/services/linkace/) | `Bookmark Sharing` | Your self-hosted bookmark archive | Deployed | [![][linkace-badge]][linkace-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/linkwarden/linkwarden/4454e615b64f710d7104dd2042fbe97da3904f7e/public/favicon-32x32.png">][linkwarden-uri] |[Linkwarden](./cluster/apps/services/linkwarden/) | `Bookmark Sharing` | Collaborative Bookmark Manager | Deployed | [![][linkwarden-badge]][linkwarden-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/Stirling-Tools/Stirling-PDF/main/docs/stirling.png">][stirling-pdf-uri] | [Stirling PDF](./cluster/apps/services/stirling-pdf/) | `Document Editing` | Self-hosted PDF editor | Deployed | [![][stirling-pdf-badge]][stirling-pdf-img] |
+|[<img width="32" src="https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/wallabag.svg">][wallabag-uri] | [Wallabag](./cluster/apps/services/wallabag) | `Article Saver` | Save and classify articles. Read them later. Freely. | Deployed | [![][wallabag-badge]][wallabag-img] |
 |[<img width="32" src="https://raw.githubusercontent.com/wger-project/wger/master/wger/core/static/images/logos/logo.png">][wger-uri] | [Wger](./cluster/apps/services/wger/) | `Health tracking` | Workout and food tracker | Broken| [![][wger-badge]][wger-img] |
-|[<img width="32" src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/changedetection-io.png">][changedetection-io-url] | [Change Detection](./cluster/apps/services/change-detection/) | `Website Monitoring` | Website Change Detection ... For Clever People | Deployed | [![changedetection-io-badge]][changedetection-io-img] |
 
 ### [Monitoring](./cluster/apps/monitoring/)
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
-|[<img width="32" src="https://grafana.com/static/img/menu/grafana2.svg">][grafana-uri]|[Grafana](./cluster/apps/monitoring/kube-prometheus-stack/)| `Dashboard` | Operational dashboards | Deployed | [![][grafana-badge]][grafana-chart] |
+|[<img width="32" src="https://grafana.com/static/img/menu/grafana2.svg">][grafana-uri] | [Grafana](./cluster/apps/monitoring/kube-prometheus-stack/)| `Dashboard` | Operational dashboards | Deployed | [![][grafana-badge]][grafana-chart] |
 
 ### Virtualized (and other off cluster) Apps
 
 | **Icon**|**Application**|**Category**|**Description**|**Status**|**Version**|
 |--------|----------------|------------|---------------|----------|--------------------------|
 |<img width="32" src="https://avatars.githubusercontent.com/u/10979201?s=200&v=4">| [FreeIPA][freeipa-uri] | `Infrastructure`| Full IdAM solution + PKI | Deployed | [![][freeipa-badge]][freeipa-img] |
-|<img width="32" src="https://github.com/MythTV/mythtv/raw/master/mythtv/html/images/icons/upnp_small_icon.png">|[MythTV][mythtv-url]| `Media` | Digital Video Recorder | Running directly on node | [![][mythtv-badge]][mythtv-gh] |
+|<img width="32" src="https://github.com/MythTV/mythtv/raw/master/mythtv/html/images/icons/upnp_small_icon.png"> | [MythTV][mythtv-url]| `Media` | Digital Video Recorder | Running directly on node | [![][mythtv-badge]][mythtv-gh] |
 
 # 🤝 Thank you
 
@@ -248,7 +252,7 @@ This Git repository contains the following top level directories.
 [grocy-badge]: https://img.shields.io/badge/grocy/grocy-v4.2.0-blue?logo=docker
 
 [mealie-url]: https://mealie.io/
-[mealie-badge]: https://img.shields.io/badge/mealie-v1.7.0-blue?logo=docker
+[mealie-badge]: https://img.shields.io/badge/mealie-v1.11.0-blue?logo=docker
 [mealie-docker]: https://ghcr.io/mealie-recipes/mealie
 
 [mythtv-url]: https://www.mythtv.org
@@ -343,13 +347,13 @@ This Git repository contains the following top level directories.
 [photoprism-img]: https://hub.docker.com/r/photoprism/photoprism
 
 [stirling-pdf-uri]: https://stirlingtools.com/
-[stirling-pdf-badge]: https://img.shields.io/badge/frooodle/s--pdf-0.22.2-blue?logo=docker
+[stirling-pdf-badge]: https://img.shields.io/badge/frooodle/s--pdf-0.27.0-blue?logo=docker
 [stirling-pdf-img]: https://hub.docker.com/r/frooodle/s-pdf
 
 [home-assistant-uri]: https://www.home-assistant.io/
-[home-assistant-badge]: https://img.shields.io/badge/home--assistant-2024.2.5-blue?logo=docker
+[home-assistant-badge]: https://img.shields.io/badge/home--assistant-2024.8.0-blue?logo=docker
 [home-assistant-img]: https://ghcr.io/home-assistant/home-assistant
-[code-server-badge]: https://img.shields.io/badge/coder/code--server-4.89.1-blue?logo=docker
+[code-server-badge]: https://img.shields.io/badge/coder/code--server-4.91.1-blue?logo=docker
 [code-server-img]: https://ghcr.io/coder/code-server
 
 [homebox-uri]: https://hay-kot.github.io/homebox/
@@ -380,6 +384,24 @@ This Git repository contains the following top level directories.
 [changedetection-io-img]: https://ghcr.io/dgtlmoon/changedetection.io
 [changedetection-io-badge]: https://img.shields.io/badge/dgtlmoon/changedetection.io-0.45.26-blue?logo=docker
 
+[reloader-uri]: https://github.com/stakater/Reloader
+[reloader-badge]: https://img.shields.io/badge/stakater/reloader-1.0.69-blue?logo=helm
+[reloader-chart]: https://stakater.github.io/stakater-charts
+
+[owntracks-uri]: https://owntracks.org/
+[owntracks-badge]: https://img.shields.io/badge/owntracks/recoeder-0.9.8--39-blue?logo=docker
+[owntracks-img]: https://hub.docker.com/r/owntracks/recorder
+[owntracks-fe-badge]: https://img.shields.io/badge/owntracks/frontend-2.15.3-blue?logo=docker
+[owntracks-fe-img]: https://hub.docker.com/r/owntracks/frontend
+
+[wallabag-uri]: https://wallabag.org/
+[wallabag-badge]: https://img.shields.io/badge/wallabag-2.6.9-blue?logo=docker
+[wallabag-img]: https://hub.docker.com/r/wallabag/wallabag
+
+[zwave-js-uri]: https://github.com/zwave-js/zwave-js-ui
+[zwave-js=badge]: https://img.shields.io/badge/zwave--js/zwave--js--ui-9.14.6-blue?logo=docker
+[zwave-js-img]: https://ghcr.io/zwave-jq/zwave-js-ui
+
 [keycloak-url]: https://www.keycloak.org/
 [keycloak-operator]: https://operatorhub.io/operator/keycloak-operator
-[keycloak-badge]: https://img.shields.io/badge/keycloak-24.0.1-blue.svg?logo=data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2aWV3Qm94PSIwIDMwLjgwMDUgNDkwLjYgNDM2LjkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0iIzYxREFGQiIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTk5OTk5OTk5OTk5OTk5LCAwLCAwLCAwLjk5OTk5OTk5OTk5OTk5OTksIC0xNzUuNzAwMDk3NjY0NDUwMjUsIC00Ny4xOTk0OTU4Njk4NDg1MjYpIj4KICAgIDxwYXRoIGQ9Ik02NjYuMyAyOTYuNWMwLTMyLjUtNDAuNy02My4zLTEwMy4xLTgyLjQgMTQuNC02My42IDgtMTE0LjItMjAuMi0xMzAuNC02LjUtMy44LTE0LjEtNS42LTIyLjQtNS42djIyLjNjNC42IDAgOC4zLjkgMTEuNCAyLjYgMTMuNiA3LjggMTkuNSAzNy41IDE0LjkgNzUuNy0xLjEgOS40LTIuOSAxOS4zLTUuMSAyOS40LTE5LjYtNC44LTQxLTguNS02My41LTEwLjktMTMuNS0xOC41LTI3LjUtMzUuMy00MS42LTUwIDMyLjYtMzAuMyA2My4yLTQ2LjkgODQtNDYuOVY3OGMtMjcuNSAwLTYzLjUgMTkuNi05OS45IDUzLjYtMzYuNC0zMy44LTcyLjQtNTMuMi05OS45LTUzLjJ2MjIuM2MyMC43IDAgNTEuNCAxNi41IDg0IDQ2LjYtMTQgMTQuNy0yOCAzMS40LTQxLjMgNDkuOS0yMi42IDIuNC00NCA2LjEtNjMuNiAxMS0yLjMtMTAtNC0xOS43LTUuMi0yOS00LjctMzguMiAxLjEtNjcuOSAxNC42LTc1LjggMy0xLjggNi45LTIuNiAxMS41LTIuNlY3OC41Yy04LjQgMC0xNiAxLjgtMjIuNiA1LjYtMjguMSAxNi4yLTM0LjQgNjYuNy0xOS45IDEzMC4xLTYyLjIgMTkuMi0xMDIuNyA0OS45LTEwMi43IDgyLjMgMCAzMi41IDQwLjcgNjMuMyAxMDMuMSA4Mi40LTE0LjQgNjMuNi04IDExNC4yIDIwLjIgMTMwLjQgNi41IDMuOCAxNC4xIDUuNiAyMi41IDUuNiAyNy41IDAgNjMuNS0xOS42IDk5LjktNTMuNiAzNi40IDMzLjggNzIuNCA1My4yIDk5LjkgNTMuMiA4LjQgMCAxNi0xLjggMjIuNi01LjYgMjguMS0xNi4yIDM0LjQtNjYuNyAxOS45LTEzMC4xIDYyLTE5LjEgMTAyLjUtNDkuOSAxMDIuNS04Mi4zem0tMTMwLjItNjYuN2MtMy43IDEyLjktOC4zIDI2LjItMTMuNSAzOS41LTQuMS04LTguNC0xNi0xMy4xLTI0LTQuNi04LTkuNS0xNS44LTE0LjQtMjMuNCAxNC4yIDIuMSAyNy45IDQuNyA0MSA3Ljl6bS00NS44IDEwNi41Yy03LjggMTMuNS0xNS44IDI2LjMtMjQuMSAzOC4yLTE0LjkgMS4zLTMwIDItNDUuMiAyLTE1LjEgMC0zMC4yLS43LTQ1LTEuOS04LjMtMTEuOS0xNi40LTI0LjYtMjQuMi0zOC03LjYtMTMuMS0xNC41LTI2LjQtMjAuOC0zOS44IDYuMi0xMy40IDEzLjItMjYuOCAyMC43LTM5LjkgNy44LTEzLjUgMTUuOC0yNi4zIDI0LjEtMzguMiAxNC45LTEuMyAzMC0yIDQ1LjItMiAxNS4xIDAgMzAuMi43IDQ1IDEuOSA4LjMgMTEuOSAxNi40IDI0LjYgMjQuMiAzOCA3LjYgMTMuMSAxNC41IDI2LjQgMjAuOCAzOS44LTYuMyAxMy40LTEzLjIgMjYuOC0yMC43IDM5Ljl6bTMyLjMtMTNjNS40IDEzLjQgMTAgMjYuOCAxMy44IDM5LjgtMTMuMSAzLjItMjYuOSA1LjktNDEuMiA4IDQuOS03LjcgOS44LTE1LjYgMTQuNC0yMy43IDQuNi04IDguOS0xNi4xIDEzLTI0LjF6TTQyMS4yIDQzMGMtOS4zLTkuNi0xOC42LTIwLjMtMjcuOC0zMiA5IC40IDE4LjIuNyAyNy41LjcgOS40IDAgMTguNy0uMiAyNy44LS43LTkgMTEuNy0xOC4zIDIyLjQtMjcuNSAzMnptLTc0LjQtNTguOWMtMTQuMi0yLjEtMjcuOS00LjctNDEtNy45IDMuNy0xMi45IDguMy0yNi4yIDEzLjUtMzkuNSA0LjEgOCA4LjQgMTYgMTMuMSAyNCA0LjcgOCA5LjUgMTUuOCAxNC40IDIzLjR6TTQyMC43IDE2M2M5LjMgOS42IDE4LjYgMjAuMyAyNy44IDMyLTktLjQtMTguMi0uNy0yNy41LS43LTkuNCAwLTE4LjcuMi0yNy44LjcgOS0xMS43IDE4LjMtMjIuNCAyNy41LTMyem0tNzQgNTguOWMtNC45IDcuNy05LjggMTUuNi0xNC40IDIzLjctNC42IDgtOC45IDE2LTEzIDI0LTUuNC0xMy40LTEwLTI2LjgtMTMuOC0zOS44IDEzLjEtMy4xIDI2LjktNS44IDQxLjItNy45em0tOTAuNSAxMjUuMmMtMzUuNC0xNS4xLTU4LjMtMzQuOS01OC4zLTUwLjYgMC0xNS43IDIyLjktMzUuNiA1OC4zLTUwLjYgOC42LTMuNyAxOC03IDI3LjctMTAuMSA1LjcgMTkuNiAxMy4yIDQwIDIyLjUgNjAuOS05LjIgMjAuOC0xNi42IDQxLjEtMjIuMiA2MC42LTkuOS0zLjEtMTkuMy02LjUtMjgtMTAuMnpNMzEwIDQ5MGMtMTMuNi03LjgtMTkuNS0zNy41LTE0LjktNzUuNyAxLjEtOS40IDIuOS0xOS4zIDUuMS0yOS40IDE5LjYgNC44IDQxIDguNSA2My41IDEwLjkgMTMuNSAxOC41IDI3LjUgMzUuMyA0MS42IDUwLTMyLjYgMzAuMy02My4yIDQ2LjktODQgNDYuOS00LjUtLjEtOC4zLTEtMTEuMy0yLjd6bTIzNy4yLTc2LjJjNC43IDM4LjItMS4xIDY3LjktMTQuNiA3NS44LTMgMS44LTYuOSAyLjYtMTEuNSAyLjYtMjAuNyAwLTUxLjQtMTYuNS04NC00Ni42IDE0LTE0LjcgMjgtMzEuNCA0MS4zLTQ5LjkgMjIuNi0yLjQgNDQtNi4xIDYzLjYtMTEgMi4zIDEwLjEgNC4xIDE5LjggNS4yIDI5LjF6bTM4LjUtNjYuN2MtOC42IDMuNy0xOCA3LTI3LjcgMTAuMS01LjctMTkuNi0xMy4yLTQwLTIyLjUtNjAuOSA5LjItMjAuOCAxNi42LTQxLjEgMjIuMi02MC42IDkuOSAzLjEgMTkuMyA2LjUgMjguMSAxMC4yIDM1LjQgMTUuMSA1OC4zIDM0LjkgNTguMyA1MC42LS4xIDE1LjctMjMgMzUuNi01OC40IDUwLjZ6TTMyMC44IDc4LjR6Ii8+CiAgICA8Y2lyY2xlIGN4PSI0MjAuOSIgY3k9IjI5Ni41IiByPSI0NS43Ii8+CiAgICA8cGF0aCBkPSJNNTIwLjUgNzguMXoiLz4KICA8L2c+Cjwvc3ZnPg==#al5RUqUzTx
+[keycloak-badge]: https://img.shields.io/badge/keycloak-25.0.2-blue.svg?logo=data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2aWV3Qm94PSIwIDMwLjgwMDUgNDkwLjYgNDM2LjkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0iIzYxREFGQiIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTk5OTk5OTk5OTk5OTk5LCAwLCAwLCAwLjk5OTk5OTk5OTk5OTk5OTksIC0xNzUuNzAwMDk3NjY0NDUwMjUsIC00Ny4xOTk0OTU4Njk4NDg1MjYpIj4KICAgIDxwYXRoIGQ9Ik02NjYuMyAyOTYuNWMwLTMyLjUtNDAuNy02My4zLTEwMy4xLTgyLjQgMTQuNC02My42IDgtMTE0LjItMjAuMi0xMzAuNC02LjUtMy44LTE0LjEtNS42LTIyLjQtNS42djIyLjNjNC42IDAgOC4zLjkgMTEuNCAyLjYgMTMuNiA3LjggMTkuNSAzNy41IDE0LjkgNzUuNy0xLjEgOS40LTIuOSAxOS4zLTUuMSAyOS40LTE5LjYtNC44LTQxLTguNS02My41LTEwLjktMTMuNS0xOC41LTI3LjUtMzUuMy00MS42LTUwIDMyLjYtMzAuMyA2My4yLTQ2LjkgODQtNDYuOVY3OGMtMjcuNSAwLTYzLjUgMTkuNi05OS45IDUzLjYtMzYuNC0zMy44LTcyLjQtNTMuMi05OS45LTUzLjJ2MjIuM2MyMC43IDAgNTEuNCAxNi41IDg0IDQ2LjYtMTQgMTQuNy0yOCAzMS40LTQxLjMgNDkuOS0yMi42IDIuNC00NCA2LjEtNjMuNiAxMS0yLjMtMTAtNC0xOS43LTUuMi0yOS00LjctMzguMiAxLjEtNjcuOSAxNC42LTc1LjggMy0xLjggNi45LTIuNiAxMS41LTIuNlY3OC41Yy04LjQgMC0xNiAxLjgtMjIuNiA1LjYtMjguMSAxNi4yLTM0LjQgNjYuNy0xOS45IDEzMC4xLTYyLjIgMTkuMi0xMDIuNyA0OS45LTEwMi43IDgyLjMgMCAzMi41IDQwLjcgNjMuMyAxMDMuMSA4Mi40LTE0LjQgNjMuNi04IDExNC4yIDIwLjIgMTMwLjQgNi41IDMuOCAxNC4xIDUuNiAyMi41IDUuNiAyNy41IDAgNjMuNS0xOS42IDk5LjktNTMuNiAzNi40IDMzLjggNzIuNCA1My4yIDk5LjkgNTMuMiA4LjQgMCAxNi0xLjggMjIuNi01LjYgMjguMS0xNi4yIDM0LjQtNjYuNyAxOS45LTEzMC4xIDYyLTE5LjEgMTAyLjUtNDkuOSAxMDIuNS04Mi4zem0tMTMwLjItNjYuN2MtMy43IDEyLjktOC4zIDI2LjItMTMuNSAzOS41LTQuMS04LTguNC0xNi0xMy4xLTI0LTQuNi04LTkuNS0xNS44LTE0LjQtMjMuNCAxNC4yIDIuMSAyNy45IDQuNyA0MSA3Ljl6bS00NS44IDEwNi41Yy03LjggMTMuNS0xNS44IDI2LjMtMjQuMSAzOC4yLTE0LjkgMS4zLTMwIDItNDUuMiAyLTE1LjEgMC0zMC4yLS43LTQ1LTEuOS04LjMtMTEuOS0xNi40LTI0LjYtMjQuMi0zOC03LjYtMTMuMS0xNC41LTI2LjQtMjAuOC0zOS44IDYuMi0xMy40IDEzLjItMjYuOCAyMC43LTM5LjkgNy44LTEzLjUgMTUuOC0yNi4zIDI0LjEtMzguMiAxNC45LTEuMyAzMC0yIDQ1LjItMiAxNS4xIDAgMzAuMi43IDQ1IDEuOSA4LjMgMTEuOSAxNi40IDI0LjYgMjQuMiAzOCA3LjYgMTMuMSAxNC41IDI2LjQgMjAuOCAzOS44LTYuMyAxMy40LTEzLjIgMjYuOC0yMC43IDM5Ljl6bTMyLjMtMTNjNS40IDEzLjQgMTAgMjYuOCAxMy44IDM5LjgtMTMuMSAzLjItMjYuOSA1LjktNDEuMiA4IDQuOS03LjcgOS44LTE1LjYgMTQuNC0yMy43IDQuNi04IDguOS0xNi4xIDEzLTI0LjF6TTQyMS4yIDQzMGMtOS4zLTkuNi0xOC42LTIwLjMtMjcuOC0zMiA5IC40IDE4LjIuNyAyNy41LjcgOS40IDAgMTguNy0uMiAyNy44LS43LTkgMTEuNy0xOC4zIDIyLjQtMjcuNSAzMnptLTc0LjQtNTguOWMtMTQuMi0yLjEtMjcuOS00LjctNDEtNy45IDMuNy0xMi45IDguMy0yNi4yIDEzLjUtMzkuNSA0LjEgOCA4LjQgMTYgMTMuMSAyNCA0LjcgOCA5LjUgMTUuOCAxNC40IDIzLjR6TTQyMC43IDE2M2M5LjMgOS42IDE4LjYgMjAuMyAyNy44IDMyLTktLjQtMTguMi0uNy0yNy41LS43LTkuNCAwLTE4LjcuMi0yNy44LjcgOS0xMS43IDE4LjMtMjIuNCAyNy41LTMyem0tNzQgNTguOWMtNC45IDcuNy05LjggMTUuNi0xNC40IDIzLjctNC42IDgtOC45IDE2LTEzIDI0LTUuNC0xMy40LTEwLTI2LjgtMTMuOC0zOS44IDEzLjEtMy4xIDI2LjktNS44IDQxLjItNy45em0tOTAuNSAxMjUuMmMtMzUuNC0xNS4xLTU4LjMtMzQuOS01OC4zLTUwLjYgMC0xNS43IDIyLjktMzUuNiA1OC4zLTUwLjYgOC42LTMuNyAxOC03IDI3LjctMTAuMSA1LjcgMTkuNiAxMy4yIDQwIDIyLjUgNjAuOS05LjIgMjAuOC0xNi42IDQxLjEtMjIuMiA2MC42LTkuOS0zLjEtMTkuMy02LjUtMjgtMTAuMnpNMzEwIDQ5MGMtMTMuNi03LjgtMTkuNS0zNy41LTE0LjktNzUuNyAxLjEtOS40IDIuOS0xOS4zIDUuMS0yOS40IDE5LjYgNC44IDQxIDguNSA2My41IDEwLjkgMTMuNSAxOC41IDI3LjUgMzUuMyA0MS42IDUwLTMyLjYgMzAuMy02My4yIDQ2LjktODQgNDYuOS00LjUtLjEtOC4zLTEtMTEuMy0yLjd6bTIzNy4yLTc2LjJjNC43IDM4LjItMS4xIDY3LjktMTQuNiA3NS44LTMgMS44LTYuOSAyLjYtMTEuNSAyLjYtMjAuNyAwLTUxLjQtMTYuNS04NC00Ni42IDE0LTE0LjcgMjgtMzEuNCA0MS4zLTQ5LjkgMjIuNi0yLjQgNDQtNi4xIDYzLjYtMTEgMi4zIDEwLjEgNC4xIDE5LjggNS4yIDI5LjF6bTM4LjUtNjYuN2MtOC42IDMuNy0xOCA3LTI3LjcgMTAuMS01LjctMTkuNi0xMy4yLTQwLTIyLjUtNjAuOSA5LjItMjAuOCAxNi42LTQxLjEgMjIuMi02MC42IDkuOSAzLjEgMTkuMyA2LjUgMjguMSAxMC4yIDM1LjQgMTUuMSA1OC4zIDM0LjkgNTguMyA1MC42LS4xIDE1LjctMjMgMzUuNi01OC40IDUwLjZ6TTMyMC44IDc4LjR6Ii8+CiAgICA8Y2lyY2xlIGN4PSI0MjAuOSIgY3k9IjI5Ni41IiByPSI0NS43Ii8+CiAgICA8cGF0aCBkPSJNNTIwLjUgNzguMXoiLz4KICA8L2c+Cjwvc3ZnPg==#al5RUqUzTx

@@ -15,7 +15,7 @@ spec:
   sources:
   - chart: kube-prometheus-stack
     repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 56.8.2
+    targetRevision: 61.7.2
     helm:
       valueFiles:
       - $repo/cluster/apps/monitoring/kube-prometheus-stack/operator.yaml
