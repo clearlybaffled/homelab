@@ -25,6 +25,12 @@ spec:
   destination:
     name: in-cluster
     namespace: infrastructure
+  ignoreDifferences:
+  - group: apps
+    kind: Deployment
+    name: reloader-reloader
+    jqPathExpressions:
+    - .spec.template.spec.containers[].env[].valueFrom.resourceFieldRef.divisor
   syncPolicy:
     automated:
       prune: true
@@ -32,3 +38,4 @@ spec:
     syncOptions:
     - CreateNamespace=true
     - ServerSideApply=true
+    - RespectIgnoreDifferences=true
