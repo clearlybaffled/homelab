@@ -1,23 +1,13 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
 controllers:
   main:
+    annotations:
+      configmap.reloader.stakater.com/reload: calibre-server-init,calibre-server-dependencies-init
     containers:
-      calibre:
-        image:
-          repository: ghcr.io/linuxserver/calibre
-          tag: 7.15.0
-        env:
-          TZ: America/New_York
-        resources:
-          requests:
-            cpu: 15m
-            memory: 298M
-          limits:
-            memory: 298M
       calibre-web:
         image:
           repository: ghcr.io/linuxserver/calibre-web
-          tag: version-0.6.22
+          tag: version-0.6.23
         env:
           TZ: America/New_York
           PGID: 997
@@ -28,6 +18,13 @@ controllers:
             memory: 164M
           limits:
             memory: 458M
+    initContainers:
+      content-setup:
+        image:
+          repository: docker.io/busybox
+          tag: 1.36
+        command: ['sh', '-c', '/copy/copy.sh']
+
 
 persistence:
   config:
@@ -39,24 +36,40 @@ persistence:
   books:
     enabled: true
     existingClaim: books
-
+  copy-script:
+    name: calibre-copy-script
+    enabled: true
+    type: configMap
+    # yamllint disable-line rule:octal-values
+    defaultMode: 0777
+    advancedMounts:
+      main:
+        content-setup:
+          - path: /copy
+  content-server-init:
+    enabled: true
+    type: configMap
+    name: calibre-server-init
+    advancedMounts:
+      main:
+        calibre-web:
+          - path: /etc/s6-overlay/s6-rc.d/user/contents.d/svc-calibre-content
+            subPath: svc-calibre-content
+  content-server-s6:
+    enabled: true
+    type: emptyDir
+    sizeLimit: 2Mi
+    globalMounts:
+      - path: /etc/s6-overlay/s6-rc.d/svc-calibre-content
 
 service:
-  calibre:
-    controller: main
-    ports:
-      http:
-        port: 8080
   content:
     controller: main
-    type: LoadBalancer
     ports:
       content:
         enabled: true
-        port: 8081
-        protocol: TCP
-        targetPort: 8081
-  web:
+        port: 8080
+  calibre:
     controller: main
     ports:
       http:
@@ -68,9 +81,13 @@ ingress:
     annotations:
       gethomepage.dev/enabled: "true"
       gethomepage.dev/group: "Media"
-      gethomepage.dev/icon: calibre.png
-      gethomepage.dev/description: "E-Book collection manager"
-      gethomepage.dev/name: Calibre
+      gethomepage.dev/icon: calibre-web.png
+      gethomepage.dev/description: "Web-based E-Book reader"
+      gethomepage.dev/name: Calibre-Web
+      gethomepage.dev/widget.type: calibreweb
+      gethomepage.dev/widget.url: "http://calibre.media.svc:8083"
+      gethomepage.dev/widget.username: '{{HOMEPAGE_VAR_CALIBREWEB_USERNAME}}'
+      gethomepage.dev/widget.password: '{{HOMEPAGE_VAR_CALIBREWEB_PASSWORD}}'
     className: nginx
     hosts:
     - host: &ui_host calibre.hermleigh.cc
@@ -80,36 +97,43 @@ ingress:
         service:
           identifier: calibre
           port: http
+      - path: /calibre
+        pathType: Prefix
+        service:
+          identifier: content
+          port: content
     tls:
     - hosts:
       - *ui_host
-      secretName: external-wildcard-certificate
-  web:
-    enabled: true
-    annotations:
-      gethomepage.dev/enabled: "true"
-      gethomepage.dev/group: "Media"
-      gethomepage.dev/icon: calibre-web.png
-      gethomepage.dev/description: "Web-based E-Book reader"
-      gethomepage.dev/name: Calibre-Web
-      gethomepage.dev/widget.type: calibreweb
-      gethomepage.dev/widget.url: "http://calibre-web.media.svc:8083"
-      gethomepage.dev/widget.username: '{{HOMEPAGE_VAR_CALIBREWEB_USERNAME}}'
-      gethomepage.dev/widget.password: '{{HOMEPAGE_VAR_CALIBREWEB_PASSWORD}}'
-    className: nginx
-    hosts:
-    - host: &web-host calibre-web.hermleigh.cc
-      paths:
-      - path: /
-        pathType: Prefix
-        service:
-          identifier: web
-          port: http
-    tls:
-    - hosts:
-      - *web-host
       secretName: external-wildcard-certificate
 
 defaultPodOptions:
   securityContext:
     supplementalGroups: [33, 997]
+
+
+configMaps:
+  copy-script:
+    data:
+      copy.sh: |
+        #!/bin/sh
+        export S6_DIR=/etc/s6-overlay/s6-rc.d/svc-calibre-content
+        echo "3" > $S6_DIR/notification-fd
+        echo "longrun" > $S6_DIR/type
+        cat >$S6_DIR/run <<-EOF
+        #!/usr/bin/with-contenv bash
+        # shellcheck shell=bash
+
+        exec \\
+            s6-notifyoncheck -d -n 300 -w 1000 -c "nc -z localhost 8080" \\
+                cd /app/calibre s6-setuidgid abc /app/calibre/calibre-server --userdb /books/Calibre/users.sqlite --enable-auth --url-prefix /calibre /books/Calibre
+        EOF
+
+        /bin/chmod a+x $S6_DIR/run
+        /bin/mkdir -p $S6_DIR/dependencies.d
+        /bin/touch $S6_DIR/dependencies.d/init-mods-end
+
+
+  server-init:
+    data:
+      svc-calibre-content: ""

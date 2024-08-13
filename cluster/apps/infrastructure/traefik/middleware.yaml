@@ -1,0 +1,12 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: forward-auth
+spec:
+  forwardAuth:
+    address: https://oauth.sso.hermleigh.home
+    authResponseHeaders:
+    - Authorization
+    - Set-Cookie
+    authResponseHeadersRegex: ^X-
+    trustForwardHeader: true
