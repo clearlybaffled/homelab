@@ -1,0 +1,76 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/library/common/values.schema.json
+controllers:
+  navidrome:
+    containers:
+      navidrome:
+        image:
+          repository: ghcr.io/navidrome/navidrome
+          tag: 0.52.5
+        env:
+          TZ: America/New_York
+          ND_DATAFOLDER: /config
+          ND_ENABLEGRAVATAR: "true"
+          ND_LOGLEVEL: info
+          ND_MUSICFOLDER: /music
+          ND_PROMETHEUS_ENABLED: "true"
+          ND_REVERSEPROXYUSERHEADER: Remote-User
+          ND_REVERSEPROXYWHITELIST: 0.0.0.0/0
+        resources:
+          requests:
+            cpu: 10m
+            memory: 250Mi
+          limits:
+            memory: 750Mi
+
+defaultPodOptions:
+  enableServiceLinks: false
+  securityContext:
+    runAsUser: 997
+    runAsGroup: 997
+
+service:
+  app:
+    controller: navidrome
+    ports:
+      http:
+        port: 4533
+
+ingress:
+  app:
+    enabled: true
+    className: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/auth-method: GET
+      nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
+      nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
+      nginx.ingress.kubernetes.io/auth-signin: https://sso.hermleigh.cc/oauth2/start?rd=$scheme://$best_http_host$escaped_request_uri
+      nginx.ingress.kubernetes.io/auth-url: https://sso.hermleigh.cc/oauth2/auth
+      gethomepage.dev/description: "Self-hosted, open source music server and streamer"
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/group: "Media"
+      gethomepage.dev/name: "Navidrome"
+      gethomepage.dev/icon: navidrome.svg
+    hosts:
+      - host: &host "{{ .Release.Name }}.hermleigh.cc"
+        paths:
+          - path: /
+            service:
+              identifier: app
+              port: http
+    tls:
+      - hosts:
+          - *host
+        secretName: external-wildcard-certificate
+
+persistence:
+  config:
+    enabled: true
+    accessMode: ReadWriteOnce
+    storageClass: local-path
+    size: 50Mi
+    globalMounts:
+      - path: /config
+  music:
+    existingClaim: music
+    globalMounts:
+      - path: /music

@@ -179,6 +179,7 @@ This Git repository contains the following top level directories.
 |[<img width="32" src="https://raw.githubusercontent.com/immich-app/immich/main/design/immich-logo.png">][immich-uri] | [Immich](./cluster/apps/media/immich/)| `Photos` | Photo Management | Deployed | [![][immich-badge]][immich-chart] |
 |[<img width="32" src="https://github.com/metabrainz/design-system/raw/master/brand/logos/ListenBrainz/SVG/ListenBrainz_logo_no_text.svg">][listenbrainz-uri] | ListenBrainz| `Scrobble` | Open Source scrobbler | Planned | |
 |[<img src="https://raw.githubusercontent.com/photoprism/photoprism/develop/assets/static/icons/logo/32.png">][photoprism-uri] | [Photoprism](./cluster/apps/media/photoprism/)| `Photos` | Photo Management | Deployed | [![][photoprism-badge]][photoprism-img]  |
+|[<img width="32" src="https://raw.githubusercontent.com/navidrome/navidrome/master/resources/logo-192x192.png">][navidrome-uri] | [Navidrome](./cluster/apps/media/navidrome/) | `Music Streaming` | Your Personal Streaming Service | Deployed | [![][navidrome-badge]][navidrome-img] |
 
 ### [Services](./cluster/apps/services/)
 
@@ -343,8 +344,12 @@ This Git repository contains the following top level directories.
 [immich-badge]: https://img.shields.io/badge/immich-v1.108.0-blue?logo=docker
 
 [photoprism-uri]: https://www.photoprism.app/
-[photoprism-badge]: https://img.shields.io/badge/photopirms-240711-blue?logo=docker
+[photoprism-badge]: https://img.shields.io/badge/photoprism-240711-blue?logo=docker
 [photoprism-img]: https://hub.docker.com/r/photoprism/photoprism
+
+[navidrome-uri]: https://www.navidrome.org/
+[navidrome-badge]: https://img.shields.io/badge/navidrome-0.52.5-blue?logo=docker
+[navidrome-img]: https://ghcr.io/navidrome/navidrome
 
 [stirling-pdf-uri]: https://stirlingtools.com/
 [stirling-pdf-badge]: https://img.shields.io/badge/frooodle/s--pdf-0.27.0-blue?logo=docker

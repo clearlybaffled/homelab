@@ -705,3 +705,8 @@ change-detection:
   namespace: services
   charts:
     - chart: app-template
+
+navidrome:
+  namespace: media
+  charts:
+    - chart: app-template
