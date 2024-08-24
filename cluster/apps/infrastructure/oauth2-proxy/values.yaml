@@ -27,8 +27,8 @@ config:
 
 ingress:
   enabled: true
-  path: /oauth2
-  ingressClass: nginx
+  path: /
+  className: nginx
   hosts:
     - &host sso.hermleigh.cc
   annotations:
@@ -55,3 +55,8 @@ redis:
 
 service:
   portNumber: 4180
+
+metrics:
+  serviceMonitor:
+    enabled: true
+    prometheusInstance: kube-prometheus
