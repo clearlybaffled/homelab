@@ -297,7 +297,7 @@ This Git repository contains the following top level directories.
 
 [qbittorrent-uri]: https://www.qbittorrent.org/
 [qbittorrent-img]: https://ghcr.io/onedr0p/qbittorrent
-[qbittorrent-badge]: https://img.shields.io/badge/onedr0p/qbittorrent-4.6.5-blue?logo=docker
+[qbittorrent-badge]: https://img.shields.io/badge/onedr0p/qbittorrent-4.6.6-blue?logo=docker
 
 [lidarr-uri]: https://lidarr.audio
 [lidarr-img]: https://ghcr.io/onedr0p/lidarr

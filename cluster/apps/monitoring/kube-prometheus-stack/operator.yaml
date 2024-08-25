@@ -73,6 +73,12 @@ grafana:
           editable: true
           options:
             path: /var/lib/grafana/dashboards/default
+  dashboards:
+    default:
+      qbittorrent:
+        url: https://raw.githubusercontent.com/esanchezm/prometheus-qbittorrent-exporter/master/grafana/dashboard.json
+        token: ''
+        datasource: Prometheus
 
 ## Manages Prometheus and Alertmanager components
 ##
@@ -100,6 +106,10 @@ prometheus:
           - targets: ["cri-o-metrics-exporter.cri-o-metrics-exporter"]
             labels:
               instance: "parche"
+      - job_name: "qbittorrent_exporter"
+        static_configs:
+          - targets: ['qbittorrent-exporter.downloads:8081']
+
   service:
     ingress:
       enabled: true

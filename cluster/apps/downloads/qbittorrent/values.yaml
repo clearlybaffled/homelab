@@ -5,7 +5,7 @@ controllers:
       qbittorrent:
         image:
           repository: ghcr.io/onedr0p/qbittorrent
-          tag: 4.6.5
+          tag: 4.6.6
         env:
           TZ: America/New_York
           QBITTORRENT__PORT: &port 8080
@@ -26,6 +26,20 @@ controllers:
         securityContext: &security-context
           runAsUser: 568
           runAsGroup: 568
+      exporter:
+        image:
+          repository: ghcr.io/esanchezm/prometheus-qbittorrent-exporter
+          tag: sha-8ac240b
+        env:
+          EXPORTER_PORT: &ex-port 8081
+          QBITTORRENT_HOST: localhost
+          QBITTORRENT_PORT: *port
+        resources:
+          requests:
+            cpu: 5m
+            memory: 36M
+          limits:
+            memory: 128M
 
 defaultPodOptions:
   securityContext:
@@ -51,6 +65,12 @@ service:
         protocol: TCP
         targetPort: *port-bt
     externalTrafficPolicy: Local
+  exporter:
+    enabled: true
+    controller: main
+    ports:
+      http:
+        port: *ex-port
 
 ingress:
   main:
@@ -77,8 +97,6 @@ ingress:
           - *host
         secretName: external-wildcard-certificate
 
-# Note: If downloading very large torrents it might be worth using NFS for your download directory.
-# Beware if you are downloading torrents directly to a ZFS dataset that dataset will accrue fragmentation.
 persistence:
   config:
     enabled: true
