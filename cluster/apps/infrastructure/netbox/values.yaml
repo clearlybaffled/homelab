@@ -64,7 +64,7 @@ ingress:
   className: nginx
   annotations:
     gethomepage.dev/enabled: "true"
-    gethomepage.dev/group: "Apps & Services"
+    gethomepage.dev/group: "Infrastructure"
     gethomepage.dev/icon: netbox.png
     gethomepage.dev/description: "Infrastructure inventory and IPAM solution"
   hosts:
