@@ -108,3 +108,18 @@ persistence:
   incomplete:
     enabled: true
     type: emptyDir
+  music:
+    enabled: true
+    existingClaim: music
+  movies:
+    enabled: true
+    existingClaim: movies
+  tv-shows:
+    enabled: true
+    existingClaim: tv-shows
+  books:
+    enabled: true
+    existingClaim: books
+  audio:
+    enabled: true
+    existingClaim: audio
