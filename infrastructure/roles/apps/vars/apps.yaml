@@ -105,7 +105,7 @@ cert-manager:
   wave: "1"
   charts:
     - chart: jetstack/cert-manager
-      version: v1.15.1
+      version: v1.17
   secrets:
     cloudflare-api-token:
   kustomize:
