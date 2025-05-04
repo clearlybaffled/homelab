@@ -1,6 +1,6 @@
 ---
 - name: Check for existing user
-  delegate_to: "{{ groups['kube_control_plane'][0] }}"
+  delegate_to: "{{ groups.kube_control_plane | random }}"
   connection: ssh
   become: true
   kubernetes.core.k8s_info:
@@ -8,7 +8,7 @@
     name: "{{ kube_user }}"
     api_version: certificates.k8s.io/v1
     kubeconfig: "{{ kubeconfig_file }}"
-    ssl_ca_cert: "{{ kube_cluster_cacerts }}"
+    ca_cert: "{{ kube_cluster_cacerts }}"
   register: user_status
 
 - name: Create User
@@ -27,12 +27,17 @@
       register: csr
 
     - name: user | Create ClusterRoleBinding
+      delegate_to: "{{ groups.kube_control_plane | random }}"
+      connection: ssh
+      become: true
       kubernetes.core.k8s:
         template: crb.yml.j2
+        kubeconfig: "{{ kubeconfig_file }}"
+        ca_cert: "{{ kube_cluster_cacerts }}"
 
     - name: user | Send CSR to Kubernetes
       include_role:
-        name: kuberenetes/control_plane
+        name: kubernetes/control_plane
         tasks_from: approve-cert.yml
       vars:
         name: "{{ kube_user }}"

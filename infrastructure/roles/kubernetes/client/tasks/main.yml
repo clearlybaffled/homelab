@@ -20,7 +20,6 @@
   when: ansible_os_family|lower == "windows"
 
 - name: Create cluster user for local controller user
-  delegate_to: "{{ groups.kube_control_plane | random }}"
   import_role:
     name: user
     tasks_from: kube-user.yml
