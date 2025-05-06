@@ -29,3 +29,6 @@ storage:
     - name: music
       path: /share/Music
       size: *share
+    - name: data
+      path: /share
+      size: *share

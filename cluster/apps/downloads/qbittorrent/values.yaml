@@ -4,8 +4,8 @@ controllers:
     containers:
       qbittorrent:
         image:
-          repository: ghcr.io/onedr0p/qbittorrent
-          tag: 4.6.6
+          repository: ghcr.io/home-operations/qbittorrent
+          tag: 5.1.0
         env:
           TZ: America/New_York
           QBITTORRENT__PORT: &port 8080
@@ -13,8 +13,8 @@ controllers:
           QBT_BitTorrent__Session__IPFilter: 'https:/github.com/Naunter/BT_BlockLists/blob/master/combined_2.txt?raw=true'
           QBT_BitTorrent__Session_IPFilteringEnabled: 'true'
           QBT_BitTorrent__Session__TrackerFilteringEnabled: 'true'
-          QBT_BitTorrent__Session__DefaultSavePath: '/downloads'
-          QBT_BitTorrent__Session__TorrentExportDirectory: '/downloads/torrents'
+          QBT_BitTorrent__Session__DefaultSavePath: '/data/downloads'
+          QBT_BitTorrent__Session__TorrentExportDirectory: '/data/downloads/torrents'
           QBT_Preferences__WebUI__AuthSubnetWhitelist: '10.0.0.0/8, 172.16.0.0/12'
           QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: 'true'
         resources:
@@ -123,3 +123,6 @@ persistence:
   audio:
     enabled: true
     existingClaim: audio
+  data:
+    enabled: true
+    existingClaim: data
