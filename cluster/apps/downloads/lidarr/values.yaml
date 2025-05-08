@@ -4,8 +4,8 @@ controllers:
     containers:
       main:
         image:
-          repository: ghcr.io/onedr0p/lidarr
-          tag: 2.3.3
+          repository: ghcr.io/home-operations/lidarr
+          tag: 2.11.1
         env:
           TZ: America/New_York
           LIDARR__INSTANCE_NAME: Lidarr

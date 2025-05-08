@@ -4,8 +4,8 @@ controllers:
     containers:
       prowlarr:
         image:
-          repository: ghcr.io/onedr0p/prowlarr
-          tag: 1.18.0
+          repository: ghcr.io/home-operations/prowlarr
+          tag: 1.35.1
         env:
           TZ: America/New_York
           PROWLARR__INSTANCE_NAME: Prowlarr

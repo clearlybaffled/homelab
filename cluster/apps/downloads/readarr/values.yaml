@@ -4,8 +4,8 @@ controllers:
     containers:
       readarr:
         image:
-          repository: ghcr.io/onedr0p/readarr-develop
-          tag: 0.3.27
+          repository: ghcr.io/home-operations/readarr-develop
+          tag: 0.4.15
 
         env:
           TZ: "America/New_York"
