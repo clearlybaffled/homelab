@@ -75,3 +75,6 @@ persistence:
     existingClaim: music
   downloads:
     existingClaim: downloads
+  data:
+    enabled: true
+    existingClaim: data

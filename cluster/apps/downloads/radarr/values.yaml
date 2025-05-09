@@ -78,3 +78,6 @@ persistence:
     enabled: true
     type: persistentVolumeClaim
     existingClaim: downloads
+  data:
+    enabled: true
+    existingClaim: data

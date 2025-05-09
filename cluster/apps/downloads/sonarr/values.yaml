@@ -78,3 +78,6 @@ persistence:
   downloads:
     enabled: true
     existingClaim: downloads
+  data:
+    enabled: true
+    existingClaim: data
