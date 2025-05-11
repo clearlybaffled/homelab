@@ -4,7 +4,7 @@ controllers:
     containers:
       readarr:
         image:
-          repository: ghcr.io/home-operations/readarr-develop
+          repository: ghcr.io/home-operations/readarr
           tag: 0.4.15
 
         env:
