@@ -6,8 +6,8 @@ controllers:
     containers:
       app:
         image:
-          repository: wallabag/wallabag
-          tag: 2.6.9
+          repository: docker.io/wallabag/wallabag
+          tag: 2.6.12
         env:
           SYMFONY__ENV__DOMAIN_NAME: https://wallabag.hermleigh.cc
           SYMFONY__ENV__SERVER_NAME: Wallabag

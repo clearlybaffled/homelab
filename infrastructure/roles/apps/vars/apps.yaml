@@ -7,7 +7,7 @@ argocd:
   kustomize:
     charts:
       - chart: argocd/argo-cd
-        version: 7.4.2
+        version: 8.0.0
         namespace: argocd
         release: argocd
         apiVersions: true
@@ -105,7 +105,7 @@ cert-manager:
   wave: "1"
   charts:
     - chart: jetstack/cert-manager
-      version: v1.17
+      version: v1.17.2
   secrets:
     cloudflare-api-token:
   kustomize:
@@ -119,7 +119,7 @@ ingress-nginx:
   wave: "1"
   charts:
     - chart: ingress-nginx/ingress-nginx
-      version: 4.9.1
+      version: 4.12.2
 
 traefik:
   namespace: traefik-system
@@ -127,7 +127,7 @@ traefik:
   wave: "1"
   charts:
     - chart: traefik/traefik
-      version: v26.1.0
+      version: 35.2.0
 
 metallb:
   path: infrastructure
@@ -147,7 +147,7 @@ external-dns:
   wave: "1"
   charts:
     - chart: external-dns/external-dns
-      version: 1.14.3
+      version: 1.16.1
   secrets:
     secret:
 
@@ -194,14 +194,14 @@ reflector:
   wave: "3"
   charts:
     - chart: emberstack/reflector
-      version: 7.1.262
+      version: 9.1.4
       valueFiles: []
 
 reloader:
   namespace: infrastructure
   charts:
     - chart: stakater/reloader
-      version: 1.0.121
+      version: 2.1.3
   ignoreDifferences:
     - group: apps
       kind: Deployment
@@ -230,7 +230,7 @@ oauth2-proxy:
   namespace: infrastructure
   charts:
     - chart: oauth2-proxy/oauth2-proxy
-      version: 7.7.12
+      version: 7.12.13
   secrets:
     secret:
 
@@ -274,7 +274,7 @@ homepage:
   path: services
   charts:
     - chart: jameswynn/homepage
-      version: 1.2.3
+      version: 2.0.2
   secrets:
     secret:
     app-keys:

@@ -83,7 +83,7 @@ ingress:
       gethomepage.dev/name: Prowlarr
       gethomepage.dev/widget.type: "prowlarr"
       gethomepage.dev/widget.url: "http://prowlarr.downloads.svc:9696"
-      gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}"
+      gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PROWLARR_API_KEY}}` }}"
     hosts:
       - host: &host trackers.hermleigh.cc
         paths:

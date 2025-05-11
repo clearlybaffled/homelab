@@ -87,6 +87,12 @@ grafana:
         url: https://raw.githubusercontent.com/esanchezm/prometheus-qbittorrent-exporter/master/grafana/dashboard.json
         token: ''
         datasource: Prometheus
+      ingress-nginx:
+        gnetId: 9614
+        revision: 1
+      node-exporter-full:
+        gnetId: 1860
+        revision: 37
     grafana-dashboards-kubernetes:
       k8s-system-api-server:
         url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-api-server.json

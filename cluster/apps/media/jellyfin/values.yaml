@@ -27,7 +27,7 @@ controllers:
       jellyfin:
         image:
           repository: docker.io/jellyfin/jellyfin
-          tag: 10.9.4
+          tag: 2025050505-amd64
         env:
           DOTNET_SYSTEM_IO_DISABLEFILELOCKING: "true"
           JELLYFIN_FFmpeg__probesize: 50000000
@@ -42,7 +42,7 @@ controllers:
       jellyseer:
         image:
           repository: docker.io/fallenbagel/jellyseerr
-          tag: 1.9.0
+          tag: 2.5.2
         env:
           TZ: America/New_York
           LOG_LEVEL: "info"
@@ -78,7 +78,7 @@ ingress:
       gethomepage.dev/name: Jellyfin
       gethomepage.dev/widget.type: jellyfin
       gethomepage.dev/widget.url: "http://jellyfin.media.svc:8096"
-      gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}"
+      gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}` }}"
       gethomepage.dev/widget.enableBlocks: "true"
     hosts:
       - host: &host jellyfin.hermleigh.cc

@@ -19,7 +19,7 @@ spec:
   volumeMode: Filesystem
   storageClassName: local-storage
   capacity:
-    storage: 5.5Ti
+    storage: 5500.0Gi
   local:
     path: /share/Files/PaperlessNGX
   nodeAffinity:
@@ -43,6 +43,6 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 5.5Ti
+      storage: 5500.0Gi
   storageClassName: local-storage
   volumeName: paperless-library

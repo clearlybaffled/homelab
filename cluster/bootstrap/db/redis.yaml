@@ -27,12 +27,6 @@ spec:
   destination:
     name: in-cluster
     namespace: db
-  ignoreDifferences:
-  - kind: PersistentVolume
-    jsonPointers:
-    - /spec/claimRef/resourceVersion
-    - /spec/claimRef/uid
-    - /status/lastPhaseTransitionTime
   syncPolicy:
     automated:
       prune: true
@@ -40,4 +34,3 @@ spec:
     syncOptions:
     - CreateNamespace=true
     - ServerSideApply=true
-    - RespectIgnoreDifferences=true

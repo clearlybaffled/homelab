@@ -44,8 +44,8 @@ ingress:
       gethomepage.dev/name: Photoprism
       gethomepage.dev/widget.type: photoprism
       gethomepage.dev/widget.url: "http://photoprism.media.svc:2342"
-      gethomepage.dev/widget.username: '{{HOMEPAGE_VAR_PHOTOPRISM_USERNAME}}'
-      gethomepage.dev/widget.password: '{{HOMEPAGE_VAR_PHOTOPRISM_PASSWORD}}'
+      gethomepage.dev/widget.username: '{{ `{{HOMEPAGE_VAR_PHOTOPRISM_USERNAME}}`` }}'
+      gethomepage.dev/widget.password: '{{ `{{HOMEPAGE_VAR_PHOTOPRISM_PASSWORD}}` }}'
     hosts:
       - host: &host photos.hermleigh.cc
         paths:

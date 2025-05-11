@@ -11,13 +11,14 @@
       {{
           apps | combine(
           {
-             item.key: item.value |combine({
+             item.key: item.value | combine({
               'name': item.key,
               'app_dir': (
                   cluster_dir,
                   ('path' in item.value) |
                     ternary(
-                      item.value.path|default(item.value.namespace) if (item.value.path|default('', true) == '') else ('apps', item.value.path|default(omit,true)),
+                      (item.value.path|default('') == '') |
+                        ternary('', (item.value.path|default(None) == None) | ternary(item.value.namespace, ('apps', item.value.path|default('')))),
                       ('apps', item.value.namespace)
                     ),
                   item.key
@@ -87,7 +88,7 @@
       {{ applied_apps | map(attribute='name') | to_nice_yaml }}
 
       Updated Files:
-      {{ ([files[1]] + [files[2]]) | flatten | to_nice_yaml }}
+      {{ ([files[1]] + [files[2]]) | flatten | unique | to_nice_yaml }}
 
     add: "{{  files | flatten | unique }}"
     url: "{{ git_repo_ssh_url }}"

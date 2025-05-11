@@ -130,7 +130,7 @@ ingress:
       gethomepage.dev/name: Paperless-NGX
       gethomepage.dev/widget.type: paperlessngx
       gethomepage.dev/widget.url: http://paperless-ngx.home.svc:8080
-      gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_PAPERLESS_TOKEN}}"
+      gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_PAPERLESS_TOKEN}}` }}"
       gethomepage.dev/widget.fields: '["total", "inbox"]'
     hosts:
       - host: &host paperless.hermleigh.cc

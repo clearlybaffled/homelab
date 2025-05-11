@@ -5,7 +5,7 @@ controllers:
       mealie:
         image:
           repository: ghcr.io/mealie-recipes/mealie
-          tag: v1.11.0
+          tag: v2.8.0
           pullPolicy: IfNotPresent
         env:
           TZ: America/New_York
@@ -44,7 +44,7 @@ ingress:
       gethomepage.dev/name: Mealie
       gethomepage.dev/widget.type: mealie
       gethomepage.dev/widget.url: "http://mealie.home.svc:9000"
-      gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_MEALIE_API_KEY}}"
+      gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_MEALIE_API_KEY}}` }}"
       gethomepage.dev/widget.fields: '["recipes", "users", "categories", "tags"]'
     hosts:
       - host: &host mealie.hermleigh.cc

@@ -5,7 +5,7 @@ controllers:
       audiobookshelf:
         image:
           repository: ghcr.io/advplyr/audiobookshelf
-          tag: 2.10.1
+          tag: 2.21.0
         env:
           TZ: "America/New_York"
           AUDIOBOOKSHELF_UID: 997
@@ -38,7 +38,7 @@ ingress:
       gethomepage.dev/name: Audiobookshelf
       gethomepage.dev/widget.type: audiobookshelf
       gethomepage.dev/widget.url: http://audiobookshelf.media.svc
-      gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_AUDIOBOOKSHELF_API_KEY}}"
+      gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_AUDIOBOOKSHELF_API_KEY}}` }}"
     hosts:
       - host: &host audiobookshelf.hermleigh.cc
         paths:

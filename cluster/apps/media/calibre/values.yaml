@@ -7,7 +7,7 @@ controllers:
       calibre-web:
         image:
           repository: ghcr.io/linuxserver/calibre-web
-          tag: version-0.6.23
+          tag: 0.6.24
         env:
           TZ: America/New_York
           PGID: 997
@@ -86,8 +86,8 @@ ingress:
       gethomepage.dev/name: Calibre-Web
       gethomepage.dev/widget.type: calibreweb
       gethomepage.dev/widget.url: "http://calibre.media.svc:8083"
-      gethomepage.dev/widget.username: '{{HOMEPAGE_VAR_CALIBREWEB_USERNAME}}'
-      gethomepage.dev/widget.password: '{{HOMEPAGE_VAR_CALIBREWEB_PASSWORD}}'
+      gethomepage.dev/widget.username: '{{ `{{HOMEPAGE_VAR_CALIBREWEB_USERNAME}}` }}'
+      gethomepage.dev/widget.password: '{{ `{{HOMEPAGE_VAR_CALIBREWEB_PASSWORD}}` }}'
     className: nginx
     hosts:
     - host: &ui_host calibre.hermleigh.cc

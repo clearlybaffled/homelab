@@ -63,7 +63,7 @@ ingress:
       gethomepage.dev/icon: changedetection-io.png
       gethomepage.dev/widget.type: changedetectionio
       gethomepage.dev/widget.url: http://change-detection.services.svc:5000
-      gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_CHANGEDETECTION_API_TOKEN}}"
+      gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_CHANGEDETECTION_API_TOKEN}}` }}"
     hosts:
       - host: &host change.hermleigh.cc
         paths:

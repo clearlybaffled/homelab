@@ -52,7 +52,7 @@ ingress:
       gethomepage.dev/name: Readarr
       gethomepage.dev/widget.type: "readarr"
       gethomepage.dev/widget.url: "http://readarr.downloads.svc:8787"
-      gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_READARR_API_KEY}}"
+      gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_READARR_API_KEY}}` }}"
     hosts:
       - host: &host ebooks.hermleigh.cc
         paths:

@@ -6,11 +6,3 @@ kind: Kustomization
 namespace: services
 generators:
 - ./secret-generator.yaml
-configMapGenerator:
-- name: wger-env
-  envs:
-  - config.env
-  options:
-    disableNameSuffixHash: true
-resources:
-- ./storage.yaml

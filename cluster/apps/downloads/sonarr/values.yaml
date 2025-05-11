@@ -51,7 +51,7 @@ ingress:
       gethomepage.dev/name: Sonarr
       gethomepage.dev/widget.type: "sonarr"
       gethomepage.dev/widget.url: "http://sonarr.downloads.svc:8989"
-      gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_SONARR_API_KEY}}"
+      gethomepage.dev/widget.key: "{{ `{{HOMEPAGE_VAR_SONARR_API_KEY}}` }}"
       nginx.ingress.kubernetes.io/configuration-snippet: |
         proxy_set_header Accept-Encoding "";
         sub_filter '<body>' '<body><link rel="stylesheet" type="text/css" href="https://theme-park.dev/css/base/sonarr/nord.css">';

@@ -6,7 +6,7 @@ helm_repositories:
   prometheus-community: https://prometheus-community.github.io/helm-charts
   traefik: https://traefik.github.io/charts
   argocd: https://argoproj.github.io/argo-helm
-  bjw-s: https://bjw-s.github.io/helm-charts/
+  bjw-s: https://bjw-s-labs.github.io/helm-charts/
   cnpg: https://cloudnative-pg.github.io/charts
   bitnami: https://charts.bitnami.com/bitnami
   jetstack: https://charts.jetstack.io
@@ -87,7 +87,7 @@ metallb_enabled: true
 metallb_speaker_enabled: "{{ metallb_enabled }}"
 metallb_version: v0.13.11
 
-app_template_version: 3.0.2
+app_template_version: 3.7.3
 
 elastic_chart_version: 2.10.0
 mysql_version: 8.0.35
