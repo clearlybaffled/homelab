@@ -20,6 +20,7 @@ controller:
     allow-snippet-annotations: "true"
     use-forwarded-headers: "true"
     forwarded-for-header: "X-Forwarded-For"
+    annotations-risk-level: Critical
 
   ingressClassResource:
     name: nginx
