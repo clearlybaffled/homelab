@@ -8,6 +8,12 @@ controller:
     maxSurge: 25%
     maxUnavailable: 25%
 
+env:
+  - name: HOMEPAGE_ALLOWED_HOSTS
+    # This value must be set
+    # ref: https://gethomepage.dev/installation/#homepage_allowed_hosts
+    value: "seawolf.hermleigh.cc"
+
 envFrom:
   - secretRef:
       name: app-keys
