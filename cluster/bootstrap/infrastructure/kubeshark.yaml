@@ -13,7 +13,7 @@ spec:
   sources:
   - chart: kubeshark
     repoURL: https://helm.kubeshark.co
-    targetRevision: 52.1.9
+    targetRevision: 52.7.0
     helm:
       valueFiles:
       - $repo/cluster/apps/infrastructure/kubeshark/values.yaml

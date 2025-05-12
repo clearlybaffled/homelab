@@ -656,7 +656,7 @@ kubeshark:
   namespace: infrastructure
   charts:
     - chart: kubeshark/kubeshark
-      version: 52.1.9
+      version: 52.7.0
 
 nvr:
   namespace: home
