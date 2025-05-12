@@ -4,27 +4,27 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: wallabag
+  name: kubeshark
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:
-  - chart: app-template
-    repoURL: https://bjw-s-labs.github.io/helm-charts/
-    targetRevision: 3.7.3
+  - chart: kubeshark
+    repoURL: https://helm.kubeshark.co
+    targetRevision: 52.1.9
     helm:
       valueFiles:
-      - $repo/cluster/apps/services/wallabag/values.yaml
-      releaseName: wallabag
+      - $repo/cluster/apps/infrastructure/kubeshark/values.yaml
+      releaseName: kubeshark
   - repoURL: https://github.com/clearlybaffled/homelab
-    path: cluster/apps/services/wallabag
+    path: cluster/apps/infrastructure/kubeshark
     targetRevision: main
     ref: repo
   destination:
     name: in-cluster
-    namespace: services
+    namespace: infrastructure
   syncPolicy:
     automated:
       prune: true

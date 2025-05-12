@@ -26,6 +26,7 @@ helm_repositories:
   nfd: https://kubernetes-sigs.github.io/node-feature-discovery/charts
   intel: https://intel.github.io/helm-charts/
   blakeblackshear: https://blakeblackshear.github.io/blakeshome-charts/
+  wger: https://wger-project.github.io/helm-charts
 
 
 # Registry deployment
@@ -92,8 +93,8 @@ app_template_version: 3.7.3
 elastic_chart_version: 2.10.0
 mysql_version: 8.0.35
 prometheus_version: 2.47.0
-prometheus_operator_version: v0.75.2
-kube_prometheus_stack_chart_version: 61.7.2
+prometheus_operator_version: v0.82.0
+kube_prometheus_stack_chart_version: 71.2.0
 vault_chart_version: 0.25.0
 keycloak_version: 25.0.2
 

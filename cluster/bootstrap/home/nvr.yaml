@@ -19,8 +19,8 @@ spec:
       - $repo/cluster/apps/home/nvr/frigate.yaml
       releaseName: frigate
   - chart: app-template
-    repoURL: https://bjw-s.github.io/helm-charts/
-    targetRevision: 3.0.2
+    repoURL: https://bjw-s-labs.github.io/helm-charts/
+    targetRevision: 3.7.3
     helm:
       valueFiles:
       - $repo/cluster/apps/home/nvr/wyze-bridge.yaml

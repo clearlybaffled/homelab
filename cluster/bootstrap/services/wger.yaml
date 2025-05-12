@@ -11,9 +11,9 @@ metadata:
 spec:
   project: default
   sources:
-  - chart: app-template
-    repoURL: https://bjw-s.github.io/helm-charts/
-    targetRevision: 3.0.2
+  - chart: wger
+    repoURL: https://wger-project.github.io/helm-charts
+    targetRevision: 0.2.0
     helm:
       valueFiles:
       - $repo/cluster/apps/services/wger/values.yaml
@@ -25,12 +25,6 @@ spec:
   destination:
     name: in-cluster
     namespace: services
-  ignoreDifferences:
-  - kind: PersistentVolume
-    jsonPointers:
-    - /spec/claimRef/resourceVersion
-    - /spec/claimRef/uid
-    - /status/lastPhaseTransitionTime
   syncPolicy:
     automated:
       prune: true
@@ -38,4 +32,3 @@ spec:
     syncOptions:
     - CreateNamespace=true
     - ServerSideApply=true
-    - RespectIgnoreDifferences=true
