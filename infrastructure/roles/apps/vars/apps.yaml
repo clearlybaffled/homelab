@@ -675,6 +675,9 @@ photoprism:
         PHOTOPRISM_ADMIN_PASSWORD:
           type: password
           name: admin
+        PHOTOPRISM_DATABASE_USER: photoprism
+        PHOTOPRISM_DATABASE_PASSWORD:
+          type: password
   localStorage:
     - name: photoprism
       path: /disks/sdg/photoprism

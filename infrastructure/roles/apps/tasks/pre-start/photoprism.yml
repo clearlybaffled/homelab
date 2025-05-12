@@ -1,0 +1,9 @@
+---
+- include_tasks: # noqa name
+    file: ../init-mysql.yml
+    apply:
+      vars:
+        db_user_var: PHOTOPRISM_DATABASE_USER
+        db_pass_var: PHOTOPRISM_DATABASE_PASSWORD
+        db_names:
+          - photoprism

@@ -8,7 +8,7 @@ controllers:
       main:
         image:
           repository: docker.io/photoprism/photoprism
-          tag: 240711
+          tag: 250426
         env:
           PHOTOPRISM_STORAGE_PATH: &storage /config
           PHOTOPRISM_ORIGINALS_PATH: &originals /pictures
@@ -16,6 +16,8 @@ controllers:
           PHOTOPRISM_PUBLIC: "true"
           PHOTOPRISM_SITE_URL: "https://photos.hermleigh.home"
           PHOTOPRISM_ORIGINALS_LIMIT: 4000 # in MB (default 1000)
+          # PHOTOPRISM_DATABASE_DRIVER: mysql
+          # PHOTOPRISM_DATABASE_SERVER: "mysql.db.svc:3306"
         envFrom:
           - secretRef:
               name: photoprism-secret
@@ -44,7 +46,7 @@ ingress:
       gethomepage.dev/name: Photoprism
       gethomepage.dev/widget.type: photoprism
       gethomepage.dev/widget.url: "http://photoprism.media.svc:2342"
-      gethomepage.dev/widget.username: '{{ `{{HOMEPAGE_VAR_PHOTOPRISM_USERNAME}}`` }}'
+      gethomepage.dev/widget.username: '{{ `{{HOMEPAGE_VAR_PHOTOPRISM_USERNAME}}` }}'
       gethomepage.dev/widget.password: '{{ `{{HOMEPAGE_VAR_PHOTOPRISM_PASSWORD}}` }}'
     hosts:
       - host: &host photos.hermleigh.cc
