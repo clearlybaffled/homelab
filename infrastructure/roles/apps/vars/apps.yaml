@@ -618,7 +618,7 @@ wger:
   namespace: services
   charts:
     - chart: wger/wger
-      version: 0.2.0
+      version: 0.2.4
   secrets:
     secret:
       data:
