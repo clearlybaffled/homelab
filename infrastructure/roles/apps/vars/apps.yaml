@@ -652,12 +652,6 @@ homebox:
     - chart: app-template
   localStorage:
 
-kubeshark:
-  namespace: infrastructure
-  charts:
-    - chart: kubeshark/kubeshark
-      version: 52.7.0
-
 nvr:
   namespace: home
   charts:
