@@ -5,7 +5,7 @@ controllers:
       radarr:
         image:
           repository: ghcr.io/home-operations/radarr
-          tag: 5.23.1
+          tag: 6.4.4.10685
 
         env:
           TZ: "America/New_York"
